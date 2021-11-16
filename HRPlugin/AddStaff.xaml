@@ -1,0 +1,163 @@
+﻿<Window x:Class="HRPlugin.AddStaff"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HRPlugin"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+        mc:Ignorable="d"
+         Height="400" Width="750"        
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Title="注册新员工"
+        Background="Transparent"
+            ResizeMode="NoResize"
+        Loaded="Window_Loaded"
+            WindowStartupLocation="CenterScreen">
+    <Border Background="White" CornerRadius="5">
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SkinColor}"/>
+                    <TreeView pu:TreeViewHelper.TreeViewStyle="Chain"
+                                      x:Name="tvJobPost"
+                                      Margin="0,10,0,0"
+                                  pu:TreeViewHelper.ExpandMode="SingleClick"
+                                  pu:TreeViewHelper.ItemPadding="3,0,0,0"
+                                      MouseDoubleClick="tvJobPost_MouseDoubleClick"
+                                  Background="Transparent">
+                    </TreeView>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Border Margin="0,20,0,0" BorderBrush="{DynamicResource SkinColor}" VerticalAlignment="Top" HorizontalAlignment="Center">
+                        <Grid>
+                            <StackPanel HorizontalAlignment="Left" Margin="0,10,0,0" >
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Label VerticalAlignment="Center" Content="职务：" Width="80"/>
+                                    <Label x:Name="lblJobPost" Content="未选择职务" Tag="0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Label VerticalAlignment="Center" Content="姓名：" Width="80"/>
+                                    <TextBox  Height="30"
+                                                      Width="200"
+                                                      x:Name="txtName"
+                                                      pu:TextBoxHelper.Watermark="姓名"
+                                                      Background="{DynamicResource TextBoxBgColor}"
+                                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                    <Label VerticalAlignment="Center" Content="性别：" Width="80" Margin="20,0,0,0"/>
+                                    <ComboBox  Height="30"
+                                                       x:Name="cbSex"
+                                                        Width="200"
+                                                        Background="{DynamicResource TextBoxBgColor}"
+                                                        pu:ComboBoxHelper.HoverBackground="{DynamicResource ButtonHoverColor}"
+                                                        pu:ComboBoxHelper.SelectedBackground="{DynamicResource SkinColor}">
+                                        <ComboBoxItem IsSelected="True">男</ComboBoxItem>
+                                        <ComboBoxItem>女</ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Label VerticalAlignment="Center" Content="手机号：" Width="80"/>
+                                    <TextBox  Height="30"
+                                                      Width="200"
+                                                      x:Name="txtPhone"
+                                                      pu:TextBoxHelper.Watermark="手机号"
+                                                      Background="{DynamicResource TextBoxBgColor}"
+                                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                    <Label VerticalAlignment="Center" Content="QQ/微信：" Margin="20,0,0,0" Width="80"/>
+                                    <TextBox  Height="30"
+                                                      Width="200"
+                                                      x:Name="txtWechat"
+                                                      pu:TextBoxHelper.Watermark="QQ/微信"
+                                                      Background="{DynamicResource TextBoxBgColor}"
+                                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Label VerticalAlignment="Center" Content="身份证号：" Width="80"/>
+                                    <TextBox  Height="30"
+                                                      x:Name="txtIDCard"
+                                                      Width="200"
+                                                      pu:TextBoxHelper.Watermark="身份证号"
+                                                      Background="{DynamicResource TextBoxBgColor}"
+                                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                    <Label VerticalAlignment="Center" Content="注册时间：" Margin="20,0,0,0" Width="80"/>
+                                    <pu:DateTimePicker x:Name="dtRegister"  Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Label VerticalAlignment="Center" Content="户籍地址：" Width="80"/>
+                                    <TextBox  Height="30"
+                                                      Width="500"
+                                                      x:Name="txtAddress"
+                                                      pu:TextBoxHelper.Watermark="户籍地址"
+                                                      Background="{DynamicResource TextBoxBgColor}"
+                                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Label VerticalAlignment="Center" Content="现住址：" Width="80"/>
+                                    <TextBox  Height="30"
+                                                      Width="500"
+                                                      x:Name="txtNowAddress"
+                                                      pu:TextBoxHelper.Watermark="现住址"
+                                                      Background="{DynamicResource TextBoxBgColor}"
+                                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                    <Button  Content="同户籍" Width="50" Tag="{Binding Id}" Margin="-100,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnCopyAddress" Click="btnCopyAddress_Click"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,20,10,0" HorizontalAlignment="Right">
+                                    <Button  Content="清 空"
+                                                     x:Name="btnClearBaseInfo"
+                                                     Click="btnClearBaseInfo_Click"
+                                                     Margin="20,0,0,0"
+                                                     Width="100" Height="30"
+                                                     Background="{DynamicResource ButtonBgColor}"
+                                                     BorderBrush="{DynamicResource ButtonBorderColor}"
+                                                     pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                                    <Button  Content="读取身份证"
+                                                     x:Name="btnReadIDCard"
+                                                     Click="btnReadIDCard_Click"
+                                                     Margin="20,0,0,0"
+                                                     Width="100" Height="30"
+                                                     Background="{DynamicResource ButtonBgColor}"
+                                                     BorderBrush="{DynamicResource ButtonBorderColor}"
+                                                     pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+            <StackPanel Height="60" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,0" Orientation="Horizontal">
+                <Button  Content="取 消"
+                             x:Name="btnClose"
+                         Click="btnClose_Click"
+                                         Margin="20,0,0,0"
+                                         Width="100" Height="30"
+                                         Background="{DynamicResource ButtonBgColor}"
+                                         BorderBrush="{DynamicResource ButtonBorderColor}"
+                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                <Button  Content="提 交"
+                         x:Name="btnSubmit"
+                         Click="btnSubmit_Click"
+                                         Margin="20,0,0,0"
+                                         Width="100" Height="30"
+                                         Background="{DynamicResource ButtonBgColor}"
+                                         BorderBrush="{DynamicResource ButtonBorderColor}"
+                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

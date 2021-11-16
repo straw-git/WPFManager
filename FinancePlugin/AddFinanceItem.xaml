@@ -1,0 +1,85 @@
+﻿<Window x:Class="FinancePlugin.AddFinanceItem"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FinancePlugin"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+            Height="560"
+            Width="600"
+        Title="财务记账"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+            ResizeMode="NoResize" Loaded="Window_Loaded"
+            WindowStartupLocation="CenterScreen">
+    <Border CornerRadius="5" Background="White">
+        <StackPanel HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal" Margin="10,0,10,20" HorizontalAlignment="Center" >
+                <pu:Calendar x:Name="dtBill"  Width="450" Height="300" ThemeBrush="{DynamicResource SkinColor}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="10,10,10,0">
+                <Label VerticalAlignment="Center" Content="记账类型：" Width="80"/>
+                <ComboBox  Height="30"
+                               x:Name="cbType"
+                                    Width="200"
+                                    Background="{DynamicResource TextBoxBgColor}"
+                                    pu:ComboBoxHelper.Icon="&#xf11c;"
+                                    pu:ComboBoxHelper.HoverBackground="{DynamicResource ButtonHoverColor}"
+                                    pu:ComboBoxHelper.SelectedBackground="{DynamicResource SkinColor}">
+                    <ComboBoxItem IsSelected="True">收入</ComboBoxItem>
+                    <ComboBoxItem>支出</ComboBoxItem>
+                    <ComboBoxItem>工资</ComboBoxItem>
+                </ComboBox>
+                <Label VerticalAlignment="Center" Content="记账金额：" Margin="20,0,0,0" Width="80"/>
+                <TextBox  Height="30"
+                              x:Name="txtPrice"
+                                      Width="200"
+                                      pu:TextBoxHelper.Watermark="记账金额"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"  Margin="10,10,10,0">
+                <Label VerticalAlignment="Center" Content="事由：" Width="80"/>
+                <TextBox  Height="30"
+                              x:Name="txtThings"
+                                      Width="500"
+                                      pu:TextBoxHelper.Watermark="事由"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"  Margin="10,10,10,0">
+                <Label VerticalAlignment="Center" Content="备注：" Width="80"/>
+                <TextBox  Height="30"
+                              x:Name="txtRemark"
+                                      Width="500"
+                                      pu:TextBoxHelper.Watermark="备注"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+            </StackPanel>
+            <Button  Content="选择关联员工" x:Name="btnSelectedStaff" Click="btnSelectedStaff_Click" Height="30" Margin="10,10,10,0" Background="AliceBlue" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,30,10,0">
+                <Button  Content="取 消"
+                             x:Name="btnClose" Click="btnClose_Click"
+                                             Width="100" Height="30"
+                                             Background="{DynamicResource ButtonBgColor}"
+                                             BorderBrush="{DynamicResource ButtonBorderColor}"
+                                             pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                <Button  Content="记 账"
+                             x:Name="btnAdd"
+                             Click="btnAdd_Click"
+                         Margin="20,0,0,0"
+                                             Width="100" Height="30"
+                                             Background="{DynamicResource ButtonBgColor}"
+                                             BorderBrush="{DynamicResource ButtonBorderColor}"
+                                             pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--主题-->
+    
+    <!--Main-->
+    <SolidColorBrush x:Key="SkinColor" Color="#C62F2F" />
+    
+    <!--Pages-->
+    <SolidColorBrush x:Key="LoginBgColor" Color="LightCyan" />
+
+    <!--Button-->
+    <SolidColorBrush x:Key="ButtonBgColor" Color="Black" />
+    <SolidColorBrush x:Key="ButtonHoverColor" Color="#C62F2F" />
+    <SolidColorBrush x:Key="ButtonBorderColor" Color="#FFCA3333" />
+
+    <!--TextBox-->
+    <SolidColorBrush x:Key="TextBoxBgColor" Color="White" />
+    <SolidColorBrush x:Key="TextBoxFocusColor" Color="#C62F2F" />
+    <Color x:Key="TextBoxFocusedShadowColor" A="255" B="255" R="255" G="255"></Color>
+
+    <!--DataGrid-->
+    <SolidColorBrush x:Key="DataGridSelectedColor" Color="LightGray" />
+    <SolidColorBrush x:Key="DataGridHoverColor" Color="#C62F2F" />
+    <SolidColorBrush x:Key="DataGridRowColor" Color="#FFCA3333" />
+    <SolidColorBrush x:Key="DataGridEnableRowColor" Color="#FFCA3333" />
+
+    <!--ComboBox-->
+    <SolidColorBrush x:Key="ComboBoxBgColor" Color="White" />
+    <SolidColorBrush x:Key="ComboBoxSelectedColor" Color="#FFCA3333" />
+    <SolidColorBrush x:Key="ComboBoxHoverColor" Color="#FFCA3333" />
+    
+    <!--CheckBox-->
+    <SolidColorBrush x:Key="CheckBoxBgColor" Color="White" />
+    <SolidColorBrush x:Key="CheckBoxSelectedColor" Color="Blue" />
+    
+    <!--TreeView-->
+    <SolidColorBrush x:Key="TreeViewSelectedBgColor" Color="LightGray" />
+    <SolidColorBrush x:Key="TreeViewSelectedHeaderColor" Color="#C62F2F" />
+    
+    <!--Pager-->
+    <SolidColorBrush x:Key="PagerBgColor" Color="#C62F2F" />
+    <SolidColorBrush x:Key="PagerHoverColor" Color="#C62F2F" />
+
+    <!--ProgressBar-->
+    <SolidColorBrush x:Key="ProgressBarBgColor" Color="White" />
+    <SolidColorBrush x:Key="ProgressBarFgColor" Color="Blue" />
+
+    <!--System-->
+    <SolidColorBrush x:Key="MinButtonColor" Color="#EAEAEA" />
+    <SolidColorBrush x:Key="MinButtonFocusColor" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="MaxButtonColor" Color="#EAEAEA" />
+    <SolidColorBrush x:Key="MaxButtonFocusColor" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="CloseButtonColor" Color="#EAEAEA" />
+    <SolidColorBrush x:Key="CloseButtonFocusColor" Color="#FFFFFF" />
+
+</ResourceDictionary>

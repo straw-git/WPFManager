@@ -1,0 +1,155 @@
+﻿<p:BasePage x:Class="Client.Pages.Manager.Dic"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Client.Pages.Manager"
+               xmlns:p="clr-namespace:Common;assembly=Common"  
+      mc:Ignorable="d" 
+      d:DesignHeight="730" d:DesignWidth="1190"
+      Title="数据字典">
+    <Grid>
+        <Border Background="White"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="6*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <GroupBox  Header="子项列表"
+                           Margin="10"
+                           pu:GroupBoxHelper.Icon="&#xf11c;"
+                           pu:GroupBoxHelper.CornerRadius="10"
+                           pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                           pu:GroupBoxHelper.IsSplitLineVisible="True"
+                           pu:GroupBoxHelper.ShadowColor="LightGray">
+                    <pu:GroupBoxHelper.ExtendControl>
+                        <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
+                            <Button Content="添加子项" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnAddDic" Click="btnAddDic_Click" />
+                            <Button Content="刷新列表" Margin="10,0,0,0"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnRef" Click="btnRef_Click"/>
+                        </StackPanel>
+                    </pu:GroupBoxHelper.ExtendControl>
+                    <Grid>
+                        <Grid x:Name="normal" Visibility="Visible">
+                            <DataGrid HorizontalAlignment="Center"
+                                  x:Name="dList"
+                                  ItemsSource="{Binding}"
+                                  IsReadOnly="True"
+                                  Margin="0,0,5,50"
+                                  AutoGenerateColumns="False"
+                                  pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                                  pu:DataGridHelper.HeaderPadding="5,0"
+                                  pu:DataGridHelper.CellPadding="5,0"
+                                  pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
+                                  pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}"
+                                  MouseDoubleClick="dList_MouseDoubleClick" >
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="名称" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="{Binding Name}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="检索码" Width="250">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="{Binding Code}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="所属分类" Width="100" >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="{Binding ParentName}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="简介" Width="2*" >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" ToolTip="{Binding Content}">
+                                                    <Label Content="{Binding Content}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="创建者" Width="150" >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="{Binding CreaterName}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="操作" Width="100" >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Content="编辑" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"  Tag="{Binding Code}" Click="listEditButton_Click"/>
+                                                    <Button Content="删除" Margin="10,0,0,0"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" Tag="{Binding Code}" Click="listDeleteButton_Click"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <pu:Pagination Height="28" x:Name="dPager" VerticalAlignment="Bottom" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" CurrentIndexChanged="dPager_CurrentIndexChanged" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid x:Name="jobpost" Visibility="Collapsed">
+                            <TreeView x:Name="tvJobpost" 
+                                      pu:TreeViewHelper.TreeViewStyle="Chain"
+                                      pu:TreeViewHelper.ExpandMode="SingleClick"
+                                      pu:TreeViewHelper.ExpandBehaviour="Any"
+                                      pu:TreeViewHelper.ItemPadding="3,0,0,0"
+                                      Background="Transparent" >
+                                <TreeView.ItemContainerStyle>
+                                    <Style TargetType="{x:Type TreeViewItem}">
+
+                                        <Setter Property="IsExpanded" Value="True"></Setter>
+                                    </Style>
+                                </TreeView.ItemContainerStyle>
+                                <TreeView.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="添加子项" x:Name="btnAddJobPost" Click="btnAddJobPost_Click"/>
+                                        <MenuItem Header="删除当前项" x:Name="btnDeleteJobPost" Click="btnDeleteJobPost_Click"/>
+                                    </ContextMenu>
+                                </TreeView.ContextMenu>
+                                <TreeViewItem Header="综合管理部"
+                                          Margin="0,2"
+                                          Padding="10,0,0,0"
+                                          IsSelected="True"
+                                          Background="Transparent"/>
+                                <TreeViewItem Header="财务部"
+                                          Margin="0,2"
+                                          Padding="10,0,0,0"
+                                          IsSelected="True"
+                                          Background="Transparent"/>
+                            </TreeView>
+                        </Grid>
+                        <pu:Loading x:Name="lData" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <Grid Grid.Column="0">
+                <StackPanel>
+                    <TreeView x:Name="tvMain" pu:TreeViewHelper.TreeViewStyle="Chain"
+                        pu:TreeViewHelper.ExpandMode="SingleClick"
+                        pu:TreeViewHelper.ExpandBehaviour="OnlyOne"
+                        pu:TreeViewHelper.ItemPadding="3,0,0,0"
+                         Background="Transparent" SelectedItemChanged="tvMain_SelectedItemChanged">
+                    </TreeView>
+                    <Button Content="---  添加数据字典" Margin="0,10,0,2" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" HorizontalAlignment="Left" x:Name="btnAddParentDic" Click="btnAddParentDic_Click"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</p:BasePage>

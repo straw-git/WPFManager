@@ -1,0 +1,105 @@
+﻿<p:BasePage x:Class="CustomerPlugin.Pages.Member.Index"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CustomerPlugin.Pages.Member"
+            xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"  
+      mc:Ignorable="d" 
+      xmlns:p="clr-namespace:Common;assembly=Common"  
+      d:DesignHeight="730" d:DesignWidth="1190"
+      Title="首页">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid Margin="10">
+                <lvc:CartesianChart LegendLocation="Left" Margin="20" Series="{Binding SeriesCollection}" x:Name="xChart">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Labels="{Binding Labels}" Position="LeftBottom" >
+                            <lvc:Axis.Separator >
+                                <lvc:Separator Step="1"></lvc:Separator>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <GroupBox  Header="会员列表"
+                       Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="10"
+                            pu:GroupBoxHelper.Icon="&#xf11c;"
+                            pu:GroupBoxHelper.CornerRadius="10"
+                            pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                            pu:GroupBoxHelper.IsSplitLineVisible="True"
+                            pu:GroupBoxHelper.ShadowColor="LightGray" >
+                <Grid>
+                    <Grid Height="50" VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="搜索："/>
+                            <TextBox  Height="30" x:Name="txtName"
+                                          Width="200"
+                                          pu:TextBoxHelper.Watermark="姓名/卡号/简码"
+                                          Background="{DynamicResource TextBoxBgColor}"
+                                          pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                          pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                          pu:TextBoxHelper.IsClearButtonVisible="True" />
+                            <CheckBox x:Name="cbEnableTime" Checked="cbEnableTime_Checked" Unchecked="cbEnableTime_Unchecked"  Height="30"  Margin="20,0,0,0"  pu:CheckBoxHelper.CheckBoxStyle="Switch2"  pu:CheckBoxHelper.BoxHeight="20"  pu:CheckBoxHelper.BoxWidth="40" Background="{DynamicResource CheckBoxBgColor}" pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"/>
+                            <pu:DateTimePicker x:Name="dtStart" Margin="10,0,0,0" IsEnabled="False" Width="150" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                            <Label Content="-" VerticalAlignment="Center"/>
+                            <pu:DateTimePicker x:Name="dtEnd" IsEnabled="False" Width="150" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                            <Button  Content="查 询"
+                                     Click="btnRef_Click"
+                                         Margin="20,0,0,0"
+                                         Width="100" Height="30"
+                                         Background="{DynamicResource ButtonBgColor}"
+                                         BorderBrush="{DynamicResource ButtonBorderColor}"
+                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                        </StackPanel>
+                    </Grid>
+                    <DataGrid HorizontalAlignment="Center"
+                              x:Name="list"
+                                  ItemsSource="{Binding}"
+                                  IsReadOnly="True"
+                                  Margin="0,50,5,50"
+                                  AutoGenerateColumns="False"
+                                  pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                                  pu:DataGridHelper.HeaderPadding="5,0"
+                                  pu:DataGridHelper.CellPadding="5,0"
+                                  pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
+                                  pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="注册时间" Width="200" Binding="{Binding CreateTime}"/>
+                            <DataGridTextColumn Header="姓名" Width="*" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="性别" Width="60" Binding="{Binding Sex}"/>
+                            <DataGridTextColumn Header="年龄" Width="100" Binding="{Binding Age}"/>
+                            <DataGridTextColumn Header="会员等级" Width="80" Binding="{Binding MemberLevel}"/>
+                            <DataGridTextColumn Header="消费总金额" Width="100" Binding="{Binding PayPrice}"/>
+                            <DataGridTextColumn Header="账户余额" Width="100" Binding="{Binding MemberPrice}"/>
+                            <DataGridTemplateColumn Header="操作" Width="120" >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button  Content="充值" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnReceive" Click="btnReceive_Click"/>
+                                            <Button  Content="绑卡" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnBindCard" Click="btnBindCard_Click"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <pu:Pagination x:Name="gPager" Height="28"  VerticalAlignment="Bottom"  CurrentIndexChanged="gPager_CurrentIndexChanged" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
+                    <Border Background="White" x:Name="bNoData" Visibility="Visible" Margin="0,50,0,5">
+                        <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Border>
+                    <pu:Loading x:Name="gLoading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</p:BasePage>

@@ -1,0 +1,110 @@
+﻿<Window x:Class="Client.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+        Title="登录" 
+        Height="400" Width="800"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="Transparent"
+         AllowsTransparency="True" 
+        WindowStartupLocation="CenterScreen">
+
+    <Border x:Name="wb" BorderThickness="3" BorderBrush="{DynamicResource SkinColor}">
+        <Border.Background>
+            <LinearGradientBrush EndPoint="0.8,1" StartPoint="0.33,0">
+                <GradientStop Color="#FF50B3E2" Offset="0"/>
+                <GradientStop Color="#FF084168" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Border.Clip>
+            <GeometryGroup FillRule="Nonzero">
+                <RectangleGeometry x:Name="r1" Rect="0,50,800,100"/>
+                <RectangleGeometry x:Name="r2" Rect="0,240,800,100"/>
+                <RectangleGeometry x:Name="r3" Rect="80,0,90,800"/>
+                <RectangleGeometry x:Name="r4" Rect="360,0,100,800"/>
+            </GeometryGroup>
+        </Border.Clip>
+        <Grid x:Name="root">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="400"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.ColumnSpan="2">
+                <Image Source="pack://application:,,,/Common;component/Images/login_bg.png" Stretch="Fill"/>
+            </Grid>
+            <Border  Grid.Column="1" Background="White" Opacity="0.75" Margin="30,20,30,20" CornerRadius="20" >
+                <Border.Effect>
+                    <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
+                </Border.Effect>
+                <Grid >
+                    <StackPanel  VerticalAlignment="Center" Width="280">
+                        <StackPanel Orientation="Horizontal" Width="260">
+                            <Label Content="登录" FontSize="25" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Label Content="登录失败?" FontSize="12" VerticalContentAlignment="Center"/>
+                                <Label Content="设置数据" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" MouseDown="btnDBSetting_Click"/>
+                                <Label Content="插件中心" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" MouseDown="btnPlugins_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                            <TextBox  Height="30"
+                                      Width="260"
+                                      x:Name="txtUserName"
+                                      Text="admin"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.Watermark="账户"
+                                      pu:TextBoxHelper.Icon="&#xf11c;"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                            <PasswordBox  Height="30"
+                                          Width="260"
+                                          Password="123456"
+                                          x:Name="txtPassword"
+                                          Background="{DynamicResource TextBoxBgColor}"
+                                          pu:PasswordBoxHelper.Watermark="密码"
+                                          pu:PasswordBoxHelper.Icon="&#xf11c;"
+                                          pu:PasswordBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                          pu:PasswordBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                          pu:PasswordBoxHelper.IsShowPwdButtonVisible="True" />
+                        </StackPanel>
+                        <Button  Height="30"
+                        Margin="0,40,0,10"
+                        Content="登 录"
+                        pu:ButtonHelper.ClickStyle="Sink"
+                        FontFamily="{StaticResource FontAwesome}"
+                        Background="{DynamicResource ButtonBgColor}"
+                        pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"
+                        pu:ButtonHelper.Icon="&#xf21d;" x:Name="btnLogin" Click="btnLogin_Click" />
+                        <Label Content="取 消" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MouseDown="btnExit_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+    <Window.RenderTransform>
+        <TransformGroup>
+            <RotateTransform x:Name="rt" Angle="0"/>
+            <ScaleTransform x:Name="sct" ScaleX="1" ScaleY="1"/>
+        </TransformGroup>
+    </Window.RenderTransform>
+    <Window.Resources>
+        <Storyboard x:Key="start">
+            <RectAnimation Storyboard.TargetName="r1" Storyboard.TargetProperty="Rect"  
+                           Duration="0:0:1" To="0,0,800,800"/>
+            <RectAnimation Storyboard.TargetName="r2" Storyboard.TargetProperty="Rect"  
+                           Duration="0:0:1" To="20,20,500,700"/>
+            <RectAnimation Storyboard.TargetName="r3" Storyboard.TargetProperty="Rect"  
+                           Duration="0:0:1" To="85,0,750,600"/>
+            <RectAnimation Storyboard.TargetName="r4" Storyboard.TargetProperty="Rect"  
+                           Duration="0:0:1" To="0,250,700,600"/>
+            <DoubleAnimation Storyboard.TargetName="wb" Storyboard.TargetProperty="Opacity"  
+                             From="0.2" To="1" Duration="0:0:1"/>
+        </Storyboard>
+    </Window.Resources>
+</Window>
