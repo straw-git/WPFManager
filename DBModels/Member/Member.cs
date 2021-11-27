@@ -29,6 +29,8 @@ namespace DBModels.Member
         public decimal Price { get; set; }//账户余额
         public decimal RechargeCount { get; set; }//充值总金额
 
+        public bool IsDelete { get; set; }
+
         public int Creator { get; set; }
         public DateTime CreateTime { get; set; }
     }

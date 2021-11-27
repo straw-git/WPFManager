@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CustomerPlugin.Pages.Member
+namespace CustomerPlugin.Pages.Customer
 {
     /// <summary>
     /// MemberLevel.xaml 的交互逻辑
@@ -26,7 +26,7 @@ namespace CustomerPlugin.Pages.Member
         public MemberLevel()
         {
             InitializeComponent();
-            Order = 2;
+            Order = 1;
         }
 
         //页面数据集合

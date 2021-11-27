@@ -140,9 +140,15 @@
             </Border>
             <!--底部-->
             <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{DynamicResource SkinColor}" x:Name="bBottom">
-                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Label Foreground="White" Margin="0,0,10,0" Content="by Zyue    V1.0"/>
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Label Foreground="White" Margin="0,0,10,0" Content="by Zyue    V1.0"/>
+                    </Border>
+                </Grid>
             </Border>
         </Grid>
     </Grid>

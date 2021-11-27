@@ -133,6 +133,8 @@ namespace Client.Pages
         /// <returns></returns>
         private static List<MenuItemButtonModel> GetButtons(Visual control)
         {
+            if (control == null) return new List<MenuItemButtonModel>();
+
             List<MenuItemButtonModel> list = new List<MenuItemButtonModel>();
 
             int childCount = VisualTreeHelper.GetChildrenCount(control);

@@ -73,9 +73,17 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="App.xaml">
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="EditCustomer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditMember.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -85,6 +93,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EditCustomer.xaml.cs">
+      <DependentUpon>EditCustomer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditMember.xaml.cs">
+      <DependentUpon>EditMember.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -93,19 +107,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Customer\Registered.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Member\Index.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Member\MemberLevel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Member\Registered.xaml">
+    <Page Include="Pages\Customer\MemberLevel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -115,18 +117,8 @@
       <DependentUpon>CustomerList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Customer\MenuInfo.cs" />
-    <Compile Include="Pages\Customer\Registered.xaml.cs">
-      <DependentUpon>Registered.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Member\Index.xaml.cs">
-      <DependentUpon>Index.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Member\MemberLevel.xaml.cs">
+    <Compile Include="Pages\Customer\MemberLevel.xaml.cs">
       <DependentUpon>MemberLevel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Member\MenuInfo.cs" />
-    <Compile Include="Pages\Member\Registered.xaml.cs">
-      <DependentUpon>Registered.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

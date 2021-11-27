@@ -17,6 +17,8 @@ namespace Client
         public static bool NullDataCheck()
         {
 
+
+
             try
             {
                 using (var context = new DBContext())

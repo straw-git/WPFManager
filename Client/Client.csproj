@@ -124,6 +124,14 @@
     <Compile Include="Migrations\202111160102221_customer.designer.cs">
       <DependentUpon>202111160102221_customer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202111260550235_customer_black.cs" />
+    <Compile Include="Migrations\202111260550235_customer_black.designer.cs">
+      <DependentUpon>202111260550235_customer_black.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111270633101_member_isdelete.cs" />
+    <Compile Include="Migrations\202111270633101_member_isdelete.designer.cs">
+      <DependentUpon>202111270633101_member_isdelete.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Helper\DelayHelper.cs" />
     <Compile Include="Login.xaml.cs">
@@ -275,6 +283,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111160102221_customer.resx">
       <DependentUpon>202111160102221_customer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111260550235_customer_black.resx">
+      <DependentUpon>202111260550235_customer_black.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111270633101_member_isdelete.resx">
+      <DependentUpon>202111270633101_member_isdelete.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

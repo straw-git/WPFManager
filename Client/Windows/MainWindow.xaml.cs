@@ -44,6 +44,8 @@ namespace Client
             this.Tag = tag;
 
             WindowGlobal.MainWindow = this;
+
+            
         }
 
 
@@ -61,7 +63,7 @@ namespace Client
 
         public override void ShowTopMenu(bool _show)
         {
-            if (_show) 
+            if (_show)
             {
                 gMainMenu.Height = 55;
             }
@@ -71,12 +73,12 @@ namespace Client
             }
         }
 
-        public override void ReLoadCurrTopMenu() 
+        public override void ReLoadCurrTopMenu()
         {
             _tabItem_GotFocus(tabMenu.SelectedItem, null);
         }
 
-        public override void SetFrameSource(string _s) 
+        public override void SetFrameSource(string _s)
         {
             mainFrame.Source = new Uri(_s, UriKind.RelativeOrAbsolute);
         }

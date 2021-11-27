@@ -128,6 +128,7 @@
     <Compile Include="Utils\JsonHelper.cs" />
     <Compile Include="Utils\LocalFileHelper.cs" />
     <Compile Include="Utils\ModelCommon.cs" />
+    <Compile Include="Utils\PhoneNumberCommon.cs" />
     <Compile Include="Utils\PromotionCodeCommon.cs" />
     <Compile Include="Utils\QRCodeCommon.cs" />
     <Compile Include="Utils\RoleTreeViewCommon.cs" />
@@ -208,7 +209,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UserControl\" />
+    <Folder Include="MyUserControl\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

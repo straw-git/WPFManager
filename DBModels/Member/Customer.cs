@@ -36,6 +36,8 @@ namespace DBModels.Member
         [MaxLength(10)]
         public string BePromotionCode { get; set; }//被推广码
 
+        public bool IsBlack { get; set; }//是否黑名单
+
         public bool IsMember { get; set; }//是否是会员
 
         public DateTime CreateTime { get; set; }//创建时间
