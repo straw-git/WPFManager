@@ -1,4 +1,5 @@
-﻿using DBModels.ERP;
+﻿using DBModels.Activities;
+using DBModels.ERP;
 using DBModels.Finance;
 using DBModels.Member;
 using DBModels.Staffs;
@@ -63,5 +64,8 @@ public class DBContext : DbContext
     //顾客
     public DbSet<Customer> Customer { get; set; }
     public DbSet<CustomerTemp> CustomerTemp { get; set; }
+
+    //活动
+    public DbSet<MJActivity> MJActivity { get; set; }//满减活动 含会员
 
 }

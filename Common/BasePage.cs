@@ -1,10 +1,14 @@
 ﻿using Common.Entities;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using Panuon.UI.Silver;
+using Panuon.UI.Silver.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -12,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using form = System.Windows.Forms;
 
 namespace Common
 {
@@ -63,6 +68,10 @@ namespace Common
             OnPageLoaded();
         }
 
+        /// <summary>
+        /// 背景层显示/隐藏
+        /// </summary>
+        /// <param name="_v"></param>
         protected void MaskVisible(bool _v)
         {
             if (ParentWindow == null) return;//避免测试环境
@@ -211,6 +220,17 @@ namespace Common
         private Dictionary<string, List<dynamic>> TableDatas = new Dictionary<string, List<dynamic>>();
 
         /// <summary>
+        /// 获取当前表格的显示列
+        /// </summary>
+        /// <param name="_tableKey"></param>
+        /// <returns></returns>
+        protected Dictionary<string, string> GetColumns(string _tableKey)
+        {
+            if (TableColumns.ContainsKey(_tableKey)) return TableColumns[_tableKey];
+            else return new Dictionary<string, string>();
+        }
+
+        /// <summary>
         /// 设置列显示（用于记录导出数据时列的显示值）
         /// </summary>
         /// <param name="_tableKey">表格标志</param>
@@ -222,6 +242,12 @@ namespace Common
 
             if (TableColumns[_tableKey].ContainsKey(_pro)) TableColumns[_tableKey][_pro] = _hea;
             else TableColumns[_tableKey].Add(_pro, _hea);
+        }
+
+        protected void SetColumn(string _tableKey, Dictionary<string, string> _dic)
+        {
+            if (TableColumns.ContainsKey(_tableKey)) TableColumns[_tableKey] = _dic;
+            else TableColumns.Add(_tableKey, _dic);
         }
 
         /// <summary>
@@ -243,6 +269,24 @@ namespace Common
         }
 
         /// <summary>
+        /// 查找TableDatas中是否存在某条件
+        /// </summary>
+        /// <param name="_tableKey"></param>
+        /// <param name="_where"></param>
+        /// <returns></returns>
+        protected bool TableDataAny(string _tableKey, Func<dynamic, bool> _where)
+        {
+            if (TableDatas.ContainsKey(_tableKey))
+            {
+                return TableDatas[_tableKey].Any(_where);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 加入表格数据（用于记录存储 列表中选中数据）
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -256,15 +300,21 @@ namespace Common
             }
         }
 
+        protected List<dynamic> GetTableData<T>(string _tableKey)
+        {
+            if (TableDatas.ContainsKey(_tableKey)) return TableDatas[_tableKey];
+            else return null;
+        }
+
         /// <summary>
         /// 移除表格数据（用于记录存储 列表中选中数据）
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="_tableKey"></param>
-        /// <param name="_data"></param>
-        protected void RemoveTableData<T>(string _tableKey, T _data)
+        /// <param name="_firstWhere"></param>
+        protected void RemoveTableData(string _tableKey, Func<dynamic, bool> _firstWhere)
         {
-            TableDatas[_tableKey].Remove(_data);
+            if (TableDatas[_tableKey].Any(_firstWhere))
+                TableDatas[_tableKey].Remove(TableDatas[_tableKey].First(_firstWhere));
         }
 
         /// <summary>
@@ -294,5 +344,136 @@ namespace Common
 
         #endregion
 
+        /// <summary>
+        /// 导出Excel
+        /// </summary>
+        protected async void ExportExcelAsync<T>(List<T> _list, string _tableKey, string _sheetName = "导出文件_Zyue")
+        {
+            //Panuon.UI.Silver消息框
+            var _handler = PendingBox.Show("正在导出Excel...", "请等待", false, ParentWindow, new PendingBoxConfigurations()
+            {
+                LoadingForeground = "#5DBBEC".ToColor().ToBrush(),
+                ButtonBrush = "#5DBBEC".ToColor().ToBrush(),
+            });
+
+            string _savePath = "";//文件保存路径
+            var folderBrowser = new form.FolderBrowserDialog();//Winform dll中调用选择文件夹
+            if (folderBrowser.ShowDialog() == form.DialogResult.OK)
+            {
+                _savePath = folderBrowser.SelectedPath;//选中的文件夹路径
+            }
+            else
+            {
+                MessageBox.Show("已取消");
+                _handler.Close();
+            }
+
+            string excelFullPath = $"{_savePath}\\[{_sheetName}]{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";//导出文件路径
+
+            await Task.Run(() =>
+            {
+                IWorkbook wk = null;
+                wk = new XSSFWorkbook();//创建一个工作簿
+
+                var sheet = wk.CreateSheet(_sheetName);//创建Sheet
+
+                if (_list != null && _list.Count > 0)
+                {
+                    if (!TableColumns.ContainsKey(_tableKey) || TableColumns[_tableKey].Count == 0)
+                    {
+                        UIGlobal.RunUIAction(()=> 
+                        {
+                            MessageBox.Show("没有设置显示列");
+                            _handler.Close();
+                        });
+                        
+                        return;
+                    }
+
+                    //获取对象所有属性
+                    System.Reflection.PropertyInfo[] properties = _list[0].GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+
+                    #region 添加第一行标题数据
+
+                    int cNum = 0;
+                    for (int i = 0; i < properties.Count(); i++)
+                    {
+                        var _item = properties[i];
+
+                        //属性名称
+                        string name = _item.Name;
+
+                        var _row = i == 0 ? sheet.CreateRow(0) : sheet.GetRow(0);//创建或获取第一行
+
+                        if (TableColumns[_tableKey].ContainsKey(name))//是否存在对应的中文介绍（只导出存在中文介绍的列） 
+                        {
+                            var _headerCell = _row.CreateCell(cNum);//创建列
+                            _headerCell.SetCellValue(name);//设置列值
+                            cNum++;
+                        }
+                    }
+
+                    #endregion
+
+                    var _headerRow = sheet.GetRow(0);//获取第一行
+
+                    #region 添加数据
+
+                    for (int i = 0; i < _list.Count; i++)
+                    {
+                        var _item = _list[i];
+
+                        var _currRow = sheet.CreateRow(1 + i);//创建当前数据的行
+                        for (int j = 0; j < cNum; j++)
+                        {
+                            string _propertityName = _headerRow.GetCell(j).StringCellValue;//获取属性名称
+                            string _propertityValue = _item.GetType().GetProperty(_propertityName).GetValue(_item, null).ToString();//获取属性值
+
+                            _currRow.CreateCell(j).SetCellValue(_propertityValue);//设置单元格数据
+                        }
+                    }
+
+                    #endregion
+
+                    #region 更新列标题
+
+                    for (int j = 0; j < cNum; j++)
+                    {
+                        string _propertityName = _headerRow.GetCell(j).StringCellValue;//获取属性名称
+                        _headerRow.CreateCell(j).SetCellValue(TableColumns[_tableKey][_propertityName]);//更新标题
+                    }
+
+                    #endregion 
+                }
+                else
+                {
+                    UIGlobal.RunUIAction(() =>  //其它县城内调用UI主线程方法
+                    {
+                        MessageBox.Show("没有导出数据");
+                        _handler.Close();
+                    });
+                    return;
+                }
+
+                try
+                {
+                    using (FileStream fs = new FileStream(excelFullPath, FileMode.Create, FileAccess.Write, FileShare.Write))
+                    {
+                        wk.Write(fs);//保存文件
+                    }
+                }
+                catch(Exception ex)
+                {
+                    UIGlobal.RunUIAction(() =>
+                    {
+                        MessageBoxX.Show($"导出失败, [{ex.Message}]", "文件占用提示");
+                        _handler.Close();
+                    });
+                }
+            });
+
+            Notice.Show(excelFullPath, "Excel导出成功", 3, MessageBoxIcon.Success);
+            _handler.Close();
+        }
     }
 }

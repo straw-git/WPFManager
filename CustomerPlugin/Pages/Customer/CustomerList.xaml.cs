@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.Data.Local;
 using Common.Utils;
+using Common.Windows;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -36,7 +37,7 @@ namespace CustomerPlugin.Pages.Customer
             Order = 0;
 
             //测试
-            //OnPageLoaded();
+            OnPageLoaded();
         }
 
         #region Models
@@ -177,12 +178,14 @@ namespace CustomerPlugin.Pages.Customer
 
         protected override void OnPageLoaded()
         {
-            //SetColumn(list.Name, "Id", "编号");
-            //SetColumn(list.Name, "Name", "名称");
-            //SetColumn(list.Name, "Sex", "性别");
-            //SetColumn(list.Name, "Phone", "手机号");
-            //SetColumn(list.Name, "PromotionCode", "推荐码");
-            //SetColumn(list.Name, "CreateTime", "创建时间");
+            SetColumn(list.Name, "Id", "编号");
+            SetColumn(list.Name, "Name", "名称");
+            SetColumn(list.Name, "Sex", "性别");
+            SetColumn(list.Name, "Phone", "手机号");
+            SetColumn(list.Name, "PromotionCode", "推荐码");
+            SetColumn(list.Name, "Promotioner", "推荐人");
+            SetColumn(list.Name, "MemberLevel", "等级");
+            SetColumn(list.Name, "CreateTime", "创建时间");
 
             //绑定数据
             list.ItemsSource = Data;
@@ -256,7 +259,7 @@ namespace CustomerPlugin.Pages.Customer
             UIModel _model = new UIModel();
             _model.CreateTime = item.CreateTime.ToString("yy年MM月dd日");
             _model.Id = item.Id;
-            _model.IsChecked = false;
+            _model.IsChecked = TableDataAny(list.Name, c => c.Id == item.Id);
             _model.Name = item.Name;
             _model.Phone = item.Phone;
             _model.Sex = item.Sex;
@@ -374,7 +377,7 @@ namespace CustomerPlugin.Pages.Customer
                 else
                 {
                     //未选中说明原来是选中的 将它移出列表
-                    RemoveTableData(list.Name, selectItem);
+                    RemoveTableData(list.Name, c => c.Id == selectItem.Id);
                 }
             }
         }
@@ -620,5 +623,74 @@ namespace CustomerPlugin.Pages.Customer
 
             MaskVisible(false);
         }
+
+        private void cbSelectListAll_Click(object sender, RoutedEventArgs e)
+        {
+            bool isCheck = (bool)((sender as CheckBox).IsChecked);
+            foreach (var item in Data)
+            {
+                item.IsChecked = isCheck;
+                if (isCheck)
+                {
+                    //如果已经选中 说明原来没有选中 将它加入到列表
+                    AddTableData(list.Name, item);
+                }
+                else
+                {
+                    //未选中说明原来是选中的 将它移出列表
+                    RemoveTableData(list.Name, c => c.Id == item.Id);
+                }
+            }
+        }
+
+        #region 导出Excel
+
+        private void btnExportCurrPage_Click(object sender, RoutedEventArgs e)
+        {
+            //导出本页数据
+            ExportExcelAsync(Data.ToList(), list.Name,$"页码{gPager.CurrentIndex}");
+        }
+
+        private async void btnExportAllPage_Click(object sender, RoutedEventArgs e)
+        {
+            //导出所有数据
+            List<DBModels.Member.Customer> allData = new List<DBModels.Member.Customer>();
+
+            await Task.Delay(50);
+
+            await Task.Run(() =>
+            {
+                using (DBContext context = new DBContext()) allData = context.Customer.ToList();
+            });
+
+            ExportExcelAsync(allData, list.Name,"所有数据");
+        }
+
+        private void btnExportFocusDatas_Click(object sender, RoutedEventArgs e)
+        {
+            //导出选中数据
+            var listData = GetTableData<UIModel>(list.Name);
+            if (list==null||listData.Count == 0) 
+            {
+                MessageBoxX.Show("没有选中数据","空值提醒");
+                return;
+            }
+            ExportExcelAsync(listData, list.Name,"选中数据");
+        }
+
+        private void btnExportSetting_Click(object sender, RoutedEventArgs e)
+        {
+            MaskVisible(true);
+
+            BasePageExportSetting basePageExportSetting = new BasePageExportSetting(GetColumns(list.Name));
+            basePageExportSetting.ShowDialog();
+
+            SetColumn(list.Name, basePageExportSetting.GetResult());
+
+            MaskVisible(false);
+        }
+
+        #endregion
+
     }
 }

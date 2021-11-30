@@ -1,0 +1,126 @@
+﻿<p:BasePage x:Class="CustomerPlugin.Pages.Customer.CustomerActivities"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CustomerPlugin.Pages.Customer"
+            xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"  
+      mc:Ignorable="d" 
+      xmlns:p="clr-namespace:Common;assembly=Common"  
+      d:DesignHeight="730" d:DesignWidth="1190"
+      Title="满减活动">
+
+    <Grid>
+        <TabControl   VerticalAlignment="Stretch"
+                      x:Name="tabMain"
+                          Margin="10,10,10,0"
+                          pu:TabControlHelper.ItemHeight="30"
+                          pu:TabControlHelper.ItemPadding="20,0"
+                          pu:TabControlHelper.SelectedForeground="{DynamicResource SkinColor}"
+                          pu:TabControlHelper.ItemsAlignment="Center">
+            <TabItem Header="大众消费活动" >
+                <Grid>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                            <Label Content="满减金额：" Width="80"/>
+                            <TextBox  Height="30"
+                                      x:Name="txtNormalM"
+                                      Width="100"
+                                          pu:TextBoxHelper.Watermark="满"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"/>
+                            <Label VerticalAlignment="Center" Content="-"/>
+                            <TextBox  Height="30"
+                                      Width="100"
+                                      x:Name="txtNormalJ"
+                                          pu:TextBoxHelper.Watermark="减"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"/>
+                            <Button  Content="添加活动"
+                                     x:Name="btnAddNormal"
+                                     Click="btnAddNormal_Click"
+                                         Margin="20,0,0,0"
+                                         Width="120" Height="30"
+                                         Background="{DynamicResource ButtonBgColor}"
+                                         BorderBrush="{DynamicResource ButtonBorderColor}"
+                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid Margin="0,80,10,10">
+                        <lvc:CartesianChart DataClick="NormalChart_DataClick"  LegendLocation="None" Series="{Binding}" x:Name="normalChart">
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Labels="{Binding NLabels}" Position="LeftBottom" >
+                                    <lvc:Axis.Separator >
+                                        <lvc:Separator Step="1"></lvc:Separator>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                        </lvc:CartesianChart>
+                        <Border x:Name="normalNoData" Visibility="Collapsed" Background="White">
+                            <Label Content="请添加活动后查看图表" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25"/>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="会员消费活动" >
+                <Grid>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                            <Label VerticalAlignment="Center" Content="会员等级："/>
+                            <ComboBox  Height="30"
+                                       x:Name="cbMemberLevel"
+                                       SelectionChanged="cbMemberLevel_SelectionChanged"
+                                    Width="200"
+                                    Background="{DynamicResource TextBoxBgColor}"
+                                    pu:ComboBoxHelper.Icon="&#xf11c;"
+                                    pu:ComboBoxHelper.HoverBackground="{DynamicResource ButtonHoverColor}"
+                                    pu:ComboBoxHelper.SelectedBackground="{DynamicResource SkinColor}">
+                            </ComboBox>
+                            <Label Content="满减金额：" Width="80" Margin="20,0,0,0"/>
+                            <TextBox  Height="30"
+                                      x:Name="txtMemberM"
+                                      Width="100"
+                                          pu:TextBoxHelper.Watermark="满"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"/>
+                            <Label VerticalAlignment="Center" Content="-"/>
+                            <TextBox  Height="30"
+                                      Width="100"
+                                      x:Name="txtMemberJ"
+                                          pu:TextBoxHelper.Watermark="减"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"/>
+                            <Button  Content="添加活动"
+                                     x:Name="btnAddMember"
+                                     Click="btnAddMember_Click"
+                                         Margin="20,0,0,0"
+                                         Width="120" Height="30"
+                                         Background="{DynamicResource ButtonBgColor}"
+                                         BorderBrush="{DynamicResource ButtonBorderColor}"
+                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid Margin="0,80,10,10">
+                        <lvc:CartesianChart DataClick="MemberChart_DataClick"  LegendLocation="None" Series="{Binding}" x:Name="memberChart">
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Labels="{Binding MLabels}" Position="LeftBottom" >
+                                    <lvc:Axis.Separator >
+                                        <lvc:Separator Step="1"></lvc:Separator>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                        </lvc:CartesianChart>
+                        <Border x:Name="memberNoData" Visibility="Collapsed" Background="White">
+                            <Label Content="请添加活动后查看图表" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25"/>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid> 
+</p:BasePage>

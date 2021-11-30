@@ -4,3 +4,5 @@
 
 
 导出操作 如何公用
+
+CustomerPlugin.CustomerActivities 满减活动中 会员满减X轴显示 有Bug

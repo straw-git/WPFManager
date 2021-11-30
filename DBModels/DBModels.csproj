@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\MJActivity.cs" />
     <Compile Include="DBContext.cs" />
     <Compile Include="ERP\Goods.cs" />
     <Compile Include="ERP\PurchasePlan.cs" />
