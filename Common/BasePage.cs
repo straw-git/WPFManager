@@ -210,12 +210,12 @@ namespace Common
         #region Base Table
 
         /// <summary>
-        /// 数据显示列集合
+        /// 数据显示列集合（打印或导出时使用的数据行对应头）
         /// </summary>
         private Dictionary<string, Dictionary<string, string>> TableColumns = new Dictionary<string, Dictionary<string, string>>();
 
         /// <summary>
-        /// 数据集合
+        /// 数据集合（选中的数据集合）
         /// </summary>
         private Dictionary<string, List<dynamic>> TableDatas = new Dictionary<string, List<dynamic>>();
 
@@ -344,9 +344,13 @@ namespace Common
 
         #endregion
 
-        /// <summary>
-        /// 导出Excel
-        /// </summary>
+    /// <summary>
+    /// 导出Excel
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="_list">导出数据</param>
+    /// <param name="_tableKey">表名称</param>
+    /// <param name="_sheetName">保存的ExcelSheet名</param>
         protected async void ExportExcelAsync<T>(List<T> _list, string _tableKey, string _sheetName = "导出文件_Zyue")
         {
             //Panuon.UI.Silver消息框

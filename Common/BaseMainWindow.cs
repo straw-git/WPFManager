@@ -9,9 +9,9 @@ namespace Common
 {
     public abstract class BaseMainWindow : WindowX
     {
-        public abstract void ShowLeftMenu(bool _show);
-        public abstract void ShowTopMenu(bool _show);
-        public abstract void ReLoadCurrTopMenu();
-        public abstract void SetFrameSource(string _s);
+        public abstract void ShowLeftMenu(bool _show);//显示、隐藏左侧导航
+        public abstract void ShowTopMenu(bool _show);//显示、隐藏上面导航
+        public abstract void ReLoadCurrTopMenu();//刷新当前导航
+        public abstract void SetFrameSource(string _s);//设置Frame内页
     }
 }
