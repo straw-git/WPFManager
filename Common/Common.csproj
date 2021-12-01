@@ -120,6 +120,7 @@
     <Compile Include="BasePage.cs" />
     <Compile Include="BaseUIModel.cs" />
     <Compile Include="DataGlobal.cs" />
+    <Compile Include="Utils\PagerCommon.cs" />
     <Compile Include="Data\Local\LocalDB.cs" />
     <Compile Include="Data\Local\LocalPlugins.cs" />
     <Compile Include="Data\Local\LocalServer.cs" />
@@ -160,6 +161,9 @@
     </Compile>
     <Compile Include="Windows\SelectedGoods.xaml.cs">
       <DependentUpon>SelectedGoods.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SelectedCustomer.xaml.cs">
+      <DependentUpon>SelectedCustomer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\SelectedStaff.xaml.cs">
       <DependentUpon>SelectedStaff.xaml</DependentUpon>
@@ -218,6 +222,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\SelectedGoods.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SelectedCustomer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

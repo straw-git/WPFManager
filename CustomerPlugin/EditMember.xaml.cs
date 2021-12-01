@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.Utils;
+using Common.Windows;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -320,6 +321,21 @@ namespace CustomerPlugin
 
                     context.SaveChanges();
                 }
+            }
+        }
+
+        private void btnFindBePromotionCode_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCustomer selectedCustomer = new SelectedCustomer();
+            selectedCustomer.ShowDialog();
+
+            if (selectedCustomer.Succeed)
+            {
+                txtBePromotionCode.Text = selectedCustomer.Model.PromotionCode;
+            }
+            else
+            {
+                txtBePromotionCode.Clear();
             }
         }
     }

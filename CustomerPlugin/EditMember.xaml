@@ -99,7 +99,7 @@
                                       pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
                                       pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                       pu:TextBoxHelper.IsClearButtonVisible="True" />
-                                <Button x:Name="btnFindBePromotionCode" Content="查找" Width="100"  Margin="-150,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                                <Button x:Name="btnFindBePromotionCode" Click="btnFindBePromotionCode_Click" Content="查找" Width="100"  Margin="-150,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
                                 <Label VerticalAlignment="Center" Content="会员卡号：" Width="80" Margin="20,0,0,0"/>
                                 <TextBox  Height="30" x:Name="txtMemberCard"
                                       Width="200"

@@ -96,7 +96,7 @@ namespace CustomerPlugin.Pages.Customer
                 set
                 {
                     promotioner = value;
-                    NotifyPropertyChanged("PromotionCode");
+                    NotifyPropertyChanged("Promotioner");
                 }
             }
 
@@ -194,9 +194,6 @@ namespace CustomerPlugin.Pages.Customer
 
         private async void UpdatePager(object sender, Panuon.UI.Silver.Core.CurrentIndexChangedEventArgs e)
         {
-            if (pagerRunning) return;//如果正在运行 则退出 防止重复点击
-            pagerRunning = true;
-
             if (e == null) gPager.CurrentIndex = 1;//如果是通过查询或者刷新点击的 直接显示第一页
 
             //查询条件
@@ -214,7 +211,12 @@ namespace CustomerPlugin.Pages.Customer
             {
                 Expression<Func<DBModels.Member.Customer, bool>> _where = n => GetPagerWhere(n, name, phone, isMember, isBlack, enableTime, startTime, endTime);//按条件查询
                 Expression<Func<DBModels.Member.Customer, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
-                var _list = await GetDataPagerAsync(context.Customer, _where, _orderByDesc, gLoading, gPager, bNoData, new Control[1] { list });//获取数据
+                //开始分页查询数据
+                var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Customer, _where, _orderByDesc, gLoading, gPager, bNoData, new Control[1] { list });
+                if (!_zPager.Result) return;
+                List<DBModels.Member.Customer> _list = _zPager.EFDataList;
+
+                #region 页面数据填充
 
                 foreach (var item in _list)
                 {
@@ -249,9 +251,12 @@ namespace CustomerPlugin.Pages.Customer
 
                     Data.Add(_model);
                 }
+
+                #endregion
             }
 
-            pagerRunning = false;
+            //结尾处必须结束分页查询
+            PagerCommon.EndEFDataPager();
         }
 
         private UIModel DBItem2UIModel(DBModels.Member.Customer item)

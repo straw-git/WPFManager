@@ -116,93 +116,125 @@ namespace Common
 
         #region Data Pager
 
-        /// <summary>
-        /// 在子类中使用 防止重复点击
-        /// </summary>
-        protected bool pagerRunning = false;
+        ///// <summary>
+        ///// 在子类中使用 防止重复点击
+        ///// </summary>
+        //protected bool pagerRunning = false;
 
-        /// <summary>
-        /// 获取分页数据
-        /// </summary>
-        /// <typeparam name="T">数据表类</typeparam>
-        /// <param name="_source">EF数据源 DBSET</param>
-        /// <param name="_where">查询条件  查询全部null</param>
-        ///<param name="_orderByDesc">按时间倒序排列条件 不启用为 null</param>
-        /// <param name="_loading">加载动画 null</param>   
-        /// <param name="_pagination">分页控件 null</param>   
-        /// <param name="_noDataUIEle">无数据显示的页面元素</param>   
-        /// <param name="_enableUIEles">加载期间不可操作的控件</param>   
-        /// <param name="_pageSize">页面显示数据条数</param>
-        /// <returns></returns>
-        protected async Task<List<T>> GetDataPagerAsync<T>(dynamic _source, Expression<Func<T, bool>> _where, Expression<Func<T, DateTime>> _orderByDesc, Loading _loading, Pagination _pagination, FrameworkElement _noDataUIEle = null, FrameworkElement[] _enableUIEles = null, int _pageSize = 10)
-            where T : class
-        {
-            //显示动画
-            if (_loading != null && _loading.Visibility != System.Windows.Visibility.Visible)
-                _loading.Visibility = System.Windows.Visibility.Visible;
-            if (_pagination != null)
-                _pagination.IsEnabled = false;
-            if (_noDataUIEle != null)
-                _noDataUIEle.Visibility = System.Windows.Visibility.Collapsed;
+        ///// <summary>
+        ///// 获取分页数据
+        ///// </summary>
+        ///// <typeparam name="T">数据表类</typeparam>
+        ///// <param name="_source">EF数据源 DBSET</param>
+        ///// <param name="_where">查询条件  查询全部null</param>
+        /////<param name="_orderByDesc">按时间倒序排列条件 不启用为 null</param>
+        ///// <param name="_loading">加载动画 null</param>   
+        ///// <param name="_pagination">分页控件 null</param>   
+        ///// <param name="_noDataUIEle">无数据显示的页面元素</param>   
+        ///// <param name="_enableUIEles">加载期间不可操作的控件</param>   
+        ///// <param name="_pageSize">页面显示数据条数 当分页数量为0时 返回所有数据</param>
+        ///// <returns></returns>
+        //protected async Task<List<T>> GetDataPagerAsync<T>(dynamic _source, Expression<Func<T, bool>> _where, Expression<Func<T, DateTime>> _orderByDesc, Loading _loading, Pagination _pagination, FrameworkElement _noDataUIEle = null, FrameworkElement[] _enableUIEles = null, int _pageSize = 10)
+        //    where T : class
+        //{
+        //    //显示动画
+        //    if (_loading != null && _loading.Visibility != System.Windows.Visibility.Visible)
+        //        _loading.Visibility = System.Windows.Visibility.Visible;
+        //    if (_pagination != null)
+        //        _pagination.IsEnabled = false;
+        //    if (_noDataUIEle != null)
+        //        _noDataUIEle.Visibility = System.Windows.Visibility.Collapsed;
 
-            if (_enableUIEles != null)
-            {
-                foreach (var item in _enableUIEles)
-                {
-                    item.IsEnabled = false;
-                }
-            }
+        //    if (_enableUIEles != null)
+        //    {
+        //        foreach (var item in _enableUIEles)
+        //        {
+        //            item.IsEnabled = false;
+        //        }
+        //    }
 
-            await Task.Delay(300);
+        //    await Task.Delay(300);
 
-            int dataCount = 0;//总数据量
-            int pagerCount = 0;//页数
-            int currPage = _pagination.CurrentIndex;//当前页码
-            var pd = _source as DbSet<T>;
-            var _list = new List<T>();
+        //    int dataCount = 0;//总数据量
+        //    int pagerCount = 0;//页数
+        //    int currPage = _pagination==null?1: _pagination.CurrentIndex;//当前页码
+        //    var pd = _source as DbSet<T>;
+        //    var _list = new List<T>();
 
-            await Task.Run(() =>
-            {
-                dataCount = _where == null ? pd.Count() : pd.Where(_where.Compile()).Count();//数据总条数
-                pagerCount = PagerGlobal.GetPagerCount(dataCount);//总页数
-                //获取分页数据
-                if (_orderByDesc == null)
-                {
-                    _list = _where == null
-        ? pd.Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList()
-        : pd.Where(_where.Compile()).Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList();
-                }
-                else
-                {
-                    _list = _where == null
-? pd.OrderByDescending(_orderByDesc).Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList()
-: pd.OrderByDescending(_orderByDesc).Where(_where.Compile()).Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList();
-                }
-            });
+        //    await Task.Run(() =>
+        //    {
+        //        if (_pageSize == 0)
+        //        {
+        //            #region 返回所有数据
 
-            await Task.Delay(300);
+        //            if (_orderByDesc == null)
+        //            {
+        //                //无排序
+        //                _list = _where == null
+        //                        ? pd.ToList()
+        //                        : pd.Where(_where.Compile()).ToList();
+        //            }
+        //            else
+        //            {
+        //                //有排序
+        //                _list = _where == null
+        //                        ? pd.OrderByDescending(_orderByDesc).ToList()
+        //                        : pd.OrderByDescending(_orderByDesc).Where(_where.Compile()).ToList();
+        //            }
 
-            _pagination.TotalIndex = pagerCount;//设置控件显示总页数
+        //            #endregion
+        //        }
+        //        else 
+        //        {
+        //            dataCount = _where == null ? pd.Count() : pd.Where(_where.Compile()).Count();//数据总条数
+        //            pagerCount = PagerGlobal.GetPagerCount(dataCount);//总页数
+
+        //            #region 返回分页数据
+
+        //            //获取分页数据
+        //            if (_orderByDesc == null)
+        //            {
+        //                //无排序
+        //                _list = _where == null
+        //                        ? pd.Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList()
+        //                        : pd.Where(_where.Compile()).Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList();
+        //            }
+        //            else
+        //            {
+        //                //有排序
+        //                _list = _where == null
+        //                        ? pd.OrderByDescending(_orderByDesc).Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList()
+        //                        : pd.OrderByDescending(_orderByDesc).Where(_where.Compile()).Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList();
+        //            }
+
+        //            #endregion
+        //        }
+        //    });
+
+        //    await Task.Delay(300);
+
+        //    if (_pagination != null)
+        //        _pagination.TotalIndex = pagerCount;//设置控件显示总页数
 
 
-            //隐藏动画 
-            if (_loading.Visibility != System.Windows.Visibility.Collapsed)
-                _loading.Visibility = System.Windows.Visibility.Collapsed;
-            if (_pagination != null)
-                _pagination.IsEnabled = true;
-            if (_noDataUIEle != null)
-                _noDataUIEle.Visibility = dataCount > 0 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;//设置无数据控件（Border）显示
+        //    //隐藏动画 
+        //    if (_loading.Visibility != System.Windows.Visibility.Collapsed)
+        //        _loading.Visibility = System.Windows.Visibility.Collapsed;
+        //    if (_pagination != null)
+        //        _pagination.IsEnabled = true;
+        //    if (_noDataUIEle != null)
+        //        _noDataUIEle.Visibility = dataCount > 0 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;//设置无数据控件（Border）显示
 
-            if (_enableUIEles != null)
-            {
-                foreach (var item in _enableUIEles)
-                {
-                    item.IsEnabled = true;
-                }
-            }
+        //    if (_enableUIEles != null)
+        //    {
+        //        foreach (var item in _enableUIEles)
+        //        {
+        //            item.IsEnabled = true;
+        //        }
+        //    }
 
-            return _list;
-        }
+        //    return _list;
+        //}
 
 
         #endregion

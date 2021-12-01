@@ -125,7 +125,7 @@
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}" 
                           MouseDoubleClick="list_MouseDoubleClick">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Width="80" IsReadOnly="True">
+                            <DataGridTemplateColumn Width="60" IsReadOnly="True">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <CheckBox ToolTip="[当前页数据] 全选/取消选择" x:Name="cbSelectListAll" Click="cbSelectListAll_Click" ></CheckBox>
