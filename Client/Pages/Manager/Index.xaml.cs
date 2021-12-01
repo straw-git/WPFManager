@@ -145,5 +145,15 @@ namespace Client.Pages.Manager
             LoadChart();
             LoadLog();
         }
+
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        {
+            (sender as Border).Opacity = 1;
+        }
+
+        private void Border_MouseLeave(object sender, MouseEventArgs e)
+        {
+            (sender as Border).Opacity = 0.2;
+        }
     }
 }
