@@ -4,7 +4,8 @@
 ![登录页面]( https://github.com/straw-git/Zyue/tree/master/GIMG/login.png)
 一款非常漂亮的 WPF 管理系统，插件式开发，NETFramework472+Panuon.UI.Silver+ LiveCharts+EntityFramework CodeFirst+Linq to sql 
 ![客户会员管理页面]( https://github.com/straw-git/Zyue/tree/master/GIMG/customer.png)
-一款非常漂亮的 WPF 管理系统，插件式开发，NETFramework472+Panuon.UI.Silver+ LiveCharts+EntityFramework CodeFirst+Linq to sql 
-![Demo]( https://github.com/straw-git/Zyue/tree/master/GIMG/demo.png)
+
 一款非常漂亮的 WPF 管理系统，插件式开发，NETFramework472+Panuon.UI.Silver+ LiveCharts+EntityFramework CodeFirst+Linq to sql 
 ![固定资产管理页面]( https://github.com/straw-git/Zyue/blob/master/GIMG/gdzc.png)
+一款非常漂亮的 WPF 管理系统，插件式开发，NETFramework472+Panuon.UI.Silver+ LiveCharts+EntityFramework CodeFirst+Linq to sql 
+![Demo]( https://github.com/straw-git/Zyue/tree/master/GIMG/demo.png)
