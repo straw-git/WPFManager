@@ -17,6 +17,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
+using System.Linq.Expressions;
+using Common.Utils;
+using Common.Windows;
 
 namespace ERPPlugin.Pages.ERP
 {
@@ -29,25 +32,26 @@ namespace ERPPlugin.Pages.ERP
         {
             InitializeComponent();
             this.Order = 0;
-            list.ItemsSource = Data;
+
+            //测试
+            OnPageLoaded();
         }
 
         #region Models
 
-        class UIModel : INotifyPropertyChanged
+        class UIModel : BaseUIModel
         {
             public int Id { get; set; }
             public string ItemId { get; set; }
-            public string ItemName { get; set; }
+            public string Name { get; set; }
             public string SubName
             {
                 get
                 {
-                    return ItemName.Length > 20 ? $"{ItemName.Substring(0, 20)}..." : ItemName;
+                    return Name.Length > 20 ? $"{Name.Substring(0, 20)}..." : Name;
                 }
             }
 
-            public int StoreId { get; set; }
             public string StoreName { get; set; }
             private int count = 0;
             public int Count //库存余量
@@ -59,136 +63,98 @@ namespace ERPPlugin.Pages.ERP
                     NotifyPropertyChanged("Count");
                 }
             }
-
-            public event PropertyChangedEventHandler PropertyChanged;
-            public void NotifyPropertyChanged(string propertyName)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         #endregion
 
         //页面数据集合
         ObservableCollection<UIModel> Data = new ObservableCollection<UIModel>();
-        int dataCount = 0;
-        int pagerCount = 0;
-        int pageSize = 10;
-        int currPage = 1;
-        bool running = false;
 
         protected override void OnPageLoaded()
         {
-            btnRef_Click(null, null);
+            list.ItemsSource = Data;
         }
-
-
-        #region Private Method
-
-        private void LoadPager()
-        {
-            using (var context = new DBContext())
-            {
-                string name = txtName.Text;
-
-                var stock = context.Stock.AsEnumerable();
-
-                if (!string.IsNullOrEmpty(name))
-                {
-                    var goods = context.Goods.Where(c => !c.IsDel);
-                    goods = goods.Where(c => c.Name.Contains(name) || c.QuickCode.Contains(name) || c.Remark.Contains(name));
-                    List<string> goodsIds = (from c in goods select c.Id).ToList();
-                   
-                    stock = stock.Where(c => goodsIds.IndexOf(c.GoodsId) > -1 );
-                }
-
-                dataCount = stock.Count();
-            }
-            pagerCount = PagerGlobal.GetPagerCount(dataCount, pageSize);
-
-            if (currPage > pagerCount) currPage = pagerCount;
-            gPager.CurrentIndex = currPage;
-            gPager.TotalIndex = pagerCount;
-        }
-
-        private async void UpdateGridAsync()
-        {
-            ShowLoadingPanel();
-            if (running) return;
-            running = true;
-            Data.Clear();
-
-            List<Stock> models = new List<Stock>();
-
-            string name = txtName.Text;
-            await Task.Run(() =>
-            {
-                using (var context = new DBContext())
-                {
-                    var stock = context.Stock.AsEnumerable();
-
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        var goods = context.Goods.Where(c => !c.IsDel);
-                        goods = goods.Where(c => c.Name.Contains(name) || c.QuickCode.Contains(name) || c.Remark.Contains(name));
-                        List<string> goodsIds = (from c in goods select c.Id).ToList();
-                        stock = stock.Where(c => goodsIds.IndexOf(c.GoodsId) > -1);
-                    }
-
-                    models = stock.OrderByDescending(c => c.Id).Skip(pageSize * (currPage - 1)).Take(pageSize).ToList();
-                }
-            });
-
-            await Task.Delay(300);
-
-            bNoData.Visibility = models.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
-
-            using (DBContext context = new DBContext())
-            {
-                foreach (var item in models)
-                {
-                    UIModel _model = new UIModel()
-                    {
-                        Count = item.Count,
-                        Id = item.Id,
-                        ItemId = item.GoodsId,
-                        ItemName = "",
-                        StoreId = item.StoreId,
-                        StoreName = context.SysDic.First(c => c.Id == item.StoreId).Name,
-                    };
-
-                    //库存信息
-                    if (context.Goods.Any(c => c.Id == _model.ItemId))
-                    {
-                        _model.ItemName = context.Goods.First(c => c.Id == _model.ItemId).Name;
-                    }
-
-                    Data.Add(_model);
-                }
-            }
-            HideLoadingPanel();
-            running = false;
-        }
-
-        #endregion
 
         #region UI Method
 
-        private void gPager_CurrentIndexChanged(object sender, Panuon.UI.Silver.Core.CurrentIndexChangedEventArgs e)
+        private async void UpdatePager(object sender, Panuon.UI.Silver.Core.CurrentIndexChangedEventArgs e)
         {
-            currPage = gPager.CurrentIndex;
-            btnRef_Click(null, null);
+            if (e == null) gPager.CurrentIndex = 1;//如果是通过查询或者刷新点击的 直接显示第一页
+
+            //查询条件
+            string name = txtName.Text.Trim();
+
+            Data.Clear();//先清空再加入页面数据
+
+            using (DBContext context = new DBContext())
+            {
+                Expression<Func<DBModels.ERP.Stock, bool>> _where = n => GetPagerWhere(n, name);//按条件查询
+                //开始分页查询数据
+                var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Stock, _where, null, gLoading, gPager, bNoData, new Control[1] { list });
+                if (!_zPager.Result) return;
+                List<DBModels.ERP.Stock> _list = _zPager.EFDataList;
+
+                #region 页面数据填充
+
+                foreach (var item in _list)
+                {
+                    string goodsName = context.Goods.Any(c=>c.Id==item.GoodsId&&!c.IsDel)? context.Goods.First(c => c.Id == item.GoodsId).Name:"物品已删除";
+                    string storeName = context.SysDic.Any(c => c.Id == item.StoreId) ? context.SysDic.First(c => c.Id == item.StoreId).Name : "仓库已删除"; ;
+                    int count = context.StockLog.Any(c => c.GoodsId == item.GoodsId) ? context.StockLog.Where(c => c.GoodsId == item.GoodsId).OrderByDescending(c=>c.CreateTime).First().Surplus : 0;
+                    var _model = DBItem2UIModel(item, goodsName,storeName,count);
+                    Data.Add(_model);
+                }
+
+                #endregion
+            }
+
+            //结尾处必须结束分页查询
+            PagerCommon.EndEFDataPager();
+        }
+        private UIModel DBItem2UIModel(DBModels.ERP.Stock item, string goodsName, string storeName,int count)
+        {
+            UIModel _model = new UIModel();
+            _model.Count = count;
+            _model.ItemId = item.GoodsId;
+            _model.Id = item.Id;
+            _model.Name = goodsName;
+            _model.StoreName = storeName;
+            return _model;
+        }
+
+        /// <summary>
+        /// 查找表格的条件
+        /// </summary>
+        /// <param name="_goods"></param>
+        /// <param name="_name"></param>
+        /// <param name="_phone"></param>
+        /// <param name="_isMember"></param>
+        /// <param name="isBlcak"></param>
+        /// <param name="_enableTime"></param>
+        /// <param name="_start"></param>
+        /// <param name="_end"></param>
+        /// <returns></returns>
+        protected bool GetPagerWhere(DBModels.ERP.Stock _stock, string _name)
+        {
+            bool resultCondition = true;
+            if (_name.NotEmpty())
+            {
+                //根据名称检索
+                //resultCondition &= _goods.Name.Contains(_name) || _goods.QuickCode.Contains(_name);
+            }
+
+
+            return resultCondition;
         }
 
         private void btnRef_Click(object sender, RoutedEventArgs e)
         {
-            LoadPager();
-            UpdateGridAsync();
+            UpdatePager(null, null);
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
-            btnRef_Click(null, null);
+            UpdatePager(null, null);
         }
 
         private void btnCheck_Click(object sender, RoutedEventArgs e)
@@ -196,52 +162,111 @@ namespace ERPPlugin.Pages.ERP
             int id = (sender as Button).Tag.ToString().AsInt();
             var _model = Data.First(x => x.Id == id);
             MaskVisible(true);
-            CheckStore c = new CheckStore(_model.Count);
-            c.ShowDialog();
+            CheckStore checkStore = new CheckStore(_model.Count);
+            checkStore.ShowDialog();
+
+            if (checkStore.Succeed)
+            {
+                //数量盘点成功
+                using (DBContext context = new DBContext())
+                {
+                    var stock = context.Stock.Single(c => c.Id == id);
+                    stock.Count = checkStore.Model.NewCount;
+
+                    StockLog stockLog = new StockLog();
+                    stockLog.StoreId = stock.StoreId;
+                    stockLog.StockType = checkStore.Model.NewCount > checkStore.Model.OldCount ? Global.StockTypeIn : Global.StockTypeOut;
+                    stockLog.GoodsId = stock.GoodsId;
+                    stockLog.Count = Math.Abs(checkStore.Model.NewCount - checkStore.Model.OldCount);
+                    stockLog.Surplus = checkStore.Model.NewCount;
+                    stockLog.SalePrice = context.Goods.Any(c => c.Id == stock.GoodsId) ? context.Goods.First(c => c.Id == stock.GoodsId).SalePrice : 0;
+                    stockLog.Price = context.StockLog.Any(c => c.StoreId == stock.Id) ? context.StockLog.First(c => c.StoreId == stock.Id).Price : 0;
+                    stockLog.SupplierId = context.StockLog.Any(c => c.StoreId == stock.Id) ? context.StockLog.First(c => c.StoreId == stock.Id).SupplierId : 0;
+                    stockLog.Manufacturer = "盘点";
+                    stockLog.Remark = "盘点";
+
+                    stockLog.Creator = CurrUser.Id;
+                    stockLog.CreateTime = DateTime.Now;
+
+                    context.StockLog.Add(stockLog);
+                    context.SaveChanges();
+                }
+
+                UpdatePager(null, null);
+            }
+
+            MaskVisible(false);
+        }
+
+        private void cbSelectListAll_Click(object sender, RoutedEventArgs e)
+        {
+            bool isCheck = (bool)((sender as CheckBox).IsChecked);
+            foreach (var item in Data)
+            {
+                item.IsChecked = isCheck;
+                if (isCheck)
+                {
+                    //如果已经选中 说明原来没有选中 将它加入到列表
+                    SelectedTableData(list.Name, item);
+                }
+                else
+                {
+                    //未选中说明原来是选中的 将它移出列表
+                    UnSelectedTableData(list.Name, c => c.Id == item.Id);
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region 导出Excel
+
+        private void btnExportCurrPage_Click(object sender, RoutedEventArgs e)
+        {
+            //导出本页数据
+            ExportExcelAsync(Data.ToList(), list.Name, $"页码{gPager.CurrentIndex}");
+        }
+
+        private async void btnExportAllPage_Click(object sender, RoutedEventArgs e)
+        {
+            //导出所有数据
+            List<DBModels.ERP.Stock> allData = new List<DBModels.ERP.Stock>();
+
+            await Task.Delay(50);
+
+            await Task.Run(() =>
+            {
+                using (DBContext context = new DBContext()) allData = context.Stock.ToList();
+            });
+
+            ExportExcelAsync(allData, list.Name, "所有数据");
+        }
+
+        private void btnExportFocusDatas_Click(object sender, RoutedEventArgs e)
+        {
+            //导出选中数据
+            var listData = GetSelectedTableData<UIModel>(list.Name);
+            if (list == null || listData.Count == 0)
+            {
+                MessageBoxX.Show("没有选中数据", "空值提醒");
+                return;
+            }
+            ExportExcelAsync(listData, list.Name, "选中数据");
+        }
+
+        private void btnExportSetting_Click(object sender, RoutedEventArgs e)
+        {
+            MaskVisible(true);
+
+            BasePageVisibilititySetting basePageExportSetting = new BasePageExportSetting(GetColumns(list.Name));
+            basePageExportSetting.ShowDialog();
+
+            SetColumn(list.Name, basePageExportSetting.GetResult());
+
             MaskVisible(false);
         }
 
         #endregion
-
-        #region Loading
-
-        private void ShowLoadingPanel()
-        {
-            if (gLoading.Visibility != Visibility.Visible)
-            {
-                gLoading.Visibility = Visibility.Visible;
-                list.IsEnabled = false;
-                gPager.IsEnabled = false;
-                bNoData.IsEnabled = false;
-
-                OnLoadingShowComplate();
-            }
-        }
-
-        private void HideLoadingPanel()
-        {
-            if (gLoading.Visibility != Visibility.Collapsed)
-            {
-                gLoading.Visibility = Visibility.Collapsed;
-                list.IsEnabled = true;
-                gPager.IsEnabled = true;
-                bNoData.IsEnabled = true;
-
-                OnLoadingHideComplate();
-            }
-        }
-
-        private void OnLoadingHideComplate()
-        {
-
-        }
-
-        private void OnLoadingShowComplate()
-        {
-
-        }
-
-        #endregion
-
     }
 }

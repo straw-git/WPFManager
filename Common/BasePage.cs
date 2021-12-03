@@ -1,4 +1,5 @@
 ﻿using Common.Entities;
+using Common.MyAttributes;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using Panuon.UI.Silver;
@@ -11,11 +12,13 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using form = System.Windows.Forms;
 
 namespace Common
@@ -112,205 +115,238 @@ namespace Common
             }
         }
 
-        #endregion 
-
-        #region Data Pager
-
-        ///// <summary>
-        ///// 在子类中使用 防止重复点击
-        ///// </summary>
-        //protected bool pagerRunning = false;
-
-        ///// <summary>
-        ///// 获取分页数据
-        ///// </summary>
-        ///// <typeparam name="T">数据表类</typeparam>
-        ///// <param name="_source">EF数据源 DBSET</param>
-        ///// <param name="_where">查询条件  查询全部null</param>
-        /////<param name="_orderByDesc">按时间倒序排列条件 不启用为 null</param>
-        ///// <param name="_loading">加载动画 null</param>   
-        ///// <param name="_pagination">分页控件 null</param>   
-        ///// <param name="_noDataUIEle">无数据显示的页面元素</param>   
-        ///// <param name="_enableUIEles">加载期间不可操作的控件</param>   
-        ///// <param name="_pageSize">页面显示数据条数 当分页数量为0时 返回所有数据</param>
-        ///// <returns></returns>
-        //protected async Task<List<T>> GetDataPagerAsync<T>(dynamic _source, Expression<Func<T, bool>> _where, Expression<Func<T, DateTime>> _orderByDesc, Loading _loading, Pagination _pagination, FrameworkElement _noDataUIEle = null, FrameworkElement[] _enableUIEles = null, int _pageSize = 10)
-        //    where T : class
-        //{
-        //    //显示动画
-        //    if (_loading != null && _loading.Visibility != System.Windows.Visibility.Visible)
-        //        _loading.Visibility = System.Windows.Visibility.Visible;
-        //    if (_pagination != null)
-        //        _pagination.IsEnabled = false;
-        //    if (_noDataUIEle != null)
-        //        _noDataUIEle.Visibility = System.Windows.Visibility.Collapsed;
-
-        //    if (_enableUIEles != null)
-        //    {
-        //        foreach (var item in _enableUIEles)
-        //        {
-        //            item.IsEnabled = false;
-        //        }
-        //    }
-
-        //    await Task.Delay(300);
-
-        //    int dataCount = 0;//总数据量
-        //    int pagerCount = 0;//页数
-        //    int currPage = _pagination==null?1: _pagination.CurrentIndex;//当前页码
-        //    var pd = _source as DbSet<T>;
-        //    var _list = new List<T>();
-
-        //    await Task.Run(() =>
-        //    {
-        //        if (_pageSize == 0)
-        //        {
-        //            #region 返回所有数据
-
-        //            if (_orderByDesc == null)
-        //            {
-        //                //无排序
-        //                _list = _where == null
-        //                        ? pd.ToList()
-        //                        : pd.Where(_where.Compile()).ToList();
-        //            }
-        //            else
-        //            {
-        //                //有排序
-        //                _list = _where == null
-        //                        ? pd.OrderByDescending(_orderByDesc).ToList()
-        //                        : pd.OrderByDescending(_orderByDesc).Where(_where.Compile()).ToList();
-        //            }
-
-        //            #endregion
-        //        }
-        //        else 
-        //        {
-        //            dataCount = _where == null ? pd.Count() : pd.Where(_where.Compile()).Count();//数据总条数
-        //            pagerCount = PagerGlobal.GetPagerCount(dataCount);//总页数
-
-        //            #region 返回分页数据
-
-        //            //获取分页数据
-        //            if (_orderByDesc == null)
-        //            {
-        //                //无排序
-        //                _list = _where == null
-        //                        ? pd.Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList()
-        //                        : pd.Where(_where.Compile()).Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList();
-        //            }
-        //            else
-        //            {
-        //                //有排序
-        //                _list = _where == null
-        //                        ? pd.OrderByDescending(_orderByDesc).Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList()
-        //                        : pd.OrderByDescending(_orderByDesc).Where(_where.Compile()).Skip(_pageSize * (currPage - 1)).Take(_pageSize).ToList();
-        //            }
-
-        //            #endregion
-        //        }
-        //    });
-
-        //    await Task.Delay(300);
-
-        //    if (_pagination != null)
-        //        _pagination.TotalIndex = pagerCount;//设置控件显示总页数
-
-
-        //    //隐藏动画 
-        //    if (_loading.Visibility != System.Windows.Visibility.Collapsed)
-        //        _loading.Visibility = System.Windows.Visibility.Collapsed;
-        //    if (_pagination != null)
-        //        _pagination.IsEnabled = true;
-        //    if (_noDataUIEle != null)
-        //        _noDataUIEle.Visibility = dataCount > 0 ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;//设置无数据控件（Border）显示
-
-        //    if (_enableUIEles != null)
-        //    {
-        //        foreach (var item in _enableUIEles)
-        //        {
-        //            item.IsEnabled = true;
-        //        }
-        //    }
-
-        //    return _list;
-        //}
-
-
         #endregion
 
         #region Base Table
 
+        #region DataGrid数据绑定
+
         /// <summary>
-        /// 数据显示列集合（打印或导出时使用的数据行对应头）
+        /// DataGrid 所有绑定列属性信息 （包含列的显示隐藏 调整后 调用UpdateDataGridColumnVisibility 方法执行）
         /// </summary>
-        private Dictionary<string, Dictionary<string, string>> TableColumns = new Dictionary<string, Dictionary<string, string>>();
+        protected Dictionary<string, List<DataSourceBindingAttribute>> DataGridBindingColumnAtts = new Dictionary<string, List<DataSourceBindingAttribute>>();
+
+        /// <summary>
+        /// 设置DataGrid数据源（此方法将会填充DataGrid列及列绑定）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="_dataGrid"></param>
+        /// <param name="_t"></param>
+        /// <param name="_source"></param>
+        protected void SetDataGridBinding<T>(DataGrid _dataGrid, T _t, dynamic _source) where T : class
+        {
+            //表格的Name作为存储的数据键
+            string _tableKey = _dataGrid.Name;
+            //获取对象所有属性
+            System.Reflection.PropertyInfo[] properties = _t.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            //如果对象没有属性 直接退出
+            if (properties.Length <= 0)
+            {
+                return;
+            }
+
+            //清空显示列（为避免特殊情况数据重复刷新）
+            if (DataGridBindingColumnAtts.ContainsKey(_tableKey))
+            {
+                DataGridBindingColumnAtts[_tableKey].Clear();
+            }
+            else DataGridBindingColumnAtts.Add(_tableKey, new List<DataSourceBindingAttribute>());
+
+            #region 将实体的绑定属性提取出来
+
+            List<DataSourceBindingAttribute> _tempAtts = new List<DataSourceBindingAttribute>();
+            foreach (System.Reflection.PropertyInfo item in properties)
+            {
+                //属性名称
+                string columnName = item.Name;
+                // 获取指定属性的属性描述
+                var bindingAtt = typeof(T).GetProperty(columnName).GetCustomAttribute<DataSourceBindingAttribute>();
+
+
+                if (bindingAtt != null)//没有标记属性的值不显示
+                {
+                    bindingAtt.BindingName = columnName;
+                    _tempAtts.Add(bindingAtt);
+                }
+            }
+
+            #endregion
+
+            DataGridBindingColumnAtts[_tableKey] = _tempAtts.OrderBy(c => c.Index).ToList();//对显示列进行排序
+
+            #region 将绑定属性绑定至DataGrid 为其添加新列并按顺序完成绑定
+
+            foreach (var bindingAtt in DataGridBindingColumnAtts[_tableKey])
+            {
+                //Edit DataGrid Columns
+                if (_dataGrid.Columns.Any(c => c.Header != null && c.Header.ToString() == bindingAtt.ColumnHeader))
+                {
+                    //如果DataGrid中有表头和数据中一样的 不显示
+                    continue;
+                }
+                else
+                {
+                    //显示并绑定数据
+                    DataGridColumn column = new DataGridTextColumn() { Header = bindingAtt.ColumnHeader, Binding = new Binding(bindingAtt.BindingName) };
+                    if (bindingAtt.Width == -1)
+                    {
+                        column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                    }
+                    else if (bindingAtt.Width == 0)
+                    {
+                        column.Width = DataGridLength.Auto; //new DataGridLength(0, DataGridLengthUnitType.Auto);
+                    }
+                    else
+                    {
+                        column.Width = bindingAtt.Width;// new DataGridLength(bindingAtt.Width);
+                    }
+                    _dataGrid.Columns.Insert(bindingAtt.Index, column);
+                }
+            }
+
+            #endregion
+
+            //绑定数据源
+            _dataGrid.ItemsSource = _source;
+        }
+
+        /// <summary>
+        /// 设置列的显示或隐藏 (设置后 必须执行UpdateDataGridColumnVisibility 方法后才能看见效果)
+        /// </summary>
+        /// <param name="_header"></param>
+        /// <param name="_visibility"></param>
+        protected void SetDataGridColumnVisibilitity(string _tableKey, string _header, Visibility _visibility)
+        {
+            if (!DataGridBindingColumnAtts.ContainsKey(_tableKey))
+            {
+                MessageBoxX.Show("没有显示列", "未查询到的显示项");
+                return;
+            }
+            if (DataGridBindingColumnAtts[_tableKey].Any(c => c.ColumnHeader == _header))
+            {
+                //数据表中存在空值列
+                DataGridBindingColumnAtts[_tableKey].Single(c => c.ColumnHeader == _header).ColumnVisibilitity = _visibility;
+            }
+        }
+
+        /// <summary>
+        /// 更新 列的显示 隐藏 
+        /// </summary>
+        /// <param name="_dataGrid"></param>
+        /// <param name="_header"></param>
+        /// <param name="_visibility"></param>
+        protected void UpdateDataGridColumnVisibility(DataGrid _dataGrid)
+        {
+            string _tableKey = _dataGrid.Name;
+            if (!DataGridBindingColumnAtts.ContainsKey(_tableKey))
+            {
+                MessageBoxX.Show("没有显示列", "未查询到的显示项");
+                return;
+            }
+            foreach (var column in _dataGrid.Columns)
+            {
+                if (column.Header != null && DataGridBindingColumnAtts[_tableKey].Any(c => c.ColumnHeader == column.Header.ToString()))
+                {
+                    //数据表中存在空值列
+                    column.Visibility = DataGridBindingColumnAtts[_tableKey].First(c => c.ColumnHeader == column.Header.ToString()).ColumnVisibilitity;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取表格的所有显示列
+        /// </summary>
+        /// <param name="_tableKey"></param>
+        /// <returns></returns>
+        protected Dictionary<string, string> GetDataGridColumnVisibleHeaders(string _tableKey, bool _visible)
+        {
+            var dic = new Dictionary<string, string>();
+            if (DataGridBindingColumnAtts.ContainsKey(_tableKey))
+            {
+                for (int i = 0; i < DataGridBindingColumnAtts[_tableKey].Count; i++)
+                {
+                    var _column = DataGridBindingColumnAtts[_tableKey][i];
+                    if (_visible)
+                    {
+                        if (_column.ColumnVisibilitity == Visibility.Visible)
+                        {
+                            //获取显示元素
+                            dic.Add(_column.BindingName, _column.ColumnHeader);
+                        }
+                    }
+                    else
+                    {
+                        if (_column.ColumnVisibilitity == Visibility.Collapsed)
+                        {
+                            //获取隐藏元素
+                            dic.Add(_column.BindingName, _column.ColumnHeader);
+                        }
+                    }
+                }
+            }
+            return dic;
+        }
+
+        /// <summary>
+        /// 获取表格所有列（返回的结果 绑定名称|标题|是否显示（0：是1：否））
+        /// </summary>
+        /// <param name="_tableKey"></param>
+        /// <returns></returns>
+        protected List<string> GetDataGridHeaders(string _tableKey)
+        {
+            List<string> result = new List<string>();
+
+            if (DataGridBindingColumnAtts.ContainsKey(_tableKey))
+            {
+                for (int i = 0; i < DataGridBindingColumnAtts[_tableKey].Count; i++)
+                {
+                    var _column = DataGridBindingColumnAtts[_tableKey][i];
+                    string _isShow = _column.ColumnVisibilitity == Visibility.Visible ? "0" : "1";
+                    result.Add($"{_column.BindingName}|{_column.ColumnHeader}|{_isShow}");
+                }
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region 选中数据操作
 
         /// <summary>
         /// 数据集合（选中的数据集合）
         /// </summary>
-        private Dictionary<string, List<dynamic>> TableDatas = new Dictionary<string, List<dynamic>>();
+        private Dictionary<string, List<dynamic>> SelectedTableDatas = new Dictionary<string, List<dynamic>>();
 
         /// <summary>
-        /// 获取当前表格的显示列
-        /// </summary>
-        /// <param name="_tableKey"></param>
-        /// <returns></returns>
-        protected Dictionary<string, string> GetColumns(string _tableKey)
-        {
-            if (TableColumns.ContainsKey(_tableKey)) return TableColumns[_tableKey];
-            else return new Dictionary<string, string>();
-        }
-
-        /// <summary>
-        /// 设置列显示（用于记录导出数据时列的显示值）
-        /// </summary>
-        /// <param name="_tableKey">表格标志</param>
-        /// <param name="_pro">数据名</param>
-        /// <param name="_hea">显示名</param>
-        protected void SetColumn(string _tableKey, string _pro, string _hea)
-        {
-            if (!TableColumns.ContainsKey(_tableKey)) TableColumns.Add(_tableKey, new Dictionary<string, string>());
-
-            if (TableColumns[_tableKey].ContainsKey(_pro)) TableColumns[_tableKey][_pro] = _hea;
-            else TableColumns[_tableKey].Add(_pro, _hea);
-        }
-
-        protected void SetColumn(string _tableKey, Dictionary<string, string> _dic)
-        {
-            if (TableColumns.ContainsKey(_tableKey)) TableColumns[_tableKey] = _dic;
-            else TableColumns.Add(_tableKey, _dic);
-        }
-
-        /// <summary>
-        /// 加入表格数据（用于记录存储 列表中选中数据）
+        /// 选中数据（用于记录存储 列表中选中数据）
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="_tableKey"></param>
         /// <param name="_data"></param>
-        protected void AddTableData<T>(string _tableKey, T _data) where T : class
+        protected void SelectedTableData<T>(string _tableKey, T _data) where T : class
         {
-            if (TableDatas.ContainsKey(_tableKey))
+            if (SelectedTableDatas.ContainsKey(_tableKey))
             {
-                TableDatas[_tableKey].Add(_data);
+                SelectedTableDatas[_tableKey].Add(_data);
             }
             else
             {
-                TableDatas.Add(_tableKey, new List<dynamic>() { _data });
+                SelectedTableDatas.Add(_tableKey, new List<dynamic>() { _data });
             }
         }
 
         /// <summary>
-        /// 查找TableDatas中是否存在某条件
+        /// 查找选中项中是否存在某条件
         /// </summary>
         /// <param name="_tableKey"></param>
         /// <param name="_where"></param>
         /// <returns></returns>
-        protected bool TableDataAny(string _tableKey, Func<dynamic, bool> _where)
+        protected bool SelectedTableDataAny(string _tableKey, Func<dynamic, bool> _where)
         {
-            if (TableDatas.ContainsKey(_tableKey))
+            if (SelectedTableDatas.ContainsKey(_tableKey))
             {
-                return TableDatas[_tableKey].Any(_where);
+                return SelectedTableDatas[_tableKey].Any(_where);
             }
             else
             {
@@ -324,17 +360,23 @@ namespace Common
         /// <typeparam name="T"></typeparam>
         /// <param name="_tableKey"></param>
         /// <param name="_datas"></param>
-        protected void AddTableData<T>(string _tableKey, List<T> _datas) where T : class
+        protected void SelectedTableData<T>(string _tableKey, List<T> _datas) where T : class
         {
             foreach (var item in _datas)
             {
-                AddTableData(_tableKey, item);
+                SelectedTableData(_tableKey, item);
             }
         }
 
-        protected List<dynamic> GetTableData<T>(string _tableKey)
+        /// <summary>
+        /// 获取某表格的所有选中数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="_tableKey"></param>
+        /// <returns></returns>
+        protected List<dynamic> GetSelectedTableData<T>(string _tableKey)
         {
-            if (TableDatas.ContainsKey(_tableKey)) return TableDatas[_tableKey];
+            if (SelectedTableDatas.ContainsKey(_tableKey)) return SelectedTableDatas[_tableKey];
             else return null;
         }
 
@@ -343,173 +385,14 @@ namespace Common
         /// </summary>
         /// <param name="_tableKey"></param>
         /// <param name="_firstWhere"></param>
-        protected void RemoveTableData(string _tableKey, Func<dynamic, bool> _firstWhere)
+        protected void UnSelectedTableData(string _tableKey, Func<dynamic, bool> _firstWhere)
         {
-            if (TableDatas[_tableKey].Any(_firstWhere))
-                TableDatas[_tableKey].Remove(TableDatas[_tableKey].First(_firstWhere));
+            if (SelectedTableDatas[_tableKey].Any(_firstWhere))
+                SelectedTableDatas[_tableKey].Remove(SelectedTableDatas[_tableKey].First(_firstWhere));
         }
 
-        /// <summary>
-        /// 为DataGrid设置右键菜单（用于右键导出或选择页面数据）
-        /// </summary>
-        /// <param name="_grid"></param>
-        protected void SetGridContextMenu(DataGrid _grid)
-        {
-            ContextMenu _menu = new ContextMenu();
-            _menu.Padding = new Thickness(0, 5, 0, 5);
-            _menu.Width = 250;
-            _menu.FontSize = 12;
-            ContextMenuHelper.SetCornerRadius(_menu, new CornerRadius(5));
-
-            MenuItem selectedCurrPage = new MenuItem() { Header = "选中当前页" };
-            MenuItem exportAll = new MenuItem() { Header = "导出Excel" };
-            MenuItem exportselected = new MenuItem() { Header = "选中项" };
-            MenuItem exportCurrPage = new MenuItem() { Header = "当前页" };
-            exportAll.Items.Add(exportselected);
-            exportAll.Items.Add(exportCurrPage);
-
-            if (_grid.ContextMenu == null) _grid.ContextMenu = _menu;
-
-            _grid.ContextMenu.Items.Add(selectedCurrPage);
-            _grid.ContextMenu.Items.Add(exportAll);
-        }
+        #endregion 
 
         #endregion
-
-    /// <summary>
-    /// 导出Excel
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="_list">导出数据</param>
-    /// <param name="_tableKey">表名称</param>
-    /// <param name="_sheetName">保存的ExcelSheet名</param>
-        protected async void ExportExcelAsync<T>(List<T> _list, string _tableKey, string _sheetName = "导出文件_Zyue")
-        {
-            //Panuon.UI.Silver消息框
-            var _handler = PendingBox.Show("正在导出Excel...", "请等待", false, ParentWindow, new PendingBoxConfigurations()
-            {
-                LoadingForeground = "#5DBBEC".ToColor().ToBrush(),
-                ButtonBrush = "#5DBBEC".ToColor().ToBrush(),
-            });
-
-            string _savePath = "";//文件保存路径
-            var folderBrowser = new form.FolderBrowserDialog();//Winform dll中调用选择文件夹
-            if (folderBrowser.ShowDialog() == form.DialogResult.OK)
-            {
-                _savePath = folderBrowser.SelectedPath;//选中的文件夹路径
-            }
-            else
-            {
-                MessageBox.Show("已取消");
-                _handler.Close();
-            }
-
-            string excelFullPath = $"{_savePath}\\[{_sheetName}]{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";//导出文件路径
-
-            await Task.Run(() =>
-            {
-                IWorkbook wk = null;
-                wk = new XSSFWorkbook();//创建一个工作簿
-
-                var sheet = wk.CreateSheet(_sheetName);//创建Sheet
-
-                if (_list != null && _list.Count > 0)
-                {
-                    if (!TableColumns.ContainsKey(_tableKey) || TableColumns[_tableKey].Count == 0)
-                    {
-                        UIGlobal.RunUIAction(()=> 
-                        {
-                            MessageBox.Show("没有设置显示列");
-                            _handler.Close();
-                        });
-                        
-                        return;
-                    }
-
-                    //获取对象所有属性
-                    System.Reflection.PropertyInfo[] properties = _list[0].GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
-
-                    #region 添加第一行标题数据
-
-                    int cNum = 0;
-                    for (int i = 0; i < properties.Count(); i++)
-                    {
-                        var _item = properties[i];
-
-                        //属性名称
-                        string name = _item.Name;
-
-                        var _row = i == 0 ? sheet.CreateRow(0) : sheet.GetRow(0);//创建或获取第一行
-
-                        if (TableColumns[_tableKey].ContainsKey(name))//是否存在对应的中文介绍（只导出存在中文介绍的列） 
-                        {
-                            var _headerCell = _row.CreateCell(cNum);//创建列
-                            _headerCell.SetCellValue(name);//设置列值
-                            cNum++;
-                        }
-                    }
-
-                    #endregion
-
-                    var _headerRow = sheet.GetRow(0);//获取第一行
-
-                    #region 添加数据
-
-                    for (int i = 0; i < _list.Count; i++)
-                    {
-                        var _item = _list[i];
-
-                        var _currRow = sheet.CreateRow(1 + i);//创建当前数据的行
-                        for (int j = 0; j < cNum; j++)
-                        {
-                            string _propertityName = _headerRow.GetCell(j).StringCellValue;//获取属性名称
-                            string _propertityValue = _item.GetType().GetProperty(_propertityName).GetValue(_item, null).ToString();//获取属性值
-
-                            _currRow.CreateCell(j).SetCellValue(_propertityValue);//设置单元格数据
-                        }
-                    }
-
-                    #endregion
-
-                    #region 更新列标题
-
-                    for (int j = 0; j < cNum; j++)
-                    {
-                        string _propertityName = _headerRow.GetCell(j).StringCellValue;//获取属性名称
-                        _headerRow.CreateCell(j).SetCellValue(TableColumns[_tableKey][_propertityName]);//更新标题
-                    }
-
-                    #endregion 
-                }
-                else
-                {
-                    UIGlobal.RunUIAction(() =>  //其它县城内调用UI主线程方法
-                    {
-                        MessageBox.Show("没有导出数据");
-                        _handler.Close();
-                    });
-                    return;
-                }
-
-                try
-                {
-                    using (FileStream fs = new FileStream(excelFullPath, FileMode.Create, FileAccess.Write, FileShare.Write))
-                    {
-                        wk.Write(fs);//保存文件
-                    }
-                }
-                catch(Exception ex)
-                {
-                    UIGlobal.RunUIAction(() =>
-                    {
-                        MessageBoxX.Show($"导出失败, [{ex.Message}]", "文件占用提示");
-                        _handler.Close();
-                    });
-                }
-            });
-
-            Notice.Show(excelFullPath, "Excel导出成功", 3, MessageBoxIcon.Success);
-            _handler.Close();
-        }
     }
 }

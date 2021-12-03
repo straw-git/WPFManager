@@ -1,4 +1,4 @@
-﻿<Window x:Class="Common.Windows.BasePageExportSetting"
+﻿<Window x:Class="Common.Windows.BasePageVisibilititySetting"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Common.Windows"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
             Height="500"
-            Width="600"
+            Width="300"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -29,41 +29,25 @@
                                   pu:DataGridHelper.HeaderPadding="5,0"
                                   pu:DataGridHelper.CellPadding="5,0"
                                   pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
-                                  pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}" >
+                                  pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}" MouseDoubleClick="list_MouseDoubleClick" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="标题代码" Width="*"  Binding="{Binding Code}" />
-                    <DataGridTextColumn Header="对应标题" Width="*"  Binding="{Binding Title}" />
-                    <DataGridTemplateColumn Header="操作" Width="80" >
+                    <DataGridTemplateColumn Width="60" IsReadOnly="True">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <CheckBox ToolTip="[当前页数据] 全选/取消选择" x:Name="cbSelectListAll" Click="cbSelectListAll_Click" ></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Button  Content="删除" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Code}" Foreground="Blue" x:Name="btnDelete" Click="btnDelete_Click"/>
-                                </StackPanel>
+                                <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="标题" Width="*"  Binding="{Binding Title}" />
                 </DataGrid.Columns>
             </DataGrid>
 
             <StackPanel Grid.Row="1">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
-                    <Label Content="标题代码：" VerticalContentAlignment="Center"/>
-                    <TextBox  Height="30"
-                              x:Name="txtCode"
-                          Width="180"
-                          pu:TextBoxHelper.Watermark="标题代码（key）"
-                          Background="{DynamicResource TextBoxBgColor}"
-                          pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
-                          pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"/>
-                    <Label Content="对应标题：" VerticalContentAlignment="Center" Margin="20,0,0,0"/>
-                    <TextBox  Height="30"
-                              x:Name="txtTitle"
-                          Width="180"
-                          pu:TextBoxHelper.Watermark="对应标题（title）"
-                          Background="{DynamicResource TextBoxBgColor}"
-                          pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
-                          pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"/>
-                </StackPanel>
                 <StackPanel Height="60" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                     <Button  Content="取 消" x:Name="btnExit" Click="btnExit_Click"
                          Margin="20,0,10,0"
@@ -71,7 +55,7 @@
                      Height="30"
                      Background="{DynamicResource ButtonBgColor}"
                      pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
-                    <Button  Content="添 加" x:Name="btnAdd" Click="btnAdd_Click"
+                    <Button  Content="提 交" x:Name="btnSubmit" Click="btnSubmit_Click"
                          Margin="20,0,10,0"
                      Width="100"
                      Height="30"

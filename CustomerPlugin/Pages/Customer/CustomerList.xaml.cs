@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.Data.Local;
+using Common.MyAttributes;
 using Common.Utils;
 using Common.Windows;
 using LiveCharts;
@@ -47,6 +48,7 @@ namespace CustomerPlugin.Pages.Customer
             public int Id { get; set; }
 
             private string name = "";
+            [DataSourceBinding("姓名", -1, 1)]
             public string Name
             {
                 get => name;
@@ -58,6 +60,7 @@ namespace CustomerPlugin.Pages.Customer
             }
 
             private string sex = "";
+            [DataSourceBinding("性别", 60, 2)]
             public string Sex
             {
                 get => sex;
@@ -69,6 +72,7 @@ namespace CustomerPlugin.Pages.Customer
             }
 
             private string phone = "";
+            [DataSourceBinding("手机号", 120, 3)]
             public string Phone
             {
                 get => phone;
@@ -80,6 +84,7 @@ namespace CustomerPlugin.Pages.Customer
             }
 
             private string promotionCode = "";
+            [DataSourceBinding("本人推荐码", 100, 4)]
             public string PromotionCode //推荐码
             {
                 get => promotionCode;
@@ -89,7 +94,9 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("PromotionCode");
                 }
             }
+
             private string promotioner = "";
+            [DataSourceBinding("推荐人", 150, 5)]
             public string Promotioner //推荐人
             {
                 get => promotioner;
@@ -167,8 +174,9 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("EditButtonVisibility");
                 }
             }
-
+            [DataSourceBinding("等级", 120, 7)]
             public string MemberLevel { get; set; }
+            [DataSourceBinding("登记时间", 120, 6)]
             public string CreateTime { get; set; }
         }
 
@@ -178,17 +186,17 @@ namespace CustomerPlugin.Pages.Customer
 
         protected override void OnPageLoaded()
         {
-            SetColumn(list.Name, "Id", "编号");
-            SetColumn(list.Name, "Name", "名称");
-            SetColumn(list.Name, "Sex", "性别");
-            SetColumn(list.Name, "Phone", "手机号");
-            SetColumn(list.Name, "PromotionCode", "推荐码");
-            SetColumn(list.Name, "Promotioner", "推荐人");
-            SetColumn(list.Name, "MemberLevel", "等级");
-            SetColumn(list.Name, "CreateTime", "创建时间");
+            //SetColumn(list.Name, "Id", "编号");
+            //SetColumn(list.Name, "Name", "名称");
+            //SetColumn(list.Name, "Sex", "性别");
+            //SetColumn(list.Name, "Phone", "手机号");
+            //SetColumn(list.Name, "PromotionCode", "推荐码");
+            //SetColumn(list.Name, "Promotioner", "推荐人");
+            //SetColumn(list.Name, "MemberLevel", "等级");
+            //SetColumn(list.Name, "CreateTime", "创建时间");
+            SetDataGridBinding(list, new UIModel(), Data);
 
             //绑定数据
-            list.ItemsSource = Data;
             UpdateChart();
         }
 
@@ -204,6 +212,7 @@ namespace CustomerPlugin.Pages.Customer
             bool enableTime = (bool)cbEnableTime.IsChecked;
             DateTime startTime = dtStart.SelectedDateTime.MinDate();
             DateTime endTime = dtEnd.SelectedDateTime.MaxDate();
+            string listName = list.Name;
 
             Data.Clear();//先清空再加入页面数据
 
@@ -220,7 +229,7 @@ namespace CustomerPlugin.Pages.Customer
 
                 foreach (var item in _list)
                 {
-                    var _model = DBItem2UIModel(item);
+                    var _model = DBItem2UIModel(item, listName);
 
                     if (item.IsMember)
                     {
@@ -259,12 +268,12 @@ namespace CustomerPlugin.Pages.Customer
             PagerCommon.EndEFDataPager();
         }
 
-        private UIModel DBItem2UIModel(DBModels.Member.Customer item)
+        private UIModel DBItem2UIModel(DBModels.Member.Customer item, string _listName)
         {
             UIModel _model = new UIModel();
             _model.CreateTime = item.CreateTime.ToString("yy年MM月dd日");
             _model.Id = item.Id;
-            _model.IsChecked = TableDataAny(list.Name, c => c.Id == item.Id);
+            _model.IsChecked = SelectedTableDataAny(_listName, c => c.Id == item.Id);
             _model.Name = item.Name;
             _model.Phone = item.Phone;
             _model.Sex = item.Sex;
@@ -344,11 +353,6 @@ namespace CustomerPlugin.Pages.Customer
             return resultCondition;
         }
 
-        private void btnRef_Click(object sender, RoutedEventArgs e)
-        {
-            UpdatePager(null, null);
-        }
-
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
             UpdatePager(null, null);
@@ -377,12 +381,12 @@ namespace CustomerPlugin.Pages.Customer
                 if (targetIsChecked)
                 {
                     //如果已经选中 说明原来没有选中 将它加入到列表
-                    AddTableData(list.Name, selectItem);
+                    SelectedTableData(list.Name, selectItem);
                 }
                 else
                 {
                     //未选中说明原来是选中的 将它移出列表
-                    RemoveTableData(list.Name, c => c.Id == selectItem.Id);
+                    UnSelectedTableData(list.Name, c => c.Id == selectItem.Id);
                 }
             }
         }
@@ -390,6 +394,8 @@ namespace CustomerPlugin.Pages.Customer
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             int id = 0;
+            string listName = list.Name;
+
             var tag = (sender as Button).Tag.ToString();
             if (!int.TryParse(tag, out id))
             {
@@ -404,7 +410,7 @@ namespace CustomerPlugin.Pages.Customer
 
             if (editCustomer.Succeed)
             {
-                UIModel newModel = DBItem2UIModel(editCustomer.Result);
+                UIModel newModel = DBItem2UIModel(editCustomer.Result, listName);
                 newModel.Promotioner = "";
                 if (editCustomer.Result.BePromotionCode.NotEmpty())
                 {
@@ -638,12 +644,12 @@ namespace CustomerPlugin.Pages.Customer
                 if (isCheck)
                 {
                     //如果已经选中 说明原来没有选中 将它加入到列表
-                    AddTableData(list.Name, item);
+                    SelectedTableData(list.Name, item);
                 }
                 else
                 {
                     //未选中说明原来是选中的 将它移出列表
-                    RemoveTableData(list.Name, c => c.Id == item.Id);
+                    UnSelectedTableData(list.Name, c => c.Id == item.Id);
                 }
             }
         }
@@ -652,50 +658,102 @@ namespace CustomerPlugin.Pages.Customer
 
         private void btnExportCurrPage_Click(object sender, RoutedEventArgs e)
         {
-            //导出本页数据
-            ExportExcelAsync(Data.ToList(), list.Name,$"页码{gPager.CurrentIndex}");
+            var listData = Data.ToList();//获取选中数据
+            var columns = GetDataGridColumnVisibleHeaders(list.Name, true);//获取所有显示列对应的标题
+            var hiddleColumns = GetDataGridColumnVisibleHeaders(list.Name, false);//获取所有隐藏列的标题
+            if (list == null || listData.Count == 0)
+            {
+                MessageBoxX.Show("没有选中数据", "空值提醒");
+                return;
+            }
+            new ExcelHelper().List2ExcelAsync(listData, $"页码{gPager.CurrentIndex}", columns, hiddleColumns.Keys.ToList());
         }
 
         private async void btnExportAllPage_Click(object sender, RoutedEventArgs e)
         {
             //导出所有数据
-            List<DBModels.Member.Customer> allData = new List<DBModels.Member.Customer>();
-
-            await Task.Delay(50);
+            List<UIModel> allData = new List<UIModel>();
+            string listName = list.Name;
 
             await Task.Run(() =>
             {
-                using (DBContext context = new DBContext()) allData = context.Customer.ToList();
-            });
+                var _list = new List<DBModels.Member.Customer>();
+                using (DBContext context = new DBContext())
+                {
+                    _list = context.Customer.OrderByDescending(c => c.CreateTime).ToList();
+                    foreach (var item in _list)
+                    {
+                        var _model = DBItem2UIModel(item, listName);
 
-            ExportExcelAsync(allData, list.Name,"所有数据");
+                        if (item.IsMember)
+                        {
+                            //会员
+                            decimal rechargeSum = 0;
+                            if (context.MemberRecharge.Any(c => c.CustomerId == item.Id))
+                                rechargeSum = context.MemberRecharge.Where(c => c.CustomerId == item.Id).Sum(c => c.Price);//历史充值总金额
+                            if (context.MemberLevel.OrderByDescending(c => c.LogPriceCount).Any(c => c.LogPriceCount <= rechargeSum))
+                            {
+                                _model.MemberLevel = context.MemberLevel.OrderByDescending(c => c.LogPriceCount).First(c => c.LogPriceCount <= rechargeSum).Name;
+                            }
+                            else
+                            {
+                                _model.MemberLevel = "无会员等级";
+                            }
+                        }
+                        else
+                        {
+                            _model.MemberLevel = "非会员";
+                        }
+
+                        _model.Promotioner = "";
+                        if (item.BePromotionCode.NotEmpty())
+                        {
+                            if (context.Customer.Any(c => c.PromotionCode == item.BePromotionCode))
+                                _model.Promotioner = context.Customer.First(c => c.PromotionCode == item.BePromotionCode).Name;
+                        }
+
+                        allData.Add(_model);
+                    }
+                }
+            });
+            var columns = GetDataGridColumnVisibleHeaders(list.Name, true);//获取所有显示列对应的标题
+            var hiddleColumns = GetDataGridColumnVisibleHeaders(list.Name, false);//获取所有隐藏列的标题
+
+            new ExcelHelper().List2ExcelAsync(allData, "所有数据", columns, hiddleColumns.Keys.ToList());
         }
 
         private void btnExportFocusDatas_Click(object sender, RoutedEventArgs e)
         {
-            //导出选中数据
-            var listData = GetTableData<UIModel>(list.Name);
-            if (list==null||listData.Count == 0) 
+            var listData = GetSelectedTableData<UIModel>(list.Name);//获取选中数据
+            var columns = GetDataGridColumnVisibleHeaders(list.Name, true);//获取所有显示列对应的标题
+            var hiddleColumns = GetDataGridColumnVisibleHeaders(list.Name, false);//获取所有隐藏列的标题
+            if (listData == null || listData.Count == 0)
             {
-                MessageBoxX.Show("没有选中数据","空值提醒");
+                MessageBoxX.Show("没有选中数据", "空值提醒");
                 return;
             }
-            ExportExcelAsync(listData, list.Name,"选中数据");
-        }
-
-        private void btnExportSetting_Click(object sender, RoutedEventArgs e)
-        {
-            MaskVisible(true);
-
-            BasePageExportSetting basePageExportSetting = new BasePageExportSetting(GetColumns(list.Name));
-            basePageExportSetting.ShowDialog();
-
-            SetColumn(list.Name, basePageExportSetting.GetResult());
-
-            MaskVisible(false);
+            new ExcelHelper().List2ExcelAsync(listData, "选中数据", columns, hiddleColumns.Keys.ToList());
         }
 
         #endregion
 
+        private void btnTableColumnVisible_Click(object sender, RoutedEventArgs e)
+        {
+            MaskVisible(true);
+
+            BasePageVisibilititySetting basePageVisibilititySetting = new BasePageVisibilititySetting(GetDataGridHeaders(list.Name));
+            basePageVisibilititySetting.ShowDialog();
+
+            var result = basePageVisibilititySetting.Result;
+            foreach (var ri in result)
+            {
+                Visibility _visibility = ri.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+                SetDataGridColumnVisibilitity(list.Name, ri.Title, _visibility);
+            }
+
+            UpdateDataGridColumnVisibility(list);
+
+            MaskVisible(false);
+        }
     }
 }

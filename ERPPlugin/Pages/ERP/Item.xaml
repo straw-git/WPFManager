@@ -67,18 +67,14 @@
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="类型" Width="80" Binding="{Binding TypeName}" />
-                            <DataGridTemplateColumn Header="物品名称" Width="*">
+                            <DataGridTemplateColumn Header="名称" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Label Content="{Binding SubName}" ToolTip="{Binding Name}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="单位" Width="100" Binding="{Binding UnitName}" />
-                            <DataGridTextColumn Header="包装" Width="100" Binding="{Binding PackageName}" />
-                            <DataGridTextColumn Header="零售价" Width="100" Binding="{Binding SalePrice}" />
-                            <DataGridTemplateColumn Header="操作" Width="180" >
+                            <DataGridTemplateColumn Header="操作" Width="*" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -91,8 +87,8 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <pu:Pagination x:Name="gPager" Height="28"  VerticalAlignment="Bottom"  CurrentIndexChanged="gPager_CurrentIndexChanged" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
-                    <Border Background="White" x:Name="bNoData" Visibility="Collapsed" Margin="0,50,0,5">
+                    <pu:Pagination x:Name="gPager" Height="28"  VerticalAlignment="Bottom"  CurrentIndexChanged="UpdatePager" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
+                    <Border Background="White" x:Name="bNoData" Visibility="Visible" Margin="0,50,0,5">
                         <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
                     <pu:Loading x:Name="gLoading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>

@@ -120,6 +120,8 @@
     <Compile Include="BasePage.cs" />
     <Compile Include="BaseUIModel.cs" />
     <Compile Include="DataGlobal.cs" />
+    <Compile Include="MyAttributes\DataSourceBindingAttribute.cs" />
+    <Compile Include="Utils\ExcelHelper.cs" />
     <Compile Include="Utils\PagerCommon.cs" />
     <Compile Include="Data\Local\LocalDB.cs" />
     <Compile Include="Data\Local\LocalPlugins.cs" />
@@ -156,8 +158,8 @@
     <Compile Include="Windows\ReceivePayment.xaml.cs">
       <DependentUpon>ReceivePayment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\BasePageExportSetting.xaml.cs">
-      <DependentUpon>BasePageExportSetting.xaml</DependentUpon>
+    <Compile Include="Windows\BasePageVisibilititySetting.xaml.cs">
+      <DependentUpon>BasePageVisibilititySetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\SelectedGoods.xaml.cs">
       <DependentUpon>SelectedGoods.xaml</DependentUpon>
@@ -217,7 +219,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\BasePageExportSetting.xaml">
+    <Page Include="Windows\BasePageVisibilititySetting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

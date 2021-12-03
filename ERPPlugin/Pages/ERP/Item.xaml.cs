@@ -19,6 +19,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
 using System.Reflection;
+using System.Linq.Expressions;
+using Common.Utils;
+using Common.MyAttributes;
 
 namespace ERPPlugin.Pages.ERP
 {
@@ -31,15 +34,19 @@ namespace ERPPlugin.Pages.ERP
         {
             InitializeComponent();
             this.Order = 4;
+
+            //测试
+            OnPageLoaded();
         }
 
         #region Models
 
-        class UIModel : INotifyPropertyChanged
+        class UIModel : BaseUIModel
         {
             public string Id { get; set; }
 
             private string name = "";
+            [DataSourceBinding("名称", -1, 1)]
             public string Name
             {
                 get => name;
@@ -59,6 +66,7 @@ namespace ERPPlugin.Pages.ERP
             }
 
             private string typeName = "";
+            [DataSourceBinding("类型", -1, 0)]
             public string TypeName //物品类型
             {
                 get => typeName;
@@ -70,6 +78,7 @@ namespace ERPPlugin.Pages.ERP
             }
 
             private string unitName = "";
+            [DataSourceBinding("单位", -1, 2)]
             public string UnitName
             {
                 get => unitName;
@@ -80,18 +89,20 @@ namespace ERPPlugin.Pages.ERP
                 }
             }
 
-            private string packageName = "";
-            public string PackageName
+            private string specification = "";
+            [DataSourceBinding("规格", -1, 3)]
+            public string Specification//规格
             {
-                get => packageName;
+                get => specification;
                 set
                 {
-                    packageName = value;
-                    NotifyPropertyChanged("PackageName");
+                    specification = value;
+                    NotifyPropertyChanged("Specification");
                 }
             }
 
             private decimal salePrice = 0;
+            [DataSourceBinding("零售价", -1, 4)]
             public decimal SalePrice //零售价
             {
                 get => salePrice;
@@ -102,10 +113,16 @@ namespace ERPPlugin.Pages.ERP
                 }
             }
 
-            public event PropertyChangedEventHandler PropertyChanged;
-            public void NotifyPropertyChanged(string propertyName)
+            private int count = 0;
+            [DataSourceBinding("库存", 0, 5)]
+            public int Count//数量
             {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                get => count;
+                set
+                {
+                    count = value;
+                    NotifyPropertyChanged("Count");
+                }
             }
         }
 
@@ -113,107 +130,11 @@ namespace ERPPlugin.Pages.ERP
 
         //页面数据集合
         ObservableCollection<UIModel> Data = new ObservableCollection<UIModel>();
-        int dataCount = 0;
-        int pagerCount = 0;
-        int pageSize = 10;
-        int currPage = 1;
-        bool running = false;
-
 
         protected override void OnPageLoaded()
         {
-            list.ItemsSource = Data;
+            SetDataGridBinding(list, new UIModel(), Data);
             LoadType();
-            btnRef_Click(null, null);
-        }
-
-
-        #region Private Method
-
-        private void LoadPager()
-        {
-            using (var context = new DBContext())
-            {
-                string name = txtName.Text;
-                int typeId = cbType.SelectedValue.ToString().AsInt();
-
-                var goods = context.Goods.Where(c => !c.IsDel);
-
-                if (!string.IsNullOrEmpty(name))
-                {
-                    goods = goods.Where(c => c.Name.Contains(name) || c.QuickCode.Contains(name) || c.Remark.Contains(name));
-                }
-                if (typeId > 0)
-                {
-                    goods = goods.Where(c => c.TypeId == typeId);
-                }
-
-                dataCount = goods.Count();
-
-            }
-            pagerCount = PagerGlobal.GetPagerCount(dataCount, pageSize);
-
-            if (currPage > pagerCount) currPage = pagerCount;
-            gPager.CurrentIndex = currPage;
-            gPager.TotalIndex = pagerCount;
-        }
-
-
-        private async void UpdateGridAsync()
-        {
-            ShowLoadingPanel();
-            if (running) return;
-            running = true;
-            Data.Clear();
-
-            List<Goods> models = new List<Goods>();
-
-            string name = txtName.Text;
-            int typeId = cbType.SelectedValue.ToString().AsInt();
-
-            await Task.Run(() =>
-            {
-                using (var context = new DBContext())
-                {
-
-                    var goods = context.Goods.Where(c => !c.IsDel);
-
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        goods = goods.Where(c => c.Name.Contains(name) || c.QuickCode.Contains(name) || c.Remark.Contains(name));
-                    }
-                    if (typeId > 0)
-                    {
-                        goods = goods.Where(c => c.TypeId == typeId);
-                    }
-
-                    models = goods.OrderByDescending(c => c.CreateTime).Skip(pageSize * (currPage - 1)).Take(pageSize).ToList();
-                }
-            });
-
-            await Task.Delay(300);
-
-            bNoData.Visibility = models.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
-
-            using (DBContext context = new DBContext())
-            {
-                foreach (var item in models)
-                {
-                    UIModel _model = new UIModel()
-                    {
-                        Id = item.Id,
-                        Name = item.Name,
-                        SalePrice = item.SalePrice,
-                        TypeName = context.SysDic.First(c => c.Id == item.TypeId).Name,
-                        PackageName = item.Specification,
-                        UnitName = context.SysDic.First(c => c.Id == item.UnitId).Name
-                    };
-
-                    Data.Add(_model);
-                }
-            }
-            HideLoadingPanel();
-            running = false;
         }
 
         /// <summary>
@@ -236,9 +157,88 @@ namespace ERPPlugin.Pages.ERP
             cbType.SelectedIndex = 0;
         }
 
-        #endregion
-
         #region UI Method
+
+        private async void UpdatePager(object sender, Panuon.UI.Silver.Core.CurrentIndexChangedEventArgs e)
+        {
+            if (e == null) gPager.CurrentIndex = 1;//如果是通过查询或者刷新点击的 直接显示第一页
+
+            //查询条件
+            string name = txtName.Text.Trim();
+            int typeId = cbType.SelectedValue.ToString().AsInt();
+
+            Data.Clear();//先清空再加入页面数据
+
+            using (DBContext context = new DBContext())
+            {
+                Expression<Func<DBModels.ERP.Goods, bool>> _where = n => GetPagerWhere(n, name, typeId);//按条件查询
+                Expression<Func<DBModels.ERP.Goods, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
+                //开始分页查询数据
+                var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Goods, _where, _orderByDesc, gLoading, gPager, bNoData, new Control[1] { list });
+                if (!_zPager.Result) return;
+                List<DBModels.ERP.Goods> _list = _zPager.EFDataList;
+
+                #region 页面数据填充
+
+                foreach (var item in _list)
+                {
+                    string typeName = context.SysDic.First(c => c.Id == item.TypeId).Name;
+                    string unitName = context.SysDic.First(c => c.Id == item.UnitId).Name;
+                    int count = context.Stock.Any(c => c.GoodsId == item.Id) ? context.Stock.Where(c => c.GoodsId == item.Id).Sum(c => c.Count) : 0;
+                    var _model = DBItem2UIModel(item, typeName, unitName, count);
+                    Data.Add(_model);
+                }
+
+                list.UpdateLayout();
+                #endregion
+            }
+
+            //结尾处必须结束分页查询
+            PagerCommon.EndEFDataPager();
+        }
+
+        private UIModel DBItem2UIModel(DBModels.ERP.Goods item, string typeName, string unitName, int count)
+        {
+            return new UIModel()
+            {
+                Id = item.Id,
+                Name = item.Name,
+                SalePrice = item.SalePrice,
+                TypeName = typeName,
+                Specification = item.Specification,
+                UnitName = unitName,
+                Count = count
+            };
+        }
+
+        /// <summary>
+        /// 查找表格的条件
+        /// </summary>
+        /// <param name="_goods"></param>
+        /// <param name="_name"></param>
+        /// <param name="_phone"></param>
+        /// <param name="_isMember"></param>
+        /// <param name="isBlcak"></param>
+        /// <param name="_enableTime"></param>
+        /// <param name="_start"></param>
+        /// <param name="_end"></param>
+        /// <returns></returns>
+        protected bool GetPagerWhere(DBModels.ERP.Goods _goods, string _name, int _typeId)
+        {
+            bool resultCondition = true;
+            if (_name.NotEmpty())
+            {
+                //根据名称检索
+                resultCondition &= _goods.Name.Contains(_name) || _goods.QuickCode.Contains(_name);
+            }
+            if (_typeId > 0)
+            {
+                resultCondition &= _goods.TypeId == _typeId;
+            }
+            resultCondition &= !_goods.IsDel;
+
+            return resultCondition;
+        }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -246,24 +246,16 @@ namespace ERPPlugin.Pages.ERP
             EditGoods editGoods = new EditGoods();
             editGoods.ShowDialog();
             MaskVisible(false);
-            UpdateGridAsync();
-        }
-
-        private void gPager_CurrentIndexChanged(object sender, Panuon.UI.Silver.Core.CurrentIndexChangedEventArgs e)
-        {
-            currPage = gPager.CurrentIndex;
-            btnRef_Click(null, null);
         }
 
         private void btnRef_Click(object sender, RoutedEventArgs e)
         {
-            LoadPager();
-            UpdateGridAsync();
+            UpdatePager(null, null);
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
-            btnRef_Click(null, null);
+            UpdatePager(null, null);
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -279,7 +271,7 @@ namespace ERPPlugin.Pages.ERP
                 using (DBContext context = new DBContext())
                 {
                     selectModel.Name = g.Model.Name;
-                    selectModel.PackageName = g.Model.Specification;
+                    selectModel.Specification = g.Model.Specification;
                     selectModel.TypeName = context.SysDic.First(c => c.Id == g.Model.TypeId).Name;
                     selectModel.UnitName = context.SysDic.First(c => c.Id == g.Model.UnitId).Name;
                 }
@@ -316,48 +308,8 @@ namespace ERPPlugin.Pages.ERP
 
                     context.SaveChanges();
                 }
-                UpdateGridAsync();
+                UpdatePager(null, null);
             }
-        }
-
-        #endregion
-
-        #region Loading
-
-        private void ShowLoadingPanel()
-        {
-            if (gLoading.Visibility != Visibility.Visible)
-            {
-                gLoading.Visibility = Visibility.Visible;
-                list.IsEnabled = false;
-                gPager.IsEnabled = false;
-                bNoData.IsEnabled = false;
-
-                OnLoadingShowComplate();
-            }
-        }
-
-        private void HideLoadingPanel()
-        {
-            if (gLoading.Visibility != Visibility.Collapsed)
-            {
-                gLoading.Visibility = Visibility.Collapsed;
-                list.IsEnabled = true;
-                gPager.IsEnabled = true;
-                bNoData.IsEnabled = true;
-
-                OnLoadingHideComplate();
-            }
-        }
-
-        private void OnLoadingHideComplate()
-        {
-
-        }
-
-        private void OnLoadingShowComplate()
-        {
-
         }
 
         #endregion
