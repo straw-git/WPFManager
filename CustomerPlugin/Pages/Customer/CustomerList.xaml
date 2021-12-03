@@ -143,7 +143,6 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-
                             <DataGridTemplateColumn Header="操作" Width="*" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -158,7 +157,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <pu:Pagination IsEnabled="False" x:Name="gPager" Height="28"  VerticalAlignment="Bottom"  CurrentIndexChanged="UpdatePager" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
-                    <Border Background="White" x:Name="bNoData" Visibility="Visible" Margin="0,50,0,5">
+                    <Border Background="White" x:Name="bNoData" Visibility="Collapsed" Margin="0,50,0,5">
                         <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
                     <pu:Loading x:Name="gLoading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>

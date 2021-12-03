@@ -225,46 +225,22 @@ namespace ERPPlugin.Pages.ERP
         private void btnExportCurrPage_Click(object sender, RoutedEventArgs e)
         {
             //导出本页数据
-            ExportExcelAsync(Data.ToList(), list.Name, $"页码{gPager.CurrentIndex}");
+           
         }
 
         private async void btnExportAllPage_Click(object sender, RoutedEventArgs e)
         {
-            //导出所有数据
-            List<DBModels.ERP.Stock> allData = new List<DBModels.ERP.Stock>();
 
-            await Task.Delay(50);
-
-            await Task.Run(() =>
-            {
-                using (DBContext context = new DBContext()) allData = context.Stock.ToList();
-            });
-
-            ExportExcelAsync(allData, list.Name, "所有数据");
         }
 
         private void btnExportFocusDatas_Click(object sender, RoutedEventArgs e)
         {
-            //导出选中数据
-            var listData = GetSelectedTableData<UIModel>(list.Name);
-            if (list == null || listData.Count == 0)
-            {
-                MessageBoxX.Show("没有选中数据", "空值提醒");
-                return;
-            }
-            ExportExcelAsync(listData, list.Name, "选中数据");
+
         }
 
         private void btnExportSetting_Click(object sender, RoutedEventArgs e)
         {
-            MaskVisible(true);
 
-            BasePageVisibilititySetting basePageExportSetting = new BasePageExportSetting(GetColumns(list.Name));
-            basePageExportSetting.ShowDialog();
-
-            SetColumn(list.Name, basePageExportSetting.GetResult());
-
-            MaskVisible(false);
         }
 
         #endregion

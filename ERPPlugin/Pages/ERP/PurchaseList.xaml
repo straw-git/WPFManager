@@ -85,8 +85,8 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <pu:Pagination x:Name="gPager" Height="28" VerticalAlignment="Bottom" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
-                    <Border Background="White" x:Name="bNoData" Visibility="Visible" Margin="0,50,0,0">
-                        <Image Source="pack://application:,,,/Client;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <Border Background="White" x:Name="bNoData" Visibility="Collapsed" Margin="0,50,0,0">
+                        <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
                     <pu:Loading x:Name="gLoading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
                 </Grid>

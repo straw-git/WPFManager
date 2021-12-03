@@ -58,7 +58,6 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("Name");
                 }
             }
-
             private string sex = "";
             [DataSourceBinding("性别", 60, 2)]
             public string Sex
@@ -70,7 +69,6 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("Sex");
                 }
             }
-
             private string phone = "";
             [DataSourceBinding("手机号", 120, 3)]
             public string Phone
@@ -82,7 +80,6 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("Phone");
                 }
             }
-
             private string promotionCode = "";
             [DataSourceBinding("本人推荐码", 100, 4)]
             public string PromotionCode //推荐码
@@ -94,7 +91,6 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("PromotionCode");
                 }
             }
-
             private string promotioner = "";
             [DataSourceBinding("推荐人", 150, 5)]
             public string Promotioner //推荐人
@@ -106,9 +102,11 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("Promotioner");
                 }
             }
-
+            [DataSourceBinding("等级", 120, 7)]
+            public string MemberLevel { get; set; }
+            [DataSourceBinding("登记时间", 120, 6)]
+            public string CreateTime { get; set; }
             private string blackLinkContent = "加入黑名单";
-
             public string BlackLinkContent
             {
                 get => blackLinkContent;
@@ -118,9 +116,7 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("BlackLinkContent");
                 }
             }
-
             private Brush blackLinkForeground = new SolidColorBrush(Colors.Blue);
-
             public Brush BlackLinkForeground
             {
                 get => blackLinkForeground;
@@ -130,7 +126,6 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("BlackLinkForeground");
                 }
             }
-
             private Brush nameForeground = new SolidColorBrush(Colors.Black);
             public Brush NameForeground//名字颜色
             {
@@ -141,7 +136,6 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("NameForeground");
                 }
             }
-
             private string memberLinkContent = "";
             public string MemberLinkContent//办理会员按钮显示内容
             {
@@ -152,7 +146,6 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("MemberLinkContent");
                 }
             }
-
             private Visibility memberButtonVisibility = Visibility.Visible;
             public Visibility MemberButtonVisibility//办理会员按钮显示状态
             {
@@ -163,7 +156,6 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("MemberButtonVisibility");
                 }
             }
-
             private Visibility editButtonVisibility = Visibility.Visible;
             public Visibility EditButtonVisibility//编辑显示状态
             {
@@ -174,10 +166,6 @@ namespace CustomerPlugin.Pages.Customer
                     NotifyPropertyChanged("EditButtonVisibility");
                 }
             }
-            [DataSourceBinding("等级", 120, 7)]
-            public string MemberLevel { get; set; }
-            [DataSourceBinding("登记时间", 120, 6)]
-            public string CreateTime { get; set; }
         }
 
         #endregion
@@ -186,14 +174,6 @@ namespace CustomerPlugin.Pages.Customer
 
         protected override void OnPageLoaded()
         {
-            //SetColumn(list.Name, "Id", "编号");
-            //SetColumn(list.Name, "Name", "名称");
-            //SetColumn(list.Name, "Sex", "性别");
-            //SetColumn(list.Name, "Phone", "手机号");
-            //SetColumn(list.Name, "PromotionCode", "推荐码");
-            //SetColumn(list.Name, "Promotioner", "推荐人");
-            //SetColumn(list.Name, "MemberLevel", "等级");
-            //SetColumn(list.Name, "CreateTime", "创建时间");
             SetDataGridBinding(list, new UIModel(), Data);
 
             //绑定数据
