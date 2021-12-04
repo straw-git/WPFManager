@@ -1,5 +1,16 @@
-# 本项目是一个做练习很好的示例
+# WPF开发的管理系统（数据库MSSqlserver）
 其中包括对于MSSqlserver数据库的增删改查,使用LiveCharts展示图表,使用NPOI导出Excel,使用Panuon.UI.Silver搭建漂亮的UI页面
+
+# 目录介绍
+Common：公用类库  
+Client：主客户端（包含管理中心）  
+CustomerPlugin：客户管理插件  
+ERPPlugin：库存管理插件  
+FinancePlugin：财务中心插件  
+FixedAssetsPlugin：固定资产管理插件  
+HRPlugin：人事管理插件  
+LiveChartsTestPlugin：图表工具测试插件  
+SalePlugin：销售订单中心插件（未完成）  
 
 # 基础模块包括：
 
