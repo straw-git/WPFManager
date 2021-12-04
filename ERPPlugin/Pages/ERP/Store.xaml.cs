@@ -30,6 +30,9 @@ namespace ERPPlugin.Pages.ERP
         {
             InitializeComponent();
             this.Order = 3;
+
+            //测试
+            //OnPageLoaded();
         }
 
         #region Models
@@ -112,6 +115,7 @@ namespace ERPPlugin.Pages.ERP
             storeOutList.ItemsSource = outsItemUIModels;
 
             UpdateStoreLogGridAsync();
+            btnUpdatePlan_Click(null, null);
         }
 
         #region Private Method
@@ -169,68 +173,6 @@ namespace ERPPlugin.Pages.ERP
 
         #region 采购单入库
 
-        private void btnSelectPlan_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtPlanCode.Text))
-            {
-                txtPlanCode.Focus();
-                return;
-            }
-
-            using (DBContext context = new DBContext())
-            {
-                if (!context.PurchasePlan.Any(c => c.PlanCode == txtPlanCode.Text.Trim() && !c.IsDel && c.Finished && !c.Stock))
-                {
-                    MessageBoxX.Show("请检查单号是否未采购完成或已入库", "单号不存在");
-                    txtPlanCode.Focus();
-                    txtPlanCode.SelectAll();
-                    return;
-                }
-
-                string _storeName = "";
-                int _storeId = 0;
-
-                MaskVisible(true);
-                SelectedStore s = new SelectedStore();
-                s.ShowDialog();
-                MaskVisible(false);
-                if (s.Succeed)
-                {
-                    _storeName = s.Model.Name;
-                    _storeId = s.Model.Id;
-                }
-                else return;
-
-                List<PurchasePlanItem> items = context.PurchasePlanItem.Where(c => c.PlanCode == txtPlanCode.Text).ToList();
-
-                planItemUIModels.Clear();
-                foreach (var item in items)
-                {
-                    var _goods = context.Goods.First(c => c.Id == item.GoodsId);
-                    GoodsItemUIModel _model = new GoodsItemUIModel()
-                    {
-                        ItemId = item.Id,
-                        Count = item.Count,
-                        TargetId = item.GoodsId,
-                        Name = _goods.Name,
-                        TypeName = context.SysDic.First(c => c.Id == _goods.TypeId).Name,
-                        StoreId = _storeId,
-                        StoreName = _storeName
-                    };
-
-                    planItemUIModels.Add(_model);
-                }
-            }
-        }
-
-        private void txtPlanCode_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                btnSelectPlan_Click(null, null);
-            }
-        }
-
         private void btnPlanStore_Click(object sender, RoutedEventArgs e)
         {
             //采购单入库
@@ -250,9 +192,15 @@ namespace ERPPlugin.Pages.ERP
                     {
                         var _uiModel = planItemUIModels[i];
 
+                        if (_uiModel.StoreId == 0)
+                        {
+                            //不存在仓库直接退出
+                            continue;
+                        }
+
                         #region 添加库存记录
 
-                        if (context.Stock.Any(c => c.GoodsId == _uiModel.TargetId && c.StoreId == _uiModel.StoreId ))
+                        if (context.Stock.Any(c => c.GoodsId == _uiModel.TargetId && c.StoreId == _uiModel.StoreId))
                         {
                             //如果仓库中存在该物品 直接更改物品数量
 
@@ -325,13 +273,13 @@ namespace ERPPlugin.Pages.ERP
                     }
 
                     //更改当前订单状态为入库
-                    context.PurchasePlan.Single(c => c.PlanCode == txtPlanCode.Text.Trim()).Stock = true;
+                    context.PurchasePlan.Single(c => c.PlanCode == cbPlanCode.SelectedItem.ToString()).Stock = true;
                     context.SaveChanges();
                 }
 
                 MessageBoxX.Show("入库成功", "成功");
                 planItemUIModels.Clear();
-                txtPlanCode.Clear();
+                btnUpdatePlan_Click(null, null);
 
                 btnRef_Click(null, null);
             }
@@ -375,6 +323,7 @@ namespace ERPPlugin.Pages.ERP
             SelectedGoods s = new SelectedGoods(1);
             s.ShowDialog();
             MaskVisible(false);
+
             if (s.Ids.Count == 1)
             {
                 goodsId = s.Ids[0];
@@ -394,33 +343,73 @@ namespace ERPPlugin.Pages.ERP
             if (gd.Succeed)
             {
                 singleTempDetailModel = gd.Model;
-                btnSelectSingleGoods.Content = goodsName;
-                btnSelectSingleGoods.Tag = goodsId;
+
+                //选择仓库
+                MaskVisible(true);
+                SelectedStore selectedStore = new SelectedStore();
+                selectedStore.ShowDialog();
+                MaskVisible(false);
+
+                if (selectedStore.Succeed)
+                {
+                    string storeName = selectedStore.Model.Name;
+                    int storeId = selectedStore.Model.Id;
+
+                    if (storeId == 0) 
+                    {
+                        //没选择仓库
+                        btnSelectSingleGoods.Content = "未选择物品";
+                        btnSelectSingleGoods.Tag = "";
+                        return;
+                    }
+                    //选择了仓库
+
+                    #region Empty or Error
+
+                    if (string.IsNullOrEmpty(goodsId))
+                    {
+                        MessageBoxX.Show("请选择物品", "空值提醒");
+                        return;
+                    }
+                    if (storeId <= 0)
+                    {
+                        MessageBoxX.Show("请选择仓库", "空值提醒");
+                        return;
+                    }
+
+                    #endregion
+
+                    string itemId = Guid.NewGuid().ToString();
+
+                    singleItemUIModels.Add(new GoodsItemUIModel()
+                    {
+                        Count = singleTempDetailModel.Count,
+                        TargetId = goodsId,
+                        ItemId = itemId,
+                        Name = btnSelectSingleGoods.Content.ToString(),
+                        StoreId = storeId,
+                        StoreName = storeName,
+                        TypeName = "物品"
+                    });
+
+                    singleListDataDic.Add(itemId, singleTempDetailModel);
+
+                    btnSelectSingleGoods.Content = "未选择物品";
+                    btnSelectSingleGoods.Tag = "";
+                }
+                else
+                {
+                    //没选择仓库
+                    btnSelectSingleGoods.Content = "未选择物品";
+                    btnSelectSingleGoods.Tag = "";
+                    return;
+                }
             }
             else
             {
                 btnSelectSingleGoods.Content = "未选择物品";
                 btnSelectSingleGoods.Tag = "";
-            }
-        }
-
-        private void btnSelectSingleStore_Click(object sender, RoutedEventArgs e)
-        {
-            //选择仓库
-            MaskVisible(true);
-            SelectedStore s = new SelectedStore();
-            s.ShowDialog();
-            MaskVisible(false);
-
-            if (s.Succeed)
-            {
-                btnSelectSingleStore.Content = s.Model.Name;
-                btnSelectSingleStore.Tag = s.Model.Id;
-            }
-            else
-            {
-                btnSelectSingleGoods.Content = "未选择仓库";
-                btnSelectSingleGoods.Tag = 0;
+                return;
             }
         }
 
@@ -444,7 +433,7 @@ namespace ERPPlugin.Pages.ERP
                     if (context.Stock.Any(c => c.StoreId == _item.StoreId && c.GoodsId == _item.TargetId))
                     {
                         //存在直接修改数量
-                        var _socket = context.Stock.First(c => c.StoreId == _item.StoreId &&  c.GoodsId == _item.TargetId);
+                        var _socket = context.Stock.First(c => c.StoreId == _item.StoreId && c.GoodsId == _item.TargetId);
                         _socket.Count += _item.Count;
 
                         var _dataModel = singleListDataDic[_item.ItemId];
@@ -504,47 +493,6 @@ namespace ERPPlugin.Pages.ERP
             singleListDataDic.Clear();
 
             btnRef_Click(null, null);
-        }
-
-        private void btnAddSingleGoods_Click(object sender, RoutedEventArgs e)
-        {
-            string goodsId = btnSelectSingleGoods.Tag.ToString();
-            int storeId = btnSelectSingleStore.Tag.ToString().AsInt();
-
-            #region Empty or Error
-
-            if (string.IsNullOrEmpty(goodsId))
-            {
-                MessageBoxX.Show("请选择物品", "空值提醒");
-                return;
-            }
-            if (storeId <= 0)
-            {
-                MessageBoxX.Show("请选择仓库", "空值提醒");
-                return;
-            }
-
-            #endregion
-
-            string itemId = Guid.NewGuid().ToString();
-
-            singleItemUIModels.Add(new GoodsItemUIModel()
-            {
-                Count = singleTempDetailModel.Count,
-                TargetId = goodsId,
-                ItemId = itemId,
-                Name = btnSelectSingleGoods.Content.ToString(),
-                StoreId = storeId,
-                StoreName = btnSelectSingleStore.Content.ToString(),
-                TypeName = "物品"
-            });
-
-            singleListDataDic.Add(itemId, singleTempDetailModel);
-
-            btnSelectSingleGoods.Content = "未选择物品";
-            btnSelectSingleGoods.Tag = "";
-            btnSelectSingleStore.Content = "未选择仓库";
-            btnSelectSingleStore.Tag = 0;
         }
 
         private void btnDeleteSingleItem_Click(object sender, RoutedEventArgs e)
@@ -641,50 +589,40 @@ namespace ERPPlugin.Pages.ERP
             else return;
 
             MaskVisible(true);
-            StoreOutDetail gd = new StoreOutDetail(goodsId,goodsName);
+            StoreOutDetail gd = new StoreOutDetail(goodsId, goodsName);
             gd.ShowDialog();
             MaskVisible(false);
 
             if (gd.Succeed)
             {
                 outTempDetailModel = gd.Model;
-                btnSelectGoodsOut.Content = goodsName;
-                btnSelectGoodsOut.Tag = goodsId;
+
+                if (goodsId.IsNullOrEmpty())
+                {
+                    MessageBoxX.Show("请选择物品或项目", "空值提醒");
+                    return;
+                }
+
+                string itemId = Guid.NewGuid().ToString();
+
+                var _model = new GoodsItemUIModel();
+                _model.Count = outTempDetailModel.Count;
+                _model.TargetId = goodsId;
+                _model.ItemId = itemId;
+                _model.Name = goodsName;
+                _model.StoreId = outTempDetailModel.StoreId;
+                _model.StoreName = outTempDetailModel.StoreName;
+
+                outsItemUIModels.Add(_model);
+
+                btnSelectGoodsOut.Content = "未选择物品";
+                btnSelectGoodsOut.Tag = "";
             }
             else
             {
                 btnSelectGoodsOut.Content = "未选择物品";
                 btnSelectGoodsOut.Tag = "";
             }
-        }
-
-        private void btnAddOutItem_Click(object sender, RoutedEventArgs e)
-        {
-            string typeId = "";
-            string name = "";
-
-            string goodsId = btnSelectGoodsOut.Tag.ToString();
-
-            if (goodsId.IsNullOrEmpty())
-            {
-                MessageBoxX.Show("请选择物品或项目", "空值提醒");
-                return;
-            }
-
-            string itemId = Guid.NewGuid().ToString();
-
-            var _model = new GoodsItemUIModel();
-            _model.Count = outTempDetailModel.Count;
-            _model.TargetId = typeId;
-            _model.ItemId = itemId;
-            _model.Name = name;
-            _model.StoreId = outTempDetailModel.StoreId;
-            _model.StoreName = outTempDetailModel.StoreName;
-
-            outsItemUIModels.Add(_model);
-
-            btnSelectGoodsOut.Content = "未选择物品";
-            btnSelectGoodsOut.Tag = "";
         }
 
         private void btnStoreOut_Click(object sender, RoutedEventArgs e)
@@ -706,7 +644,7 @@ namespace ERPPlugin.Pages.ERP
                     if (context.Stock.Any(c => c.StoreId == _item.StoreId && c.GoodsId == _item.TargetId))
                     {
                         //存在直接修改数量
-                        var _socket = context.Stock.First(c => c.StoreId == _item.StoreId  && c.GoodsId == _item.TargetId);
+                        var _socket = context.Stock.First(c => c.StoreId == _item.StoreId && c.GoodsId == _item.TargetId);
                         _socket.Count -= _item.Count;
 
                         context.StockLog.Add(new StockLog()
@@ -742,6 +680,76 @@ namespace ERPPlugin.Pages.ERP
         {
             string itemId = (sender as Button).Tag.ToString();
             outsItemUIModels.Remove(outsItemUIModels.First(c => c.ItemId == itemId));
+        }
+
+        private void btnUpdatePlan_Click(object sender, RoutedEventArgs e)
+        {
+            cbPlanCode.SelectedItem = null;
+            cbPlanCode.Items.Clear();
+            using (DBContext context = new DBContext())
+            {
+                var planList = context.PurchasePlan.Where(c => !c.Stock).OrderByDescending(c => c.CreateTime).ToList();
+
+                foreach (var item in planList)
+                {
+                    cbPlanCode.Items.Add(item.PlanCode);
+                }
+            }
+        }
+
+        private void cbPlanCode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbPlanCode.SelectedItem == null) return;
+
+            string planCode = cbPlanCode.SelectedItem.ToString();//获得选中的采购计划号
+
+            using (DBContext context = new DBContext())
+            {
+                if (!context.PurchasePlan.Any(c => c.PlanCode == planCode && !c.IsDel && c.Finished && !c.Stock))
+                {
+                    MessageBoxX.Show("请检查单号是否未采购完成或已入库", "单号不存在");
+                    btnUpdatePlan_Click(null, null);
+                    return;
+                }
+
+                string _storeName = "";
+                int _storeId = 0;
+
+                MaskVisible(true);
+                SelectedStore s = new SelectedStore();
+                s.ShowDialog();
+                MaskVisible(false);
+                if (s.Succeed)
+                {
+                    _storeName = s.Model.Name;
+                    _storeId = s.Model.Id;
+                }
+                else
+                {
+                    btnUpdatePlan_Click(null, null);
+                    return;
+                }
+
+                List<PurchasePlanItem> items = context.PurchasePlanItem.Where(c => c.PlanCode == planCode).ToList();
+
+                planItemUIModels.Clear();
+                foreach (var item in items)
+                {
+                    var _goods = context.Goods.First(c => c.Id == item.GoodsId);
+                    GoodsItemUIModel _model = new GoodsItemUIModel()
+                    {
+                        ItemId = item.Id,
+                        Count = item.Count,
+                        TargetId = item.GoodsId,
+                        Name = _goods.Name,
+                        TypeName = context.SysDic.First(c => c.Id == _goods.TypeId).Name,
+                        StoreId = _storeId,
+                        StoreName = _storeName
+                    };
+
+                    planItemUIModels.Add(_model);
+                }
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ namespace ERPPlugin.Pages.ERP
             this.Order = 0;
 
             //测试
-            OnPageLoaded();
+            //OnPageLoaded();
         }
 
         #region Models

@@ -28,24 +28,15 @@
                         <StackPanel Margin="10" HorizontalAlignment="Center">
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <Label VerticalAlignment="Center" Content="搜索：" Width="80"/>
-                                <TextBox  Height="30"
-                                          x:Name="txtPlanCode"
-                                          KeyDown="txtPlanCode_KeyDown"
-                                          Width="300"
-                                          pu:TextBoxHelper.Watermark="采购单号"
-                                          Background="{DynamicResource TextBoxBgColor}"
-                                          pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
-                                          pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
-                                          pu:TextBoxHelper.IsClearButtonVisible="True" />
-
-                                <Button  Content="查 询"
-                                         x:Name="btnSelectPlan"
-                                         Click="btnSelectPlan_Click"
-                                         Margin="20,0,0,0"
-                                         Width="100" Height="30"
-                                         Background="{DynamicResource ButtonBgColor}"
-                                         BorderBrush="{DynamicResource ButtonBorderColor}"
-                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                                <ComboBox  Height="30"
+                                        x:Name="cbPlanCode"
+                                        Width="300"
+                                           SelectionChanged="cbPlanCode_SelectionChanged"
+                                        Background="{DynamicResource TextBoxBgColor}"
+                                        pu:ComboBoxHelper.HoverBackground="{DynamicResource ButtonHoverColor}"
+                                        pu:ComboBoxHelper.SelectedBackground="{DynamicResource SkinColor}">
+                                </ComboBox>
+                                <Button  Content="刷新" Margin="10,0,0,0"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnUpdatePlan" Click="btnUpdatePlan_Click"/>
                             </StackPanel>
                             <DataGrid HorizontalAlignment="Center"
                                       x:Name="planGoodsList"
@@ -100,18 +91,7 @@
                         <StackPanel Margin="10" >
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <Label VerticalAlignment="Center" Content="物品：" Width="80"/>
-                                <Button Content="未选择物品" Tag="" Width="200" Background="AliceBlue"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnSelectSingleGoods" Click="btnSelectSingleGoods_Click"/>
-                                <Label VerticalAlignment="Center" Content="仓库：" Width="80" Margin="20,0,0,0"/>
-                                <Button Content="未选择仓库" Tag="0" Width="200" Background="AliceBlue"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnSelectSingleStore" Click="btnSelectSingleStore_Click"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,20,0">
-                                <Button  Content="添 加"
-                                         x:Name="btnAddSingleGoods"
-                                         Click="btnAddSingleGoods_Click"
-                                         Width="100" Height="30"
-                                         Background="{DynamicResource ButtonBgColor}"
-                                         BorderBrush="{DynamicResource ButtonBorderColor}"
-                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                                <Button Content="未选择物品" Tag="" Width="300" Background="AliceBlue"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnSelectSingleGoods" Click="btnSelectSingleGoods_Click"/>
                             </StackPanel>
                             <DataGrid HorizontalAlignment="Center"
                                       x:Name="singleGoodsList"
@@ -166,16 +146,7 @@
                         <StackPanel Margin="10" HorizontalAlignment="Center">
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <Label VerticalAlignment="Center" Content="物品：" Width="80"/>
-                                <Button x:Name="btnSelectGoodsOut" Click="btnSelectGoodsOut_Click" Content="未选择物品" Tag="" Width="200" Background="AliceBlue"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,20,0">
-                                <Button  Content="添 加"
-                                         x:Name="btnAddOutItem"
-                                         Click="btnAddOutItem_Click"
-                                         Width="100" Height="30"
-                                         Background="{DynamicResource ButtonBgColor}"
-                                         BorderBrush="{DynamicResource ButtonBorderColor}"
-                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                                <Button x:Name="btnSelectGoodsOut" Click="btnSelectGoodsOut_Click" Content="未选择物品" Tag="" Width="300" Background="AliceBlue"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
                             </StackPanel>
                             <DataGrid HorizontalAlignment="Center"
                                       x:Name="storeOutList"
@@ -267,7 +238,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <Border Background="White" x:Name="bNoData" Visibility="Collapsed" Margin="0,40,0,0">
-                        <Image Source="pack://application:,,,/Client;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
                     <pu:Loading x:Name="gLoading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
                 </Grid>

@@ -130,7 +130,7 @@ namespace ERPPlugin
             }
             if (maxInputCount > 0 && maxInputCount < count)
             {
-                MessageBoxX.Show($"当前最大输入数量[{count}]", "超出规定数量");
+                MessageBoxX.Show($"当前最大输入数量[{maxInputCount}]", "超出规定数量");
                 txtCount.Focus();
                 txtCount.SelectAll();
                 return false;
