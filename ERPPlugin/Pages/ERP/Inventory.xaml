@@ -27,47 +27,25 @@
                                 <StackPanel Width="100" HorizontalAlignment="Center">
                                     <Button x:Name="btnExportCurrPage" Click="btnExportCurrPage_Click"  Content="当前页" Margin="0,10,0,0" pu:ButtonHelper.ButtonStyle="Link"  Foreground="Green"/>
                                     <Button x:Name="btnExportAllPage" Click="btnExportAllPage_Click"  Content="所有页" Margin="0,10,0,0" pu:ButtonHelper.ButtonStyle="Link"  Foreground="Green"/>
-                                    <Button x:Name="btnExportFocusDatas" Click="btnExportFocusDatas_Click" Content="选中数据" Margin="0,10,0,0" pu:ButtonHelper.ButtonStyle="Link"  Foreground="Green"/>
-                                    <Button x:Name="btnExportSetting" Click="btnExportSetting_Click" Content="导出设置" Margin="0,10,0,10" pu:ButtonHelper.ButtonStyle="Link"  Foreground="Green"/>
+                                    <Button x:Name="btnExportFocusDatas" Click="btnExportFocusDatas_Click" Content="选中数据" Margin="0,10,0,10" pu:ButtonHelper.ButtonStyle="Link"  Foreground="Green"/>
                                 </StackPanel>
                             </pu:DropDown.Child>
                         </pu:DropDown>
-                        <Button  Content="刷新列表" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnRef" Click="btnRef_Click"/>
+                        <Button  Content="显示设置" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnTableColumnVisible" Click="btnTableColumnVisible_Click" />
+                        <Button  Content="刷新列表" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnRef" Click="btnRef_Click" />
                     </StackPanel>
                 </pu:GroupBoxHelper.ExtendControl>
                 <Grid>
-                    <Grid Height="50" VerticalAlignment="Top">
-                        <StackPanel Orientation="Horizontal">
-                            <Label VerticalAlignment="Center" Content="名称：" />
-                            <TextBox  Height="30" x:Name="txtName"
-                                          Width="200"
-                                          pu:TextBoxHelper.Watermark="名称/简码"
-                                          Background="{DynamicResource TextBoxBgColor}"
-                                          pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
-                                          pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
-                                          pu:TextBoxHelper.IsClearButtonVisible="True" />
-                           
-                            <Button  Content="查 询"
-                                     x:Name="btnSelect"
-                                     Click="btnSelect_Click"
-                                         Margin="20,0,0,0"
-                                         Width="100" Height="30"
-                                         Background="{DynamicResource ButtonBgColor}"
-                                         BorderBrush="{DynamicResource ButtonBorderColor}"
-                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
-                        </StackPanel>
-                    </Grid>
-
                     <DataGrid HorizontalAlignment="Center"
                               x:Name="list"
                               ItemsSource="{Binding}"
                               IsReadOnly="True"
-                              Margin="0,50,5,50"
+                              Margin="0,0,5,50"
                               AutoGenerateColumns="False"
                               pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
                               pu:DataGridHelper.HeaderPadding="5,0"
                               pu:DataGridHelper.CellPadding="5,0"
-                              pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}"  MouseDoubleClick="list_MouseDoubleClick"
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Width="60" IsReadOnly="True">
@@ -89,8 +67,6 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="仓库" Width="200" Binding="{Binding StoreName}" />
-                            <DataGridTextColumn Header="库存余量" Width="150" Binding="{Binding Count}" />
                             <DataGridTemplateColumn Header="操作" Width="80" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -103,7 +79,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <pu:Pagination x:Name="gPager" Height="28"  VerticalAlignment="Bottom"  CurrentIndexChanged="UpdatePager" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
-                    <Border Background="White" x:Name="bNoData" Visibility="Visible" Margin="0,50,0,5">
+                    <Border Background="White" x:Name="bNoData" Visibility="Visible" Margin="0,0,0,5">
                         <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
                     <pu:Loading x:Name="gLoading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>

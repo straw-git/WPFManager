@@ -34,7 +34,7 @@ namespace ERPPlugin.Pages.ERP
             this.Order = 1;
 
             //测试
-            OnPageLoaded();
+            //OnPageLoaded();
         }
 
         class UIModel : BaseUIModel
@@ -188,11 +188,6 @@ namespace ERPPlugin.Pages.ERP
             addSupplier.ShowDialog();
             UpdatePager(null, null);
             MaskVisible(false);
-        }
-
-        private void btnRef_Click(object sender, RoutedEventArgs e)
-        {
-            UpdatePager(null, null);
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)

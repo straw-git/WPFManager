@@ -22,6 +22,7 @@ using System.Reflection;
 using System.Linq.Expressions;
 using Common.Utils;
 using Common.MyAttributes;
+using Common.Windows;
 
 namespace ERPPlugin.Pages.ERP
 {
@@ -36,7 +37,7 @@ namespace ERPPlugin.Pages.ERP
             this.Order = 4;
 
             //测试
-            //OnPageLoaded();
+            OnPageLoaded();
         }
 
         #region Models
@@ -46,7 +47,7 @@ namespace ERPPlugin.Pages.ERP
             public string Id { get; set; }
 
             private string name = "";
-            [DataSourceBinding("名称", -1, 1)]
+            [DataSourceBinding("名称", -1, 2)]
             public string Name
             {
                 get => name;
@@ -66,7 +67,7 @@ namespace ERPPlugin.Pages.ERP
             }
 
             private string typeName = "";
-            [DataSourceBinding("类型", -1, 0)]
+            [DataSourceBinding("类型", -1, 1)]
             public string TypeName //物品类型
             {
                 get => typeName;
@@ -78,7 +79,7 @@ namespace ERPPlugin.Pages.ERP
             }
 
             private string unitName = "";
-            [DataSourceBinding("单位", -1, 2)]
+            [DataSourceBinding("单位", -1, 3)]
             public string UnitName
             {
                 get => unitName;
@@ -90,7 +91,7 @@ namespace ERPPlugin.Pages.ERP
             }
 
             private string specification = "";
-            [DataSourceBinding("规格", -1, 3)]
+            [DataSourceBinding("规格", -1, 4)]
             public string Specification//规格
             {
                 get => specification;
@@ -102,7 +103,7 @@ namespace ERPPlugin.Pages.ERP
             }
 
             private decimal salePrice = 0;
-            [DataSourceBinding("零售价", -1, 4)]
+            [DataSourceBinding("零售价", -1, 5)]
             public decimal SalePrice //零售价
             {
                 get => salePrice;
@@ -114,7 +115,7 @@ namespace ERPPlugin.Pages.ERP
             }
 
             private int count = 0;
-            [DataSourceBinding("库存", 0, 5)]
+            [DataSourceBinding("库存", 0, 6)]
             public int Count//数量
             {
                 get => count;
@@ -248,11 +249,6 @@ namespace ERPPlugin.Pages.ERP
             MaskVisible(false);
         }
 
-        private void btnRef_Click(object sender, RoutedEventArgs e)
-        {
-            UpdatePager(null, null);
-        }
-
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
             UpdatePager(null, null);
@@ -313,5 +309,101 @@ namespace ERPPlugin.Pages.ERP
         }
 
         #endregion
+
+        private void cbSelectListAll_Click(object sender, RoutedEventArgs e)
+        {
+            bool isCheck = (bool)((sender as CheckBox).IsChecked);
+            foreach (var item in Data)
+            {
+                item.IsChecked = isCheck;
+                if (isCheck)
+                {
+                    //如果已经选中 说明原来没有选中 将它加入到列表
+                    SelectedTableData(list.Name, item);
+                }
+                else
+                {
+                    //未选中说明原来是选中的 将它移出列表
+                    UnSelectedTableData(list.Name, c => c.Id == item.Id);
+                }
+            }
+        }
+
+        #region 导出Excel
+
+        private void btnExportCurrPage_Click(object sender, RoutedEventArgs e)
+        {
+            var listData = Data.ToList();//获取选中数据
+            var columns = GetDataGridColumnVisibleHeaders(list.Name, true);//获取所有显示列对应的标题
+            var hiddleColumns = GetDataGridColumnVisibleHeaders(list.Name, false);//获取所有隐藏列的标题
+            if (list == null || listData.Count == 0)
+            {
+                MessageBoxX.Show("没有选中数据", "空值提醒");
+                return;
+            }
+            new ExcelHelper().List2ExcelAsync(listData, $"页码{gPager.CurrentIndex}", columns, hiddleColumns.Keys.ToList());
+        }
+
+        private async void btnExportAllPage_Click(object sender, RoutedEventArgs e)
+        {
+            //导出所有数据
+            List<UIModel> allData = new List<UIModel>();
+            string listName = list.Name;
+
+            await Task.Run(() =>
+            {
+                var _list = new List<Goods>();
+                using (DBContext context = new DBContext())
+                {
+                    _list = context.Goods.ToList();
+                    foreach (var item in _list)
+                    {
+                        string typeName = context.SysDic.First(c => c.Id == item.TypeId).Name;
+                        string unitName = context.SysDic.First(c => c.Id == item.UnitId).Name;
+                        int count = context.Stock.Any(c => c.GoodsId == item.Id) ? context.Stock.Where(c => c.GoodsId == item.Id).Sum(c => c.Count) : 0;
+                        var _model = DBItem2UIModel(item, typeName, unitName, count);
+                        allData.Add(_model);
+                    }
+                }
+            });
+            var columns = GetDataGridColumnVisibleHeaders(list.Name, true);//获取所有显示列对应的标题
+            var hiddleColumns = GetDataGridColumnVisibleHeaders(list.Name, false);//获取所有隐藏列的标题
+
+            new ExcelHelper().List2ExcelAsync(allData, "所有数据", columns, hiddleColumns.Keys.ToList());
+        }
+
+        private void btnExportFocusDatas_Click(object sender, RoutedEventArgs e)
+        {
+            var listData = GetSelectedTableData<UIModel>(list.Name);//获取选中数据
+            var columns = GetDataGridColumnVisibleHeaders(list.Name, true);//获取所有显示列对应的标题
+            var hiddleColumns = GetDataGridColumnVisibleHeaders(list.Name, false);//获取所有隐藏列的标题
+            if (listData == null || listData.Count == 0)
+            {
+                MessageBoxX.Show("没有选中数据", "空值提醒");
+                return;
+            }
+            new ExcelHelper().List2ExcelAsync(listData, "选中数据", columns, hiddleColumns.Keys.ToList());
+        }
+
+        #endregion
+
+        private void btnTableColumnVisible_Click(object sender, RoutedEventArgs e)
+        {
+            MaskVisible(true);
+
+            BasePageVisibilititySetting basePageVisibilititySetting = new BasePageVisibilititySetting(GetDataGridHeaders(list.Name));
+            basePageVisibilititySetting.ShowDialog();
+
+            var result = basePageVisibilititySetting.Result;
+            foreach (var ri in result)
+            {
+                Visibility _visibility = ri.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+                SetDataGridColumnVisibilitity(list.Name, ri.Title, _visibility);
+            }
+
+            UpdateDataGridColumnVisibility(list);
+
+            MaskVisible(false);
+        }
     }
 }
