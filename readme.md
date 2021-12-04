@@ -1,4 +1,5 @@
-# 本项目是一个做练习很好的示例,其中包括对于MSSqlserver数据库的增删改查,使用LiveCharts展示图表,使用NPOI导出Excel,使用Panuon.UI.Silver搭建漂亮的UI页面
+# 本项目是一个做练习很好的示例
+其中包括对于MSSqlserver数据库的增删改查,使用LiveCharts展示图表,使用NPOI导出Excel,使用Panuon.UI.Silver搭建漂亮的UI页面
 
 基础模块包括：
 
