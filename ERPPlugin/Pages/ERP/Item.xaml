@@ -73,7 +73,7 @@
                               AutoGenerateColumns="False"
                               pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
                               pu:DataGridHelper.HeaderPadding="5,0"
-                              pu:DataGridHelper.CellPadding="5,0"
+                              pu:DataGridHelper.CellPadding="5,0" MouseDoubleClick="list_MouseDoubleClick"
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
                         <DataGrid.Columns>

@@ -37,7 +37,7 @@ namespace ERPPlugin.Pages.ERP
             this.Order = 4;
 
             //测试
-            OnPageLoaded();
+            //OnPageLoaded();
         }
 
         #region Models
@@ -404,6 +404,27 @@ namespace ERPPlugin.Pages.ERP
             UpdateDataGridColumnVisibility(list);
 
             MaskVisible(false);
+        }
+
+        private void list_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (list.SelectedItem != null)
+            {
+                var selectItem = list.SelectedItem as UIModel;
+                bool targetIsChecked = !selectItem.IsChecked;
+                Data.Single(c => c.Id == selectItem.Id).IsChecked = targetIsChecked;
+
+                if (targetIsChecked)
+                {
+                    //如果已经选中 说明原来没有选中 将它加入到列表
+                    SelectedTableData(list.Name, selectItem);
+                }
+                else
+                {
+                    //未选中说明原来是选中的 将它移出列表
+                    UnSelectedTableData(list.Name, c => c.Id == selectItem.Id);
+                }
+            }
         }
     }
 }

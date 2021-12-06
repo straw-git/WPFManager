@@ -21,6 +21,8 @@ using System.Linq.Expressions;
 using Common.Utils;
 using Common.Windows;
 using Common.MyAttributes;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace ERPPlugin.Pages.ERP
 {
@@ -35,7 +37,7 @@ namespace ERPPlugin.Pages.ERP
             this.Order = 0;
 
             //测试
-            //OnPageLoaded();
+            OnPageLoaded();
         }
 
         #region Models
@@ -76,6 +78,31 @@ namespace ERPPlugin.Pages.ERP
         protected override void OnPageLoaded()
         {
             SetDataGridBinding(list, new UIModel(), Data);
+            LoadChartByCount();
+        }
+
+        private void LoadChartByCount()
+        {
+            ccCount.Series = new SeriesCollection();
+            ccCount.Series.Clear();
+            using (DBContext context = new DBContext())
+            {
+                var store = context.Stock.GroupBy(c => c.StoreId).ToList();
+                ccCount.Series.Add(new ColumnSeries()
+                {
+                    Title = "物品种类",
+                    Values = new LiveCharts.ChartValues<int>(),
+                    DataLabels = true,
+                    LabelPoint = point => string.Format("{0}", point.Y)
+                });
+                ccCount.AxisX = new AxesCollection();
+                ccCount.AxisX.Add(new Axis() { Labels = new List<string>() });
+                foreach (var item in store)
+                {
+                    ccCount.Series[0].Values.Add(item.Count());
+                    ccCount.AxisX[0].Labels.Add(context.SysDic.First(c => c.Id == item.Key).Name);
+                }
+            }
         }
 
         #region UI Method
@@ -251,7 +278,6 @@ namespace ERPPlugin.Pages.ERP
         }
 
         #endregion
-
 
         private void btnTableColumnVisible_Click(object sender, RoutedEventArgs e)
         {
