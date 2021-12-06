@@ -400,7 +400,7 @@ namespace HRPlugin.Pages.HR
                             models = staffs.OrderBy(c => c.CreateTime).Skip(pageSize * (currPage - 1)).Take(pageSize).ToList();
                         }
                     }
-
+                    if (models.Count == 0) models = staffs.ToList();
                 }
             });
             await Task.Delay(300);

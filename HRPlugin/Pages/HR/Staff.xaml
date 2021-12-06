@@ -67,7 +67,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="入职时间" Width="150" Binding="{Binding CreateTime}" />
                                 <DataGridTextColumn Header="姓名" Width="*" Binding="{Binding Name}" />
-                                <DataGridTextColumn Header="年龄" Width="80" Binding="{Binding Age}" />
+                                <DataGridTextColumn Header="年龄" Width="80"  Binding="{Binding Age}" />
                                 <DataGridTextColumn Header="职务" Width="150" Binding="{Binding JobPostName}" />
                                 <DataGridTemplateColumn Header="操作" Width="200" >
                                     <DataGridTemplateColumn.CellTemplate>
