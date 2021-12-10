@@ -182,7 +182,7 @@ namespace ERPPlugin.Pages.ERP
                 return;
             }
 
-            var result = MessageBoxX.Show("请确认核对信息后入库,当前采购单将无法再次入库,采购单内未入库内容仅可单独入库", "入库警告", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
+            var result = MessageBoxX.Show("请确认核对信息后入库,当前采购单将无法再次入库", "入库警告", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
                 using (DBContext context = new DBContext())
@@ -233,6 +233,7 @@ namespace ERPPlugin.Pages.ERP
                             }
 
                             _stock.Count += _uiModel.Count;
+                            
                         }
                         else
                         {
