@@ -43,7 +43,7 @@ namespace Client.Windows
             var pluginsData = LocalPlugins.Models.OrderBy(c => c.Order).ToList();
             foreach (var item in pluginsData)
             {
-                plugins.Items.Add($"{item.DLLPageName}:====[ {item.Order} ]");
+                plugins.Items.Add($"{item.DLLPageName}");
             }
         }
 
@@ -54,6 +54,19 @@ namespace Client.Windows
                 LoadingForeground = "#5DBBEC".ToColor().ToBrush(),
                 ButtonBrush = "#5DBBEC".ToColor().ToBrush(),
             });
+
+            #region 更新插件
+
+            LocalPlugins.Models.Clear();
+
+            for (int i = 0; i < plugins.Items.Count; i++)
+            {
+                var item = plugins.Items[i];
+                LocalPlugins.Models.Add(new LocalPlugins.DBModel() { DLLPageName = item.ToString(), Order = i });
+            }
+            LocalPlugins.Save();
+
+            #endregion 
 
             MenuManager.InitMenus();
 
@@ -93,9 +106,23 @@ namespace Client.Windows
         {
             if (dlls.Items.Count > 0 && dlls.SelectedItem != null)
             {
-                gPluginDetails.Visibility = Visibility.Visible;
-                lblDLLName.Content = dlls.SelectedItem.ToString();
-                txtPageName.Focus();
+                string dllName = dlls.SelectedItem.ToString();
+                string fName = dllName.Substring(0, dllName.IndexOf('.'));
+                string sName = "Pages";
+                int order = 0;
+
+                string pName = $"{fName}.{sName}";
+
+                if (LocalPlugins.Models.Any(c => c.DLLPageName == pName))
+                {
+                    MessageBoxX.Show("请重新选择", "当前命名空间已存在");
+                    return;
+                }
+
+                LocalPlugins.Models.Add(new LocalPlugins.DBModel() { DLLPageName = pName, Order = order });
+                LocalPlugins.Save();
+
+                UpdatePlugins();
             }
         }
 
@@ -124,47 +151,66 @@ namespace Client.Windows
             }
         }
 
-        private void btnCanel_Click(object sender, RoutedEventArgs e)
+        private void LBoxSort_OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            gPluginDetails.Visibility = Visibility.Collapsed;
-        }
-
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            string dllName = lblDLLName.Content.ToString();
-            string fName = dllName.Substring(0, dllName.IndexOf('.'));
-            string sName = txtPageName.Text.IsNullOrEmpty() ? "Pages" : txtPageName.Text;
-            int order = 0;
-            if (txtOrder.Text.IsNullOrEmpty())
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
-                order = 0;
-            }
-            else
-            {
-                if (!int.TryParse(txtOrder.Text, out order))
+                var pos = e.GetPosition(plugins);
+                HitTestResult result = VisualTreeHelper.HitTest(plugins, pos);
+                if (result == null)
                 {
-                    MessageBox.Show("请输入正确数值");
-                    txtOrder.Focus();
-                    txtOrder.SelectAll();
                     return;
                 }
+                var listBoxItem = FindVisualParent<ListBoxItem>(result.VisualHit);
+                if (listBoxItem == null || listBoxItem.Content != plugins.SelectedItem)
+                {
+                    return;
+                }
+                DataObject dataObj = new DataObject(listBoxItem.Content.ToString());
+                DragDrop.DoDragDrop(plugins, dataObj, DragDropEffects.Move);
             }
+        }
 
-            string pName = $"{fName}.{sName}";
-
-            if (LocalPlugins.Models.Any(c => c.DLLPageName == pName))
+        private void LBoxSort_OnDrop(object sender, DragEventArgs e)
+        {
+            var pos = e.GetPosition(plugins);
+            var result = VisualTreeHelper.HitTest(plugins, pos);
+            if (result == null)
             {
-                MessageBoxX.Show("请重新选择", "当前命名空间已存在");
-                gPluginDetails.Visibility = Visibility.Collapsed;
                 return;
             }
+            //查找元数据
+            var sourcePerson = e.Data.GetData(typeof(string)).ToString();
+            if (sourcePerson == null)
+            {
+                return;
+            }
+            //查找目标数据
+            var listBoxItem = FindVisualParent<ListBoxItem>(result.VisualHit);
+            if (listBoxItem == null)
+            {
+                return;
+            }
+            var targetPerson = listBoxItem.Content.ToString();
+            if (ReferenceEquals(targetPerson, sourcePerson))
+            {
+                return;
+            }
+            plugins.Items.Remove(sourcePerson);
+            plugins.Items.Insert(plugins.Items.IndexOf(targetPerson), sourcePerson);
+        }
 
-            LocalPlugins.Models.Add(new LocalPlugins.DBModel() { DLLPageName = pName, Order = order });
-            LocalPlugins.Save();
+        //根据子元素查找父元素
+        public T FindVisualParent<T>(DependencyObject obj) where T : class
+        {
+            while (obj != null)
+            {
+                if (obj is T)
+                    return obj as T;
 
-            UpdatePlugins();
-
-            gPluginDetails.Visibility = Visibility.Collapsed;
+                obj = VisualTreeHelper.GetParent(obj);
+            }
+            return null;
         }
     }
 }

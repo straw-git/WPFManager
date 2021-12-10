@@ -29,8 +29,18 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ListBox MouseDoubleClick="dlls_MouseDoubleClick" Margin="5" x:Name="dlls"/>
-            <ListBox MouseDoubleClick="plugins_MouseDoubleClick" Margin="5" Grid.Column="1" x:Name="plugins"/>
+            <Grid Grid.Column="0">
+                <ListBox MouseDoubleClick="dlls_MouseDoubleClick" Margin="5,5,5,30" x:Name="dlls"/>
+                <Border Height="30" Background="Black" Margin="5,0,5,0" VerticalAlignment="Bottom">
+                    <Label Content="已有插件 [双击使用]" Foreground="White"/>
+                </Border>
+            </Grid>
+            <Grid Grid.Column="1">
+                <ListBox MouseDoubleClick="plugins_MouseDoubleClick"  Margin="5,5,5,30" x:Name="plugins" PreviewMouseMove="LBoxSort_OnPreviewMouseMove" Drop="LBoxSort_OnDrop" AllowDrop="True"/>
+                <Border Height="30" Background="Black" Margin="5,0,5,0" VerticalAlignment="Bottom">
+                    <Label Content="使用中的插件 [拖动移动显示顺序]" Foreground="White"/>
+                </Border>
+            </Grid>
         </Grid>
         <StackPanel  VerticalAlignment="Bottom" Orientation="Horizontal"  HorizontalAlignment="Right"  Margin="10">
             <Button  Content="更新 DLL"
@@ -47,48 +57,5 @@
                                          BorderBrush="{DynamicResource ButtonBorderColor}"
                                          pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}" Click="btnSubmit_Click"/>
         </StackPanel>
-        <Grid Background="Gray" x:Name="gPluginDetails" Visibility="Collapsed">
-            <StackPanel Width="300" VerticalAlignment="Top" Margin="0,30,0,0" HorizontalAlignment="Center">
-                <Label x:Name="lblDLLName" Content="xxxx.dll"/>
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <Label Width="80" Content="页面空间："/>
-                    <TextBox  Height="30"
-                          x:Name="txtPageName"
-                              Width="200"
-                          pu:TextBoxHelper.Watermark="默认是Pages"
-                          Background="{DynamicResource TextBoxBgColor}"
-                          pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
-                          pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <Label Content="排序：" Width="80"/>
-                    <TextBox  Height="30" x:Name="txtOrder"
-                              Width="200"
-                          pu:TextBoxHelper.Watermark="默认是0"
-                          Background="{DynamicResource TextBoxBgColor}"
-                          pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
-                          pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"/>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right"  Margin="20">
-                <Button x:Name="btnCanel" Click="btnCanel_Click"
-                    Width="80"
-                    Height="30"
-                    VerticalAlignment="Center"
-                    Content="取 消"
-                    pu:ButtonHelper.ClickStyle="Sink"
-                    Background="{DynamicResource ButtonBgColor}"
-                    pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}" />
-                <Button  x:Name="btnAdd" Click="btnAdd_Click"
-                    Width="100"
-                    Height="30"
-                    Margin="20,0,20,0"
-                    VerticalAlignment="Center"
-                    Content="添加插件"
-                    pu:ButtonHelper.ClickStyle="Sink"
-                    Background="{DynamicResource ButtonBgColor}"
-                    pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}" />
-            </StackPanel>
-        </Grid>
     </Grid>
 </pu:WindowX>
