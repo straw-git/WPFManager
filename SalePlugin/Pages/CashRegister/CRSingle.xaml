@@ -8,13 +8,14 @@
       xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
       mc:Ignorable="d" 
       d:DesignHeight="730" d:DesignWidth="1190"
+            PreviewKeyDown="BasePage_PreviewKeyDown"
       Title="单品收银">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <GroupBox  Header="单品收银"
+        <GroupBox  Header="单品收银" x:Name="gp1"
                            Margin="10,10,0,10"
                             pu:GroupBoxHelper.Icon="&#xF11C;"
                             pu:GroupBoxHelper.CornerRadius="10"
@@ -33,15 +34,28 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <StackPanel Margin="0,5,5,5">
-                    <TextBox  Height="30" x:Name="txtQuickCode"
-                                          pu:TextBoxHelper.Watermark="简码/名称/编码（回车检索）"
+                    <TextBox  Height="30" x:Name="txtName" PreviewKeyDown="txtName_PreviewKeyDown"
+                                          pu:TextBoxHelper.Watermark="简码/名称"
                                           Background="{DynamicResource TextBoxBgColor}"
                                           pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
                                           pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                           pu:TextBoxHelper.IsClearButtonVisible="True" />
+                    <pu:DropDown Margin="0,-30,30,0"  HorizontalAlignment="Right">
+                        <Button  Content="快捷键说明"  pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue"/>
+                        <pu:DropDown.Child>
+                            <StackPanel HorizontalAlignment="Center">
+                                <Label Margin="0,10,0,0" Content="回车检索 再次回车选择物品"/>
+                                <Label Margin="0,10,0,0" Content="上下键选择物品"/>
+                                <Label Margin="0,10,0,0" Content="左右键加减"/>
+                                <Label Margin="0,10,0,0" Content="数字键输入物品数量"/>
+                                <Label Margin="0,10,0,0" Content="ESC键取消当前选择"/>
+                                <Label Margin="0,10,0,10" Content="TAB键切换列表"/>
+                            </StackPanel>
+                        </pu:DropDown.Child>
+                    </pu:DropDown>
                 </StackPanel>
                 <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
-                    <ListBox HorizontalContentAlignment="Stretch" Margin="0,5,5,5">
+                    <!--<ListBox HorizontalContentAlignment="Stretch" Margin="0,5,5,5">
                         <ListBoxItem>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -54,14 +68,46 @@
                                 <Label Grid.Column="2" Content="150.23" Width="80" HorizontalContentAlignment="Right"/>
                             </Grid>
                         </ListBoxItem>
-                    </ListBox>
+                    </ListBox>-->
+                    <!--HeadersVisibility="None"-->
+                    <DataGrid HorizontalAlignment="Center"
+                              x:Name="list"
+                              ItemsSource="{Binding}"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              PreviewMouseDoubleClick="list_PreviewMouseDoubleClick"
+                              pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                              pu:DataGridHelper.HeaderPadding="5,0"
+                              pu:DataGridHelper.CellPadding="5,0"
+                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.SelectedForeground="White"
+                              pu:DataGridHelper.HoverBackground="White">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="名称" Width="*" Binding="{Binding GoodsName}"  />
+                            <DataGridTextColumn Header="规格" Width="80" Binding="{Binding Specification}" />
+                            <DataGridTextColumn Header="单位" Width="80" Binding="{Binding UnitName}" />
+                            <DataGridTextColumn Header="单价" Width="100" Binding="{Binding Price}" />
+                            <DataGridTextColumn Header="库存" Width="120" Binding="{Binding StockCount}" />
+                            <DataGridTemplateColumn Header="数量" Width="120" >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Width="120" HorizontalAlignment="Center">
+                                            <Button Content="-" Width="30"/>
+                                            <TextBox Text="{Binding Count}" IsReadOnly="True" Width="60" HorizontalContentAlignment="Center"/>
+                                            <Button Content="+" Width="30"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="金额" Width="100" Binding="{Binding TotalPrice}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </ScrollViewer>
             </Grid>
         </GroupBox>
-
         <!--小票-->
         <GroupBox  Header="账单" Grid.Column="1" Width="400"
-                           Margin="10"
+                           Margin="10" x:Name="gp2"
                             pu:GroupBoxHelper.Icon="&#xF11C;"
                             pu:GroupBoxHelper.CornerRadius="10"
                             pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
@@ -69,8 +115,8 @@
                             pu:GroupBoxHelper.ShadowColor="LightGray" >
             <pu:GroupBoxHelper.ExtendControl>
                 <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
-                    <Button  Content="作废" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Red"/>
-                    <Button  Content="挂存" ToolTip="挂存功能为用户没有挑选完成,先将当前的保存起来,等待继续结算" Margin="50,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                    <Button  Content="作废（F6）" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Red"/>
+                    <Button  Content="挂存（F12）" ToolTip="挂存功能为用户没有挑选完成,先将当前的保存起来,等待继续结算" Margin="50,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
                     <Button  Content="打印" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
                     <Button  Content="结算（F1）" Margin="30,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
                 </StackPanel>
@@ -78,25 +124,27 @@
             <Grid>
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,50">
                     <StackPanel>
-                        <ListBox Margin="0,10,5,10" Grid.Row="1" x:Name="info" HorizontalAlignment="Center">
-                            <ListBoxItem>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="240"/>
-                                        <ColumnDefinition Width="50"/>
-                                        <ColumnDefinition Width="80"/>
-                                    </Grid.ColumnDefinitions>
+                        <ListBox Margin="0,10,5,10" Grid.Row="1" x:Name="result" ItemsSource="{Binding}" HorizontalAlignment="Center">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="210"/>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="80"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <Label Content="一个大品牌的洗衣液（20*2500ml）"  ToolTip="[202009270512]管理员[admin] 删除员工[李思睿]" HorizontalAlignment="Left"/>
-                                    <Label Grid.Column="1" Content="*1" Width="50" HorizontalContentAlignment="Center"/>
-                                    <Label Grid.Column="2" Content="150.23" Width="80" HorizontalContentAlignment="Right"/>
-                                </Grid>
-                            </ListBoxItem>
+                                        <Label Content="{Binding SubName}"  ToolTip="{Binding GoodsName}" HorizontalAlignment="Left"/>
+                                        <Label Grid.Column="1" Content="{Binding Count}" Width="50" HorizontalContentAlignment="Center"/>
+                                        <Label Grid.Column="2" Content="{Binding TotalPrice}" Width="80" HorizontalContentAlignment="Right"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
                 </ScrollViewer>
                 <Border Height="50" VerticalAlignment="Bottom" Background="{DynamicResource SkinColor}" CornerRadius="5" Opacity="0.85">
-                    <Label Content="结算总金额：15000.00" Foreground="White"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+                    <Label x:Name="lblTotalPrice" Content="结算总金额：0" Foreground="White"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
                 </Border>
             </Grid>
         </GroupBox>

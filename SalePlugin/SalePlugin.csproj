@@ -71,6 +71,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="WinTempSingle.xaml.cs">
+      <DependentUpon>WinTempSingle.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -99,11 +102,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SaleOrder\CreateOrder.xaml">
+    <Page Include="Pages\CustomerOrder\CreateOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SaleOrder\HisOrder.xaml">
+    <Page Include="Pages\CustomerOrder\HisOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WinTempSingle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -123,13 +130,13 @@
       <DependentUpon>CashRegister.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Manager\MenuInfo.cs" />
-    <Compile Include="Pages\SaleOrder\CreateOrder.xaml.cs">
+    <Compile Include="Pages\CustomerOrder\CreateOrder.xaml.cs">
       <DependentUpon>CreateOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SaleOrder\HisOrder.xaml.cs">
+    <Compile Include="Pages\CustomerOrder\HisOrder.xaml.cs">
       <DependentUpon>HisOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SaleOrder\MenuInfo.cs" />
+    <Compile Include="Pages\CustomerOrder\MenuInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -166,8 +173,14 @@
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
       <Name>DBModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SaleDBModels\SaleDBModels.csproj">
+      <Project>{17f1b7ee-06a2-40a5-bd0d-2f37b91eeb21}</Project>
+      <Name>SaleDBModels</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

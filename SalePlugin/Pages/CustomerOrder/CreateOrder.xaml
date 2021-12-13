@@ -1,0 +1,174 @@
+﻿<p:BasePage x:Class="SalePlugin.Pages.CustomerOrder.CreateOrder"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SalePlugin.Pages.CustomerOrder"
+      mc:Ignorable="d" 
+      xmlns:p="clr-namespace:Common;assembly=Common"  
+            xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+      d:DesignHeight="750" d:DesignWidth="1190"
+      Title="创建订单">
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ScrollViewer Margin="10,10,5,0" HorizontalScrollBarVisibility="Disabled" MinHeight="200">
+                <!--<ListBox HorizontalContentAlignment="Stretch">
+                    <ListBoxItem>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Grid.Column="1"  Content="姓名（手机号）"/>
+                            <Label Grid.Column="2" Content="年龄" MinWidth="100" HorizontalContentAlignment="Center"/>
+                            <Label Grid.Column="3" Content="性别" MinWidth="50" HorizontalContentAlignment="Center"/>
+                            <Label Grid.Column="4" Content="时间" MinWidth="200" HorizontalContentAlignment="Right"/>
+                        </Grid>
+                    </ListBoxItem>
+                </ListBox>-->
+                <DataGrid HorizontalAlignment="Center"
+                              x:Name="list"
+                              ItemsSource="{Binding}"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                              pu:DataGridHelper.HeaderPadding="5,0"
+                              pu:DataGridHelper.CellPadding="5,0" HeadersVisibility="None"
+                              pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="60" Header="选择" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="姓名（手机号）" Width="*" Binding="{Binding PackageName}" />
+                        <DataGridTextColumn Header="年龄" Width="Auto" Binding="{Binding UnitName}" />
+                        <DataGridTextColumn Header="性别" Width="Auto" Binding="{Binding SalePrice}" />
+                        <DataGridTextColumn Header="金额" Width="Auto" Binding="{Binding PackageName}" />
+                        <DataGridTextColumn Header="时间" Width="Auto" Binding="{Binding SalePrice}" />
+                        <DataGridTemplateColumn Header="操作" Width="80" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button  Content="编辑" ToolTip="只可以编辑收款状态未完成的订单" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}" Foreground="Blue" x:Name="btnEdit"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+            <GroupBox  Header="创建订单" Grid.Row="1"
+                           Margin="10,10,0,10"
+                            pu:GroupBoxHelper.Icon="&#xF11C;"
+                            pu:GroupBoxHelper.CornerRadius="10"
+                            pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                            pu:GroupBoxHelper.IsSplitLineVisible="True"
+                            pu:GroupBoxHelper.ShadowColor="LightGray" >
+                <pu:GroupBoxHelper.ExtendControl>
+                    <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
+                        <Button  Content="常用项"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                        <Button  Content="新订单" Margin="30,0,0,0"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                    </StackPanel>
+                </pu:GroupBoxHelper.ExtendControl>
+                <Grid IsEnabled="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Margin="0,5,5,5">
+                        <TextBox  Height="30" x:Name="txtQuickCode"
+                                          pu:TextBoxHelper.Watermark="简码/名称/编码（回车检索）"
+                                          Background="{DynamicResource TextBoxBgColor}"
+                                          pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                          pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                          pu:TextBoxHelper.IsClearButtonVisible="True" />
+                    </StackPanel>
+                    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+                        <ListBox HorizontalContentAlignment="Stretch" Margin="0,5,5,5">
+                            <ListBoxItem>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="名称（规格）（型号）"/>
+                                    <Label Grid.Column="1" Content="仓库（现量/总量）" MinWidth="200" HorizontalAlignment="Left"/>
+                                    <Label Grid.Column="2" Content="150.23" Width="80" HorizontalContentAlignment="Right"/>
+                                </Grid>
+                            </ListBoxItem>
+                        </ListBox>
+                    </ScrollViewer>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <GroupBox IsEnabled="False"  Header="详情" Grid.Column="1" Width="400"
+                           Margin="10"
+                            pu:GroupBoxHelper.Icon="&#xF11C;"
+                            pu:GroupBoxHelper.CornerRadius="10"
+                            pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                            pu:GroupBoxHelper.IsSplitLineVisible="True"
+                            pu:GroupBoxHelper.ShadowColor="LightGray" >
+            <pu:GroupBoxHelper.ExtendControl>
+                <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
+                    <Button  Content="取消"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Red"/>
+                    <Button  Content="提交" Margin="30,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                </StackPanel>
+            </pu:GroupBoxHelper.ExtendControl>
+            <Grid>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="0,70,0,10">
+                    <StackPanel>
+                        <ListBox Margin="0,10,5,10" Grid.Row="1" x:Name="info" HorizontalAlignment="Center">
+                            <ListBoxItem>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="240"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Content="一个大品牌的洗衣液（20*2500ml）"  ToolTip="[202009270512]管理员[admin] 删除员工[李思睿]" HorizontalAlignment="Left"/>
+                                    <Label Grid.Column="1" Content="*1" Width="50" HorizontalContentAlignment="Center"/>
+                                    <Label Grid.Column="2" Content="150.23" Width="80" HorizontalContentAlignment="Right"/>
+                                </Grid>
+                            </ListBoxItem>
+                        </ListBox>
+                    </StackPanel>
+                </ScrollViewer>
+                <Border Height="70" VerticalAlignment="Top" Background="{DynamicResource SkinColor}" CornerRadius="5,5,0,0" Opacity="0.85">
+                    <StackPanel VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="订单号：" Foreground="White" Margin="20,0,0,0" Width="80" />
+                            <Label Content="202111152451" Foreground="White"/>
+                            <Label Content="（双击此处复制）" Foreground="White" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="数量：" Foreground="White" Margin="20,0,0,0" Width="80" />
+                            <Label Content="0" Foreground="White"  Width="80" />
+                            <Label Content="总金额：" Foreground="White" Margin="20,0,0,0" Width="80" />
+                            <Label Content="0" Foreground="White"  Width="80" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</p:BasePage>

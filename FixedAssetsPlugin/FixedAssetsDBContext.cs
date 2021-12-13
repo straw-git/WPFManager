@@ -14,7 +14,6 @@ namespace FixedAssetsPlugin
     {
         public FixedAssetsDBContext() : base("name=ZDBConnectionString")
         {
-            Database.SetInitializer(new CreateDatabaseIfNotExists<DBContext>());
         }
 
         public DbSet<SysDic> SysDic { get; set; }

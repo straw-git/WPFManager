@@ -4,6 +4,9 @@ MSSqlserver数据库的增删改查
 使用NPOI导出Excel  
 使用Panuon.UI.Silver搭建漂亮的UI页面
 
+进行中的更改
+更新主题,将主题定义为可选则配置好的文件类型，不再每一条都设定
+
 # 目录介绍
 Common：公用类库  
 Client：主客户端（包含管理中心）  

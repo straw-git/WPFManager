@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace SalePlugin.Pages.CashRegister
 {
-
     public class MenuInfo : BaseMenuInfo
     {
         public MenuInfo() : base("收银台") { }
