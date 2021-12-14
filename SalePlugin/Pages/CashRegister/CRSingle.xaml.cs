@@ -473,5 +473,6 @@ namespace SalePlugin.Pages.CashRegister
             openKey = false;
             openKeyNumber = false;
         }
+
     }
 }

@@ -55,21 +55,6 @@
                     </pu:DropDown>
                 </StackPanel>
                 <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
-                    <!--<ListBox HorizontalContentAlignment="Stretch" Margin="0,5,5,5">
-                        <ListBoxItem>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="80"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Content="名称（规格）（型号）"/>
-                                <Label Grid.Column="1" Content="仓库" MinWidth="120" HorizontalAlignment="Left"/>
-                                <Label Grid.Column="2" Content="150.23" Width="80" HorizontalContentAlignment="Right"/>
-                            </Grid>
-                        </ListBoxItem>
-                    </ListBox>-->
-                    <!--HeadersVisibility="None"-->
                     <DataGrid HorizontalAlignment="Center"
                               x:Name="list"
                               ItemsSource="{Binding}"

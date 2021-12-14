@@ -7,9 +7,18 @@
       mc:Ignorable="d" 
       xmlns:p="clr-namespace:Common;assembly=Common"  
             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+            PreviewKeyDown="BasePage_PreviewKeyDown"
       d:DesignHeight="750" d:DesignWidth="1190"
       Title="创建订单">
-
+    <p:BasePage.Resources>
+        <RoutedUICommand x:Key="CtrlS" Text="CtrlS QuickKey" />
+    </p:BasePage.Resources>
+    <p:BasePage.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{StaticResource CtrlS}"/>
+    </p:BasePage.InputBindings>
+    <p:BasePage.CommandBindings>
+        <CommandBinding Command="{StaticResource CtrlS}" Executed="CtrlSCommandBinding_Executed"/>
+    </p:BasePage.CommandBindings>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -20,27 +29,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <ScrollViewer Margin="10,10,5,0" HorizontalScrollBarVisibility="Disabled" MinHeight="200">
-                <!--<ListBox HorizontalContentAlignment="Stretch">
-                    <ListBoxItem>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <Label Grid.Column="1"  Content="姓名（手机号）"/>
-                            <Label Grid.Column="2" Content="年龄" MinWidth="100" HorizontalContentAlignment="Center"/>
-                            <Label Grid.Column="3" Content="性别" MinWidth="50" HorizontalContentAlignment="Center"/>
-                            <Label Grid.Column="4" Content="时间" MinWidth="200" HorizontalContentAlignment="Right"/>
-                        </Grid>
-                    </ListBoxItem>
-                </ListBox>-->
+            <ScrollViewer Margin="10,10,5,0" Grid.Row="0" HorizontalScrollBarVisibility="Disabled" MinHeight="200">
                 <DataGrid HorizontalAlignment="Center"
-                              x:Name="list"
                               ItemsSource="{Binding}"
                               IsReadOnly="True"
                               AutoGenerateColumns="False"
@@ -74,8 +64,8 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>
-            <GroupBox  Header="创建订单" Grid.Row="1"
-                           Margin="10,10,0,10"
+            <GroupBox  Header="创建订单" x:Name="gp1"
+                           Margin="10,10,0,10" Grid.Row="1"
                             pu:GroupBoxHelper.Icon="&#xF11C;"
                             pu:GroupBoxHelper.CornerRadius="10"
                             pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
@@ -83,45 +73,76 @@
                             pu:GroupBoxHelper.ShadowColor="LightGray" >
                 <pu:GroupBoxHelper.ExtendControl>
                     <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
-                        <Button  Content="常用项"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                        <Button  Content="常用项"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnUserCommonObj" Click="btnUserCommonObj_Click"/>
                         <Button  Content="新订单" Margin="30,0,0,0"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
                     </StackPanel>
                 </pu:GroupBoxHelper.ExtendControl>
-                <Grid IsEnabled="False">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Margin="0,5,5,5">
-                        <TextBox  Height="30" x:Name="txtQuickCode"
-                                          pu:TextBoxHelper.Watermark="简码/名称/编码（回车检索）"
+                        <TextBox  Height="30" x:Name="txtName" PreviewKeyDown="txtName_PreviewKeyDown"
+                                          pu:TextBoxHelper.Watermark="简码/名称"
                                           Background="{DynamicResource TextBoxBgColor}"
                                           pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
                                           pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                           pu:TextBoxHelper.IsClearButtonVisible="True" />
+                        <pu:DropDown Margin="0,-30,30,0"  HorizontalAlignment="Right">
+                            <Button  Content="快捷键说明"  pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue"/>
+                            <pu:DropDown.Child>
+                                <StackPanel HorizontalAlignment="Center">
+                                    <Label Margin="0,10,0,0" Content="回车检索 再次回车选择物品"/>
+                                    <Label Margin="0,10,0,0" Content="上下键选择物品"/>
+                                    <Label Margin="0,10,0,0" Content="左右键加减"/>
+                                    <Label Margin="0,10,0,0" Content="数字键输入物品数量"/>
+                                    <Label Margin="0,10,0,0" Content="ESC键取消当前选择"/>
+                                    <Label Margin="0,10,0,0" Content="TAB键切换列表"/>
+                                    <Label Margin="0,10,0,10" Content="Ctrl+S 将当前详情保存为常用项"/>
+                                </StackPanel>
+                            </pu:DropDown.Child>
+                        </pu:DropDown>
                     </StackPanel>
                     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
-                        <ListBox HorizontalContentAlignment="Stretch" Margin="0,5,5,5">
-                            <ListBoxItem>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="80"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Content="名称（规格）（型号）"/>
-                                    <Label Grid.Column="1" Content="仓库（现量/总量）" MinWidth="200" HorizontalAlignment="Left"/>
-                                    <Label Grid.Column="2" Content="150.23" Width="80" HorizontalContentAlignment="Right"/>
-                                </Grid>
-                            </ListBoxItem>
-                        </ListBox>
+                        <DataGrid HorizontalAlignment="Center"
+                              x:Name="list"
+                              ItemsSource="{Binding}"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              PreviewMouseDoubleClick="list_PreviewMouseDoubleClick"
+                              pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                              pu:DataGridHelper.HeaderPadding="5,0"
+                              pu:DataGridHelper.CellPadding="5,0"
+                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.SelectedForeground="White"
+                              pu:DataGridHelper.HoverBackground="White">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="名称" Width="*" Binding="{Binding GoodsName}"  />
+                                <DataGridTextColumn Header="规格" Width="80" Binding="{Binding Specification}" />
+                                <DataGridTextColumn Header="单位" Width="80" Binding="{Binding UnitName}" />
+                                <DataGridTextColumn Header="单价" Width="100" Binding="{Binding Price}" />
+                                <DataGridTextColumn Header="库存" Width="120" Binding="{Binding StockCount}" />
+                                <DataGridTemplateColumn Header="数量" Width="120" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Width="120" HorizontalAlignment="Center">
+                                                <Button Content="-" Width="30"/>
+                                                <TextBox Text="{Binding Count}" IsReadOnly="True" Width="60" HorizontalContentAlignment="Center"/>
+                                                <Button Content="+" Width="30"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="金额" Width="100" Binding="{Binding TotalPrice}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </ScrollViewer>
                 </Grid>
             </GroupBox>
         </Grid>
-
-        <GroupBox IsEnabled="False"  Header="详情" Grid.Column="1" Width="400"
-                           Margin="10"
+        <GroupBox  Header="详情" Grid.Column="1" Width="400"
+                           Margin="10" x:Name="gp2"
                             pu:GroupBoxHelper.Icon="&#xF11C;"
                             pu:GroupBoxHelper.CornerRadius="10"
                             pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
@@ -129,27 +150,29 @@
                             pu:GroupBoxHelper.ShadowColor="LightGray" >
             <pu:GroupBoxHelper.ExtendControl>
                 <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
-                    <Button  Content="取消"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Red"/>
-                    <Button  Content="提交" Margin="30,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                    <Button  Content="作废（F6）" Margin="30,0,0,0"  pu:ButtonHelper.ButtonStyle="Link" Foreground="Red"/>
+                    <Button  Content="提交（F1）" Margin="30,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
                 </StackPanel>
             </pu:GroupBoxHelper.ExtendControl>
             <Grid>
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="0,70,0,10">
                     <StackPanel>
-                        <ListBox Margin="0,10,5,10" Grid.Row="1" x:Name="info" HorizontalAlignment="Center">
-                            <ListBoxItem>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="240"/>
-                                        <ColumnDefinition Width="50"/>
-                                        <ColumnDefinition Width="80"/>
-                                    </Grid.ColumnDefinitions>
+                        <ListBox Margin="0,10,5,10" Grid.Row="1" x:Name="result" ItemsSource="{Binding}" HorizontalAlignment="Center">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="210"/>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="80"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <Label Content="一个大品牌的洗衣液（20*2500ml）"  ToolTip="[202009270512]管理员[admin] 删除员工[李思睿]" HorizontalAlignment="Left"/>
-                                    <Label Grid.Column="1" Content="*1" Width="50" HorizontalContentAlignment="Center"/>
-                                    <Label Grid.Column="2" Content="150.23" Width="80" HorizontalContentAlignment="Right"/>
-                                </Grid>
-                            </ListBoxItem>
+                                        <Label Content="{Binding SubName}"  ToolTip="{Binding GoodsName}" HorizontalAlignment="Left"/>
+                                        <Label Grid.Column="1" Content="{Binding Count}" Width="50" HorizontalContentAlignment="Center"/>
+                                        <Label Grid.Column="2" Content="{Binding TotalPrice}" Width="80" HorizontalContentAlignment="Right"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
                 </ScrollViewer>
@@ -164,7 +187,7 @@
                             <Label Content="数量：" Foreground="White" Margin="20,0,0,0" Width="80" />
                             <Label Content="0" Foreground="White"  Width="80" />
                             <Label Content="总金额：" Foreground="White" Margin="20,0,0,0" Width="80" />
-                            <Label Content="0" Foreground="White"  Width="80" />
+                            <Label x:Name="lblTotalPrice" Content="0" Foreground="White"  Width="80" />
                         </StackPanel>
                     </StackPanel>
                 </Border>

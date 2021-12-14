@@ -80,7 +80,7 @@
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="订单状态" Width="100" Binding="{Binding PackageName}" />
-                        <DataGridTextColumn Header="编号" Width="*" Binding="{Binding UnitName}" />
+                        <DataGridTextColumn Header="订单号" Width="*" Binding="{Binding UnitName}" />
                         <DataGridTextColumn Header="用户" Width="200" Binding="{Binding SalePrice}" />
                         <DataGridTextColumn Header="金额" Width="150" Binding="{Binding PackageName}" />
                         <DataGridTextColumn Header="时间" Width="200" Binding="{Binding SalePrice}" />
