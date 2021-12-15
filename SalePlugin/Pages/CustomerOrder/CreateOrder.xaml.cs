@@ -27,7 +27,7 @@ namespace SalePlugin.Pages.CustomerOrder
         public CreateOrder()
         {
             InitializeComponent();
-            IsMenu = false;
+            Order = 1;
 
             list.ItemsSource = Data;
             result.ItemsSource = ResultData;
@@ -120,6 +120,7 @@ namespace SalePlugin.Pages.CustomerOrder
             list.ItemsSource = Data;
             result.ItemsSource = ResultData;
             list.Visibility = Visibility.Hidden;
+            customerList.Visibility = Visibility.Hidden;
             txtName.Focus();
             IsTab = false;
         }

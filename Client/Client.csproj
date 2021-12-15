@@ -91,6 +91,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Animation\3DWall\Particle.cs" />
+    <Compile Include="Animation\3DWave\Particle.cs" />
     <Compile Include="Animation\Close_WH.cs" />
     <Compile Include="Animation\WindowAnimation.cs" />
     <Compile Include="Events\LocalEventKeys.cs" />

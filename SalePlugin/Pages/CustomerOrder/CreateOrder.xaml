@@ -30,7 +30,9 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <ScrollViewer Margin="10,10,5,0" Grid.Row="0" HorizontalScrollBarVisibility="Disabled" MinHeight="200">
+                <!--HeadersVisibility="None"-->
                 <DataGrid HorizontalAlignment="Center"
+                          x:Name="customerList"
                               ItemsSource="{Binding}"
                               IsReadOnly="True"
                               AutoGenerateColumns="False"
@@ -40,27 +42,11 @@
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Width="60" Header="选择" IsReadOnly="True">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="姓名（手机号）" Width="*" Binding="{Binding PackageName}" />
-                        <DataGridTextColumn Header="年龄" Width="Auto" Binding="{Binding UnitName}" />
-                        <DataGridTextColumn Header="性别" Width="Auto" Binding="{Binding SalePrice}" />
-                        <DataGridTextColumn Header="金额" Width="Auto" Binding="{Binding PackageName}" />
-                        <DataGridTextColumn Header="时间" Width="Auto" Binding="{Binding SalePrice}" />
-                        <DataGridTemplateColumn Header="操作" Width="80" >
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button  Content="编辑" ToolTip="只可以编辑收款状态未完成的订单" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}" Foreground="Blue" x:Name="btnEdit"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="姓名" Width="*" Binding="{Binding CustomerName}" />
+                        <DataGridTextColumn Header="性别" Width="80" Binding="{Binding CustomerSex}" />
+                        <DataGridTextColumn Header="年龄" Width="100" Binding="{Binding CustomerAge}" />
+                        <DataGridTextColumn Header="手机号" Width="150" Binding="{Binding CustomerName}" />
+                        <DataGridTextColumn Header="时间" Width="150" Binding="{Binding CustomerName}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>

@@ -17,22 +17,32 @@ using System.Windows.Shapes;
 namespace SalePlugin.Pages.CustomerOrder
 {
     /// <summary>
-    /// HisOrder.xaml 的交互逻辑
+    /// CustomerRegister.xaml 的交互逻辑
     /// </summary>
-    public partial class HisOrder : BasePage
+    public partial class CustomerRegister : BasePage
     {
-        public HisOrder()
+        public CustomerRegister()
         {
             InitializeComponent();
-            Order = 2;
+            Order = 0;
         }
 
         protected override void OnPageLoaded()
         {
+            
+        }
+
+        private void btnCopyAddress_Click(object sender, RoutedEventArgs e)
+        {
 
         }
 
-        private void gPager_CurrentIndexChanged(object sender, Panuon.UI.Silver.Core.CurrentIndexChangedEventArgs e)
+        private void btnReadIdCard_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
         {
 
         }
