@@ -14,9 +14,9 @@
             <BeginStoryboard Name="backgroundAnimationsBeginStoryboard">
                 <Storyboard >
                     <ColorAnimation Storyboard.TargetName="mainPanel" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Drawing).(DrawingGroup.Children)[0].(GeometryDrawing.Brush).(SolidColorBrush.Color)" From="LightGray" To="DarkGray" Duration="0:0:50" RepeatBehavior="Forever" AutoReverse="True"/>
-                    <DoubleAnimation Storyboard.TargetName="mainPanel" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Transform).(RotateTransform.Angle)" From="0" To="360" Duration="0:5:00" RepeatBehavior="Forever" AutoReverse="True"/>
-                    <DoubleAnimation Storyboard.TargetName="mainPanel" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Drawing).(DrawingGroup.Children)[1].(GeometryDrawing.Geometry).(EllipseGeometry.RadiusX)" From="0.1" To="0.25" Duration="0:0:5" RepeatBehavior="Forever" AutoReverse="True"/>
-                    <PointAnimation Storyboard.TargetName="mainPanel" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Drawing).(DrawingGroup.Children)[2].(GeometryDrawing.Geometry).(EllipseGeometry.Center)" From="-0.25, -0.25" To="1.25,1.25" Duration="0:0:10" RepeatBehavior="Forever" AutoReverse="True"/>
+                    <DoubleAnimation Storyboard.TargetName="mainPanel" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Transform).(RotateTransform.Angle)" From="0" To="360" Duration="0:3:00" RepeatBehavior="Forever" AutoReverse="True"/>
+                    <!--<DoubleAnimation Storyboard.TargetName="mainPanel" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Drawing).(DrawingGroup.Children)[1].(GeometryDrawing.Geometry).(EllipseGeometry.RadiusX)" From="0.1" To="0.25" Duration="0:0:5" RepeatBehavior="Forever" AutoReverse="True"/>-->
+                    <PointAnimation Storyboard.TargetName="mainPanel" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Drawing).(DrawingGroup.Children)[2].(GeometryDrawing.Geometry).(EllipseGeometry.Center)" From="-0.25, -0.25" To="5,5" Duration="0:0:20" RepeatBehavior="Forever" AutoReverse="True"/>
                 </Storyboard>
             </BeginStoryboard>
         </EventTrigger>
@@ -27,7 +27,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="1">
-            <TextBox  Height="40" x:Name="txtSearchName" 
+            <TextBox   Height="40" x:Name="txtSearchName" 
                       VerticalAlignment="Top" 
                       HorizontalContentAlignment="Center"
                       Margin="0,5,0,5"
@@ -60,7 +60,7 @@
         </Grid>
         <Grid x:Name="mainPanel">
             <Grid.Background>
-                <DrawingBrush TileMode="Tile" Viewport="0,0,100,100" ViewportUnits="Absolute">
+                <DrawingBrush TileMode="Tile" Viewport="0,0,400,400" ViewportUnits="Absolute">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
                             <DrawingGroup.Children>
@@ -72,17 +72,17 @@
                                         <SolidColorBrush Color="LightGray" /><!--画刷-->
                                     </GeometryDrawing.Brush>
                                     <GeometryDrawing.Pen>
-                                        <Pen Thickness="0.01" Brush="DarkGray" />
+                                        <Pen Thickness="0.01" Brush="Gray" />
                                     </GeometryDrawing.Pen>
                                 </GeometryDrawing>
-                                <GeometryDrawing Brush="#99CCCCCC">
+                                <GeometryDrawing Brush="Gray">
                                     <GeometryDrawing.Geometry>
-                                        <EllipseGeometry Center="0.75,0.5" RadiusX="0.25" RadiusY="0.25" />
+                                        <EllipseGeometry Center="0.5,0.5" RadiusX="0.25" RadiusY="0.25" />
                                     </GeometryDrawing.Geometry>
                                 </GeometryDrawing>
                                 <GeometryDrawing Brush="#66CCCCCC">
                                     <GeometryDrawing.Geometry>
-                                        <EllipseGeometry Center="0.25,0.25" RadiusX="0.1" RadiusY="0.1" />
+                                        <EllipseGeometry Center="0.5,0.5" RadiusX="0.1" RadiusY="0.1" />
                                     </GeometryDrawing.Geometry>
                                 </GeometryDrawing>
                             </DrawingGroup.Children>
@@ -93,7 +93,7 @@
                     </DrawingBrush.Transform>
                 </DrawingBrush>
             </Grid.Background>
-            <Border Visibility="Hidden" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="5" Background="AliceBlue">
+            <Border Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="5" Background="AliceBlue">
                 <Grid>
                     <Border Height="50" VerticalAlignment="Top" CornerRadius="5,5,0,0" Background="{DynamicResource SkinColor}">
                         <Grid>
