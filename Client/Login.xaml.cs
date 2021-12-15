@@ -31,10 +31,11 @@ namespace Client
         private readonly ParticleSystem _ps;
         private DispatcherTimer _frameTimer;
 
+        #region Client.Animation._3DWall
         //private readonly ParticleSystem _ps;
         //private DispatcherTimer _frameTimer;
         //private Point pMouse = new Point(500, 500);
-
+        #endregion 
 
         public Login()
         {
@@ -59,6 +60,8 @@ namespace Client
 
             _ps.SpawnParticle(30);
 
+            #region Client.Animation._3DWall
+
             //_frameTimer = new DispatcherTimer();
             //_frameTimer.Tick += OnFrame;
             //_frameTimer.Interval = TimeSpan.FromMilliseconds(100);
@@ -67,6 +70,8 @@ namespace Client
             //_ps = new ParticleSystem(30, 30, Colors.White);
             //WorldModels.Children.Add(_ps.ParticleModel);
             //_ps.SpawnParticle(50);
+
+            #endregion 
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -79,6 +84,8 @@ namespace Client
         {
             _ps.Update();
         }
+
+        #region Client.Animation._3DWall
 
         //private void OnFrame(object sender, EventArgs e)
         //{
@@ -123,8 +130,11 @@ namespace Client
         //    pMouse = new Point(9999, 9999);
         //}
 
+        #endregion 
+
         private async void CheckNullData()
         {
+            //读取及更新数据连接配置文件
             XmlDocument doc = new XmlDocument();
             doc.Load("..//..//App.config");
             XmlNode root = doc.SelectSingleNode("configuration");
@@ -271,6 +281,7 @@ namespace Client
 
         public void btnPlugins_Click(object sender, MouseEventArgs e)
         {
+            //插件管理
             Windows.Plugins a = new Windows.Plugins();
             a.ShowDialog();
         }
