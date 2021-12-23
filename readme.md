@@ -27,41 +27,41 @@ VS2019+Sqlserver2019
 # 基础目录介绍
 
 DBs/DBModels ： 基础数据实体类库 [DbContext文件为 DBModels.DBContext]
-包含：
-	Activities 活动 
-		MJActivity 满减活动
-	ERP 进销存 
-		Goods 物品 
-		PurchasePlan 采购计划 
-		PurchasePlanItem 采购计划详情 
-		PurchasePlanLog 实际采购详情 
-		Stock 库存 
-		StockLog 库存日志 
-		Supplier 供应商]
-	Finance 财务 
-		FinanceBill 财务账单 
-		FinanceType 财务类型 
-		Payment 支付 
-		PaymentLog 支付日志 
-		PayOrder 付款账单
-	Member 用户 
-		Customer 顾客
-		CustomerTemp 顾客临时表（来访记录）
-		Member 会员
-		MemberLevel 会员等级
-		MemberRecharge 会员充值记录
-	Staffs 员工
-		Staff 员工信息
-		StaffContract 合同
-		StaffInsurance 保险
-		StaffSalary 工资
-		StaffSalaryOther 奖罚
-		StaffSalarySettlement 工资结算
-		StaffSalarySettlementLog 工资结算日志
-	Sys 系统
-		Log 日志
-		SysDic 数据字典
-		User 系统账户
+ 包含：
+	 Activities 活动 
+		 MJActivity 满减活动
+	 ERP 进销存 
+		 Goods 物品 
+		 PurchasePlan 采购计划 
+		 PurchasePlanItem 采购计划详情 
+		 PurchasePlanLog 实际采购详情 
+		 Stock 库存 
+		 StockLog 库存日志 
+		 Supplier 供应商]
+	 Finance 财务 
+		 FinanceBill 财务账单 
+		 FinanceType 财务类型 
+		 Payment 支付 
+		 PaymentLog 支付日志 
+		 PayOrder 付款账单
+	 Member 用户 
+		 Customer 顾客
+		 CustomerTemp 顾客临时表（来访记录）
+		 Member 会员
+		 MemberLevel 会员等级
+		 MemberRecharge 会员充值记录
+	 Staffs 员工
+		 Staff 员工信息
+		 StaffContract 合同
+		 StaffInsurance 保险
+		 StaffSalary 工资
+		 StaffSalaryOther 奖罚
+		 StaffSalarySettlement 工资结算
+		 StaffSalarySettlementLog 工资结算日志
+	 Sys 系统
+		 Log 日志
+		 SysDic 数据字典
+		 User 系统账户
 
 Common：公用类库  
 Client：主客户端（包含管理中心）  
