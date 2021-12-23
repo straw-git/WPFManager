@@ -38,15 +38,15 @@
                               AutoGenerateColumns="False"
                               pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
                               pu:DataGridHelper.HeaderPadding="5,0"
-                              pu:DataGridHelper.CellPadding="5,0" HeadersVisibility="None"
+                              pu:DataGridHelper.CellPadding="5,0"
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="姓名" Width="*" Binding="{Binding CustomerName}" />
                         <DataGridTextColumn Header="性别" Width="80" Binding="{Binding CustomerSex}" />
                         <DataGridTextColumn Header="年龄" Width="100" Binding="{Binding CustomerAge}" />
-                        <DataGridTextColumn Header="手机号" Width="150" Binding="{Binding CustomerName}" />
-                        <DataGridTextColumn Header="时间" Width="150" Binding="{Binding CustomerName}" />
+                        <DataGridTextColumn Header="手机号" Width="150" Binding="{Binding CustomerPhone}" />
+                        <DataGridTextColumn Header="时间" Width="150" Binding="{Binding CustomerDate}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>

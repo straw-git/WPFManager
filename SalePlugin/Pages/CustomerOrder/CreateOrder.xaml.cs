@@ -29,10 +29,8 @@ namespace SalePlugin.Pages.CustomerOrder
             InitializeComponent();
             Order = 1;
 
-            list.ItemsSource = Data;
-            result.ItemsSource = ResultData;
-            txtName.Focus();
-            IsTab = false;
+            //测试
+            OnPageLoaded();
         }
 
         #region Models
@@ -82,10 +80,21 @@ namespace SalePlugin.Pages.CustomerOrder
             public decimal TotalPrice { get; set; }
         }
 
+        class CustomerUIModel : BaseUIModel
+        {
+            public string CustomerId { get; set; }
+            public string CustomerName { get; set; }
+            public string CustomerSex { get; set; }
+            public string CustomerAge { get; set; }
+            public string CustomerPhone { get; set; }
+            public string CustomerDate { get; set; }
+        }
+
         #endregion
 
         ObservableCollection<UIModel> Data = new ObservableCollection<UIModel>();
         ObservableCollection<ResultUIModels> ResultData = new ObservableCollection<ResultUIModels>();
+        ObservableCollection<CustomerUIModel> CustomerData = new ObservableCollection<CustomerUIModel>();
 
         private bool openKey = false;//是否已开启按键操作（搜索时敲定回车后）
         private bool openKeyNumber = false;//是否开启数字输入（列表中选中项以后）
@@ -112,15 +121,11 @@ namespace SalePlugin.Pages.CustomerOrder
 
         protected override void OnPageLoaded()
         {
-            //主窗体操作
-            ParentWindow.ShowLeftMenu(false);//隐藏左侧导航
-            ParentWindow.ShowTopMenu(false);//隐藏头部导航
-            ParentWindow.WindowState = WindowState.Maximized;//主窗体最大化
-
             list.ItemsSource = Data;
             result.ItemsSource = ResultData;
             list.Visibility = Visibility.Hidden;
             customerList.Visibility = Visibility.Hidden;
+            customerList.ItemsSource = CustomerData;
             txtName.Focus();
             IsTab = false;
         }
@@ -480,7 +485,7 @@ namespace SalePlugin.Pages.CustomerOrder
         /// <param name="e"></param>
         private void CtrlSCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (ResultData.Count > 0) 
+            if (ResultData.Count > 0)
             {
                 MaskVisible(true);
                 WinAddUserCommonObj w = new WinAddUserCommonObj();

@@ -9,6 +9,6 @@ namespace Common.Entities
     public class MainWindowTagInfo
     {
         public DBModels.Sys.User CurrUser { get; set; }
-        public Dictionary<BaseMenuInfo, List<MenuItemModel>> Dic;
+        public Dictionary<string, Dictionary<BaseMenuInfo, List<MenuItemModel>>> Dic;
     }
 }

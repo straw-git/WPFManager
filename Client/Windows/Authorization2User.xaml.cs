@@ -76,49 +76,53 @@ namespace Client.Windows
         {
             tabMenus.Items.Clear();
 
-            var mainMenus = MenuManager.Dic.Keys.OrderBy(c => c.Order).ToList();
-            for (int i = 0; i < mainMenus.Count; i++)
+            foreach (var plugin in MenuManager.PluginDic)
             {
-                var _menu = mainMenus[i];
-
-                TabItem tabItem = new TabItem();
-                tabItem.Header = _menu.Name;
-
-                Grid grid = new Grid();
-
-                ListBox listBox = new ListBox();
-                listBox.Width = 150;
-                listBox.HorizontalAlignment = HorizontalAlignment.Left;
-                listBox.SelectionChanged += MenuListBox_SelectionChanged;
-                listBox.MouseDoubleClick += MenuListBox_MouseDoubleClick;
-
-                var childrens = MenuManager.Dic[_menu];
-                for (int j = 0; j < childrens.Count; j++)
+                var mainMenus = plugin.Value.Keys.OrderBy(c => c.SelfOrder).ToList();
+                for (int i = 0; i < mainMenus.Count; i++)
                 {
-                    var _childrenItem = childrens[j];
+                    var _menu = mainMenus[i];
 
-                    StackPanel stackPanel = new StackPanel();
-                    stackPanel.Orientation = Orientation.Horizontal;
+                    TabItem tabItem = new TabItem();
+                    tabItem.Header = _menu.Name;
 
-                    CheckBox checkBox = new CheckBox();
-                    checkBox.Tag = _childrenItem;
-                    string code = $"{_childrenItem.ParentCode}-{_childrenItem.Code}";
-                    checkBox.IsChecked = UserMenus.Any(c => c == code);
-                    checkBox.Loaded += SecondMenuCheckBox_Loaded;
-                    checkBox.Unloaded += SecondMenuCheckBox_Unloaded;
+                    Grid grid = new Grid();
 
-                    Label label = new Label();
-                    label.Content = _childrenItem.Name;
+                    ListBox listBox = new ListBox();
+                    listBox.Width = 150;
+                    listBox.HorizontalAlignment = HorizontalAlignment.Left;
+                    listBox.SelectionChanged += MenuListBox_SelectionChanged;
+                    listBox.MouseDoubleClick += MenuListBox_MouseDoubleClick;
 
-                    stackPanel.Children.Add(checkBox);
-                    stackPanel.Children.Add(label);
-                    listBox.Items.Add(stackPanel);
+                    var childrens = plugin.Value[_menu];
+                    for (int j = 0; j < childrens.Count; j++)
+                    {
+                        var _childrenItem = childrens[j];
+
+                        StackPanel stackPanel = new StackPanel();
+                        stackPanel.Orientation = Orientation.Horizontal;
+
+                        CheckBox checkBox = new CheckBox();
+                        checkBox.Tag = _childrenItem;
+                        string code = $"{plugin.Key}-{_childrenItem.ParentCode}-{_childrenItem.Code}";
+                        checkBox.IsChecked = UserMenus.Any(c => c == code);
+                        checkBox.Loaded += SecondMenuCheckBox_Loaded;
+                        checkBox.Unloaded += SecondMenuCheckBox_Unloaded;
+
+                        Label label = new Label();
+                        label.Content = _childrenItem.Name;
+
+                        stackPanel.Children.Add(checkBox);
+                        stackPanel.Children.Add(label);
+                        listBox.Items.Add(stackPanel);
+                    }
+
+                    grid.Children.Add(listBox);
+                    tabItem.Content = grid;
+                    tabMenus.Items.Add(tabItem);
                 }
-
-                grid.Children.Add(listBox);
-                tabItem.Content = grid;
-                tabMenus.Items.Add(tabItem);
             }
+            
         }
 
         private void MenuListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -149,7 +153,7 @@ namespace Client.Windows
 
             foreach (var button in itemModel.Buttons)
             {
-                string code = $"{itemModel.ParentCode}-{itemModel.Code}-{button.Name}";
+                string code = $"{itemModel.PluginCode}-{itemModel.ParentCode}-{itemModel.Code}-{button.Name}";
                 CheckBox cb = new CheckBox();
                 cb.Content = button.Content;
                 cb.Margin = new Thickness(5);
@@ -199,7 +203,7 @@ namespace Client.Windows
                 }
             }
 
-            string code = $"{itemModel.ParentCode}-{itemModel.Code}";
+            string code = $"{itemModel.PluginCode}-{itemModel.ParentCode}-{itemModel.Code}";
             if (UserMenus.Contains(code))
             {
                 UserMenus.Remove(code);
@@ -210,7 +214,7 @@ namespace Client.Windows
         {
             CheckBox checkBox = sender as CheckBox;
             MenuItemModel itemModel = checkBox.Tag as MenuItemModel;
-            string code = $"{itemModel.ParentCode}-{itemModel.Code}";
+            string code = $"{itemModel.PluginCode}-{itemModel.ParentCode}-{itemModel.Code}";
             if (!UserMenus.Contains(code))
             {
                 UserMenus.Add(code);

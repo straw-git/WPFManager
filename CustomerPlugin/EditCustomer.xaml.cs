@@ -214,7 +214,7 @@ namespace CustomerPlugin
             }
             else 
             {
-                txtBePromotionCode.Clear() ;
+                txtBePromotionCode.Clear();
             }
         }
     }

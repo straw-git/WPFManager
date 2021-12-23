@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common;
 
-namespace Client.Pages.Manager
+namespace Client.Pages.Test
 {
     public class MenuInfo : BaseMenuInfo
     {
-        public MenuInfo() : base("管理中心") { SelfOrder = 0; }
+        public MenuInfo() : base("动画示例") { SelfOrder = 1; }
     }
 }

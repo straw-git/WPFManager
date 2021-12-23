@@ -13,6 +13,7 @@ namespace Common.Entities
         public string Name { get; set; }
         public string Code { get; set; }
         public string ParentCode { get; set; }
+        public string PluginCode { get; set; }
         public string Url { get; set; }
         public int Order { get; set; }
         public List<MenuItemButtonModel> Buttons { get; set; }

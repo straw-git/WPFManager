@@ -90,27 +90,38 @@ namespace Common
 
             //Client.Pages.Manager.Dic
             string nps = this.ToString();
+            string pluginName = nps.Substring(0, nps.IndexOf('.'));
             string currName = nps.Substring(nps.LastIndexOf('.') + 1);
             nps = nps.Replace($".{currName}", "");
             string parentName = nps.Substring(nps.LastIndexOf('.') + 1);
 
-            string menuName = $"{parentName}-{currName}-";
+            string menuName = $"{pluginName}-{parentName}-{currName}-";
 
             List<string> CurrPageMenus = Menus.Where(c => c.StartsWith(menuName)).ToList();//当前页面中的按钮（已有的权限）
-            var menuInfo = parentInfo.Dic.Keys.First(c => c.Code == parentName);
-            var buttons = parentInfo.Dic[menuInfo].First(c => c.Code == currName).Buttons;
-            foreach (var buttonInfo in buttons)
+
+            foreach (var plugin in parentInfo.Dic)
             {
-                Button button = this.FindName(buttonInfo.Name) as Button;
-                if (CurrPageMenus.Contains($"{parentName}-{currName}-{buttonInfo.Name}"))
+                if (plugin.Value.Keys.Any(c => c.Code == parentName))
                 {
-                    //存在权限
-                    button.Visibility = System.Windows.Visibility.Visible;
-                }
-                else
-                {
-                    //不存在权限
-                    button.Visibility = System.Windows.Visibility.Collapsed;
+                    var menuInfo = plugin.Value.Keys.First(c => c.Code == parentName);
+                    if (plugin.Value[menuInfo].Any(c => c.Code == currName))
+                    {
+                        var buttons = plugin.Value[menuInfo].First(c => c.Code == currName).Buttons;
+                        foreach (var buttonInfo in buttons)
+                        {
+                            Button button = this.FindName(buttonInfo.Name) as Button;
+                            if (CurrPageMenus.Contains($"{pluginName}-{parentName}-{currName}-{buttonInfo.Name}"))
+                            {
+                                //存在权限
+                                button.Visibility = System.Windows.Visibility.Visible;
+                            }
+                            else
+                            {
+                                //不存在权限
+                                button.Visibility = System.Windows.Visibility.Collapsed;
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -64,7 +64,7 @@
                               pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
                               pu:DataGridHelper.HeaderPadding="5,0"
                               pu:DataGridHelper.CellPadding="5,0"
-                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}" 
                               pu:DataGridHelper.SelectedForeground="White"
                               pu:DataGridHelper.HoverBackground="White">
                         <DataGrid.Columns>

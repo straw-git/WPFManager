@@ -40,12 +40,10 @@ namespace Client
 
             MainWindowTagInfo tag = new MainWindowTagInfo();
             tag.CurrUser = UserGlobal.CurrUser;
-            tag.Dic = MenuManager.Dic;
+            tag.Dic = MenuManager.PluginDic;
             this.Tag = tag;
 
             WindowGlobal.MainWindow = this;
-
-            
         }
 
 
@@ -171,28 +169,34 @@ namespace Client
         {
             tabMenu.Items.Clear();
             List<string> UserMenu = new List<string>();
-            var _main = MenuManager.Dic.Keys.OrderBy(c => c.Order).ToList();
+
             if (UserGlobal.CurrUser.Menus.NotEmpty())
                 UserMenu = UserGlobal.CurrUser.Menus.Split('|').ToList();
 
             int currIndex = 0;
-            for (int i = 0; i < _main.Count; i++)
+
+            foreach (var plugin in MenuManager.PluginDic)
             {
-                var _menu = _main[i];
-
-                //这里筛选主导航
-                if (UserMenu.Any(c => c.StartsWith($"{_menu.Code}-")) || UserGlobal.CurrUser.Name == "admin")
+                var mainMenus = plugin.Value.Keys.OrderBy(c => c.SelfOrder).ToList();
+                for (int i = 0; i < mainMenus.Count; i++)
                 {
-                    TabItem _tabItem = new TabItem();
-                    _tabItem.Tag = _menu;
-                    _tabItem.Header = _menu.Name;
-                    _tabItem.GotFocus += _tabItem_GotFocus;
+                    var _menu = mainMenus[i];
 
-                    tabMenu.Items.Add(_tabItem);
-                    if (currIndex == 0)
+                    //这里筛选主导航
+                    if (UserMenu.Any(c => c.StartsWith($"{plugin.Key}-{_menu.Code}-")) || UserGlobal.CurrUser.Name == "admin")
                     {
-                        currIndex = 1;
-                        _tabItem_GotFocus(_tabItem, null);
+                        TabItem _tabItem = new TabItem();
+                        _tabItem.Tag = _menu;
+                        _tabItem.Name = $"{plugin.Key}0{_menu.Code}";
+                        _tabItem.Header = _menu.Name;
+                        _tabItem.GotFocus += _tabItem_GotFocus;
+
+                        tabMenu.Items.Add(_tabItem);
+                        if (currIndex == 0)
+                        {
+                            currIndex = 1;
+                            _tabItem_GotFocus(_tabItem, null);
+                        }
                     }
                 }
             }
@@ -202,20 +206,25 @@ namespace Client
 
         private void _tabItem_GotFocus(object sender, RoutedEventArgs e)
         {
-            BaseMenuInfo selectedMenu = (sender as TabItem).Tag as BaseMenuInfo;
+            TabItem currTab = sender as TabItem;
+
+            BaseMenuInfo selectedMenu = currTab.Tag as BaseMenuInfo;
+            string name = currTab.Name;
+            var arr = name.Split('0');
+
             tvMenu.Items.Clear();
             List<string> UserMenu = new List<string>();
             if (UserGlobal.CurrUser.Menus.NotEmpty())
                 UserMenu = UserGlobal.CurrUser.Menus.Split('|').ToList();
 
-            var childrens = MenuManager.Dic[selectedMenu].OrderBy(c => c.Order).ToList();
+            var childrens = MenuManager.PluginDic[arr[0]][selectedMenu].OrderBy(c => c.Order).ToList();
 
             int currIndex = 0;
             for (int i = 0; i < childrens.Count; i++)
             {
                 var _menu = childrens[i];
 
-                if (UserMenu.Any(c => c == $"{_menu.ParentCode}-{_menu.Code}") || UserGlobal.CurrUser.Name == "admin")
+                if (UserMenu.Any(c => c == $"{_menu.PluginCode}-{_menu.ParentCode}-{_menu.Code}") || UserGlobal.CurrUser.Name == "admin")
                 {
                     TreeViewItem _treeViewItem = new TreeViewItem();
                     _treeViewItem.Header = _menu.Name;
