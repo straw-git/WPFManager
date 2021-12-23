@@ -1,44 +1,8 @@
 # WPF开发的管理系统（数据库MSSqlserver）
-MSSqlserver数据库的增删改查  
-使用LiveCharts展示图表  
-使用NPOI导出Excel  
-使用Panuon.UI.Silver搭建漂亮的UI页面
 
-进行中的更改
-更新主题,将主题定义为可选则配置好的文件类型，不再每一条都设定
+项目采用插件式方式开发,在开发时可以更好的业务分离,提高多人协作开发效率.
 
-# 目录介绍
-Common：公用类库  
-Client：主客户端（包含管理中心）  
-CustomerPlugin：客户管理插件  
-ERPPlugin：库存管理插件  
-FinancePlugin：财务中心插件  
-FixedAssetsPlugin：固定资产管理插件  
-HRPlugin：人事管理插件  
-LiveChartsTestPlugin：图表工具测试插件  
-SalePlugin：销售订单中心插件（未完成）  
-
-# 基础模块包括：
-
-账号管理  
-权限管理  
-数据字典  
-
-# 插件模块包括：
-
-人事管理（人员信息、工资、保险）  
-财务管理（收款账号、工资发放）  
-固定资产管理  
-库存管理  
-客户会员管理  
-
-# 示例文章
-
-[客户管理插件文章](https://zhuanlan.zhihu.com/p/439497177)    
-[搭建及扩展文章](https://zhuanlan.zhihu.com/p/428356007)  
-[基础功能示例文章](https://zhuanlan.zhihu.com/p/431962796)
-
-项目中使用到的技术：
+# 项目中使用到的技术
 
 NETFramework472  
 Panuon.UI.Silver  
@@ -49,4 +13,69 @@ NPOI.Excel
 开发环境：  
 VS2019+Sqlserver2019
 
-项目采用插件式方式开发,在开发时可以更好的业务分离,提高多人协作开发效率.
+# 正在进行中
+
+更新权限
+销售逻辑及数据表
+
+# 示例文章
+
+[客户管理插件文章](https://zhuanlan.zhihu.com/p/439497177)    
+[搭建及扩展文章](https://zhuanlan.zhihu.com/p/428356007)  
+[基础功能示例文章](https://zhuanlan.zhihu.com/p/431962796)
+
+# 基础目录介绍
+
+DBs/DBModels ： 基础数据实体类库 [DbContext文件为 DBModels.DBContext]
+包含：
+	Activities 活动 
+		MJActivity 满减活动
+	ERP 进销存 
+		Goods 物品 
+		PurchasePlan 采购计划 
+		PurchasePlanItem 采购计划详情 
+		PurchasePlanLog 实际采购详情 
+		Stock 库存 
+		StockLog 库存日志 
+		Supplier 供应商]
+	Finance 财务 
+		FinanceBill 财务账单 
+		FinanceType 财务类型 
+		Payment 支付 
+		PaymentLog 支付日志 
+		PayOrder 付款账单
+	Member 用户 
+		Customer 顾客
+		CustomerTemp 顾客临时表（来访记录）
+		Member 会员
+		MemberLevel 会员等级
+		MemberRecharge 会员充值记录
+	Staffs 员工
+		Staff 员工信息
+		StaffContract 合同
+		StaffInsurance 保险
+		StaffSalary 工资
+		StaffSalaryOther 奖罚
+		StaffSalarySettlement 工资结算
+		StaffSalarySettlementLog 工资结算日志
+	Sys 系统
+		Log 日志
+		SysDic 数据字典
+		User 系统账户
+
+Common：公用类库  
+Client：主客户端（包含管理中心）  
+CustomerPlugin：客户管理插件  
+ERPPlugin：库存管理插件  
+FinancePlugin：财务中心插件  
+HRPlugin：人事管理插件  
+
+# 扩展插件介绍
+
+FixedAssetsPlugin：固定资产管理插件  
+LiveChartsTestPlugin：图表工具测试插件  
+DBs/SaleDBModels ： 销售数据实体（进行中）
+SalePlugin：销售订单中心插件（进行中）  
+
+
+
