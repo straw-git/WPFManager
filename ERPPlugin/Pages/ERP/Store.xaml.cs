@@ -218,7 +218,7 @@ namespace ERPPlugin.Pages.ERP
                                 _stockAdd += _pLogModel.Count;
                                 _stockModel.Count = _pLogModel.Count;
                                 _stockModel.CreateTime = createTime;
-                                _stockModel.Creator = Common.TempBasePageData.message.CurrUser.Id;
+                                _stockModel.Creator = Common.UserGlobal.CurrUser.Id;
                                 _stockModel.Manufacturer = _pLogModel.Manufacturer;
                                 _stockModel.Price = _pLogModel.PurchasePrice;
                                 _stockModel.Remark = _pLogModel.Remark;
@@ -256,7 +256,7 @@ namespace ERPPlugin.Pages.ERP
                                 _stockAdd += _pLogModel.Count;
                                 _stockModel.Count = _pLogModel.Count;
                                 _stockModel.CreateTime = createTime;
-                                _stockModel.Creator = TempBasePageData.message.CurrUser.Id;
+                                _stockModel.Creator = UserGlobal.CurrUser.Id;
                                 _stockModel.Manufacturer = _pLogModel.Manufacturer;
                                 _stockModel.Price = _pLogModel.PurchasePrice;
                                 _stockModel.Remark = _pLogModel.Remark;
@@ -442,7 +442,7 @@ namespace ERPPlugin.Pages.ERP
                         {
                             Count = _item.Count,
                             CreateTime = DateTime.Now,
-                            Creator = TempBasePageData.message.CurrUser.Id,
+                            Creator = UserGlobal.CurrUser.Id,
                             Manufacturer = _dataModel.Manufacturer,
                             Price = _dataModel.Price,
                             Remark = _dataModel.Remark,
@@ -469,7 +469,7 @@ namespace ERPPlugin.Pages.ERP
                         {
                             Count = _item.Count,
                             CreateTime = DateTime.Now,
-                            Creator = TempBasePageData.message.CurrUser.Id,
+                            Creator = UserGlobal.CurrUser.Id,
                             Manufacturer = _dataModel.Manufacturer,
                             Price = _dataModel.Price,
                             Remark = _dataModel.Remark,
@@ -652,7 +652,7 @@ namespace ERPPlugin.Pages.ERP
                         {
                             Count = _item.Count,
                             CreateTime = DateTime.Now,
-                            Creator = TempBasePageData.message.CurrUser.Id,
+                            Creator = UserGlobal.CurrUser.Id,
                             Manufacturer = "",
                             SalePrice = 0,
                             StockType = Global.StockTypeOut,

@@ -40,14 +40,6 @@ namespace Client
         }
     }
 
-    public class UserGlobal
-    {
-        //是否已登录
-        public static bool IsLogin = false;
-        //当前用户信息
-        public static User CurrUser;
-    }
-
     public class UIGlobal
     {
         /// <summary>

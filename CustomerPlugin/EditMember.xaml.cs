@@ -275,7 +275,7 @@ namespace CustomerPlugin
                 {
                     DBModels.Member.MemberRecharge _recharge = new DBModels.Member.MemberRecharge();
                     _recharge.CreateTime = DateTime.Now;
-                    _recharge.Creator = TempBasePageData.message.CurrUser.Id;
+                    _recharge.Creator = UserGlobal.CurrUser.Id;
                     _recharge.CustomerId = CustomerModel.Id;
                     _recharge.IdCard = idCard;
                     _recharge.MemberId = MemberModel.Id;

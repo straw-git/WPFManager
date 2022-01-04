@@ -42,7 +42,7 @@ namespace FixedAssetsPlugin
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!TempBasePageData.IsStaffLogin())
+            if (!UserGlobal.IsStaffLogin())
             {
                 MessageBoxX.Show("当前操作者不是员工", "加载信息失败");
                 Close();
@@ -152,11 +152,11 @@ namespace FixedAssetsPlugin
             FixedAssets model = new FixedAssets();
             using (FixedAssetsDBContext context = new FixedAssetsDBContext())
             {
-                var staff = context.Staff.First(c => c.Id == TempBasePageData.message.CurrUser.StaffId);
+                var staff = context.Staff.First(c => c.Id == UserGlobal.CurrUser.StaffId);
 
                 model.Count = count;
                 model.CreateTime = DateTime.Now;
-                model.Creator = TempBasePageData.message.CurrUser.Id;
+                model.Creator = UserGlobal.CurrUser.Id;
                 model.DelTime = DateTime.Now;
                 model.DelUser = 0;
                 model.From = txtFrom.Text;
@@ -189,7 +189,7 @@ namespace FixedAssetsPlugin
                 checkModel.OldPrincipalName = "";
                 checkModel.OldPrincipalPhone = "";
                 checkModel.OldState = 0;
-                checkModel.StaffId = TempBasePageData.message.CurrUser.StaffId;
+                checkModel.StaffId = UserGlobal.CurrUser.StaffId;
                 checkModel.StaffName = staff.Name;
 
                 context.FixedAssetsCheck.Add(checkModel);

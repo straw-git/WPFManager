@@ -107,7 +107,7 @@ namespace ERPPlugin
 
             Model = new Goods();
             Model.CreateTime = DateTime.Now;
-            Model.Creator = TempBasePageData.message.CurrUser.Id;
+            Model.Creator = UserGlobal.CurrUser.Id;
             Model.Name = txtName.Text;
             Model.QuickCode = txtQuickCode.Text;
             Model.UnitId = cbUnit.SelectedValue.ToString().AsInt();

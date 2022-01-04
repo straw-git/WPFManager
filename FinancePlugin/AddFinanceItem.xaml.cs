@@ -102,7 +102,7 @@ namespace FinancePlugin
                 model.AddType = cbType.SelectedValue.ToString().AsInt();
                 model.BillTime = dtBill.SelectedDate;
                 model.CreateTime = currTime;
-                model.Creator = Common.TempBasePageData.message.CurrUser.Id;
+                model.Creator = Common.UserGlobal.CurrUser.Id;
                 model.Remark = txtRemark.Text;
                 model.StaffId = staffId;
                 model.StaffName = staff.Name;

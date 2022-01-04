@@ -269,7 +269,7 @@ namespace HRPlugin.Pages.HR
             {
                 var _contract = context.StaffContract.First(c => c.StaffId == staffId && !c.Stop);
                 _contract.Stop = true;
-                _contract.StopUser = TempBasePageData.message.CurrUser.Id;
+                _contract.StopUser = UserGlobal.CurrUser.Id;
                 _contract.StopTime = DateTime.Now;
 
                 context.SaveChanges();

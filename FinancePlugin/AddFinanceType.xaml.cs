@@ -89,7 +89,7 @@ namespace FinancePlugin
 
             FinanceType model = new FinanceType();
             model.CreateTime = DateTime.Now;
-            model.Creator = Common.TempBasePageData.message.CurrUser.Id;
+            model.Creator = Common.UserGlobal.CurrUser.Id;
             model.Name = txtName.Text;
             model.TypeId = (bool)cbIsIn.IsChecked ? 0 : 1;
 

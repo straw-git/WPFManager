@@ -142,7 +142,7 @@ namespace HRPlugin
                     _insurance.CompanyName = txtSBCompanyName.Text;
                     _insurance.CompanyPrice = companyPrice;
                     _insurance.CreateTime = currTime;
-                    _insurance.Creator = TempBasePageData.message.CurrUser.Id;
+                    _insurance.Creator = UserGlobal.CurrUser.Id;
                     _insurance.End = currTime;
                     _insurance.Monthly = true;
                     _insurance.Remark = txtSBRemark.Text;
@@ -248,7 +248,7 @@ namespace HRPlugin
                 model.CompanyName = txtSYCompanyName.Text;
                 model.CompanyPrice = companyPrice;
                 model.CreateTime = DateTime.Now;
-                model.Creator = TempBasePageData.message.CurrUser.Id;
+                model.Creator = UserGlobal.CurrUser.Id;
                 model.End = dtSYEnd.SelectedDateTime;
                 model.Monthly = (bool)cbEnableMonthly.IsChecked;
                 model.Remark = txtSYRemark.Text;
@@ -301,7 +301,7 @@ namespace HRPlugin
             {
                 var _insurance = context.StaffInsurance.Single(c => c.Id == id);
                 _insurance.Stop = true;
-                _insurance.StopUser = TempBasePageData.message.CurrUser.Id;
+                _insurance.StopUser = UserGlobal.CurrUser.Id;
                 _insurance.End = DateTime.Now;
 
                 var _model = Data.Single(c => c.Id == id);
@@ -324,7 +324,7 @@ namespace HRPlugin
                 var insurance = context.StaffInsurance.Single(c => c.StaffId == staffId && c.Type == 0 && !c.Stop);
 
                 insurance.Stop = true;
-                insurance.StopUser = TempBasePageData.message.CurrUser.Id;
+                insurance.StopUser = UserGlobal.CurrUser.Id;
                 insurance.End = DateTime.Now;
                 context.SaveChanges();
             }

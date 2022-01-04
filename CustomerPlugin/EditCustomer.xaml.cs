@@ -154,7 +154,7 @@ namespace CustomerPlugin
                     customer.AddressNow = nowAddress;
                     customer.BePromotionCode = txtBePromotionCode.Text;
                     customer.Birthday = IdCardCommon.GetBirthday(idCard).ToString("yyyy-MM-dd");
-                    customer.Creater = TempBasePageData.message.CurrUser.Id;
+                    customer.Creater = UserGlobal.CurrUser.Id;
                     customer.CreateTime = DateTime.Now;
                     customer.IdCard = idCard;
                     customer.IsMember = false;

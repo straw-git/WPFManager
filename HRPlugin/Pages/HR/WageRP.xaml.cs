@@ -173,7 +173,7 @@ namespace HRPlugin.Pages.HR
             {
                 StaffSalaryOther model = new StaffSalaryOther();
                 model.CreateTime = DateTime.Now;
-                model.Creator = TempBasePageData.message.CurrUser.Id;
+                model.Creator = UserGlobal.CurrUser.Id;
                 model.DoTime = dtDoTime.SelectedDateTime;
                 model.MonthCode = $"{dtDoTime.SelectedDateTime.ToString("yyMM")}";
                 model.Price = price;
@@ -227,7 +227,7 @@ namespace HRPlugin.Pages.HR
             {
                 StaffSalaryOther model = new StaffSalaryOther();
                 model.CreateTime = DateTime.Now;
-                model.Creator = TempBasePageData.message.CurrUser.Id;
+                model.Creator = UserGlobal.CurrUser.Id;
                 model.DoTime = dtDoTime.SelectedDateTime;
                 model.MonthCode = $"{dtDoTime.SelectedDateTime.ToString("yyMM")}";
                 model.Price = price;

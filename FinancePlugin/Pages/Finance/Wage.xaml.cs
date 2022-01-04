@@ -332,10 +332,10 @@ namespace FinancePlugin.Pages.Finance
                 {
                     StaffSalarySettlement model = new StaffSalarySettlement();
                     model.CreateTime = DateTime.Now;
-                    model.Creator = TempBasePageData.message.CurrUser.Id;
+                    model.Creator = UserGlobal.CurrUser.Id;
                     model.Price = Data.Sum(c => c.Price);
                     model.StaffCount = Data.Count;
-                    model.CreatorName = TempBasePageData.message.CurrUser.Name;
+                    model.CreatorName = UserGlobal.CurrUser.Name;
                     model = contex.StaffSalarySettlement.Add(model);
                     model.Id = cbMonth.SelectedItem.ToString();
                     contex.SaveChanges();

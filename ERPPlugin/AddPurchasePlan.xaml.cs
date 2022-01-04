@@ -158,7 +158,7 @@ namespace ERPPlugin
                         Remark = g.Model.Remark,
                         SupplierId = g.Model.SupplierId,
                         CreateTime = DateTime.Now,
-                        Creator = TempBasePageData.message.CurrUser.Id
+                        Creator = UserGlobal.CurrUser.Id
                     });
 
                     #region 检查状态
@@ -374,7 +374,7 @@ namespace ERPPlugin
         {
             Model = new PurchasePlan();
             Model.CreateTime = DateTime.Now;
-            Model.Creator = TempBasePageData.message.CurrUser.Id;
+            Model.Creator = UserGlobal.CurrUser.Id;
             Model.PlanCode = code;
             Model.Finished = false;
 

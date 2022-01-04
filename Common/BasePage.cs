@@ -28,7 +28,14 @@ namespace Common
         public int Order = 0;
         public bool IsMenu = true;//是否包含在导航内
         public string Code = "";
-        public DBModels.Sys.User CurrUser = null;//当前登录账户信息
+        public DBModels.Sys.User CurrUser//当前登录账户信息
+        {
+            get
+            {
+                return UserGlobal.CurrUser;
+            }
+        }
+
         protected BaseMainWindow ParentWindow = null;//父窗体
 
         public BasePage()
@@ -47,27 +54,10 @@ namespace Common
             {
                 //使用页面 测试时会进入这里使用管理员账户
                 using (DBContext context = new DBContext())
-                    CurrUser = context.User.First(c => c.Name == "admin");
-                TempBasePageData.message = new MainWindowTagInfo();
-                TempBasePageData.message.CurrUser = CurrUser;
-                return;
+                    UserGlobal.CurrUser = context.User.First(c => c.Name == "admin");
             }
-            MainWindowTagInfo parentInfo = ParentWindow.Tag as MainWindowTagInfo;
-            if (parentInfo == null)
-            {
-                //使用窗体 测试时会进入这里使用管理员账户
-                MessageBoxX.Show("当前是测试环境", " 模拟管理员操作");
-                using (DBContext context = new DBContext())
-                {
-                    parentInfo = new MainWindowTagInfo();
-                    parentInfo.CurrUser = context.User.First(c => c.Name == "admin");
-                }
-            }
-            TempBasePageData.message = parentInfo;
-            CurrUser = parentInfo.CurrUser;
 
-            CheckMenu(parentInfo);
-
+            CheckMenu();
             OnPageLoaded();
         }
 
@@ -81,11 +71,11 @@ namespace Common
             ParentWindow.IsMaskVisible = _v;
         }
 
-        private void CheckMenu(MainWindowTagInfo parentInfo)
+        private void CheckMenu()
         {
-            if (parentInfo.CurrUser.Name == "admin") return;
+            if (UserGlobal.CurrUser.Name == "admin") return;
 
-            string _menuStr = parentInfo.CurrUser.Menus;
+            string _menuStr = UserGlobal.CurrUser.Menus;
             List<string> Menus = _menuStr.Split('|').ToList();
 
             //Client.Pages.Manager.Dic
@@ -99,7 +89,7 @@ namespace Common
 
             List<string> CurrPageMenus = Menus.Where(c => c.StartsWith(menuName)).ToList();//当前页面中的按钮（已有的权限）
 
-            foreach (var plugin in parentInfo.Dic)
+            foreach (var plugin in UserGlobal.Dic)
             {
                 if (plugin.Value.Keys.Any(c => c.Code == parentName))
                 {

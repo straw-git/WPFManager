@@ -37,11 +37,7 @@ namespace Client
         public MainWindow()
         {
             InitializeComponent();
-
-            MainWindowTagInfo tag = new MainWindowTagInfo();
-            tag.CurrUser = UserGlobal.CurrUser;
-            tag.Dic = MenuManager.PluginDic;
-            this.Tag = tag;
+            UserGlobal.Dic = MenuManager.PluginDic;
 
             WindowGlobal.MainWindow = this;
         }

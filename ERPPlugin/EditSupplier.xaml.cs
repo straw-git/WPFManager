@@ -119,7 +119,7 @@ namespace ERPPlugin
             Model = new Supplier();
             Model.Address = txtAddress.Text;
             Model.ContactName = txtContactName.Text;
-            Model.Creater = TempBasePageData.message.CurrUser.Id;
+            Model.Creater = UserGlobal.CurrUser.Id;
             Model.Id = id;
             Model.IsDel = false;
             Model.Name = txtName.Text;

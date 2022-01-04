@@ -40,11 +40,11 @@ namespace HRPlugin
                 isEdit = false;
 
                 DateTime currTime = DateTime.Now;
-                staffId = $"S{TempBasePageData.message.CurrUser.Id}{currTime.ToString("yyyyMMddHHmmss")}";
+                staffId = $"S{UserGlobal.CurrUser.Id}{currTime.ToString("yyyyMMddHHmmss")}";
                 Title = "注册新员工";
 
                 StaffModel.CreateTime = currTime;
-                StaffModel.Creator = TempBasePageData.message.CurrUser.Id;
+                StaffModel.Creator = UserGlobal.CurrUser.Id;
 
                 new JobPostTreeViewCommon(tvJobPost).Init(false);
             }

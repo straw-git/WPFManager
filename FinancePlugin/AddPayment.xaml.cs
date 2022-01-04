@@ -75,7 +75,7 @@ namespace FinancePlugin
                 else
                 {
                     Model.CreateTime = DateTime.Now;
-                    Model.Creator = Common.TempBasePageData.message.CurrUser.Id;
+                    Model.Creator = Common.UserGlobal.CurrUser.Id;
                     Model.IsDel = false;
                     Model.DelTime = DateTime.Now;
                     Model.DelUser = 0;

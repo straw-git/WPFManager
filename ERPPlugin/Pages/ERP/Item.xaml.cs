@@ -299,7 +299,7 @@ namespace ERPPlugin.Pages.ERP
                 {
                     var _model = context.Goods.Single(c => c.Id == id);
                     _model.IsDel = true;
-                    _model.DelUser = TempBasePageData.message.CurrUser.Id;
+                    _model.DelUser = UserGlobal.CurrUser.Id;
                     _model.DelTime = DateTime.Now;
 
                     context.SaveChanges();

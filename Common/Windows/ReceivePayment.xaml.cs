@@ -48,7 +48,7 @@ namespace Common.Windows
         public ReceivePayment() 
         {
             MessageBox.Show("测试");
-            MessageBox.Show(TempBasePageData.message.CurrUser.Name);
+            MessageBox.Show(UserGlobal.CurrUser.Name);
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace Common.Windows
             }
 
             Model.CreateTime = DateTime.Now;
-            Model.Creator = TempBasePageData.message.CurrUser.Id;
+            Model.Creator = UserGlobal.CurrUser.Id;
             Model.PaymentId = cbCard.SelectedValue.ToString().AsInt();
             Model.PayModelId = cbPayment.SelectedValue.ToString().AsInt();
             Model.Price = type == PaymentType.Receive ? price : price * -1;

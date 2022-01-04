@@ -112,7 +112,7 @@ namespace HRPlugin
                     //不存在 添加
                     StaffContract _contract = new StaffContract();
                     _contract.CreateTime = DateTime.Now;
-                    _contract.Creator = TempBasePageData.message.CurrUser.Id;
+                    _contract.Creator = UserGlobal.CurrUser.Id;
                     _contract.End = dtEnd.SelectedDateTime;
                     _contract.Price = price;
                     _contract.Remark = txtRemark.Text;

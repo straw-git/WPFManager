@@ -250,7 +250,7 @@ namespace HRPlugin.Pages.HR
                     {
                         var staff = context.Staff.Single(c => c.Id == id);
                         staff.IsDel = true;
-                        staff.DelUser = TempBasePageData.message.CurrUser.Id;
+                        staff.DelUser = UserGlobal.CurrUser.Id;
                         staff.DelTime = s.Model.StopTime;
 
                         context.StaffSalary.Add(new StaffSalary()

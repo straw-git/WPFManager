@@ -10,9 +10,10 @@ namespace Common
     /// <summary>
     /// 页面临时数据
     /// </summary>
-    public class TempBasePageData
+    public partial class UserGlobal
     {
-        public static MainWindowTagInfo message = new MainWindowTagInfo();
+        public static DBModels.Sys.User CurrUser { get; set; }
+        public static Dictionary<string, Dictionary<BaseMenuInfo, List<MenuItemModel>>> Dic;
 
         /// <summary>
         /// 当前是否是员工登录
@@ -20,7 +21,10 @@ namespace Common
         /// <returns></returns>
         public static bool IsStaffLogin() 
         {
-            return message.CurrUser.StaffId.NotEmpty();
+            return CurrUser.StaffId.NotEmpty();
         }
+
+        //是否已登录
+        public static bool IsLogin = false;
     }
 }

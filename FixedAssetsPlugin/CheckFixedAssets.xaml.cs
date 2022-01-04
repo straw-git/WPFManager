@@ -42,7 +42,7 @@ namespace FixedAssetsPlugin
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!TempBasePageData.IsStaffLogin())
+            if (!UserGlobal.IsStaffLogin())
             {
                 MessageBoxX.Show("当前操作者不是员工", "加载信息失败");
                 Close();
@@ -125,13 +125,13 @@ namespace FixedAssetsPlugin
 
             using (FixedAssetsDBContext context = new FixedAssetsDBContext()) 
             {
-                if (TempBasePageData.message.CurrUser.StaffId.IsNullOrEmpty())
+                if (UserGlobal.CurrUser.StaffId.IsNullOrEmpty())
                 {
                     MessageBoxX.Show("当前操作者不是员工", "加载信息失败");
                     return;
                 }
 
-                var staff = context.Staff.First(c => c.Id == TempBasePageData.message.CurrUser.StaffId);
+                var staff = context.Staff.First(c => c.Id == UserGlobal.CurrUser.StaffId);
 
                 var fixedAssets = context.FixedAssets.Single(c => c.Id == code);
                 fixedAssets.Count = count;
@@ -144,7 +144,7 @@ namespace FixedAssetsPlugin
                 FixedAssetsCheck model = new FixedAssetsCheck();
                 model.Check = fixedAssets.LastCheck;
                 model.CreateTime = fixedAssets.LastCheck;
-                model.Creator = TempBasePageData.message.CurrUser.Id;
+                model.Creator = UserGlobal.CurrUser.Id;
                 model.FixedAssetsCode = fixedAssets.Id;
                 model.NewCount = count;
                 model.NewLocation = cbLocation.SelectedValue.ToString().AsInt();

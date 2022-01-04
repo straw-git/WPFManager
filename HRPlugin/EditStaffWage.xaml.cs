@@ -175,7 +175,7 @@ namespace HRPlugin
             {
                 StaffSalary model = new StaffSalary();
                 model.CreateTime = DateTime.Now;
-                model.Creator = TempBasePageData.message.CurrUser.Id;
+                model.Creator = UserGlobal.CurrUser.Id;
                 model.IsEnd = (bool)cbEnableEndTime.IsChecked;
                 model.End = dtEnd.SelectedDateTime.MaxDate();
                 model.Price = wagePrice;
