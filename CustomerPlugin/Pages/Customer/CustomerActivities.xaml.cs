@@ -233,7 +233,7 @@ namespace CustomerPlugin.Pages.Customer
 
             MJActivity activity = new MJActivity();
             activity.CreateTime = DateTime.Now;
-            activity.Creator = CurrUser.Id;
+            activity.Creator = UserGlobal.CurrUser.Id;
             activity.J = j;
             activity.M = m;
             activity.MemberTypeId = 0;
@@ -294,7 +294,7 @@ namespace CustomerPlugin.Pages.Customer
 
             MJActivity activity = new MJActivity();
             activity.CreateTime = DateTime.Now;
-            activity.Creator = CurrUser.Id;
+            activity.Creator = UserGlobal.CurrUser.Id;
             activity.J = j;
             activity.M = m;
             activity.MemberTypeId = memberLevel;

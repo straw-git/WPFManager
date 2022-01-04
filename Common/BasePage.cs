@@ -28,14 +28,6 @@ namespace Common
         public int Order = 0;
         public bool IsMenu = true;//是否包含在导航内
         public string Code = "";
-        public DBModels.Sys.User CurrUser//当前登录账户信息
-        {
-            get
-            {
-                return UserGlobal.CurrUser;
-            }
-        }
-
         protected BaseMainWindow ParentWindow = null;//父窗体
 
         public BasePage()

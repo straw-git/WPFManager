@@ -478,7 +478,7 @@ namespace CustomerPlugin.Pages.Customer
                         _member.Birthday = _customer.IdCard.NotEmpty() ? IdCardCommon.GetBirthday(_customer.IdCard).ToString("yyyy-MM-dd") : "";
                         _member.CardNumber = "";
                         _member.CreateTime = DateTime.Now;
-                        _member.Creator = CurrUser.Id;
+                        _member.Creator = UserGlobal.CurrUser.Id;
                         _member.CustomerId = id;
                         _member.IdCard = _customer.IdCard;
                         _member.Name = _customer.Name;

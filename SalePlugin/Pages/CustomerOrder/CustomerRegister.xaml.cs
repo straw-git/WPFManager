@@ -190,7 +190,7 @@ namespace SalePlugin.Pages.CustomerOrder
                 }
 
                 CustomerTemp customerTemp = new CustomerTemp();
-                customerTemp.Creater = CurrUser.Id;
+                customerTemp.Creater = UserGlobal.CurrUser.Id;
                 customerTemp.CreateTime = DateTime.Now;
                 customerTemp.CustomerId = customer.Id;
                 customerTemp.IdCard = customer.IdCard;

@@ -187,7 +187,7 @@ namespace ERPPlugin.Pages.ERP
                     stockLog.Manufacturer = "盘点";
                     stockLog.Remark = "盘点";
 
-                    stockLog.Creator = CurrUser.Id;
+                    stockLog.Creator = UserGlobal.CurrUser.Id;
                     stockLog.CreateTime = DateTime.Now;
 
                     context.StockLog.Add(stockLog);
