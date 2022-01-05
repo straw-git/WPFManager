@@ -6,6 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HRPlugin.Pages.HR"
                 xmlns:p="clr-namespace:Common;assembly=Common"  
+            xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="730" d:DesignWidth="1190"
       Title="员工">
@@ -13,37 +14,98 @@
         <Border Background="White"/>
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="215"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="1">
-                <GroupBox  Header="人员列表"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="130"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <lvc:Gauge Margin="5" From="0" To="100" Value="20"/>
+                        <Label Grid.Row="1" HorizontalAlignment="Center" Content="参保人数"/>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <lvc:Gauge Margin="5" From="0" To="100" Value="20"/>
+                        <Label Grid.Row="1" HorizontalAlignment="Center"  Content="签合同人数"/>
+                    </Grid>
+                    <!--<Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <lvc:Gauge Margin="5" From="0" To="100" Value="20"/>
+                        <Label Grid.Row="1" HorizontalAlignment="Center"  Content="保险"/>
+                    </Grid>
+                    <Grid Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <lvc:Gauge Margin="5" From="0" To="100" Value="20"/>
+                        <Label Grid.Row="1" HorizontalAlignment="Center"  Content="保险"/>
+                    </Grid>
+                    <Grid Grid.Column="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <lvc:Gauge Margin="5" From="0" To="100" Value="20"/>
+                        <Label Grid.Row="1" HorizontalAlignment="Center"  Content="保险"/>
+                    </Grid>-->
+                </Grid>
+                <Border Grid.RowSpan="2" BorderThickness="1,0,0,0" BorderBrush="{DynamicResource SkinColor}"/>
+                <Grid Grid.Row="1">
+                    <GroupBox  Header="人员列表"
                            Margin="10"
                             pu:GroupBoxHelper.Icon="&#xf11c;"
                             pu:GroupBoxHelper.CornerRadius="10"
                             pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
                             pu:GroupBoxHelper.IsSplitLineVisible="True"
                             pu:GroupBoxHelper.ShadowColor="LightGray">
-                    <pu:GroupBoxHelper.ExtendControl>
-                        <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
-                            <Button  Content="新员工" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnAdd" Click="btnAdd_Click"/>
-                            <Button  Content="刷新列表" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnRef" Click="btnRef_Click"/>
-                        </StackPanel>
-                    </pu:GroupBoxHelper.ExtendControl>
-                    <Grid>
-                        <StackPanel Orientation="Horizontal" Height="50" VerticalAlignment="Top">
-                            <Label VerticalAlignment="Center" Content="按姓名搜索："/>
-                            <TextBox  Height="30"
+                        <pu:GroupBoxHelper.ExtendControl>
+                            <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
+                                <Button  Content="新员工" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnAdd" Click="btnAdd_Click"/>
+                                <Button  Content="刷新列表" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnRef" Click="btnRef_Click"/>
+                            </StackPanel>
+                        </pu:GroupBoxHelper.ExtendControl>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" Height="50" VerticalAlignment="Top">
+                                <Label VerticalAlignment="Center" Content="姓名："/>
+                                <TextBox  Height="30"
                                       x:Name="txtName"
                                       KeyDown="txtName_KeyDown"
-                                      Width="200"
+                                      Width="150"
                                       pu:TextBoxHelper.Watermark="姓名"
                                       Background="{DynamicResource TextBoxBgColor}"
                                       pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
                                       pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                       pu:TextBoxHelper.IsClearButtonVisible="True" />
-                            <Button  Content="查询"
+                                <CheckBox Content="未参保" Height="30"  Margin="20,0,0,0"  pu:CheckBoxHelper.CheckBoxStyle="Switch2"  pu:CheckBoxHelper.BoxHeight="20"  pu:CheckBoxHelper.BoxWidth="40" Background="{DynamicResource CheckBoxBgColor}" pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"/>
+                                <CheckBox Content="未签合同" Height="30"  Margin="20,0,0,0"  pu:CheckBoxHelper.CheckBoxStyle="Switch2"  pu:CheckBoxHelper.BoxHeight="20"  pu:CheckBoxHelper.BoxWidth="40" Background="{DynamicResource CheckBoxBgColor}" pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"/>
+                                <CheckBox x:Name="cbEnableTime" Checked="cbEnableTime_Checked" Unchecked="cbEnableTime_Unchecked" Height="30"  Margin="20,0,0,0"  pu:CheckBoxHelper.CheckBoxStyle="Switch2"  pu:CheckBoxHelper.BoxHeight="20"  pu:CheckBoxHelper.BoxWidth="40" Background="{DynamicResource CheckBoxBgColor}" pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"/>
+                                <pu:DateTimePicker x:Name="dtStart" IsEnabled="False"  Width="140" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                                <Label Content="-" VerticalAlignment="Center"/>
+                                <pu:DateTimePicker x:Name="dtEnd" IsEnabled="False" Width="140" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                                <Button  Content="查询"
                                      x:Name="btnSelect"
                                      Click="btnSelect_Click"
                                      Margin="20,0,0,0"
@@ -51,8 +113,8 @@
                                      Background="{DynamicResource ButtonBgColor}"
                                      BorderBrush="{DynamicResource ButtonBorderColor}"
                                      pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
-                        </StackPanel>
-                        <DataGrid HorizontalAlignment="Center"
+                            </StackPanel>
+                            <DataGrid HorizontalAlignment="Center"
                                   x:Name="list"
                               ItemsSource="{Binding}"
                               IsReadOnly="True"
@@ -64,30 +126,125 @@
                               pu:DataGridHelper.CellPadding="5,0"
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}" >
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="入职时间" Width="150" Binding="{Binding CreateTime}" />
-                                <DataGridTextColumn Header="姓名" Width="*" Binding="{Binding Name}" />
-                                <DataGridTextColumn Header="年龄" Width="80"  Binding="{Binding Age}" />
-                                <DataGridTextColumn Header="职务" Width="150" Binding="{Binding JobPostName}" />
-                                <DataGridTemplateColumn Header="操作" Width="200" >
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button  Content="工资详情" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnWage" Click="btnWage_Click"/>
-                                                <Button  Content="停职" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnDelete" Click="btnDelete_Click"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        <pu:Pagination x:Name="dPager" Height="28" CurrentIndexChanged="dPager_CurrentIndexChanged"   VerticalAlignment="Bottom" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
-                        <Border Background="White" x:Name="bNoData" Margin="0,50,0,0" Visibility="Collapsed">
-                            <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        </Border>
-                        <pu:Loading  Visibility="Collapsed" x:Name="gLoading" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
-                    </Grid>
-                </GroupBox>
+                                <DataGrid.ContextMenu>
+                                    <ContextMenu pu:IconHelper.Width="45"      
+                                     pu:ContextMenuHelper.CornerRadius="5"
+                                     Padding="0,5"
+                                     Width="250"
+                                     x:Name="gridContextMenu"
+                                     FontSize="12">
+                                        <MenuItem Style="{StaticResource MenuItem_NonStyle}" Height="60">
+                                            <MenuItem.Header>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Button Background="Transparent"
+                                                Foreground="#3E3E3E"
+                                                pu:ButtonHelper.HoverBrush="#EEEEEE"
+                                                VerticalAlignment="Stretch"
+                                                HorizontalAlignment="Stretch">
+                                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xf0f6;" FontSize="25" HorizontalAlignment="Center" FontFamily="{StaticResource FontAwesome}" />
+                                                            <TextBlock Text="详细信息" FontSize="12" HorizontalAlignment="Center" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <Button Grid.Column="1"
+                                                Background="Transparent"
+                                                Foreground="#3E3E3E"
+                                                pu:ButtonHelper.HoverBrush="#EEEEEE"
+                                                VerticalAlignment="Stretch"
+                                                HorizontalAlignment="Stretch">
+                                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xf029;" FontSize="25" HorizontalAlignment="Center" FontFamily="{StaticResource FontAwesome}" />
+                                                            <TextBlock Text="选取数据" FontSize="12" HorizontalAlignment="Center" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <Button Grid.Column="2" 
+                                                Background="Transparent" 
+                                                Foreground="#3E3E3E"
+                                                pu:ButtonHelper.HoverBrush="#EEEEEE"
+                                                VerticalAlignment="Stretch"
+                                                HorizontalAlignment="Stretch">
+                                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                                            <TextBlock Text="&#xf067;" FontSize="25" HorizontalAlignment="Center" FontFamily="{StaticResource FontAwesome}" />
+                                                            <TextBlock Text="添加产品"  FontSize="12" HorizontalAlignment="Center" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                </Grid>
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                        <!--<Separator />
+                            <MenuItem Header="返回主页" Icon="&#xf03b;" x:Name="btnBackIndex" Click="btnBackIndex_Click" />-->
+                                        <Separator />
+                                        <MenuItem Header="查询数据" Icon="&#xf002;" />
+                                        <Separator />
+                                        <MenuItem Header="快速筛选" Icon="&#xf002;">
+                                            <MenuItem Header="只看当前供应商数据" />
+                                            <MenuItem Header="只看当前品名数据" />
+                                            <MenuItem Header="按固定条件筛选" />
+                                        </MenuItem>
+                                        <Separator />
+                                        <MenuItem Header="财务快捷" Icon="&#xf157;">
+                                            <MenuItem Header="平账"/>
+                                            <!--<MenuItem Header="更改初始余额"/>
+                                <MenuItem Header="更改初始未开发票金额"/>-->
+                                        </MenuItem>
+                                        <Separator />
+                                        <MenuItem Header="添加供应商" Icon="&#xf2ba;" />
+                                        <!--<MenuItem Header="更改供应商名称" Icon="&#xf044;" x:Name="btnChangeGYSName" Click="btnChangeGYSName_Click"/>-->
+                                        <MenuItem Header="删除" Icon="&#xf1f8;"/>
+                                        <Separator />
+                                        <MenuItem Header="导出Excel" Icon="&#xf1c3;">
+                                            <MenuItem Header="导出发票列表"  />
+                                            <MenuItem Header="导出结果报表"/>
+                                            <MenuItem Header="导出汇总表"/>
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </DataGrid.ContextMenu>
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Width="60" IsReadOnly="True">
+                                        <DataGridTemplateColumn.HeaderTemplate>
+                                            <DataTemplate>
+                                                <CheckBox ToolTip="[当前页数据] 全选/取消选择" x:Name="cbSelectListAll" Click="cbSelectListAll_Click" ></CheckBox>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.HeaderTemplate>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="姓名" Width="120" Binding="{Binding Name}" />
+                                    <DataGridTextColumn Header="年龄" Width="80"  Binding="{Binding Age}" />
+                                    <DataGridTextColumn Header="职务" Width="100" Binding="{Binding JobPostName}" />
+                                    <DataGridTextColumn Header="基础工资" Width="100" Binding="{Binding JobPostName}" />
+                                    <DataGridTextColumn Header="保险" Width="150"  Binding="{Binding Age}" />
+                                    <DataGridTextColumn Header="合同剩余/天" Width="100"  Binding="{Binding Age}" />
+                                    <DataGridTextColumn Header="入职时间" Width="100" Binding="{Binding CreateTime}" />
+                                    <DataGridTemplateColumn Header="操作" Width="*" >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button  Content="编辑" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnEdit" Click="btnEdit_Click"/>
+                                                    <Button  Content="工资详情" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnWage" Click="btnWage_Click"/>
+                                                    <Button  Content="停职" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnDelete" Click="btnDelete_Click"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <pu:Pagination x:Name="dPager" Height="28" CurrentIndexChanged="dPager_CurrentIndexChanged"   VerticalAlignment="Bottom" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
+                            <Border Background="White" x:Name="bNoData" Margin="0,50,0,0" Visibility="Collapsed">
+                                <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Border>
+                            <pu:Loading  Visibility="Collapsed" x:Name="gLoading" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
             </Grid>
             <Grid Grid.Column="0">
                 <TabControl   VerticalAlignment="Stretch"
@@ -97,7 +254,7 @@
                         pu:TabControlHelper.SelectedForeground="{DynamicResource SkinColor}"
                         pu:TabControlHelper.ItemsAlignment="Center">
 
-                    <TabItem Header="按角色" >
+                    <TabItem Header="角色" >
                         <TreeView pu:TreeViewHelper.TreeViewStyle="Chain"
                                   x:Name="tvRole"
                                   pu:TreeViewHelper.ExpandMode="SingleClick"
@@ -106,7 +263,7 @@
                                   Background="Transparent" SelectedItemChanged="tvRole_SelectedItemChanged">
                         </TreeView>
                     </TabItem>
-                    <TabItem Header="按组织架构" >
+                    <TabItem Header="组织架构" >
                         <TreeView x:Name="tvJobPost" pu:TreeViewHelper.TreeViewStyle="Chain"
                                   pu:TreeViewHelper.ExpandMode="SingleClick"
                                   pu:TreeViewHelper.ItemPadding="3,0,0,0"

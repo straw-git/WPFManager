@@ -35,7 +35,7 @@ namespace HRPlugin.Pages.HR
 
         #region Models 
 
-        class UIModel : INotifyPropertyChanged
+        class UIModel : BaseUIModel
         {
             public string Id { get; set; }
             private string name = "";
@@ -71,11 +71,6 @@ namespace HRPlugin.Pages.HR
             }
             public string CreateTime { get; set; }
 
-            public event PropertyChangedEventHandler PropertyChanged;
-            public void NotifyPropertyChanged(string propertyName)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         #endregion 
@@ -116,6 +111,58 @@ namespace HRPlugin.Pages.HR
         }
 
         #region UI Method
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (list.SelectedItem == null) return;
+            UIModel selectedModel = list.SelectedItem as UIModel;
+            if (selectedModel != null)
+            {
+                MaskVisible(true);
+                AddStaff a = new AddStaff(selectedModel.Id);
+                a.ShowDialog();
+                if (a.Succeed)
+                {
+                    MessageBoxX.Show("编辑成功", "成功提醒");
+
+                    #region 刷新数据
+
+                    var _model = Data.Single(c => c.Id == selectedModel.Id);
+                    using (DBContext context = new DBContext())
+                    {
+                        _model.Age = 0;
+                        _model.CreateTime = a.StaffModel.CreateTime.ToString("yy-MM-dd");
+                        _model.JobPostName = context.SysDic.First(c => c.Id == a.StaffModel.JobPostId).Name;
+                        _model.Name = a.StaffModel.Name;
+                    }
+                    DateTime brthday = IdCardCommon.GetBirthday(a.StaffModel.IdCard);
+                    _model.Age = DateTime.Now.Year - brthday.Year;
+
+                    #endregion 
+                }
+
+                MaskVisible(false);
+            }
+        }
+
+        private void cbSelectListAll_Click(object sender, RoutedEventArgs e)
+        {
+            bool isCheck = (bool)((sender as CheckBox).IsChecked);
+            foreach (var item in Data)
+            {
+                item.IsChecked = isCheck;
+                if (isCheck)
+                {
+                    //如果已经选中 说明原来没有选中 将它加入到列表
+                    SelectedTableData(list.Name, item);
+                }
+                else
+                {
+                    //未选中说明原来是选中的 将它移出列表
+                    UnSelectedTableData(list.Name, c => c.Id == item.Id);
+                }
+            }
+        }
 
         private void btnWage_Click(object sender, RoutedEventArgs e)
         {
@@ -202,35 +249,35 @@ namespace HRPlugin.Pages.HR
 
         private void list_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (list.SelectedItem == null) return;
-            UIModel selectedModel = list.SelectedItem as UIModel;
-            if (selectedModel != null)
+            if (list.SelectedItem != null)
             {
-                MaskVisible(true);
-                AddStaff a = new AddStaff(selectedModel.Id);
-                a.ShowDialog();
-                if (a.Succeed)
+                var selectItem = list.SelectedItem as UIModel;
+                bool targetIsChecked = !selectItem.IsChecked;
+                Data.Single(c => c.Id == selectItem.Id).IsChecked = targetIsChecked;
+
+                if (targetIsChecked)
                 {
-                    MessageBoxX.Show("编辑成功", "成功提醒");
-
-                    #region 刷新数据
-
-                    var _model = Data.Single(c => c.Id == selectedModel.Id);
-                    using (DBContext context = new DBContext())
-                    {
-                        _model.Age = 0;
-                        _model.CreateTime = a.StaffModel.CreateTime.ToString("yyyy年MM月dd日");
-                        _model.JobPostName = context.SysDic.First(c => c.Id == a.StaffModel.JobPostId).Name;
-                        _model.Name = a.StaffModel.Name;
-                    }
-                    DateTime brthday = IdCardCommon.GetBirthday(a.StaffModel.IdCard);
-                    _model.Age = DateTime.Now.Year - brthday.Year;
-
-                    #endregion 
+                    //如果已经选中 说明原来没有选中 将它加入到列表
+                    SelectedTableData(list.Name, selectItem);
                 }
-
-                MaskVisible(false);
+                else
+                {
+                    //未选中说明原来是选中的 将它移出列表
+                    UnSelectedTableData(list.Name, c => c.Id == selectItem.Id);
+                }
             }
+        }
+
+        private void cbEnableTime_Checked(object sender, RoutedEventArgs e)
+        {
+            dtStart.IsEnabled = true;
+            dtEnd.IsEnabled = true;
+        }
+
+        private void cbEnableTime_Unchecked(object sender, RoutedEventArgs e)
+        {
+            dtStart.IsEnabled = false;
+            dtEnd.IsEnabled = false;
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -413,7 +460,7 @@ namespace HRPlugin.Pages.HR
                     UIModel _model = new UIModel()
                     {
                         Age = 0,
-                        CreateTime = item.CreateTime.ToString("yyyy年MM月dd日"),
+                        CreateTime = item.CreateTime.ToString("yy-MM-dd"),
                         Id = item.Id,
                         JobPostName = context.SysDic.First(c => c.Id == item.JobPostId).Name,
                         Name = item.Name
