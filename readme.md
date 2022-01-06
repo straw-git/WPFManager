@@ -74,7 +74,7 @@ HRPlugin：人事管理插件
 
 FixedAssetsPlugin：固定资产管理插件  
 LiveChartsTestPlugin：图表工具测试插件  
-DBs/SaleDBModels ： 销售数据实体（进行中）
+DBs/SaleDBModels ： 销售数据实体（进行中）  
 SalePlugin：销售订单中心插件（进行中）  
 
 

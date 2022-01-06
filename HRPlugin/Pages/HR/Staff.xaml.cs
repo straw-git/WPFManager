@@ -107,7 +107,7 @@ namespace HRPlugin.Pages.HR
             new RoleTreeViewCommon(tvRole).Init();
             new JobPostTreeViewCommon(tvJobPost).Init();
             list.ItemsSource = Data;
-            btnRef_Click(null, null);
+            //btnRef_Click(null, null);
         }
 
         #region UI Method
