@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media.Animation;
 using form = System.Windows.Forms;
 
 namespace Common
@@ -35,12 +36,41 @@ namespace Common
             this.Loaded += BasePage_Loaded;
         }
 
+        #region Animations
+
+        /// <summary>
+        /// 页面入场动画
+        /// </summary>
+        private void StartPageInAnimation()
+        {
+            Storyboard sb = new Storyboard();
+            ThicknessAnimation margin = new ThicknessAnimation();
+            DoubleAnimation opacity = new DoubleAnimation();
+            margin.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 450));
+            opacity.Duration = new Duration(new TimeSpan(0, 0, 0, 0, 350));
+            margin.From = new Thickness(100, 0, -100, 0);
+            opacity.From = 0;
+            margin.To = new Thickness(0);
+            margin.DecelerationRatio = 0.9;
+            opacity.To = 1;
+            Storyboard.SetTarget(margin, this);
+            Storyboard.SetTarget(opacity, this);
+            Storyboard.SetTargetProperty(margin, new PropertyPath("Margin", new object[] { }));
+            Storyboard.SetTargetProperty(opacity, new PropertyPath("Opacity", new object[] { }));
+            sb.Children.Add(margin);
+            sb.Children.Add(opacity);
+            sb.Begin();
+        }
+
+        #endregion
+
         #region  Base Page
 
         protected abstract void OnPageLoaded();
 
         private void BasePage_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
+            StartPageInAnimation();
             ParentWindow = System.Windows.Window.GetWindow(this) as BaseMainWindow;
             if (ParentWindow == null)
             {
