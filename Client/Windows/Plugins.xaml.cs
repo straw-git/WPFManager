@@ -142,7 +142,6 @@ namespace Client.Windows
                 var result = MessageBoxX.Show($"是否确认移除插件{pluginName}", "插件移除提醒", null, MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    pluginName = pluginName.Substring(0, pluginName.IndexOf(':'));
                     LocalPlugins.Models.Remove(LocalPlugins.Models.First(c => c.DLLPageName == pluginName));
                     LocalPlugins.Save();
 
