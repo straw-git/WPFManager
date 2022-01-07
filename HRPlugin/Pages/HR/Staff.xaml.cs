@@ -19,6 +19,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
 using Common.Utils;
+using System.Linq.Expressions;
+using Common.Windows;
+using Common.MyAttributes;
 
 namespace HRPlugin.Pages.HR
 {
@@ -39,6 +42,7 @@ namespace HRPlugin.Pages.HR
         {
             public string Id { get; set; }
             private string name = "";
+            [DataSourceBinding("姓名", -1, 1)]
             public string Name
             {
                 get => name;
@@ -49,6 +53,7 @@ namespace HRPlugin.Pages.HR
                 }
             }
             private int age = 0;
+            [DataSourceBinding("年龄", 80, 2)]
             public int Age
             {
                 get => age;
@@ -60,6 +65,7 @@ namespace HRPlugin.Pages.HR
             }
             private string jobPostName = "";
             //职务
+            [DataSourceBinding("职务", 100, 3)]
             public string JobPostName
             {
                 get => jobPostName;
@@ -69,45 +75,54 @@ namespace HRPlugin.Pages.HR
                     NotifyPropertyChanged("JobPostName");
                 }
             }
+
+            [DataSourceBinding("基础工资", 100, 4)]
+            public decimal Wage { get; set; }
+            [DataSourceBinding("入职时间", 100, 5)]
             public string CreateTime { get; set; }
 
+            public int SBInsuranceCount { get; set; }//社保数量
+            public Brush SBInsuranceCountBrush
+            {
+                get
+                {
+                    return SBInsuranceCount == 0 ? Brushes.Red : Brushes.Green;
+                }
+            }
+            public int SYInsuranceCount { get; set; }//商业保险数量
+            [DataSourceBinding("合同剩余/天", 100, 6)]
+            public string ContractSurplusDays { get; set; }//合同剩余天数
+            public Brush ContractSurplusDaysBrush
+            {
+                get
+                {
+                    if (ContractSurplusDays == "无合同")
+                    {
+                        return Brushes.Red;
+                    }
+                    else if (ContractSurplusDays == "已过期")
+                    {
+                        return Brushes.Yellow;
+                    }
+                    else return Brushes.Black;
+                }
+            }
         }
 
         #endregion 
 
-        enum SearchType
-        {
-            Role,
-            JobPost
-        }
-
         //页面数据集合
         ObservableCollection<UIModel> Data = new ObservableCollection<UIModel>();
-
-        List<SysDic> roles = new List<SysDic>();
-
-        //当前页码
-        private int currPage = 1;
-        //数据总数
-        private int dataCount = 0;
-        //总页数
-        private int pagerCount = 0;
-        //页数据
-        private int pageSize = 10;
-
-        //当前选中的类型
-        private SearchType currSelectedType = SearchType.Role;
         //当前选中的ID
         private int currSelectedId = 0;
-        bool running = false;
-
 
         protected override void OnPageLoaded()
         {
-            new RoleTreeViewCommon(tvRole).Init();
+            SetDataGridBinding(list, new UIModel(), Data);
+
             new JobPostTreeViewCommon(tvJobPost).Init();
-            list.ItemsSource = Data;
-            //btnRef_Click(null, null);
+
+            UpdateGauge();
         }
 
         #region UI Method
@@ -132,7 +147,7 @@ namespace HRPlugin.Pages.HR
                     {
                         _model.Age = 0;
                         _model.CreateTime = a.StaffModel.CreateTime.ToString("yy-MM-dd");
-                        _model.JobPostName = context.SysDic.First(c => c.Id == a.StaffModel.JobPostId).Name;
+                        _model.JobPostName = context.SysDic.Any(c => c.Id == a.StaffModel.JobPostId) ? context.SysDic.First(c => c.Id == a.StaffModel.JobPostId).Name : "无";
                         _model.Name = a.StaffModel.Name;
                     }
                     DateTime brthday = IdCardCommon.GetBirthday(a.StaffModel.IdCard);
@@ -174,12 +189,6 @@ namespace HRPlugin.Pages.HR
             MaskVisible(false);
         }
 
-        private void dPager_CurrentIndexChanged(object sender, Panuon.UI.Silver.Core.CurrentIndexChangedEventArgs e)
-        {
-            currPage = dPager.CurrentIndex;
-            btnRef_Click(null, null);
-        }
-
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             MaskVisible(true);
@@ -187,27 +196,10 @@ namespace HRPlugin.Pages.HR
             a.ShowDialog();
             if (a.Succeed)
             {
-                UpdateGridAsync();
+                UpdatePager(null, null);
             }
 
             MaskVisible(false);
-        }
-
-        private void tvRole_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            TreeViewItem selectedItem = tvRole.SelectedItem as TreeViewItem;
-            if (selectedItem != null && selectedItem.Tag != null)
-            {
-                int selectedRoleId = 0;
-                if (int.TryParse(selectedItem.Tag.ToString(), out selectedRoleId))
-                {
-                    currSelectedType = SearchType.Role;
-                    currSelectedId = selectedRoleId;
-                    ShowLoadingPanel();
-                    UpdateGridAsync();
-                    LoadPager();
-                }
-            }
         }
 
         private void tvJobPost_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -219,31 +211,22 @@ namespace HRPlugin.Pages.HR
                 if (int.TryParse(selectedItem.Tag.ToString(), out selectedJobPostId))
                 {
                     if (selectedItem.Items.Count > 0) return;
-                    currSelectedType = SearchType.JobPost;
                     currSelectedId = selectedJobPostId;
-                    ShowLoadingPanel();
-                    UpdateGridAsync();
-                    LoadPager();
+                    UpdatePager(null, null);
                 }
             }
         }
 
-        private void btnRef_Click(object sender, RoutedEventArgs e)
-        {
-            LoadPager();
-            UpdateGridAsync();
-        }
-
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
-            btnRef_Click(null, null);
+            UpdatePager(null, null);
         }
 
         private void txtName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                btnRef_Click(null, null);
+                UpdatePager(null, null);
             }
         }
 
@@ -346,171 +329,257 @@ namespace HRPlugin.Pages.HR
 
                         context.SaveChanges();
                     }
+                    UpdateGauge();
                 }
             }
+        }
+
+        private void btnTableColumnVisible_Click(object sender, RoutedEventArgs e)
+        {
+            MaskVisible(true);
+
+            BasePageVisibilititySetting basePageVisibilititySetting = new BasePageVisibilititySetting(GetDataGridHeaders(list.Name));
+            basePageVisibilititySetting.ShowDialog();
+
+            var result = basePageVisibilititySetting.Result;
+            foreach (var ri in result)
+            {
+                Visibility _visibility = ri.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+                SetDataGridColumnVisibilitity(list.Name, ri.Title, _visibility);
+            }
+
+            UpdateDataGridColumnVisibility(list);
+
+            MaskVisible(false);
         }
 
         #endregion
 
         #region Private Method
 
-        private void LoadPager()
+        /// <summary>
+        /// 更新进度条
+        /// </summary>
+        private void UpdateGauge()
         {
-            string name = txtName.Text;
-            using (var context = new DBContext())
-            {
-                var staffs = context.Staff.Where(c => !c.IsDel);
-                if (currSelectedId > 0)
-                {
-                    if (currSelectedType == SearchType.Role)
-                    {
-                        var roleStaffs = (from c in context.User where c.RoleId == currSelectedId && c.StaffId != "" select c.StaffId).ToList();
-                        if (roleStaffs.Count == 0)
-                        {
-                            return;
-                        }
-                        int xx = 0;
-                        foreach (var item in staffs)
-                        {
-                            if (roleStaffs.IndexOf(item.Id) > -1)
-                            {
-                                xx += 1;
-                            }
-                        }
-                        dataCount = xx;
-                    }
-                    if (currSelectedType == SearchType.JobPost)
-                    {
-                        staffs = staffs.Where(c => c.JobPostId == currSelectedId);
-                    }
-                }
-                if (!string.IsNullOrEmpty(name))
-                {
-                    staffs = staffs.Where(c => c.Name.Contains(name) || c.QuickCode.Contains(name));
-                    dataCount = staffs.Count();
-                }
-                
-            }
-            pagerCount = PagerGlobal.GetPagerCount(dataCount, pageSize);
-
-            if (currPage > pagerCount) currPage = pagerCount;
-            dPager.CurrentIndex = currPage;
-            dPager.TotalIndex = pagerCount;
-        }
-
-        private async void UpdateGridAsync()
-        {
-            ShowLoadingPanel();
-
-            if (running) return;
-            running = true;
-
-            string name = txtName.Text;
-            Data.Clear();
-            List<DBModels.Staffs.Staff> models = new List<DBModels.Staffs.Staff>();
-
-            await Task.Run(() =>
-            {
-                using (DBContext context = new DBContext())
-                {
-                    var staffs = context.Staff.Where(c => !c.IsDel);
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        staffs = staffs.Where(c => c.Name.Contains(name) || c.QuickCode.Contains(name));
-                    }
-                    if (currSelectedId > 0)
-                    {
-                        if (currSelectedType == SearchType.Role)
-                        {
-                            var roleStaffs = (from c in context.User where c.RoleId == currSelectedId && c.StaffId != "" select c.StaffId).ToList();
-                            if (roleStaffs.Count == 0)
-                            {
-                                UIGlobal.RunUIAction(() =>
-                                {
-                                    HideLoadingPanel();
-                                });
-                                running = false;
-                                return;
-                            }
-                            foreach (var item in staffs)
-                            {
-                                if (roleStaffs.IndexOf(item.Id) > -1) 
-                                {
-                                    models.Add(item);
-                                }
-                            }
-                            models = models.OrderBy(c => c.CreateTime).Skip(pageSize * (currPage - 1)).Take(pageSize).ToList();
-                        }
-                        if (currSelectedType == SearchType.JobPost)
-                        {
-                            staffs = staffs.Where(c => c.JobPostId == currSelectedId);
-                            models = staffs.OrderBy(c => c.CreateTime).Skip(pageSize * (currPage - 1)).Take(pageSize).ToList();
-                        }
-                    }
-                    if (models.Count == 0) models = staffs.ToList();
-                }
-            });
-            await Task.Delay(300);
-
-            bNoData.Visibility = models.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
             using (DBContext context = new DBContext())
             {
-                foreach (var item in models)
+                int staffCount = context.Staff.Count(c => !c.IsDel);
+                pInsurance.To = staffCount;
+                pInsurance.Value = context.StaffInsurance.Count(c => !c.Stop);
+
+                pContract.To = staffCount;
+                pContract.Value = context.StaffContract.Count(c => !c.Stop);
+
+
+            }
+        }
+
+        private async void UpdatePager(object sender, Panuon.UI.Silver.Core.CurrentIndexChangedEventArgs e)
+        {
+            if (e == null) gPager.CurrentIndex = 1;//如果是通过查询或者刷新点击的 直接显示第一页
+
+            //查询条件
+            string name = txtName.Text.Trim();
+            bool enableTime = (bool)cbEnableTime.IsChecked;
+            DateTime startTime = dtStart.SelectedDateTime.MinDate();
+            DateTime endTime = dtEnd.SelectedDateTime.MaxDate();
+            string listName = list.Name;
+            bool isNoInsurance = (bool)cbNoInsurance.IsChecked;
+            bool isNoContract = (bool)cbNoContract.IsChecked;
+
+            Data.Clear();//先清空再加入页面数据
+
+            using (DBContext context = new DBContext())
+            {
+                Expression<Func<DBModels.Staffs.Staff, bool>> _where = n => GetPagerWhere(n, name, isNoInsurance, isNoContract, enableTime, startTime, endTime);//按条件查询
+                Expression<Func<DBModels.Staffs.Staff, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
+                //开始分页查询数据
+                var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Staff, _where, _orderByDesc, gLoading, gPager, bNoData, new Control[1] { list });
+                if (!_zPager.Result) return;
+                List<DBModels.Staffs.Staff> _list = _zPager.EFDataList;
+
+                #region 页面数据填充
+
+                foreach (var item in _list)
                 {
-                    UIModel _model = new UIModel()
+                    string jobpostName = context.SysDic.Any(c => c.Id == item.JobPostId) ? context.SysDic.First(c => c.Id == item.JobPostId).Name : "无";
+                    var _model = DBItem2UIModel(item, jobpostName, listName);
+                    //类型为社保 并且没有被停止的数量
+                    _model.SBInsuranceCount = context.StaffInsurance.Count(c => c.Type == 0 && c.StaffId == item.Id && !c.Stop);
+                    //类型为商业保险 并且没有被停止的数量
+                    _model.SYInsuranceCount = context.StaffInsurance.Count(c => c.Type == 1 && c.StaffId == item.Id && !c.Stop);
+                    //合同剩余天数
+                    _model.ContractSurplusDays = "无合同";
+                    var contractList = context.StaffContract.Where(c => c.StaffId == item.Id && !c.Stop).ToList();//所有合同
+
+                    var nowTime = DateTime.Now.MinDate();
+                    if (contractList != null && contractList.Count > 0)
                     {
-                        Age = 0,
-                        CreateTime = item.CreateTime.ToString("yy-MM-dd"),
-                        Id = item.Id,
-                        JobPostName = context.SysDic.First(c => c.Id == item.JobPostId).Name,
-                        Name = item.Name
-                    };
-
-                    DateTime brthday = IdCardCommon.GetBirthday(item.IdCard);
-                    _model.Age = DateTime.Now.Year - brthday.Year;
-
+                        if (contractList.Any(c => c.End >= nowTime))
+                        {
+                            _model.ContractSurplusDays = Math.Round((contractList.First(c => c.End >= nowTime).End - DateTime.Now).TotalDays).ToString();
+                        }
+                        else
+                        {
+                            _model.ContractSurplusDays = "已过期";
+                        }
+                    }
+                    //基础工资
+                    _model.Wage = 0;
+                    if (context.StaffSalary.Any(c => c.StaffId == item.Id && c.Start <= nowTime && c.End >= nowTime))
+                    {
+                        var wage = context.StaffSalary.Where(c => c.StaffId == item.Id && c.Start <= nowTime && c.End >= nowTime).OrderByDescending(c => c.CreateTime).First();
+                        _model.Wage = wage.Price;
+                    }
                     Data.Add(_model);
                 }
+
+                #endregion
             }
-            HideLoadingPanel();
-            running = false;
+
+            //结尾处必须结束分页查询
+            PagerCommon.EndEFDataPager();
+        }
+
+        private UIModel DBItem2UIModel(DBModels.Staffs.Staff item, string _jobpostName, string _listName)
+        {
+            UIModel _model = new UIModel()
+            {
+                Age = 0,
+                CreateTime = item.CreateTime.ToString("yy-MM-dd"),
+                Id = item.Id,
+                JobPostName = _jobpostName,
+                Name = item.Name
+            };
+
+            DateTime brthday = IdCardCommon.GetBirthday(item.IdCard);
+            _model.Age = DateTime.Now.Year - brthday.Year;
+            return _model;
+        }
+
+        /// <summary>
+        /// 查找表格的条件
+        /// </summary>
+        protected bool GetPagerWhere(DBModels.Staffs.Staff _staff, string _name, bool _isNoInsurance, bool _isNoContract, bool _enableTime, DateTime _start, DateTime _end)
+        {
+            bool resultCondition = true;
+            if (_name.NotEmpty())
+            {
+                //根据名称检索
+                resultCondition &= _staff.Name.Contains(_name) || _staff.QuickCode.Contains(_name);
+            }
+            if (currSelectedId > 0)
+            {
+                resultCondition &= _staff.JobPostId == currSelectedId;
+            }
+            if (_isNoInsurance)
+            {
+                //未参保
+                using (DBContext context = new DBContext())
+                {
+                    resultCondition &= !context.StaffInsurance.Any(c => c.StaffId == _staff.Id && !c.Stop);
+                }
+            }
+            if (_isNoContract)
+            {
+                //未签合同
+                using (DBContext context = new DBContext())
+                {
+                    resultCondition &= !context.StaffContract.Any(c => c.StaffId == _staff.Id && !c.Stop);
+                }
+            }
+            if (_enableTime)
+            {
+                resultCondition &= _staff.CreateTime >= _start && _staff.CreateTime <= _end;
+            }
+
+            resultCondition &= !_staff.IsDel;
+
+            return resultCondition;
         }
 
         #endregion
 
-        #region Loading
+        #region 导出Excel
 
-        private void ShowLoadingPanel()
+        private void btnExportCurrPage_Click(object sender, RoutedEventArgs e)
         {
-            if (gLoading.Visibility != Visibility.Visible)
+            var listData = Data.ToList();//获取选中数据
+            var columns = GetDataGridColumnVisibleHeaders(list.Name, true);//获取所有显示列对应的标题
+            var hiddleColumns = GetDataGridColumnVisibleHeaders(list.Name, false);//获取所有隐藏列的标题
+            if (list == null || listData.Count == 0)
             {
-                gLoading.Visibility = Visibility.Visible;
-                list.IsEnabled = false;
-                dPager.IsEnabled = false;
-
-                OnLoadingShowComplate();
+                MessageBoxX.Show("没有选中数据", "空值提醒");
+                return;
             }
+            new ExcelHelper().List2ExcelAsync(listData, $"页码{gPager.CurrentIndex}", columns, hiddleColumns.Keys.ToList());
         }
 
-        private void HideLoadingPanel()
+        private async void btnExportAllPage_Click(object sender, RoutedEventArgs e)
         {
-            if (gLoading.Visibility != Visibility.Collapsed)
+            //导出所有数据
+            List<UIModel> allData = new List<UIModel>();
+            string listName = list.Name;
+
+            await Task.Run(() =>
             {
-                gLoading.Visibility = Visibility.Collapsed;
-                list.IsEnabled = true;
-                dPager.IsEnabled = true;
-                OnLoadingHideComplate();
+                var _list = new List<DBModels.Staffs.Staff>();
+                using (DBContext context = new DBContext())
+                {
+                    _list = context.Staff.OrderByDescending(c => c.CreateTime).ToList();
+                    foreach (var item in _list)
+                    {
+                        string jobpostName = context.SysDic.Any(c => c.Id == item.JobPostId) ? context.SysDic.First(c => c.Id == item.JobPostId).Name : "无";
+                        var _model = DBItem2UIModel(item, jobpostName, listName);
+                        //类型为社保 并且没有被停止的数量
+                        _model.SBInsuranceCount = context.StaffInsurance.Count(c => c.Type == 0 && c.StaffId == item.Id && !c.Stop);
+                        //类型为商业保险 并且没有被停止的数量
+                        _model.SYInsuranceCount = context.StaffInsurance.Count(c => c.Type == 1 && c.StaffId == item.Id && !c.Stop);
+                        //合同剩余天数
+                        _model.ContractSurplusDays = "无合同";
+                        var contractList = context.StaffContract.Where(c => c.StaffId == item.Id && !c.Stop).ToList();//所有合同
+
+                        var nowTime = DateTime.Now.MinDate();
+                        if (contractList != null && contractList.Count > 0)
+                        {
+                            if (contractList.Any(c => c.End >= nowTime))
+                            {
+                                _model.ContractSurplusDays = Math.Round((contractList.First(c => c.End >= nowTime).End - DateTime.Now).TotalDays).ToString();
+                            }
+                            else
+                            {
+                                _model.ContractSurplusDays = "已过期";
+                            }
+                        }
+                        //基础工资
+                        _model.Wage = 0;
+                        if (context.StaffSalary.Any(c => c.StaffId == item.Id && c.Start >= nowTime && c.End <= nowTime))
+                        {
+                            var wage = context.StaffSalary.Where(c => c.StaffId == item.Id && c.Start >= nowTime && c.End <= nowTime).OrderByDescending(c => c.CreateTime).First();
+                            _model.Wage = wage.Price;
+                        }
+                        allData.Add(_model);
+                    }
+                }
+            });
+            var columns = GetDataGridColumnVisibleHeaders(list.Name, true);//获取所有显示列对应的标题
+            var hiddleColumns = GetDataGridColumnVisibleHeaders(list.Name, false);//获取所有隐藏列的标题
+
+            new ExcelHelper().List2ExcelAsync(allData, "所有数据", columns, hiddleColumns.Keys.ToList());
+        }
+
+        private void btnExportFocusDatas_Click(object sender, RoutedEventArgs e)
+        {
+            var listData = GetSelectedTableData<UIModel>(list.Name);//获取选中数据
+            var columns = GetDataGridColumnVisibleHeaders(list.Name, true);//获取所有显示列对应的标题
+            var hiddleColumns = GetDataGridColumnVisibleHeaders(list.Name, false);//获取所有隐藏列的标题
+            if (listData == null || listData.Count == 0)
+            {
+                MessageBoxX.Show("没有选中数据", "空值提醒");
+                return;
             }
-        }
-
-        private void OnLoadingHideComplate()
-        {
-
-        }
-
-        private void OnLoadingShowComplate()
-        {
-
+            new ExcelHelper().List2ExcelAsync(listData, "选中数据", columns, hiddleColumns.Keys.ToList());
         }
 
         #endregion

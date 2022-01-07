@@ -20,11 +20,11 @@
                 <StackPanel HorizontalAlignment="Left" Margin="0,10,0,0" >
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label VerticalAlignment="Center" Content="开始时间：" Width="80"/>
-                        <pu:DateTimePicker x:Name="dtStart"  Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                        <pu:DateTimePicker x:Name="dtContractStart"  Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
                         <Label Content="签订时长：" Width="80" VerticalAlignment="Center" Margin="20,0,0,0"/>
                         <ComboBox  Height="30"
-                                   x:Name="cbLong"
-                                   SelectionChanged="cbLong_SelectionChanged"
+                                   x:Name="cbContractLong"
+                                   SelectionChanged="cbContractLong_SelectionChanged"
                                    Width="200"
                                    Background="{DynamicResource TextBoxBgColor}"
                                    pu:ComboBoxHelper.HoverBackground="{DynamicResource ButtonHoverColor}"
@@ -37,14 +37,14 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label VerticalAlignment="Center" Content="结束时间：" Width="80"/>
-                        <pu:DateTimePicker x:Name="dtEnd" Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                        <pu:DateTimePicker x:Name="dtContractEnd" Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
                         <Label VerticalAlignment="Center" Content="签订时间：" Width="80" Margin="20,0,0,0"/>
-                        <pu:DateTimePicker x:Name="dtWrite"  Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                        <pu:DateTimePicker x:Name="dtContractWrite"  Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label VerticalAlignment="Center" Content="合同金额：" Width="80"/>
                         <TextBox  Height="30"
-                                  x:Name="txtPrice"
+                                  x:Name="txtContractPrice"
                                   Width="200"
                                   pu:TextBoxHelper.Watermark="合同金额"
                                   Background="{DynamicResource TextBoxBgColor}"
@@ -53,7 +53,7 @@
                                   pu:TextBoxHelper.IsClearButtonVisible="True" />
                         <Label VerticalAlignment="Center" Content="备注：" Width="80" Margin="20,0,0,0"/>
                         <TextBox  Height="30"
-                                  x:Name="txtRemark"
+                                  x:Name="txtContractRemark"
                                   Width="200"
                                   pu:TextBoxHelper.Watermark="备注"
                                   Background="{DynamicResource TextBoxBgColor}"
@@ -62,16 +62,9 @@
                                   pu:TextBoxHelper.IsClearButtonVisible="True" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,30,0,0" HorizontalAlignment="Right">
-                        <Button  Content="取 消"
-                                 x:Name="btnClose"
-                                 Click="btnClose_Click"
-                                 Width="100" Height="30"
-                                 Background="{DynamicResource ButtonBgColor}"
-                                 BorderBrush="{DynamicResource ButtonBorderColor}"
-                                 pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
                         <Button  Content="保 存"
-                                 x:Name="btnSubmit"
-                                 Click="btnSubmit_Click"
+                                 x:Name="btnContractSubmit"
+                                 Click="btnContractSubmit_Click"
                                  Margin="20,0,0,0"
                                  Width="100" Height="30"
                                  Background="{DynamicResource ButtonBgColor}"

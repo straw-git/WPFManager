@@ -41,57 +41,51 @@ namespace HRPlugin
                 {
                     //存在 编辑
                     var _contract = context.StaffContract.First(c => c.StaffId == staffId);
-                    dtStart.SelectedDateTime = _contract.Start;
-                    dtEnd.SelectedDateTime = _contract.End;
+                    dtContractStart.SelectedDateTime = _contract.Start;
+                    dtContractEnd.SelectedDateTime = _contract.End;
                     int year = _contract.End.Year - _contract.Start.Year;
                     switch (year)
                     {
                         case 1:
-                            cbLong.SelectedIndex = 0;
+                            cbContractLong.SelectedIndex = 0;
                             break;
                         case 2:
-                            cbLong.SelectedIndex = 1;
+                            cbContractLong.SelectedIndex = 1;
                             break;
                         case 3:
-                            cbLong.SelectedIndex = 2;
+                            cbContractLong.SelectedIndex = 2;
                             break;
                         case 5:
-                            cbLong.SelectedIndex = 3;
+                            cbContractLong.SelectedIndex = 3;
                             break;
                         default:
                             break;
                     }
-                    dtWrite.SelectedDateTime = _contract.Write;
-                    txtPrice.Text = _contract.Price.ToString();
-                    txtRemark.Text = _contract.Remark;
+                    dtContractWrite.SelectedDateTime = _contract.Write;
+                    txtContractPrice.Text = _contract.Price.ToString();
+                    txtContractRemark.Text = _contract.Remark;
                 }
             }
-            cbLong_SelectionChanged(null,null);
+            cbContractLong_SelectionChanged(null,null);
         }
 
-        #region UI Method
+        #region 劳动合同
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
-        {
-            Succeed = false;
-            Close();
-        }
-
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
+        private void btnContractSubmit_Click(object sender, RoutedEventArgs e)
         {
             decimal price = 0;
 
-            if (string.IsNullOrEmpty(txtPrice.Text))
+            if (string.IsNullOrEmpty(txtContractPrice.Text))
             {
                 MessageBoxX.Show("合同金额不能为空", "空值提醒");
-                txtPrice.Focus();
+                txtContractPrice.Focus();
                 return;
             }
-            if (!decimal.TryParse(txtPrice.Text, out price))
+            if (!decimal.TryParse(txtContractPrice.Text, out price))
             {
                 MessageBoxX.Show("合同金额格式不正确", "格式错误");
-                txtPrice.Focus();
-                txtPrice.SelectAll();
+                txtContractPrice.Focus();
+                txtContractPrice.SelectAll();
                 return;
             }
 
@@ -101,11 +95,11 @@ namespace HRPlugin
                 {
                     //存在 编辑
                     var _contract = context.StaffContract.Single(c => c.StaffId == staffId);
-                    _contract.Start = dtStart.SelectedDateTime;
-                    _contract.End = dtEnd.SelectedDateTime;
-                    _contract.Write = dtWrite.SelectedDateTime;
+                    _contract.Start = dtContractStart.SelectedDateTime;
+                    _contract.End = dtContractEnd.SelectedDateTime;
+                    _contract.Write = dtContractWrite.SelectedDateTime;
                     _contract.Price = price;
-                    _contract.Remark = txtRemark.Text;
+                    _contract.Remark = txtContractRemark.Text;
                 }
                 else
                 {
@@ -113,12 +107,12 @@ namespace HRPlugin
                     StaffContract _contract = new StaffContract();
                     _contract.CreateTime = DateTime.Now;
                     _contract.Creator = UserGlobal.CurrUser.Id;
-                    _contract.End = dtEnd.SelectedDateTime;
+                    _contract.End = dtContractEnd.SelectedDateTime;
                     _contract.Price = price;
-                    _contract.Remark = txtRemark.Text;
+                    _contract.Remark = txtContractRemark.Text;
                     _contract.StaffId = staffId;
-                    _contract.Start = dtStart.SelectedDateTime;
-                    _contract.Write = dtWrite.SelectedDateTime;
+                    _contract.Start = dtContractStart.SelectedDateTime;
+                    _contract.Write = dtContractWrite.SelectedDateTime;
                     _contract.Stop = false;
                     _contract.StopTime = DateTime.Now;
                     _contract.StopUser = 0;
@@ -133,23 +127,23 @@ namespace HRPlugin
             Close();
         }
 
-        private void cbLong_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cbContractLong_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!IsLoaded) return;
 
-            switch (cbLong.SelectedIndex)
+            switch (cbContractLong.SelectedIndex)
             {
                 case 0:
-                    dtEnd.SelectedDateTime = dtStart.SelectedDateTime.AddYears(1);
+                    dtContractEnd.SelectedDateTime = dtContractStart.SelectedDateTime.AddYears(1);
                     break;
                 case 1:
-                    dtEnd.SelectedDateTime = dtStart.SelectedDateTime.AddYears(2);
+                    dtContractEnd.SelectedDateTime = dtContractStart.SelectedDateTime.AddYears(2);
                     break;
                 case 2:
-                    dtEnd.SelectedDateTime = dtStart.SelectedDateTime.AddYears(3);
+                    dtContractEnd.SelectedDateTime = dtContractStart.SelectedDateTime.AddYears(3);
                     break;
                 case 3:
-                    dtEnd.SelectedDateTime = dtStart.SelectedDateTime.AddYears(5);
+                    dtContractEnd.SelectedDateTime = dtContractStart.SelectedDateTime.AddYears(5);
                     break;
                 default:
                     break;

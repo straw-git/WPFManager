@@ -21,6 +21,7 @@ namespace Common.Utils
         {
             public bool Result { get; set; }
             public dynamic EFDataList { get; set; }
+            public int DataCount { get; set; }
         }
         /// <summary>
         /// 当前是否正在执行GetEFDataPagerAsync分页操作
@@ -134,7 +135,7 @@ namespace Common.Utils
             if (_autoEndRunning)
                 EndEFDataPager();
 
-            return new EFPagerBack() { Result = true, EFDataList = _EFDataList };
+            return new EFPagerBack() { Result = true, EFDataList = _EFDataList, DataCount = dataCount };
         }
 
         /// <summary>

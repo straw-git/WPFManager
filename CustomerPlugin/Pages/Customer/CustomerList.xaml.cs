@@ -36,9 +36,6 @@ namespace CustomerPlugin.Pages.Customer
         {
             InitializeComponent();
             Order = 0;
-
-            //测试
-            OnPageLoaded();
         }
 
         #region Models

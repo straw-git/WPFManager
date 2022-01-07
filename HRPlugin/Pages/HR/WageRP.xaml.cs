@@ -29,6 +29,7 @@ namespace HRPlugin.Pages.HR
         {
             InitializeComponent();
             this.Order = 3;
+            IsMenu = false;
         }
 
         #region Models

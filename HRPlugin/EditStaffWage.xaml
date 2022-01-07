@@ -66,9 +66,9 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
                         <Label Content="姓名：" VerticalContentAlignment="Center" Width="80"/>
-                        <Label x:Name="lblName" Content="张三" VerticalContentAlignment="Center" />
+                        <Label x:Name="lblWageName" Content="张三" VerticalContentAlignment="Center" />
                         <Label Content="(" VerticalContentAlignment="Center" />
-                        <Label x:Name="lblJobpostName" Content="职务" VerticalContentAlignment="Center" />
+                        <Label x:Name="lblWageJobpostName" Content="职务" VerticalContentAlignment="Center" />
                         <Label Content=")" VerticalContentAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
@@ -77,11 +77,11 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
                         <Label Content="开始时间：" VerticalContentAlignment="Center" Width="80"/>
-                        <pu:DateTimePicker x:Name="dtStart" Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" SelectedDateTimeChanged="dtStart_SelectedDateTimeChanged" />
+                        <pu:DateTimePicker x:Name="dtWageStart" Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" SelectedDateTimeChanged="dtWageStart_SelectedDateTimeChanged" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
-                        <CheckBox x:Name="cbEnableEndTime" Checked="cbEnableEndTime_Checked" Unchecked="cbEnableEndTime_Unchecked" ToolTip="启用结束时间" Width="80"  Height="30"  pu:CheckBoxHelper.CheckBoxStyle="Switch2"  pu:CheckBoxHelper.BoxHeight="20"  pu:CheckBoxHelper.BoxWidth="40" Background="{DynamicResource CheckBoxBgColor}" pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"/>
-                        <pu:DateTimePicker x:Name="dtEnd" IsEnabled="False" Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                        <CheckBox x:Name="cbWageEnableEndTime" Checked="cbWageEnableEndTime_Checked" Unchecked="cbWageEnableEndTime_Unchecked" ToolTip="启用结束时间" Width="80"  Height="30"  pu:CheckBoxHelper.CheckBoxStyle="Switch2"  pu:CheckBoxHelper.BoxHeight="20"  pu:CheckBoxHelper.BoxWidth="40" Background="{DynamicResource CheckBoxBgColor}" pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"/>
+                        <pu:DateTimePicker x:Name="dtWageEnd" IsEnabled="False" Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
                         <Label Content="基础工资：" VerticalContentAlignment="Center"  Width="80"/>
@@ -96,7 +96,7 @@
                     <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
                         <Label Content="备注：" VerticalContentAlignment="Center"  Width="80"/>
                         <TextBox  Height="30"
-                                  x:Name="txtRemark" pu:TextBoxHelper.IsClearButtonVisible="True" 
+                                  x:Name="txtWageRemark" pu:TextBoxHelper.IsClearButtonVisible="True" 
                                   Width="200"
                                   pu:TextBoxHelper.Watermark="备注"
                                       Background="{DynamicResource TextBoxBgColor}"
@@ -105,16 +105,9 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Height="60" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,0" Orientation="Horizontal">
-                    <Button  Content="取 消"
-                             x:Name="btnClose"
-                             Click="btnClose_Click"
-                                         Width="100" Height="30"
-                                         Background="{DynamicResource ButtonBgColor}"
-                                         BorderBrush="{DynamicResource ButtonBorderColor}"
-                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
                     <Button  Content="提 交"
-                         x:Name="btnSubmit"
-                             Click="btnSubmit_Click"
+                         x:Name="btnWageSubmit"
+                             Click="btnWageSubmit_Click"
                                          Margin="20,0,0,0"
                                          Width="110" Height="30"
                                          Background="{DynamicResource ButtonBgColor}"

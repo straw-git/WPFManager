@@ -16,7 +16,7 @@ namespace Common.Utils
             {
                 string birth = _idCardNumber.Substring(6, 8).Insert(6, "-").Insert(4, "-");
                 DateTime time = new DateTime();
-                if (DateTime.TryParse(birth, out time) == false)
+                if (DateTime.TryParse(birth, out time))
                 {
                     return time;//生日验证  
                 }
@@ -25,7 +25,7 @@ namespace Common.Utils
             {
                 string birth = _idCardNumber.Substring(6, 6).Insert(4, "-").Insert(2, "-");
                 DateTime time = new DateTime();
-                if (DateTime.TryParse(birth, out time) == false)
+                if (DateTime.TryParse(birth, out time))
                 {
                     return time;//生日验证  
                 }

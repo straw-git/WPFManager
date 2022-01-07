@@ -29,7 +29,7 @@ namespace HRPlugin
 
         #region Models
 
-        class UIModel : INotifyPropertyChanged
+        class InsuranceUIModel : INotifyPropertyChanged
         {
             public int Id { get; set; }
             public string CompanyName { get; set; }
@@ -57,11 +57,11 @@ namespace HRPlugin
 
         #endregion 
 
-        enum SYType { Add, Edit }
+        enum InsuranceSYType { Add, Edit }
 
-        ObservableCollection<UIModel> Data = new ObservableCollection<UIModel>();
-        SYType syType = SYType.Add;
-        int editId = 0;
+        ObservableCollection<InsuranceUIModel> InsuranceData = new ObservableCollection<InsuranceUIModel>();
+        InsuranceSYType syType = InsuranceSYType.Add;
+        int insuranceEditId = 0;
 
         public EditInsurance(string _staffId)
         {
@@ -73,49 +73,44 @@ namespace HRPlugin
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            syList.ItemsSource = Data;
+            syInsuranceList.ItemsSource = InsuranceData;
             LoadSB();
             LoadSY();
         }
 
         #region UI Method
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void btnSBSubmit_Click(object sender, RoutedEventArgs e)
+        private void btnInsuranceSBSubmit_Click(object sender, RoutedEventArgs e)
         {
             decimal companyPrice = 0;
             decimal staffPrice = 0;
 
             #region Empty or Error
 
-            if (string.IsNullOrEmpty(txtSBCompanyPrice.Text))
+            if (string.IsNullOrEmpty(txtInsuranceSBCompanyPrice.Text))
             {
                 MessageBoxX.Show("单位扣费不能为空", "空值提醒");
-                txtSBCompanyPrice.Focus();
+                txtInsuranceSBCompanyPrice.Focus();
                 return;
             }
-            if (!decimal.TryParse(txtSBCompanyPrice.Text, out companyPrice))
+            if (!decimal.TryParse(txtInsuranceSBCompanyPrice.Text, out companyPrice))
             {
                 MessageBoxX.Show("单位扣费格式不正确", "格式错误");
-                txtSBCompanyPrice.Focus();
-                txtSBCompanyPrice.SelectAll();
+                txtInsuranceSBCompanyPrice.Focus();
+                txtInsuranceSBCompanyPrice.SelectAll();
                 return;
             }
-            if (string.IsNullOrEmpty(txtSBStaffPrice.Text))
+            if (string.IsNullOrEmpty(txtInsuranceSBStaffPrice.Text))
             {
                 MessageBoxX.Show("个人扣费不能为空", "空值提醒");
-                txtSBStaffPrice.Focus();
+                txtInsuranceSBStaffPrice.Focus();
                 return;
             }
-            if (!decimal.TryParse(txtSBStaffPrice.Text, out staffPrice))
+            if (!decimal.TryParse(txtInsuranceSBStaffPrice.Text, out staffPrice))
             {
                 MessageBoxX.Show("个人扣费格式不正确", "格式错误");
-                txtSBStaffPrice.Focus();
-                txtSBStaffPrice.SelectAll();
+                txtInsuranceSBStaffPrice.Focus();
+                txtInsuranceSBStaffPrice.SelectAll();
                 return;
             }
 
@@ -127,32 +122,32 @@ namespace HRPlugin
                 {
                     //存在社保 编辑
                     var _insurance = context.StaffInsurance.Single(c => c.StaffId == staffId && c.Type == 0);
-                    _insurance.CompanyName = txtSBCompanyName.Text;
+                    _insurance.CompanyName = txtInsuranceSBCompanyName.Text;
                     _insurance.CompanyPrice = companyPrice;
-                    _insurance.Remark = txtSBRemark.Text;
+                    _insurance.Remark = txtInsuranceSBRemark.Text;
                     _insurance.StaffPrice = staffPrice;
-                    _insurance.Start = dtSBStart.SelectedDateTime;
-                    _insurance.Write = dtSBWrite.SelectedDateTime;
+                    _insurance.Start = dtInsuranceSBStart.SelectedDateTime;
+                    _insurance.Write = dtInsuranceSBWrite.SelectedDateTime;
                 }
                 else
                 {
                     DateTime currTime = DateTime.Now;
                     //不存在社保  添加
                     StaffInsurance _insurance = new StaffInsurance();
-                    _insurance.CompanyName = txtSBCompanyName.Text;
+                    _insurance.CompanyName = txtInsuranceSBCompanyName.Text;
                     _insurance.CompanyPrice = companyPrice;
                     _insurance.CreateTime = currTime;
                     _insurance.Creator = UserGlobal.CurrUser.Id;
                     _insurance.End = currTime;
                     _insurance.Monthly = true;
-                    _insurance.Remark = txtSBRemark.Text;
+                    _insurance.Remark = txtInsuranceSBRemark.Text;
                     _insurance.StaffId = staffId;
                     _insurance.StaffPrice = staffPrice;
-                    _insurance.Start = dtSBStart.SelectedDateTime;
+                    _insurance.Start = dtInsuranceSBStart.SelectedDateTime;
                     _insurance.Stop = false;
                     _insurance.StopUser = 0;
                     _insurance.Type = 0;
-                    _insurance.Write = dtSBWrite.SelectedDateTime;
+                    _insurance.Write = dtInsuranceSBWrite.SelectedDateTime;
 
                     context.StaffInsurance.Add(_insurance);
                 }
@@ -168,44 +163,44 @@ namespace HRPlugin
             MessageBoxX.Show("成功", "成功");
         }
 
-        private void syList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void syInsuranceList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (Data.Count == 0) return;
-            if (syList.SelectedItem == null) return;
+            if (InsuranceData.Count == 0) return;
+            if (syInsuranceList.SelectedItem == null) return;
 
-            UIModel selectModel = syList.SelectedItem as UIModel;
+            InsuranceUIModel selectModel = syInsuranceList.SelectedItem as InsuranceUIModel;
 
             using (DBContext context = new DBContext())
             {
                 var _insurance = context.StaffInsurance.First(c => c.Id == selectModel.Id);
 
-                dtSYStart.SelectedDateTime = _insurance.Start;
-                dtSYWrite.SelectedDateTime = _insurance.Write;
-                cbEnableMonthly.IsChecked = _insurance.Monthly;
-                txtSYCompanyPrice.Text = _insurance.CompanyPrice.ToString();
-                txtSYStaffPrice.Text = _insurance.StaffPrice.ToString();
-                txtSYCompanyName.Text = _insurance.CompanyName;
-                txtSYRemark.Text = _insurance.Remark;
+                dtInsuranceSYStart.SelectedDateTime = _insurance.Start;
+                dtInsuranceSYWrite.SelectedDateTime = _insurance.Write;
+                cbInsuranceEnableMonthly.IsChecked = _insurance.Monthly;
+                txtInsuranceSYCompanyPrice.Text = _insurance.CompanyPrice.ToString();
+                txtInsuranceSYStaffPrice.Text = _insurance.StaffPrice.ToString();
+                txtInsuranceSYCompanyName.Text = _insurance.CompanyName;
+                txtInsuranceSYRemark.Text = _insurance.Remark;
             }
 
-            syType = SYType.Edit;
-            editId = selectModel.Id;
+            syType = InsuranceSYType.Edit;
+            insuranceEditId = selectModel.Id;
 
             //切换TabIndex
-            Application.Current.Dispatcher.BeginInvoke((Action)delegate { tabSY.SelectedIndex = 1; }, DispatcherPriority.Render, null);
+            Application.Current.Dispatcher.BeginInvoke((Action)delegate { tabInsuranceSY.SelectedIndex = 1; }, DispatcherPriority.Render, null);
         }
 
-        private void cbSYUseEnd_Checked(object sender, RoutedEventArgs e)
+        private void cbInsuranceSYUseEnd_Checked(object sender, RoutedEventArgs e)
         {
-            dtSYEnd.IsEnabled = true;
+            dtInsuranceSYEnd.IsEnabled = true;
         }
 
         private void cbSYUseEnd_Unchecked(object sender, RoutedEventArgs e)
         {
-            dtSYEnd.IsEnabled = false;
+            dtInsuranceSYEnd.IsEnabled = false;
         }
 
-        private void btnSYSubmit_Click(object sender, RoutedEventArgs e)
+        private void btnInsuranceSYSubmit_Click(object sender, RoutedEventArgs e)
         {
             //添加SY保险
             decimal companyPrice = 0;
@@ -213,52 +208,52 @@ namespace HRPlugin
 
             #region Empty or Error
 
-            if (string.IsNullOrEmpty(txtSYCompanyPrice.Text))
+            if (string.IsNullOrEmpty(txtInsuranceSYCompanyPrice.Text))
             {
                 MessageBoxX.Show("单位扣费不能为空", "空值提醒");
-                txtSYCompanyPrice.Focus();
+                txtInsuranceSYCompanyPrice.Focus();
                 return;
             }
-            if (!decimal.TryParse(txtSYCompanyPrice.Text, out companyPrice))
+            if (!decimal.TryParse(txtInsuranceSYCompanyPrice.Text, out companyPrice))
             {
                 MessageBoxX.Show("单位扣费格式不正确", "格式错误");
-                txtSYCompanyPrice.Focus();
-                txtSYCompanyPrice.SelectAll();
+                txtInsuranceSYCompanyPrice.Focus();
+                txtInsuranceSYCompanyPrice.SelectAll();
                 return;
             }
-            if (string.IsNullOrEmpty(txtSYStaffPrice.Text))
+            if (string.IsNullOrEmpty(txtInsuranceSYStaffPrice.Text))
             {
                 MessageBoxX.Show("个人扣费不能为空", "空值提醒");
-                txtSYStaffPrice.Focus();
+                txtInsuranceSYStaffPrice.Focus();
                 return;
             }
-            if (!decimal.TryParse(txtSYStaffPrice.Text, out staffPrice))
+            if (!decimal.TryParse(txtInsuranceSYStaffPrice.Text, out staffPrice))
             {
                 MessageBoxX.Show("个人扣费格式不正确", "格式错误");
-                txtSYStaffPrice.Focus();
-                txtSYStaffPrice.SelectAll();
+                txtInsuranceSYStaffPrice.Focus();
+                txtInsuranceSYStaffPrice.SelectAll();
                 return;
             }
 
             #endregion 
 
-            if (syType == SYType.Add)
+            if (syType == InsuranceSYType.Add)
             {
                 StaffInsurance model = new StaffInsurance();
-                model.CompanyName = txtSYCompanyName.Text;
+                model.CompanyName = txtInsuranceSYCompanyName.Text;
                 model.CompanyPrice = companyPrice;
                 model.CreateTime = DateTime.Now;
                 model.Creator = UserGlobal.CurrUser.Id;
-                model.End = dtSYEnd.SelectedDateTime;
-                model.Monthly = (bool)cbEnableMonthly.IsChecked;
-                model.Remark = txtSYRemark.Text;
+                model.End = dtInsuranceSYEnd.SelectedDateTime;
+                model.Monthly = (bool)cbInsuranceEnableMonthly.IsChecked;
+                model.Remark = txtInsuranceSYRemark.Text;
                 model.StaffPrice = staffPrice;
-                model.Start = dtSYStart.SelectedDateTime;
+                model.Start = dtInsuranceSYStart.SelectedDateTime;
                 model.Stop = false;
                 model.StopUser = 0;
                 model.StaffId = staffId;
                 model.Type = 1;
-                model.Write = dtSYWrite.SelectedDateTime;
+                model.Write = dtInsuranceSYWrite.SelectedDateTime;
 
                 using (DBContext context = new DBContext())
                 {
@@ -266,34 +261,34 @@ namespace HRPlugin
                     context.SaveChanges();
                 }
             }
-            else if (syType == SYType.Edit)
+            else if (syType == InsuranceSYType.Edit)
             {
                 using (DBContext context = new DBContext())
                 {
-                    StaffInsurance model = context.StaffInsurance.Single(c => c.Id == editId);
-                    model.CompanyName = txtSYCompanyName.Text;
+                    StaffInsurance model = context.StaffInsurance.Single(c => c.Id == insuranceEditId);
+                    model.CompanyName = txtInsuranceSYCompanyName.Text;
                     model.CompanyPrice = companyPrice;
-                    model.End = dtSYEnd.SelectedDateTime;
-                    model.Monthly = (bool)cbEnableMonthly.IsChecked;
-                    model.Remark = txtSYRemark.Text;
+                    model.End = dtInsuranceSYEnd.SelectedDateTime;
+                    model.Monthly = (bool)cbInsuranceEnableMonthly.IsChecked;
+                    model.Remark = txtInsuranceSYRemark.Text;
                     model.StaffPrice = staffPrice;
-                    model.Start = dtSYStart.SelectedDateTime;
+                    model.Start = dtInsuranceSYStart.SelectedDateTime;
                     model.Type = 1;
-                    model.Write = dtSYWrite.SelectedDateTime;
+                    model.Write = dtInsuranceSYWrite.SelectedDateTime;
 
                     context.SaveChanges();
                 }
             }
 
-            syType = SYType.Add;
-            editId = 0;
+            syType = InsuranceSYType.Add;
+            insuranceEditId = 0;
 
             ClearSY();
-            tabSY.SelectedIndex = 0;
+            tabInsuranceSY.SelectedIndex = 0;
             LoadSY();
         }
 
-        private void btnStop_Click(object sender, RoutedEventArgs e)
+        private void btnInsuranceStop_Click(object sender, RoutedEventArgs e)
         {
             int id = (sender as Button).Tag.ToString().AsInt();
 
@@ -304,20 +299,20 @@ namespace HRPlugin
                 _insurance.StopUser = UserGlobal.CurrUser.Id;
                 _insurance.End = DateTime.Now;
 
-                var _model = Data.Single(c => c.Id == id);
+                var _model = InsuranceData.Single(c => c.Id == id);
                 _model.EndTime = _insurance.End.ToString("yyyy年MM月dd日");
 
                 context.SaveChanges();
             }
         }
 
-        private void dtSYStart_SelectedDateTimeChanged(object sender, Panuon.UI.Silver.Core.SelectedDateTimeChangedEventArgs e)
+        private void dtInsuranceSYStart_SelectedDateTimeChanged(object sender, Panuon.UI.Silver.Core.SelectedDateTimeChangedEventArgs e)
         {
-            dtSYEnd.MinDate = dtSYStart.SelectedDateTime;
+            dtInsuranceSYEnd.MinDate = dtInsuranceSYStart.SelectedDateTime;
         }
 
 
-        private void btnSBStop_Click(object sender, RoutedEventArgs e)
+        private void btnInsuranceSBStop_Click(object sender, RoutedEventArgs e)
         {
             using (DBContext context = new DBContext())
             {
@@ -329,10 +324,10 @@ namespace HRPlugin
                 context.SaveChanges();
             }
 
-            txtSBCompanyName.Clear();
-            txtSBCompanyPrice.Clear();
-            txtSBRemark.Clear();
-            txtSBStaffPrice.Clear();
+            txtInsuranceSBCompanyName.Clear();
+            txtInsuranceSBCompanyPrice.Clear();
+            txtInsuranceSBRemark.Clear();
+            txtInsuranceSBStaffPrice.Clear();
 
             MessageBoxX.Show("成功", "成功");
         }
@@ -348,25 +343,25 @@ namespace HRPlugin
                 if (context.StaffInsurance.Any(c => c.StaffId == staffId && c.Type == 0))
                 {
                     var _insurance = context.StaffInsurance.First(c => c.StaffId == staffId && c.Type == 0);
-                    dtSBStart.SelectedDateTime = _insurance.Start;
-                    dtSBWrite.SelectedDateTime = _insurance.Write;
-                    txtSBCompanyPrice.Text = _insurance.CompanyPrice.ToString();
-                    txtSBStaffPrice.Text = _insurance.StaffPrice.ToString();
-                    txtSBCompanyName.Text = _insurance.CompanyName;
-                    txtSBRemark.Text = _insurance.Remark;
+                    dtInsuranceSBStart.SelectedDateTime = _insurance.Start;
+                    dtInsuranceSBWrite.SelectedDateTime = _insurance.Write;
+                    txtInsuranceSBCompanyPrice.Text = _insurance.CompanyPrice.ToString();
+                    txtInsuranceSBStaffPrice.Text = _insurance.StaffPrice.ToString();
+                    txtInsuranceSBCompanyName.Text = _insurance.CompanyName;
+                    txtInsuranceSBRemark.Text = _insurance.Remark;
 
-                    btnSBStop.Visibility = Visibility.Visible;
+                    btnInsuranceSBStop.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    btnSBStop.Visibility = Visibility.Collapsed;
+                    btnInsuranceSBStop.Visibility = Visibility.Collapsed;
                 }
             }
         }
 
         private void LoadSY()
         {
-            Data.Clear();
+            InsuranceData.Clear();
             using (DBContext context = new DBContext())
             {
                 if (context.StaffInsurance.Any(c => c.StaffId == staffId && c.Type == 1))
@@ -375,13 +370,13 @@ namespace HRPlugin
 
                     foreach (var item in _insurances)
                     {
-                        UIModel model = new UIModel();
+                        InsuranceUIModel model = new InsuranceUIModel();
                         model.CompanyName = item.CompanyName;
                         model.Id = item.Id;
                         model.Remark = item.Remark;
                         model.SendType = item.Monthly ? "按月" : "无限期";
                         model.StartTime = item.Start.ToString("yyyy年MM月dd日");
-                        Data.Add(model);
+                        InsuranceData.Add(model);
                     }
                 }
             }
@@ -389,13 +384,13 @@ namespace HRPlugin
 
         private void ClearSY()
         {
-            dtSYStart.SelectedDateTime = DateTime.Now;
-            dtSYWrite.SelectedDateTime = DateTime.Now;
-            cbEnableMonthly.IsChecked = false;
-            txtSYCompanyPrice.Clear();
-            txtSYStaffPrice.Clear();
-            txtSYCompanyName.Clear();
-            txtSYRemark.Clear();
+            dtInsuranceSYStart.SelectedDateTime = DateTime.Now;
+            dtInsuranceSYWrite.SelectedDateTime = DateTime.Now;
+            cbInsuranceEnableMonthly.IsChecked = false;
+            txtInsuranceSYCompanyPrice.Clear();
+            txtInsuranceSYStaffPrice.Clear();
+            txtInsuranceSYCompanyName.Clear();
+            txtInsuranceSYRemark.Clear();
         }
 
         #endregion

@@ -40,17 +40,19 @@ namespace HRPlugin
 
             staffId = _staffId;
 
-            ClearUI();
+            ClearWageUI();
         }
 
-        private void cbEnableEndTime_Checked(object sender, RoutedEventArgs e)
+        #region 工资信息
+
+        private void cbWageEnableEndTime_Checked(object sender, RoutedEventArgs e)
         {
-            dtEnd.IsEnabled = true;
+            dtWageEnd.IsEnabled = true;
         }
 
-        private void cbEnableEndTime_Unchecked(object sender, RoutedEventArgs e)
+        private void cbWageEnableEndTime_Unchecked(object sender, RoutedEventArgs e)
         {
-            dtEnd.IsEnabled = false;
+            dtWageEnd.IsEnabled = false;
         }
 
         private void UpdateTimeLine()
@@ -148,12 +150,7 @@ namespace HRPlugin
             WAGELIST.Add(end);
         }
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
+        private void btnWageSubmit_Click(object sender, RoutedEventArgs e)
         {
             decimal wagePrice = 0;
 
@@ -176,51 +173,53 @@ namespace HRPlugin
                 StaffSalary model = new StaffSalary();
                 model.CreateTime = DateTime.Now;
                 model.Creator = UserGlobal.CurrUser.Id;
-                model.IsEnd = (bool)cbEnableEndTime.IsChecked;
-                model.End = dtEnd.SelectedDateTime.MaxDate();
+                model.IsEnd = (bool)cbWageEnableEndTime.IsChecked;
+                model.End = dtWageEnd.SelectedDateTime.MaxDate();
                 model.Price = wagePrice;
                 model.Register = staff.Register;
-                model.Remark = txtRemark.Text;
+                model.Remark = txtWageRemark.Text;
                 model.SatffName = staff.Name;
                 model.StaffId = staffId;
                 model.StaffQuickCode = staff.QuickCode;
-                model.Start = dtStart.SelectedDateTime.MinDate();
+                model.Start = dtWageStart.SelectedDateTime.MinDate();
                 context.StaffSalary.Add(model);
                 context.SaveChanges();
             }
 
             MessageBoxX.Show("成功", "成功");
-            ClearUI();
+            ClearWageUI();
         }
 
-        private void ClearUI()
+        private void ClearWageUI()
         {
-            dtStart.SelectedDateTime = DateTime.Now;
-            dtEnd.SelectedDateTime = DateTime.Now;
-            cbEnableEndTime.IsChecked = false;
+            dtWageStart.SelectedDateTime = DateTime.Now;
+            dtWageEnd.SelectedDateTime = DateTime.Now;
+            cbWageEnableEndTime.IsChecked = false;
             txtWagePrice.Clear();
-            txtRemark.Clear();
+            txtWageRemark.Clear();
 
             using (DBContext context = new DBContext())
             {
                 staff = context.Staff.First(c => c.Id == staffId);
-                lblName.Content = staff.Name;
-                lblJobpostName.Content = context.SysDic.First(c => c.Id == staff.JobPostId).Name;
+                lblWageName.Content = staff.Name;
+                lblWageJobpostName.Content = context.SysDic.First(c => c.Id == staff.JobPostId).Name;
             }
 
             UpdateTimeLine();
         }
 
-        private void dtStart_SelectedDateTimeChanged(object sender, Panuon.UI.Silver.Core.SelectedDateTimeChangedEventArgs e)
+        private void dtWageStart_SelectedDateTimeChanged(object sender, Panuon.UI.Silver.Core.SelectedDateTimeChangedEventArgs e)
         {
-            dtEnd.SelectedDateTime = dtStart.SelectedDateTime;
-            dtEnd.MinDate = dtStart.SelectedDateTime;
+            dtWageEnd.SelectedDateTime = dtWageStart.SelectedDateTime;
+            dtWageEnd.MinDate = dtWageStart.SelectedDateTime;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            dtStart.MinDate = staff.Register;
-            dtStart_SelectedDateTimeChanged(null, null);
+            dtWageStart.MinDate = staff.Register;
+            dtWageStart_SelectedDateTimeChanged(null, null);
         }
+
+        #endregion
     }
 }
