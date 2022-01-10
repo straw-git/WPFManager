@@ -68,36 +68,40 @@
                                      BorderBrush="{DynamicResource ButtonBorderColor}"
                                      pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
                 </StackPanel>
-                <DataGrid HorizontalAlignment="Center"
+                <Grid Grid.Row="0" Margin="0,50,5,0">
+
+                    <DataGrid HorizontalAlignment="Center"
                               x:Name="list"
-                              Margin="0,50,5,0"
                               ItemsSource="{Binding}"
                               IsReadOnly="True"
-                              Grid.Row="0"
                               AutoGenerateColumns="False"
                               pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
                               pu:DataGridHelper.HeaderPadding="5,0"
                               pu:DataGridHelper.CellPadding="5,0"
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="时间" Width="80" Binding="{Binding Days}" />
-                        <DataGridTextColumn Header="职务" Width="80" Binding="{Binding JobpostName}" />
-                        <DataGridTextColumn Header="姓名" Width="*" Binding="{Binding Name}" />
-                        <DataGridTextColumn Header="奖金" Width="150" Binding="{Binding RewardPrice}" />
-                        <DataGridTextColumn Header="扣款" Width="150" Binding="{Binding FinePrice}" />
-                        <DataGridTextColumn Header="备注" Width="300" Binding="{Binding Remark}" />
-                        <DataGridTemplateColumn Header="操作" Width="80" >
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Content="删除" Tag="{Binding Id}" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnDelete" Click="btnDelete_Click"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="时间" Width="80" Binding="{Binding Days}" />
+                            <DataGridTextColumn Header="职务" Width="80" Binding="{Binding JobpostName}" />
+                            <DataGridTextColumn Header="姓名" Width="*" Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="奖金" Width="150" Binding="{Binding RewardPrice}" />
+                            <DataGridTextColumn Header="扣款" Width="150" Binding="{Binding FinePrice}" />
+                            <DataGridTextColumn Header="备注" Width="300" Binding="{Binding Remark}" />
+                            <DataGridTemplateColumn Header="操作" Width="80" >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="删除" Tag="{Binding Id}" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnDelete" Click="btnDelete_Click"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Border Background="White" x:Name="bNoData">
+                        <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Border>
+                </Grid>
             </Grid>
         </GroupBox>
     </Grid>

@@ -9,7 +9,7 @@
             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="730" d:DesignWidth="1190"
-      Title="员工管理">
+      Title="人员管理">
     <Grid>
         <Border Background="White"/>
         <Grid>

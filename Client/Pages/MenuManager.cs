@@ -72,7 +72,7 @@ namespace Client.Pages
             fName = nArr[0];
             lName = nArr[1];
 
-            if (fName != MainNamespace && !File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}plugins\\{fName}.dll")) { return; }
+            if (fName != MainNamespace && !File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}plugins\\{fName}.dll")) { return; }//判断dll文件是否存在
 
             #endregion
 

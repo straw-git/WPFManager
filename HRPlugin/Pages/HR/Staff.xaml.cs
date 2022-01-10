@@ -134,7 +134,7 @@ namespace HRPlugin.Pages.HR
             if (selectedModel != null)
             {
                 MaskVisible(true);
-                AddStaff a = new AddStaff(selectedModel.Id);
+                EditStaff a = new EditStaff(selectedModel.Id);
                 a.ShowDialog();
                 if (a.Succeed)
                 {
@@ -179,20 +179,10 @@ namespace HRPlugin.Pages.HR
             }
         }
 
-        private void btnWage_Click(object sender, RoutedEventArgs e)
-        {
-            string id = (sender as Button).Tag.ToString();
-
-            MaskVisible(true);
-            EditStaffWage a = new EditStaffWage(id);
-            a.ShowDialog();
-            MaskVisible(false);
-        }
-
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             MaskVisible(true);
-            AddStaff a = new AddStaff();
+            EditStaff a = new EditStaff();
             a.ShowDialog();
             if (a.Succeed)
             {

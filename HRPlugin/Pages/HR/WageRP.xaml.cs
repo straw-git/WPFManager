@@ -28,8 +28,7 @@ namespace HRPlugin.Pages.HR
         public WageRP()
         {
             InitializeComponent();
-            this.Order = 3;
-            IsMenu = false;
+            this.Order = 1;
         }
 
         #region Models
@@ -76,6 +75,7 @@ namespace HRPlugin.Pages.HR
                     string monthCode = $"{DateTime.Now.ToString("yyMM")}";
                     Data.Clear();
                     var rp = context.StaffSalaryOther.Where(c => c.StaffId == staff.Id && c.MonthCode == monthCode).ToList();
+                    bNoData.Visibility = rp.Count() > 0 ? Visibility.Collapsed : Visibility.Visible;
                     foreach (var item in rp)
                     {
                         Data.Add(new UIModel()
@@ -111,6 +111,7 @@ namespace HRPlugin.Pages.HR
             {
                 string monthCode = $"{DateTime.Now.ToString("yyMM")}";
                 var rp = context.StaffSalaryOther.Where(c => c.MonthCode == monthCode);
+                bNoData.Visibility = rp.Count() > 0 ? Visibility.Collapsed : Visibility.Visible;
                 foreach (var item in rp)
                 {
                     var staff = context.Staff.First(c => c.Id == item.StaffId);
@@ -140,6 +141,7 @@ namespace HRPlugin.Pages.HR
 
             btnSelectStaff.Content = "选择员工";
             btnSelectStaff.Tag = "";
+            bNoData.Visibility =Visibility.Visible;
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)

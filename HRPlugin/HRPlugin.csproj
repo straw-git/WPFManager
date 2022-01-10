@@ -79,7 +79,7 @@
     <Compile Include="StaffDelete.xaml.cs">
       <DependentUpon>StaffDelete.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddStaff.xaml">
+    <Page Include="EditStaff.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -87,38 +87,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="EditContract.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="EditInsurance.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="EditStaffWage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="AddStaff.xaml.cs">
-      <DependentUpon>AddStaff.xaml</DependentUpon>
+    <Compile Include="EditStaff.xaml.cs">
+      <DependentUpon>EditStaff.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditContract.xaml.cs">
-      <DependentUpon>EditContract.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EditInsurance.xaml.cs">
-      <DependentUpon>EditInsurance.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EditStaffWage.xaml.cs">
-      <DependentUpon>EditStaffWage.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Pages\HR\Contract.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\HR\Insurance.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Pages\HR\Staff.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -133,12 +104,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pages\HR\Contract.xaml.cs">
-      <DependentUpon>Contract.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\HR\Insurance.xaml.cs">
-      <DependentUpon>Insurance.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\HR\MenuInfo.cs" />
     <Compile Include="Pages\HR\Staff.xaml.cs">
       <DependentUpon>Staff.xaml</DependentUpon>

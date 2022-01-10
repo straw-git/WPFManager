@@ -23,7 +23,7 @@ namespace HRPlugin
     /// <summary>
     /// AddStaff.xaml 的交互逻辑
     /// </summary>
-    public partial class AddStaff : Window
+    public partial class EditStaff : Window
     {
         string staffId = "";
         bool isEdit = false;
@@ -68,7 +68,7 @@ namespace HRPlugin
 
         List<WageUIModel> list = new List<WageUIModel>();
 
-        public AddStaff(string _staffId = "")
+        public EditStaff(string _staffId = "")
         {
             InitializeComponent();
             this.UseCloseAnimation();
@@ -281,7 +281,6 @@ namespace HRPlugin
                 context.SaveChanges();
             }
             Succeed = true;
-            Close();
         }
 
         #endregion
@@ -551,7 +550,6 @@ namespace HRPlugin
             }
 
             Succeed = true;
-            Close();
         }
 
         private void cbContractLong_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -899,5 +897,6 @@ namespace HRPlugin
         #endregion
 
         #endregion
+
     }
 }
