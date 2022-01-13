@@ -11,10 +11,10 @@
       Title="客户登记">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="0">
             <TextBox   Height="40" x:Name="txtSearchName"  PreviewKeyDown="txtSearchName_PreviewKeyDown"
                       VerticalAlignment="Top" 
                       HorizontalContentAlignment="Center"
@@ -47,7 +47,7 @@
                 <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Border>
         </Grid>
-        <Grid x:Name="mainPanel">
+        <Grid x:Name="mainPanel" Grid.Column="1">
             <Border Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="5" Background="AliceBlue">
                 <Grid>
                     <Border Height="50" VerticalAlignment="Top" CornerRadius="5,5,0,0" Background="{DynamicResource SkinColor}">
@@ -81,6 +81,7 @@
                             <Label VerticalAlignment="Center" Content="身份证号：" Width="80"/>
                             <TextBox  Height="30"
                                       x:Name="txtIdCard"
+                                      PreviewKeyDown="txtIdCard_PreviewKeyDown"
                                       Width="200"
                                       pu:TextBoxHelper.Watermark="身份证号"
                                       Background="{DynamicResource TextBoxBgColor}"
@@ -90,6 +91,7 @@
                             <Label VerticalAlignment="Center" Content="手机号：" Width="80" Margin="20,0,0,0"/>
                             <TextBox  Height="30"
                                       x:Name="txtPhone"
+                                      PreviewKeyDown="txtPhone_PreviewKeyDown"
                                       Width="200"
                                       pu:TextBoxHelper.Watermark="手机号"
                                       Background="{DynamicResource TextBoxBgColor}"

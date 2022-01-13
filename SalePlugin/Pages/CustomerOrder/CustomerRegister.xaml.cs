@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.Utils;
+using Common.Windows;
 using DBModels.Member;
 using Panuon.UI.Silver;
 using System;
@@ -48,6 +49,7 @@ namespace SalePlugin.Pages.CustomerOrder
         #endregion
 
         ObservableCollection<UIModel> Data = new ObservableCollection<UIModel>();
+        private Customer SelectedCustomer = null;
 
         protected override void OnPageLoaded()
         {
@@ -77,6 +79,7 @@ namespace SalePlugin.Pages.CustomerOrder
             cbXCM.IsChecked = false;
 
             EnableRegisterUI(true);
+            SelectedCustomer = null;
         }
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
@@ -143,27 +146,25 @@ namespace SalePlugin.Pages.CustomerOrder
                 MessageBoxX.Show("请注意 当前登记者体温异常", "体温异常提醒");
             }
 
-            #endregion 
-
-            Customer customer = new Customer();
+            #endregion
 
             using (DBContext context = new DBContext())
             {
-                if (context.Customer.Any(c => c.IdCard == idCard))
+                if (SelectedCustomer == null)
                 {
-                    customer = context.Customer.First(c => c.IdCard == idCard);
-                }
-                else
-                {
+                    #region 创建新客户
+
                     #region 重复登记验证
 
-                    if (context.Customer.Any(c => c.Phone == phone))
+                    if (context.Customer.Any(c => c.Phone == phone || c.IdCard == idCard))
                     {
-                        MessageBoxX.Show("手机号重复", "数据重复");
+                        MessageBoxX.Show("手机号或身份证号重复", "数据重复");
                         return;
                     }
 
                     #endregion
+
+                    Customer customer = new Customer();
 
                     customer.Address = address;
                     customer.AddressNow = nowAddress;
@@ -179,34 +180,54 @@ namespace SalePlugin.Pages.CustomerOrder
                     customer.PromotionCode = "";
                     customer.QuickCode = $"{name.Convert2Pinyin()}|{name.Convert2Py()}";
                     customer.Sex = sex;
-                    customer = context.Customer.Add(customer);
+                    SelectedCustomer = context.Customer.Add(customer);
                     context.SaveChanges();
 
                     //更新推荐码
                     string pCode = PromotionCodeCommon.GetCode(customer.Id);
                     context.Customer.Single(c => c.Id == customer.Id).PromotionCode = pCode;
-                    customer.PromotionCode = pCode;
+                    SelectedCustomer.PromotionCode = pCode;
                     context.SaveChanges();
+
+                    #endregion 
                 }
 
-                CustomerTemp customerTemp = new CustomerTemp();
-                customerTemp.Creater = UserGlobal.CurrUser.Id;
-                customerTemp.CreateTime = DateTime.Now;
-                customerTemp.CustomerId = customer.Id;
-                customerTemp.IdCard = customer.IdCard;
-                customerTemp.IsMember = customer.IsMember;
-                customerTemp.Name = customer.Name;
-                customerTemp.Phone = customer.Phone;
-                customerTemp.QuickCode = customer.QuickCode;
-                customerTemp.TW = tw;
-                customerTemp.XCM = (bool)cbXCM.IsChecked;
+                #region 重复登记验证
 
-                context.CustomerTemp.Add(customerTemp);
+                DateTime minDate = DateTime.Now.MinDate();
+                if (context.CustomerTemp.Any(c => c.CustomerId == SelectedCustomer.Id&&c.CreateTime>=minDate&&c.CreateTime<=DateTime.Now)) 
+                {
+                    //今天已经有临时访客
+                    MessageBoxX.Show("当前访客已登记", "重复登记");
+                    EnableRegisterUI(true);
+                    btnClear_Click(null, null);
+                    return;
+                }
+
+                #endregion
+
+                #region 创建新的来访记录
+
+                CustomerTemp temp = new CustomerTemp();//最终的临时访问表
+                temp.Creater = UserGlobal.CurrUser.Id;
+                temp.CreateTime = DateTime.Now;
+                temp.CustomerId = SelectedCustomer.Id;
+                temp.IdCard = SelectedCustomer.IdCard;
+                temp.IsMember = SelectedCustomer.IsMember;
+                temp.Name = SelectedCustomer.Name;
+                temp.Phone = SelectedCustomer.Phone;
+                temp.QuickCode = SelectedCustomer.QuickCode;
+                temp.TW = tw;
+                temp.XCM = (bool)cbXCM.IsChecked;
+
+                context.CustomerTemp.Add(temp);
                 context.SaveChanges();
 
-                Notice.Show($"{name}登记成功", "登记成功", MessageBoxIcon.Success);
-                EnableRegisterUI(true);
+                #endregion 
             }
+            Notice.Show($"{name}登记成功", "登记成功", MessageBoxIcon.Success);
+            EnableRegisterUI(true);
+            btnClear_Click(null, null);
         }
 
         private void EnableRegisterUI(bool _enable)
@@ -221,7 +242,17 @@ namespace SalePlugin.Pages.CustomerOrder
 
         private void btnFindBePromotionCode_Click(object sender, RoutedEventArgs e)
         {
+            SelectedCustomer selectedCustomer = new SelectedCustomer();
+            selectedCustomer.ShowDialog();
 
+            if (selectedCustomer.Succeed)
+            {
+                txtBePromotionCode.Text = selectedCustomer.Model.PromotionCode;
+            }
+            else
+            {
+                txtBePromotionCode.Clear();
+            }
         }
 
         private void txtSearchName_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -229,7 +260,6 @@ namespace SalePlugin.Pages.CustomerOrder
             if (e.Key == Key.Enter || e.Key == Key.Return)
             {
                 UpdateGrid();
-
             }
         }
 
@@ -278,21 +308,26 @@ namespace SalePlugin.Pages.CustomerOrder
             EnableRegisterUI(false);
             using (DBContext context = new DBContext())
             {
-                var customer = context.Customer.First(c => c.Id == selectedModel.CustomerId);
+                SelectedCustomer = context.Customer.First(c => c.Id == selectedModel.CustomerId);
 
-                txtName.Text = customer.Name;
-                cbSex.SelectedIndex = customer.Sex == "男" ? 0 : 1;
-                txtIdCard.Text = customer.IdCard;
-                txtPhone.Text = customer.Phone;
-                txtAddress.Text = customer.Address;
-                txtNowAddress.Text = customer.AddressNow;
-                txtBePromotionCode.Text = customer.BePromotionCode;
+                SelectedModel2UI();
             }
 
             if (txtBePromotionCode.Text.IsNullOrEmpty()) btnFindBePromotionCode.IsEnabled = true; else btnFindBePromotionCode.IsEnabled = false;
 
             txtTW.Focus();
             txtTW.SelectAll();
+        }
+
+        private void SelectedModel2UI() 
+        {
+            txtName.Text = SelectedCustomer.Name;
+            cbSex.SelectedIndex = SelectedCustomer.Sex == "男" ? 0 : 1;
+            txtIdCard.Text = SelectedCustomer.IdCard;
+            txtPhone.Text = SelectedCustomer.Phone;
+            txtAddress.Text = SelectedCustomer.Address;
+            txtNowAddress.Text = SelectedCustomer.AddressNow;
+            txtBePromotionCode.Text = SelectedCustomer.BePromotionCode;
         }
 
         private void customerList_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -335,6 +370,42 @@ namespace SalePlugin.Pages.CustomerOrder
                 //输入其它 直接将焦点兑回txt
                 txtSearchName.Focus();
                 txtSearchName_PreviewKeyDown(txtSearchName, e);
+            }
+        }
+
+        private void txtIdCard_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (txtIdCard.Text.Length == 15 || txtIdCard.Text.Length == 18)
+            {
+                string idCard = txtIdCard.Text;
+                using (DBContext context = new DBContext())
+                {
+                    if (context.Customer.Any(c => c.IdCard == idCard))
+                    {
+                        SelectedCustomer = context.Customer.First(c => c.IdCard == idCard);
+                        
+                        SelectedModel2UI();
+                        EnableRegisterUI(false);
+                    }
+                }
+            }
+        }
+
+        private void txtPhone_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (txtPhone.Text.Length == 11) 
+            {
+                string phone = txtPhone.Text;
+                using (DBContext context = new DBContext())
+                {
+                    if (context.Customer.Any(c => c.Phone == phone))
+                    {
+                        SelectedCustomer = context.Customer.First(c => c.Phone == phone);
+
+                        SelectedModel2UI();
+                        EnableRegisterUI(false);
+                    }
+                }
             }
         }
     }

@@ -28,7 +28,7 @@ namespace HRPlugin.Pages.HR
         public WageRP()
         {
             InitializeComponent();
-            this.Order = 1;
+            this.Order = 2;
         }
 
         #region Models

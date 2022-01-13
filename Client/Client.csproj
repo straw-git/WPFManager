@@ -123,6 +123,14 @@
     <Compile Include="Migrations\202111270813270_activity_mj.designer.cs">
       <DependentUpon>202111270813270_activity_mj.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201110747240_update-customer-temp.cs" />
+    <Compile Include="Migrations\202201110747240_update-customer-temp.designer.cs">
+      <DependentUpon>202201110747240_update-customer-temp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201110749140_update-customer-temp-id.cs" />
+    <Compile Include="Migrations\202201110749140_update-customer-temp-id.designer.cs">
+      <DependentUpon>202201110749140_update-customer-temp-id.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Helper\DelayHelper.cs" />
     <Compile Include="Login.xaml.cs">
@@ -291,6 +299,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111270813270_activity_mj.resx">
       <DependentUpon>202111270813270_activity_mj.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201110747240_update-customer-temp.resx">
+      <DependentUpon>202201110747240_update-customer-temp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201110749140_update-customer-temp-id.resx">
+      <DependentUpon>202201110749140_update-customer-temp-id.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

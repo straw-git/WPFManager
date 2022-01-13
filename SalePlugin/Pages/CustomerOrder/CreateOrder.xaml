@@ -39,9 +39,17 @@
                               pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
                               pu:DataGridHelper.HeaderPadding="5,0"
                               pu:DataGridHelper.CellPadding="5,0"
+                           MouseDoubleClick="customerList_MouseDoubleClick"
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
                     <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="60" Header="已选择">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="姓名" Width="*" Binding="{Binding CustomerName}" />
                         <DataGridTextColumn Header="性别" Width="80" Binding="{Binding CustomerSex}" />
                         <DataGridTextColumn Header="年龄" Width="100" Binding="{Binding CustomerAge}" />

@@ -33,7 +33,7 @@ namespace HRPlugin.Pages.HR
         public Staff()
         {
             InitializeComponent();
-            this.Order = 0;
+            this.Order = 1;
         }
 
         #region Models 

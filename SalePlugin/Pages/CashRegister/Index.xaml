@@ -10,9 +10,9 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="首页">
     <Grid>
-        <pu:WaterfallPanel>
-            <Button  Content="单品收银" x:Name="btnSingle" Click="btnSingle_Click"  Background="{DynamicResource ButtonBgColor}" BorderBrush="{DynamicResource ButtonBorderColor}"  pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
-            <Button  Content="订单收银" x:Name="btnOrder" Click="btnOrder_Click"  Background="{DynamicResource ButtonBgColor}" BorderBrush="{DynamicResource ButtonBorderColor}"  pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
-        </pu:WaterfallPanel>
+        <WrapPanel ItemWidth="200" ItemHeight="200" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button  Content="单品收银" x:Name="btnSingle" Margin="10" Click="btnSingle_Click" Background="{DynamicResource ButtonBgColor}" BorderBrush="{DynamicResource ButtonBorderColor}"  pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+            <Button  Content="订单收银" x:Name="btnOrder" Margin="10" Click="btnOrder_Click"  Background="{DynamicResource ButtonBgColor}" BorderBrush="{DynamicResource ButtonBorderColor}"  pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+        </WrapPanel>
     </Grid>
 </p:BasePage>

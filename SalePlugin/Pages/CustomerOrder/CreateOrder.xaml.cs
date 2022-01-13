@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.Utils;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,6 @@ namespace SalePlugin.Pages.CustomerOrder
         {
             InitializeComponent();
             Order = 1;
-
-            //测试
-            OnPageLoaded();
         }
 
         #region Models
@@ -82,7 +80,7 @@ namespace SalePlugin.Pages.CustomerOrder
 
         class CustomerUIModel : BaseUIModel
         {
-            public string CustomerId { get; set; }
+            public int CustomerId { get; set; }
             public string CustomerName { get; set; }
             public string CustomerSex { get; set; }
             public string CustomerAge { get; set; }
@@ -123,11 +121,38 @@ namespace SalePlugin.Pages.CustomerOrder
         {
             list.ItemsSource = Data;
             result.ItemsSource = ResultData;
-            list.Visibility = Visibility.Hidden;
-            customerList.Visibility = Visibility.Hidden;
             customerList.ItemsSource = CustomerData;
+            ReLoadTodayCustomerTemp();
             txtName.Focus();
             IsTab = false;
+        }
+
+        /// <summary>
+        /// 刷新临时客户列表
+        /// </summary>
+        private void ReLoadTodayCustomerTemp()
+        {
+            CustomerData.Clear();
+            using (DBContext context = new DBContext())
+            {
+                //获取当天所有访客
+                DateTime minDate = DateTime.Now.MinDate();
+                var customerTemps = context.CustomerTemp.Where(c => c.CreateTime >= minDate && c.CreateTime <= DateTime.Now).ToList();
+
+                foreach (var cus in customerTemps)
+                {
+                    var customer = context.Customer.First(c => c.Id == cus.CustomerId);
+                    CustomerUIModel model = new CustomerUIModel();
+                    model.CustomerDate = cus.CreateTime.ToString("yy-MM-dd");
+                    model.CustomerId = cus.Id;
+                    model.CustomerName = cus.Name;
+                    model.CustomerPhone = cus.Phone;
+                    model.CustomerSex = customer.Sex;
+                    model.CustomerAge = (DateTime.Now.Year - IdCardCommon.GetBirthday(customer.IdCard).Year).ToString();
+
+                    CustomerData.Add(model);
+                }
+            }
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -500,6 +525,33 @@ namespace SalePlugin.Pages.CustomerOrder
             WinUserCommonObj w = new WinUserCommonObj();
             w.ShowDialog();
             MaskVisible(false);
+        }
+
+        private void customerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (customerList.SelectedItem != null)
+            {
+                var selectItem = customerList.SelectedItem as CustomerUIModel;
+                bool targetIsChecked = !selectItem.IsChecked;
+
+                foreach (var item in CustomerData)
+                {
+                    item.IsChecked = false;
+                }
+
+                CustomerData.Single(c => c.CustomerId == selectItem.CustomerId).IsChecked = targetIsChecked;
+
+                if (targetIsChecked)
+                {
+                    //如果已经选中 说明原来没有选中 将它加入到列表
+                    SelectedTableData(customerList.Name, selectItem);
+                }
+                else
+                {
+                    //未选中说明原来是选中的 将它移出列表
+                    UnSelectedTableData(customerList.Name, c => c.CustomerId==selectItem.CustomerId);
+                }
+            }
         }
     }
 }
