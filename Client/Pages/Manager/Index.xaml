@@ -60,19 +60,8 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <Border Grid.Row="1" VerticalAlignment="Center" Opacity="0.2" Background="AliceBlue" MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" >
-                        <TextBlock TextWrapping = "Wrap" Text='===白嫖，我们是认真的=== &#x000A;
-如果你对源码感兴趣， &#x000A;
-如果你想在海量源码中寻找二开的资源， &#x000A;
-如果你是代码新手，但不想付费在网上寻找学习资源， &#x000A;
-那么，稻草软件适合你。 &#x000A;
-微信关注公众号"稻草软件"， &#x000A;不间断的优质源码资源分享给你， &#x000A;源码都经过初步测试，保证基础运行没有问题， &#x000A;分享中都会有尽量全面的技术文档
-                                    &#x000A;
-                                    &#x000A; &#x000A;
-郑重声明： &#x000A;
-"稻草软件"做的是分享，公众号上发布的所有源码均存放于网盘或开源平台， &#x000A;可供用户随时下载或另存，平台或运营账号不存在任何费用的收取。 &#x000A;
-大部分源码来源于网络收集，版权归原作者所有，不能用于商业用途， &#x000A;部分原创的源码会在文中标注，不限制商业行为，请做好安全及代码风险测试， &#x000A;商用所产生的任何风险由使用方承担。 &#x000A; &#x000A;
-====任何问题，添加稻草私人微信===='/>
+                    <Border Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock TextWrapping = "Wrap" Text="更多源码 欢迎关注公众号 [CSharp手记]" FontSize="20" FontWeight="Bold"/>
                     </Border>
                 </Grid>
             </GroupBox>
@@ -116,10 +105,10 @@
                             pu:GroupBoxHelper.IsSplitLineVisible="True"
                             pu:GroupBoxHelper.ShadowColor="LightGray" >
                         <Grid Margin="10">
-                            <Image Source="pack://application:,,,/Common;component/Images/稻草先生-私人号 专注源码分享.jpg"/>
+                            <Image Source="pack://application:,,,/Common;component/Images/个人号csharp手记.jpg"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox  Header="稻草软件公众号"
+                    <GroupBox  Header="微信公众号：CSharp手记"
                           Grid.Column="1"
                            Margin="10"
                                ToolTip="一个专门分享C#免费项目的公众号，所有源码网盘链接，有部署教程及视频，欢迎关注"
@@ -129,7 +118,7 @@
                             pu:GroupBoxHelper.IsSplitLineVisible="True"
                             pu:GroupBoxHelper.ShadowColor="LightGray" >
                         <Grid Margin="10">
-                            <Image Source="pack://application:,,,/Common;component/Images/稻草软件-专业源码分享平台.jpg"/>
+                            <Image Source="pack://application:,,,/Common;component/Images/公众号csharp手记.jpg"/>
                         </Grid>
                     </GroupBox>
                 </Grid>

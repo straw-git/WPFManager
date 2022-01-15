@@ -200,12 +200,6 @@
     <Resource Include="Images\qrcode.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\稻草软件-专业源码分享平台.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\稻草先生-私人号 专注源码分享.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="Resources\Skin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -245,6 +239,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MyUserControl\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\个人号csharp手记.jpg" />
+    <Content Include="Images\公众号csharp手记.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
