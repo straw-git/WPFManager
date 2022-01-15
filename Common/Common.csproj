@@ -241,8 +241,8 @@
     <Folder Include="MyUserControl\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\个人号csharp手记.jpg" />
-    <Content Include="Images\公众号csharp手记.jpg" />
+    <Resource Include="Images\个人号csharp手记.jpg" />
+    <Resource Include="Images\公众号csharp手记.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

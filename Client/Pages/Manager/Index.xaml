@@ -98,7 +98,7 @@
                     <GroupBox  Header="个人微信号"
                           Grid.Column="0"
                            Margin="10"
-                               ToolTip="有源码问题 找稻草先生聊聊"
+                               ToolTip="有源码问题 扫码加微信聊聊"
                             pu:GroupBoxHelper.Icon="&#xf11c;"
                             pu:GroupBoxHelper.CornerRadius="10"
                             pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
