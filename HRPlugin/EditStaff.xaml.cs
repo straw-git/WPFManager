@@ -31,6 +31,7 @@ namespace HRPlugin
         public bool Succeed = false;
         public Staff StaffModel = new Staff();//员工信息
 
+        #region UI Models
 
         class InsuranceUIModel : BaseUIModel
         {
@@ -52,21 +53,23 @@ namespace HRPlugin
             public string SendType { get; set; }
         }
 
-
-        enum InsuranceSYType { Add, Edit }
-
-        ObservableCollection<InsuranceUIModel> InsuranceData = new ObservableCollection<InsuranceUIModel>();
-        InsuranceSYType syType = InsuranceSYType.Add;
-        int insuranceEditId = 0;
-
-
         class WageUIModel
         {
             public string Header { get; set; }
             public string Content { get; set; }
         }
 
-        List<WageUIModel> list = new List<WageUIModel>();
+        #endregion
+
+        /// <summary>
+        /// 商业保险状态
+        /// </summary>
+        enum InsuranceSYType { Add, Edit }
+
+        ObservableCollection<InsuranceUIModel> InsuranceData = new ObservableCollection<InsuranceUIModel>();//商业保险数据
+        InsuranceSYType syType = InsuranceSYType.Add;//商业保险状态
+        int insuranceEditId = 0;
+        List<WageUIModel> list = new List<WageUIModel>();//工资信息
 
         public EditStaff(string _staffId = "")
         {
@@ -78,15 +81,19 @@ namespace HRPlugin
 
             ClearWageUI();
 
-            InitContract();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //
+            //绑定数据源
             dtWageStart.MinDate = StaffModel.Register;
             dtWageStart_SelectedDateTimeChanged(null, null);
-
             syInsuranceList.ItemsSource = InsuranceData;
+
+            //
+            //初始化
+            UpdateContractHistory();
             LoadSB();
             LoadSY();
         }
@@ -461,40 +468,134 @@ namespace HRPlugin
 
         #region 劳动合同
 
-        private void InitContract() 
+        /// <summary>
+        /// 最小添加时间
+        /// </summary>
+        private DateTime AddContract_Min_Date = Convert.ToDateTime($"{DateTime.Now.Year}-{DateTime.Now.Month}-01");
+        /// <summary>
+        /// 最大添加时间
+        /// </summary>
+        private DateTime AddContract_Max_Date = Convert.ToDateTime($"{DateTime.Now.Year}-{DateTime.Now.Month}-01").AddMonths(1).AddDays(-1);
+
+        /// <summary>
+        /// 更新历史合同签订记录
+        /// </summary>
+        private void UpdateContractHistory()
         {
+            tvContractHistory.Items.Clear();//清空列表
             using (DBContext context = new DBContext())
             {
+                bool hasContract = false;//是否有合同
                 if (context.StaffContract.Any(c => c.StaffId == staffId))
                 {
-                    //存在 编辑
-                    var _contract = context.StaffContract.First(c => c.StaffId == staffId);
-                    dtContractStart.SelectedDateTime = _contract.Start;
-                    dtContractEnd.SelectedDateTime = _contract.End;
-                    int year = _contract.End.Year - _contract.Start.Year;
-                    switch (year)
+                    //存在历史
+                    var history = context.StaffContract.Where(c => c.StaffId == staffId).OrderByDescending(c => c.CreateTime).ToList();
+                    for (int i = 0; i < history.Count; i++)
                     {
-                        case 1:
-                            cbContractLong.SelectedIndex = 0;
-                            break;
-                        case 2:
-                            cbContractLong.SelectedIndex = 1;
-                            break;
-                        case 3:
-                            cbContractLong.SelectedIndex = 2;
-                            break;
-                        case 5:
-                            cbContractLong.SelectedIndex = 3;
-                            break;
-                        default:
-                            break;
+                        var contract = history[i];//获取合同
+
+                        var item = new TreeViewItem() { Header = $"{contract.Start.ToString("yy年MM月")}至{contract.End.ToString("yy年MM月")}", IsSelected = false, Tag = contract };
+                        tvContractHistory.Items.Add(item);
+
+                        if (contract.Start <= DateTime.Now && contract.End >= DateTime.Now)
+                        {
+                            //当前时间在范围内
+                            item.IsSelected = true;
+                            hasContract = true;//有合同
+                        }
+
+                        if (i == history.Count - 1)
+                        {
+                            //最后一条
+                            AddContract_Min_Date = contract.End;
+                            AddContract_Max_Date = DateTime.MaxValue;
+                        }
                     }
-                    dtContractWrite.SelectedDateTime = _contract.Write;
-                    txtContractPrice.Text = _contract.Price.ToString();
-                    txtContractRemark.Text = _contract.Remark;
                 }
+
+                //不存在历史
+                tvContractHistory.Items.Insert(0, new TreeViewItem() { Header = "新的合同", IsSelected = !hasContract, Tag = null });
             }
-            cbContractLong_SelectionChanged(null, null);
+        }
+
+        /// <summary>
+        /// 合同导航切换
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tvContractHistory_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (tvContractHistory.SelectedItem == null) return;
+            TreeViewItem selectedItem = tvContractHistory.SelectedItem as TreeViewItem;//获取选中项
+            if (selectedItem.Tag == null)
+            {
+                gContract.IsEnabled = true;
+                btnContractSubmit.Visibility = Visibility.Visible;
+                //新的合同
+
+                //设置时间上限下限
+                dtContractStart.MinDate = AddContract_Min_Date;
+                dtContractStart.MaxDate = AddContract_Max_Date;
+
+                #region 填充页面
+
+                dtContractStart.SelectedDateTime = AddContract_Min_Date.AddDays(1);
+                cbContractLong_SelectionChanged(null, null);
+                dtContractWrite.SelectedDateTime = DateTime.Now;
+                txtContractPrice.Clear();
+                txtContractRemark.Clear();
+                lblContractState.Content = "未开始";
+
+                #endregion
+            }
+            else
+            {
+                gContract.IsEnabled = false;
+                btnContractSubmit.Visibility = Visibility.Collapsed;
+                StaffContract contract = selectedItem.Tag as StaffContract;//现有合同实体
+
+                #region 填充页面
+
+                dtContractStart.SelectedDateTime = contract.Start;
+                dtContractEnd.SelectedDateTime = contract.End;
+                int year = contract.End.Year - contract.Start.Year;
+                switch (year)
+                {
+                    case 1:
+                        cbContractLong.SelectedIndex = 0;
+                        break;
+                    case 2:
+                        cbContractLong.SelectedIndex = 1;
+                        break;
+                    case 3:
+                        cbContractLong.SelectedIndex = 2;
+                        break;
+                    case 5:
+                        cbContractLong.SelectedIndex = 3;
+                        break;
+                    default:
+                        break;
+                }
+                dtContractWrite.SelectedDateTime = contract.Write;
+                txtContractPrice.Text = contract.Price.ToString();
+                txtContractRemark.Text = contract.Remark;
+
+                //合同状态
+                if (contract.Start < DateTime.Now && contract.End > DateTime.Now)
+                {
+                    lblContractState.Content = "执行中";
+                }
+                else if (contract.Start > DateTime.Now)
+                {
+                    lblContractState.Content = "未开始";
+                }
+                else if (contract.End < DateTime.Now)
+                {
+                    lblContractState.Content = "已过期";
+                }
+
+                #endregion
+            }
         }
 
         private void btnContractSubmit_Click(object sender, RoutedEventArgs e)
@@ -517,39 +618,26 @@ namespace HRPlugin
 
             using (DBContext context = new DBContext())
             {
-                if (context.StaffContract.Any(c => c.StaffId == staffId))
-                {
-                    //存在 编辑
-                    var _contract = context.StaffContract.Single(c => c.StaffId == staffId);
-                    _contract.Start = dtContractStart.SelectedDateTime;
-                    _contract.End = dtContractEnd.SelectedDateTime;
-                    _contract.Write = dtContractWrite.SelectedDateTime;
-                    _contract.Price = price;
-                    _contract.Remark = txtContractRemark.Text;
-                }
-                else
-                {
-                    //不存在 添加
-                    StaffContract _contract = new StaffContract();
-                    _contract.CreateTime = DateTime.Now;
-                    _contract.Creator = UserGlobal.CurrUser.Id;
-                    _contract.End = dtContractEnd.SelectedDateTime;
-                    _contract.Price = price;
-                    _contract.Remark = txtContractRemark.Text;
-                    _contract.StaffId = staffId;
-                    _contract.Start = dtContractStart.SelectedDateTime;
-                    _contract.Write = dtContractWrite.SelectedDateTime;
-                    _contract.Stop = false;
-                    _contract.StopTime = DateTime.Now;
-                    _contract.StopUser = 0;
+                //不存在 添加
+                StaffContract _contract = new StaffContract();
+                _contract.CreateTime = DateTime.Now;
+                _contract.Creator = UserGlobal.CurrUser.Id;
+                _contract.End = dtContractEnd.SelectedDateTime;
+                _contract.Price = price;
+                _contract.Remark = txtContractRemark.Text;
+                _contract.StaffId = staffId;
+                _contract.Start = dtContractStart.SelectedDateTime;
+                _contract.Write = dtContractWrite.SelectedDateTime;
+                _contract.Stop = false;
+                _contract.StopTime = DateTime.Now;
+                _contract.StopUser = 0;
 
-                    context.StaffContract.Add(_contract);
-                }
-
+                context.StaffContract.Add(_contract);
                 context.SaveChanges();
             }
 
             Succeed = true;
+            UpdateContractHistory();//更新列表
         }
 
         private void cbContractLong_SelectionChanged(object sender, SelectionChangedEventArgs e)
