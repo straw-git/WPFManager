@@ -356,10 +356,10 @@ namespace HRPlugin.Pages.HR
             {
                 int staffCount = context.Staff.Count(c => !c.IsDel);
                 pInsurance.To = staffCount;
-                pInsurance.Value = context.StaffInsurance.GroupBy(c=>c.StaffId).Count();
+                pInsurance.Value = context.StaffInsurance.Where(c => !c.Stop).GroupBy(c=>c.StaffId).Count();
 
                 pContract.To = staffCount;
-                pContract.Value = context.StaffContract.GroupBy(c => c.StaffId).Count();
+                pContract.Value = context.StaffContract.Where(c=>!c.Stop).GroupBy(c => c.StaffId).Count();
             }
         }
 
