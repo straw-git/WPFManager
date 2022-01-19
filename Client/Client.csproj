@@ -141,10 +141,6 @@
     </Compile>
     <Compile Include="Pages\Manager\MenuInfo.cs" />
     <Compile Include="Pages\MenuManager.cs" />
-    <Compile Include="Pages\Test\BgAni.xaml.cs">
-      <DependentUpon>BgAni.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Test\MenuInfo.cs" />
     <Compile Include="Windows\EditDic.xaml.cs">
       <DependentUpon>EditDic.xaml</DependentUpon>
     </Compile>
@@ -192,10 +188,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Manager\Index.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Test\BgAni.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
