@@ -68,4 +68,7 @@ public class DBContext : DbContext
     //活动
     public DbSet<MJActivity> MJActivity { get; set; }//满减活动 含会员
 
+    //附件
+    public DbSet<Attachment> Attachments { get; set; }
+
 }

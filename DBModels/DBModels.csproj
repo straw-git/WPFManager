@@ -78,6 +78,7 @@
     <Compile Include="Staffs\StaffSalaryOther.cs" />
     <Compile Include="Staffs\StaffSalarySettlement.cs" />
     <Compile Include="Staffs\StaffSalarySettlementLog.cs" />
+    <Compile Include="Sys\Attachment.cs" />
     <Compile Include="Sys\Log.cs" />
     <Compile Include="Sys\Menu.cs" />
     <Compile Include="Sys\SysDic.cs" />

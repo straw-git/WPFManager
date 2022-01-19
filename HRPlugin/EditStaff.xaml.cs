@@ -1,10 +1,13 @@
 ﻿using Common;
 using Common.Utils;
+using Common.Windows;
 using DBModels.Staffs;
+using Microsoft.Win32;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +62,14 @@ namespace HRPlugin
             public string Content { get; set; }
         }
 
+        class AttachmentUIModel : BaseUIModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string CreateTime { get; set; }
+            public Bitmap Img { get; set; }
+        }
+
         #endregion
 
         /// <summary>
@@ -70,6 +81,7 @@ namespace HRPlugin
         InsuranceSYType syType = InsuranceSYType.Add;//商业保险状态
         int insuranceEditId = 0;
         List<WageUIModel> list = new List<WageUIModel>();//工资信息
+        ObservableCollection<AttachmentUIModel> attachmentData = new ObservableCollection<AttachmentUIModel>();//附件列表
 
         public EditStaff(string _staffId = "")
         {
@@ -90,6 +102,7 @@ namespace HRPlugin
             dtWageStart.MinDate = StaffModel.Register;
             dtWageStart_SelectedDateTimeChanged(null, null);
             syInsuranceList.ItemsSource = InsuranceData;
+            listAttachment.ItemsSource = attachmentData;
 
             //
             //初始化
@@ -527,11 +540,13 @@ namespace HRPlugin
         {
             if (tvContractHistory.SelectedItem == null) return;
             TreeViewItem selectedItem = tvContractHistory.SelectedItem as TreeViewItem;//获取选中项
+            int selectedId = 0;
             if (selectedItem.Tag == null)
             {
-                gContract.IsEnabled = true;
+                EnableContractGrid(true);
+                //新合同 显示保存 不显示上传附件
                 btnContractSubmit.Visibility = Visibility.Visible;
-                //新的合同
+                btnAddContractAttachment.Visibility = Visibility.Collapsed;
 
                 //设置时间上限下限
                 dtContractStart.MinDate = AddContract_Min_Date;
@@ -550,8 +565,11 @@ namespace HRPlugin
             }
             else
             {
-                gContract.IsEnabled = false;
+                EnableContractGrid(false);
+                //已有合同 显示上传附件 不显示保存
                 btnContractSubmit.Visibility = Visibility.Collapsed;
+                btnAddContractAttachment.Visibility = Visibility.Visible;
+
                 StaffContract contract = selectedItem.Tag as StaffContract;//现有合同实体
 
                 #region 填充页面
@@ -595,6 +613,59 @@ namespace HRPlugin
                 }
 
                 #endregion
+
+
+
+                selectedId = contract.Id;
+            }
+
+            //更新附件列表
+            UpdateContractAttachment(selectedId);
+        }
+
+        /// <summary>
+        /// 控制合同页面可操作性
+        /// </summary>
+        /// <param name="_enable"></param>
+        private void EnableContractGrid(bool _enable)
+        {
+            dtContractStart.IsEnabled = _enable;
+            cbContractLong.IsEnabled = _enable;
+            dtContractEnd.IsEnabled = _enable;
+            dtContractWrite.IsEnabled = _enable;
+            txtContractPrice.IsEnabled = _enable;
+            txtContractRemark.IsEnabled = _enable;
+        }
+
+        /// <summary>
+        /// 更新附件列表
+        /// </summary>
+        private void UpdateContractAttachment(int _id)
+        {
+            bAttachment.Visibility = Visibility.Visible;//数据的显示
+            attachmentData.Clear();
+            if (_id == 0)
+            {
+                return;
+            }
+            using (DBContext context = new DBContext())
+            {
+                var attachments = context.Attachments.Where(c => !c.IsDel && c.FromTable == AttachmentGlobal.StaffContractId && c.DataId == _id).ToList();
+                if(attachments.Count > 0) bAttachment.Visibility = Visibility.Collapsed ;//数据的显示
+                foreach (var item in attachments)
+                {
+                    //第一个参数为：获取缩略图文件路径
+                    //第二个参数为：返回图片的宽
+                    //第三个参数为：返回图片的高
+                    //Bitmap bm = WindowsThumbnailProvider.GetThumbnail(path, pic_size, pic_size, ThumbnailOptions.None);
+
+                    var model = new AttachmentUIModel();
+                    model.Id = item.Id;
+                    model.CreateTime = item.CreateTime.ToString("yy年MM月dd日");
+                    model.Name = item.SavedName;
+                    model.Img = WindowsThumbnailProvider.GetThumbnail(item.SavedPath, 20, 20, ThumbnailOptions.None);
+                    attachmentData.Add(model);
+                }
             }
         }
 
@@ -660,6 +731,62 @@ namespace HRPlugin
                     break;
                 default:
                     break;
+            }
+        }
+
+        /// <summary>
+        /// 上传合同附件
+        /// </summary>
+        private void btnAddContractAttachment_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("C:");//打开本地文件测试
+            MessageBox.Show("上传合同应至服务器端，待服务端完善后添加合同上传");
+            //if (tvContractHistory.SelectedItem == null) return;
+            //TreeViewItem selectedItem = tvContractHistory.SelectedItem as TreeViewItem;//获取选中项
+            //StaffContract contract = selectedItem.Tag as StaffContract;//现有合同实体
+        }
+
+        /// <summary>
+        /// 终止合同
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnStopContract_Click(object sender, RoutedEventArgs e)
+        {
+            if (tvContractHistory.SelectedItem == null) return;
+            TreeViewItem selectedItem = tvContractHistory.SelectedItem as TreeViewItem;//获取选中项
+            StaffContract contract = selectedItem.Tag as StaffContract;//现有合同实体
+
+            SelectedDateTime selectedDateTime = new SelectedDateTime(contract.Start, DateTime.MaxValue, DateTime.Now);
+            selectedDateTime.ShowDialog();
+            if (selectedDateTime.Succeed)
+            {
+                DateTime endTime = selectedDateTime.SelectedDate;
+                using (DBContext context = new DBContext())
+                {
+                    context.StaffContract.Single(c => c.Id == contract.Id).End = endTime;
+                    context.SaveChanges();
+                }
+                UpdateContractAttachment(contract.Id);
+
+                Notice.Show($"合同终止成功,终止时间{endTime.ToString("yy年MM月dd日")}", "终止成功");
+            }
+        }
+
+        private void btnOpenContractAttachment_Click(object sender, RoutedEventArgs e)
+        {
+            //System.Diagnostics.Process.Start("E:");
+        }
+
+        private void btnDeleteContractAttachment_Click(object sender, RoutedEventArgs e)
+        {
+            int id = (sender as Button).Tag.ToString().AsInt();//获取绑定Id
+            using (DBContext context = new DBContext())
+            {
+                context.Attachments.Remove(context.Attachments.First(c => c.Id == id));//删除数据库
+                attachmentData.Remove(attachmentData.First(c => c.Id == id));//删除UI
+
+                context.SaveChanges();
             }
         }
 

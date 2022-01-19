@@ -131,6 +131,10 @@
     <Compile Include="Migrations\202201110749140_update-customer-temp-id.designer.cs">
       <DependentUpon>202201110749140_update-customer-temp-id.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201190341345_add-table-attachment.cs" />
+    <Compile Include="Migrations\202201190341345_add-table-attachment.designer.cs">
+      <DependentUpon>202201190341345_add-table-attachment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Helper\DelayHelper.cs" />
     <Compile Include="Login.xaml.cs">
@@ -297,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201110749140_update-customer-temp-id.resx">
       <DependentUpon>202201110749140_update-customer-temp-id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201190341345_add-table-attachment.resx">
+      <DependentUpon>202201190341345_add-table-attachment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
