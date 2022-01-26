@@ -95,6 +95,7 @@
     <Compile Include="Animation\3DWave\Particle.cs" />
     <Compile Include="Animation\Close_WH.cs" />
     <Compile Include="Animation\WindowAnimation.cs" />
+    <Compile Include="AutoUpdatePlugins.cs" />
     <Compile Include="Events\LocalEventKeys.cs" />
     <Compile Include="Events\LocalEventObserver.cs" />
     <Compile Include="Global.cs" />

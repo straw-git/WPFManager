@@ -78,6 +78,8 @@ namespace Client
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             stdStart.Begin();
+
+            AutoUpdatePlugins.Update();
             CheckNullData();
         }
 

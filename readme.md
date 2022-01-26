@@ -59,6 +59,7 @@ DBs/DBModels ： 基础数据实体类库[DbContext文件为 DBModels.DBContext]
 						 StaffSalarySettlement 工资结算  
 						 StaffSalarySettlementLog 工资结算日志  
 					 Sys 系统  
+						 Attachment 附件表
 						 Log 日志  
 						 SysDic 数据字典  
 						 User 系统账户  
