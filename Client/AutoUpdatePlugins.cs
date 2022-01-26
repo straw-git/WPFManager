@@ -28,15 +28,18 @@ namespace Client
 
         static AutoUpdatePlugins()
         {
+            //获取项目根目录
+            string basePath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.IndexOf("Client"));
+
             //构造
             dllPaths = new List<string>()
             {
-                @"F:\源代码\472\CustomerPlugin\bin\Debug\CustomerPlugin.dll",
-                @"F:\源代码\472\ERPPlugin\bin\Debug\ERPPlugin.dll",
-                @"F:\源代码\472\FinancePlugin\bin\Debug\FinancePlugin.dll",
-                @"F:\源代码\472\FixedAssetsPlugin\bin\Debug\FixedAssetsPlugin.dll",
-                @"F:\源代码\472\HRPlugin\bin\Debug\HRPlugin.dll",
-                @"F:\源代码\472\SalePlugin\bin\Debug\SalePlugin.dll"
+                $@"{basePath}CustomerPlugin\bin\Debug\CustomerPlugin.dll",
+                $@"{basePath}ERPPlugin\bin\Debug\ERPPlugin.dll",
+                $@"{basePath}FinancePlugin\bin\Debug\FinancePlugin.dll",
+                $@"{basePath}FixedAssetsPlugin\bin\Debug\FixedAssetsPlugin.dll",
+                $@"{basePath}HRPlugin\bin\Debug\HRPlugin.dll",
+                $@"{basePath}SalePlugin\bin\Debug\SalePlugin.dll"
             };
         }
 
