@@ -70,6 +70,43 @@
     <Compile Include="Member\Member.cs" />
     <Compile Include="Member\MemberLevel.cs" />
     <Compile Include="Member\MemberRecharge.cs" />
+    <Compile Include="Migrations\202111090441406_init.cs" />
+    <Compile Include="Migrations\202111090441406_init.Designer.cs">
+      <DependentUpon>202111090441406_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111150814285_guest.cs" />
+    <Compile Include="Migrations\202111150814285_guest.Designer.cs">
+      <DependentUpon>202111150814285_guest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111160102221_customer.cs" />
+    <Compile Include="Migrations\202111160102221_customer.Designer.cs">
+      <DependentUpon>202111160102221_customer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111260550235_customer_black.cs" />
+    <Compile Include="Migrations\202111260550235_customer_black.Designer.cs">
+      <DependentUpon>202111260550235_customer_black.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111270633101_member_isdelete.cs" />
+    <Compile Include="Migrations\202111270633101_member_isdelete.Designer.cs">
+      <DependentUpon>202111270633101_member_isdelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111270813270_activity_mj.cs" />
+    <Compile Include="Migrations\202111270813270_activity_mj.Designer.cs">
+      <DependentUpon>202111270813270_activity_mj.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201110747240_update-customer-temp.cs" />
+    <Compile Include="Migrations\202201110747240_update-customer-temp.Designer.cs">
+      <DependentUpon>202201110747240_update-customer-temp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201110749140_update-customer-temp-id.cs" />
+    <Compile Include="Migrations\202201110749140_update-customer-temp-id.Designer.cs">
+      <DependentUpon>202201110749140_update-customer-temp-id.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201190341345_add-table-attachment.cs" />
+    <Compile Include="Migrations\202201190341345_add-table-attachment.Designer.cs">
+      <DependentUpon>202201190341345_add-table-attachment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Staffs\Staff.cs" />
     <Compile Include="Staffs\StaffContract.cs" />
@@ -87,6 +124,35 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202111090441406_init.resx">
+      <DependentUpon>202111090441406_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111150814285_guest.resx">
+      <DependentUpon>202111150814285_guest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111160102221_customer.resx">
+      <DependentUpon>202111160102221_customer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111260550235_customer_black.resx">
+      <DependentUpon>202111260550235_customer_black.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111270633101_member_isdelete.resx">
+      <DependentUpon>202111270633101_member_isdelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111270813270_activity_mj.resx">
+      <DependentUpon>202111270813270_activity_mj.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201110747240_update-customer-temp.resx">
+      <DependentUpon>202201110747240_update-customer-temp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201110749140_update-customer-temp-id.resx">
+      <DependentUpon>202201110749140_update-customer-temp-id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201190341345_add-table-attachment.resx">
+      <DependentUpon>202201190341345_add-table-attachment.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

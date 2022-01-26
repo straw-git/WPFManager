@@ -15,8 +15,10 @@ VS2019+Sqlserver2019
 
 # 正在进行中
 
-人事管理 页面及逻辑更新  
+CustomerTemps数据表更改 添加是否完成  
+创建订单  
 单品收银、订单收银  
+附件管理（计划中 使用 .Net Core3.1 WebAPI）  
 
 # 示例文章
 
@@ -75,7 +77,8 @@ HRPlugin：人事管理插件
 
 FixedAssetsPlugin：固定资产管理插件  
 LiveChartsTestPlugin：图表工具测试插件  
-DBs/SaleDBModels ： 销售数据实体（进行中）  
+DBs/SaleDBModels ： 销售数据实体  
+SaleOrder 客户销售订单表  
 SalePlugin：销售订单中心插件（进行中）  
 
 
