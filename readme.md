@@ -11,7 +11,8 @@ EntityFramework CodeFirst
 NPOI.Excel  
 
 开发环境：  
-VS2019+Sqlserver2019
+VS2019  
+Sqlserver2019  
 
 # 正在进行中
 

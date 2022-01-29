@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Client.Helper
+namespace Common.Utils
 {
     /// <summary>
     /// 样式帮助

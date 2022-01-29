@@ -86,8 +86,6 @@ namespace Client
             lblCurrUser.Text = UserGlobal.CurrUser.Name;
         }
 
-
-
         #region UI Method
 
         private void btnChangePwd_Click(object sender, RoutedEventArgs e)
