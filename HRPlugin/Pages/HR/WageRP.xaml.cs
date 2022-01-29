@@ -110,7 +110,7 @@ namespace HRPlugin.Pages.HR
             using (DBContext context = new DBContext())
             {
                 string monthCode = $"{DateTime.Now.ToString("yyMM")}";
-                var rp = context.StaffSalaryOther.Where(c => c.MonthCode == monthCode);
+                var rp = context.StaffSalaryOther.Where(c => c.MonthCode == monthCode).ToList() ;
                 bNoData.Visibility = rp.Count() > 0 ? Visibility.Collapsed : Visibility.Visible;
                 foreach (var item in rp)
                 {
