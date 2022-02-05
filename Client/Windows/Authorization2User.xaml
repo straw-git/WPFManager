@@ -27,7 +27,7 @@
                             <CheckBox Content="首页" Margin="5"/>
                             <CheckBox Content="首页" Margin="5"/>
                         </StackPanel>-->
-                        <ListBox  Width="150" HorizontalAlignment="Left" >
+                        <ListBox  >
                             <CheckBox Content="首页" Margin="5"/>
                             <CheckBox Content="首页" Margin="5"/>
                             <CheckBox Content="首页" Margin="5"/>
@@ -35,19 +35,6 @@
                             <CheckBox Content="首页" Margin="5"/>
                             <CheckBox Content="首页" Margin="5"/>
                         </ListBox>
-                        <WrapPanel x:Name="wpButtons" Orientation="Horizontal" ItemHeight="30" ItemWidth="80" Margin="160,0,0,0">
-                            <CheckBox Content="首页"/>
-                            <CheckBox Content="首页"/>
-                            <CheckBox Content="首页"/>
-                            <CheckBox Content="首页"/>
-                            <CheckBox Content="首页"/>
-                            <CheckBox Content="首页"/>
-                            <CheckBox Content="首页"/>
-                            <CheckBox Content="首页"/>
-                            <CheckBox Content="首页"/>
-                            <CheckBox Content="首页"/>
-                            <CheckBox Content="首页"/>
-                        </WrapPanel>
                     </Grid>
                 </TabItem>
             </TabControl>

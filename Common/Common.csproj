@@ -122,6 +122,7 @@
     <Compile Include="BaseMainWindow.cs" />
     <Compile Include="BaseMenuInfo.cs" />
     <Compile Include="BasePage.cs" />
+    <Compile Include="BasePlugins.cs" />
     <Compile Include="BaseUIModel.cs" />
     <Compile Include="DataGlobal.cs" />
     <Compile Include="MyAttributes\DataSourceBindingAttribute.cs" />

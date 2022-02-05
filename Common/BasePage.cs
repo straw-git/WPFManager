@@ -26,8 +26,15 @@ namespace Common
 {
     public abstract partial class BasePage : Page
     {
+        /// <summary>
+        /// 页面的排序
+        /// </summary>
         public int Order = 0;
-        public bool IsMenu = true;//是否包含在导航内
+        /// <summary>
+        /// 是否包含在导航内
+        /// </summary>
+        public bool IsMenu = true;
+        
         public string Code = "";
         protected BaseMainWindow ParentWindow = null;//父窗体
 
@@ -79,7 +86,6 @@ namespace Common
                     UserGlobal.CurrUser = context.User.First(c => c.Name == "admin");
             }
 
-            CheckMenu();
             OnPageLoaded();
         }
 
@@ -91,51 +97,6 @@ namespace Common
         {
             if (ParentWindow == null) return;//避免测试环境
             ParentWindow.IsMaskVisible = _v;
-        }
-
-        private void CheckMenu()
-        {
-            if (UserGlobal.CurrUser.Name == "admin") return;
-
-            string _menuStr = UserGlobal.CurrUser.Menus;
-            List<string> Menus = _menuStr.Split('|').ToList();
-
-            //Client.Pages.Manager.Dic
-            string nps = this.ToString();
-            string pluginName = nps.Substring(0, nps.IndexOf('.'));
-            string currName = nps.Substring(nps.LastIndexOf('.') + 1);
-            nps = nps.Replace($".{currName}", "");
-            string parentName = nps.Substring(nps.LastIndexOf('.') + 1);
-
-            string menuName = $"{pluginName}-{parentName}-{currName}-";
-
-            List<string> CurrPageMenus = Menus.Where(c => c.StartsWith(menuName)).ToList();//当前页面中的按钮（已有的权限）
-
-            foreach (var plugin in UserGlobal.Dic)
-            {
-                if (plugin.Value.Keys.Any(c => c.Code == parentName))
-                {
-                    var menuInfo = plugin.Value.Keys.First(c => c.Code == parentName);
-                    if (plugin.Value[menuInfo].Any(c => c.Code == currName))
-                    {
-                        var buttons = plugin.Value[menuInfo].First(c => c.Code == currName).Buttons;
-                        foreach (var buttonInfo in buttons)
-                        {
-                            Button button = this.FindName(buttonInfo.Name) as Button;
-                            if (CurrPageMenus.Contains($"{pluginName}-{parentName}-{currName}-{buttonInfo.Name}"))
-                            {
-                                //存在权限
-                                button.Visibility = System.Windows.Visibility.Visible;
-                            }
-                            else
-                            {
-                                //不存在权限
-                                button.Visibility = System.Windows.Visibility.Collapsed;
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         #endregion

@@ -16,6 +16,5 @@ namespace Common.Entities
         public string PluginCode { get; set; }
         public string Url { get; set; }
         public int Order { get; set; }
-        public List<MenuItemButtonModel> Buttons { get; set; }
     }
 }

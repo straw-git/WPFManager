@@ -2,6 +2,9 @@
 
 项目采用插件式方式开发,在开发时可以更好的业务分离,提高多人协作开发效率.
 
+# WPF中的样式收集已转移至  
+[https://zhuanlan.zhihu.com/p/459008647](https://zhuanlan.zhihu.com/p/459008647)  
+
 # 项目中使用到的技术
 
 NETFramework472  
@@ -16,9 +19,7 @@ Sqlserver2019
 
 # 正在进行中
 
-CustomerTemps数据表更改 添加是否完成  
-创建订单  
-单品收银、订单收银  
+更新账套（重新编辑权限部分）  
 附件管理（计划中 使用 .Net Core3.1 WebAPI）  
 
 # 示例文章

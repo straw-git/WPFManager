@@ -85,6 +85,10 @@
       <DependentUpon>Index1.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Test\MenuInfo.cs" />
+    <Compile Include="Pages\Test\Index2.xaml.cs">
+      <DependentUpon>Index2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PluginsInfo.cs" />
     <Compile Include="Pages\Welcome.xaml.cs">
       <DependentUpon>Welcome.xaml</DependentUpon>
     </Compile>
@@ -109,9 +113,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Welcome.xaml">
+    <Page Include="Pages\Test\Index2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Welcome.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -89,9 +89,6 @@ namespace Client.Windows
                     Grid grid = new Grid();
 
                     ListBox listBox = new ListBox();
-                    listBox.Width = 150;
-                    listBox.HorizontalAlignment = HorizontalAlignment.Left;
-                    listBox.SelectionChanged += MenuListBox_SelectionChanged;
                     listBox.MouseDoubleClick += MenuListBox_MouseDoubleClick;
 
                     var childrens = plugin.Value[_menu];
@@ -136,42 +133,6 @@ namespace Client.Windows
             checkBox.IsChecked = !checkBox.IsChecked;
         }
 
-        private void MenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListBox listBox = sender as ListBox;
-            if (listBox.SelectedItem == null) return;
-            StackPanel panel = listBox.SelectedItem as StackPanel;
-            CheckBox checkBox = panel.Children[0] as CheckBox;
-
-            Grid parentGrid = listBox.Parent as Grid;
-
-            WrapPanel wrapPanel = new WrapPanel();
-            wrapPanel.Orientation = Orientation.Horizontal;
-            wrapPanel.Margin = new Thickness(160, 0, 0, 0);
-
-            MenuItemModel itemModel = checkBox.Tag as MenuItemModel;
-
-            foreach (var button in itemModel.Buttons)
-            {
-                string code = $"{itemModel.PluginCode}-{itemModel.ParentCode}-{itemModel.Code}-{button.Name}";
-                CheckBox cb = new CheckBox();
-                cb.Content = button.Content;
-                cb.Margin = new Thickness(5);
-                cb.Tag = code;
-                cb.IsChecked = UserMenus.Any(c => c == code);
-                cb.Loaded += MenuButton_Loaded;
-                cb.Unloaded += MenuButton_Unloaded;
-
-                wrapPanel.Children.Add(cb);
-            }
-
-            if (parentGrid.Children.Count == 2)
-            {
-                parentGrid.Children.RemoveAt(0);
-            }
-
-            parentGrid.Children.Insert(0, wrapPanel);
-        }
 
         private void SecondMenuCheckBox_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -219,20 +180,6 @@ namespace Client.Windows
             {
                 UserMenus.Add(code);
             }
-        }
-
-        private void MenuButton_Unloaded(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            checkBox.Checked -= MenuButtonCheckBox_Checked;
-            checkBox.Unchecked -= MenuButtonCheckBox_Unchecked;
-        }
-
-        private void MenuButton_Loaded(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            checkBox.Checked += MenuButtonCheckBox_Checked;
-            checkBox.Unchecked += MenuButtonCheckBox_Unchecked;
         }
 
         private void MenuButtonCheckBox_Unchecked(object sender, RoutedEventArgs e)

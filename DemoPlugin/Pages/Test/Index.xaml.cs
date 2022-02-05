@@ -30,6 +30,5 @@ namespace DemoPlugin.Pages.Test
         protected override void OnPageLoaded()
         {
         }
-
     }
 }

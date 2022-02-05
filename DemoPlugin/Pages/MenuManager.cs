@@ -105,7 +105,6 @@ namespace DemoPlugin.Pages
                     Grid itemGrid = itemPage.Content as Grid;
                     //已经获取到页
                     MenuItemModel itemModel = new MenuItemModel();
-                    itemModel.Buttons = GetButtons(itemGrid);
                     itemModel.ParentCode = menuInfo.Code;
                     itemModel.Code = itemPage.Code;
                     itemModel.PluginCode = "DemoPlugin";
@@ -121,65 +120,6 @@ namespace DemoPlugin.Pages
             }
 
             if (Dic.Keys.Count > 0) PluginDic.Add("DemoPlugin", Dic);
-        }
-
-        /// <summary>
-        /// 将Page中的Button元素作为权限对象
-        /// </summary>
-        /// <param name="control"></param>
-        /// <returns></returns>
-        private static List<MenuItemButtonModel> GetButtons(Visual control)
-        {
-            if (control == null) return new List<MenuItemButtonModel>();
-
-            List<MenuItemButtonModel> list = new List<MenuItemButtonModel>();
-
-            int childCount = VisualTreeHelper.GetChildrenCount(control);
-
-            for (int i = 0; i < childCount; i++)
-            {
-                Visual childVisual = (Visual)VisualTreeHelper.GetChild(control, i);
-                if (childVisual.GetType() == typeof(GroupBox))
-                {
-                    #region 特殊的GroupBox 
-
-                    var groupBox = (childVisual as GroupBox);
-                    //从依赖项中 读取gropubox右上角的按钮
-                    var element = GroupBoxHelper.GetExtendControl(groupBox);
-                    if (element != null && VisualTreeHelper.GetChildrenCount(element) > 0)
-                    {
-                        list.AddRange(GetButtons(element));
-                    }
-                    //读取groupbox的内容
-                    var grid = (childVisual as GroupBox).Content as Grid;
-                    list.AddRange(GetButtons(grid));
-
-                    #endregion
-
-                }
-                else if (childVisual.GetType() == typeof(Button))
-                {
-                    Button button = childVisual as Button;
-                    MenuItemButtonModel model = new MenuItemButtonModel();
-                    model.Content = button.Content == null ? "未设置内容" : button.Content.ToString();
-                    model.Name = button.Name;
-
-                    list.Add(model);
-                }
-                else
-                {
-                    #region 常规容器
-
-                    if (VisualTreeHelper.GetChildrenCount(childVisual) > 0)
-                    {
-                        list.AddRange(GetButtons(childVisual));
-                    }
-
-                    #endregion 
-                }
-            }
-
-            return list;
         }
 
         private static Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
