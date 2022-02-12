@@ -74,6 +74,7 @@
     <Compile Include="Pages\CustomerOrder\CustomerRegister.xaml.cs">
       <DependentUpon>CustomerRegister.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PluginsInfo.cs" />
     <Compile Include="WinAddUserCommonObj.xaml.cs">
       <DependentUpon>WinAddUserCommonObj.xaml</DependentUpon>
     </Compile>
@@ -111,10 +112,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Manager\CashRegister.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\CustomerOrder\CreateOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -147,10 +144,6 @@
       <DependentUpon>Index.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\CashRegister\MenuInfo.cs" />
-    <Compile Include="Pages\Manager\CashRegister.xaml.cs">
-      <DependentUpon>CashRegister.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Manager\MenuInfo.cs" />
     <Compile Include="Pages\CustomerOrder\CreateOrder.xaml.cs">
       <DependentUpon>CreateOrder.xaml</DependentUpon>
     </Compile>
@@ -201,6 +194,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="logo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

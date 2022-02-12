@@ -14,7 +14,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Common.Entities;
 
 namespace Client.Windows
 {
@@ -74,51 +73,51 @@ namespace Client.Windows
 
         private void LoadMenu()
         {
-            tabMenus.Items.Clear();
+            //tabMenus.Items.Clear();
 
-            foreach (var plugin in MenuManager.PluginDic)
-            {
-                var mainMenus = plugin.Value.Keys.OrderBy(c => c.SelfOrder).ToList();
-                for (int i = 0; i < mainMenus.Count; i++)
-                {
-                    var _menu = mainMenus[i];
+            //foreach (var plugin in MenuManager.PluginList)
+            //{
+            //    var mainMenus = plugin.Value.Keys.OrderBy(c => c.SelfOrder).ToList();
+            //    for (int i = 0; i < mainMenus.Count; i++)
+            //    {
+            //        var _menu = mainMenus[i];
 
-                    TabItem tabItem = new TabItem();
-                    tabItem.Header = _menu.Name;
+            //        TabItem tabItem = new TabItem();
+            //        tabItem.Header = _menu.Name;
 
-                    Grid grid = new Grid();
+            //        Grid grid = new Grid();
 
-                    ListBox listBox = new ListBox();
-                    listBox.MouseDoubleClick += MenuListBox_MouseDoubleClick;
+            //        ListBox listBox = new ListBox();
+            //        listBox.MouseDoubleClick += MenuListBox_MouseDoubleClick;
 
-                    var childrens = plugin.Value[_menu];
-                    for (int j = 0; j < childrens.Count; j++)
-                    {
-                        var _childrenItem = childrens[j];
+            //        var childrens = plugin.Value[_menu];
+            //        for (int j = 0; j < childrens.Count; j++)
+            //        {
+            //            var _childrenItem = childrens[j];
 
-                        StackPanel stackPanel = new StackPanel();
-                        stackPanel.Orientation = Orientation.Horizontal;
+            //            StackPanel stackPanel = new StackPanel();
+            //            stackPanel.Orientation = Orientation.Horizontal;
 
-                        CheckBox checkBox = new CheckBox();
-                        checkBox.Tag = _childrenItem;
-                        string code = $"{plugin.Key}-{_childrenItem.ParentCode}-{_childrenItem.Code}";
-                        checkBox.IsChecked = UserMenus.Any(c => c == code);
-                        checkBox.Loaded += SecondMenuCheckBox_Loaded;
-                        checkBox.Unloaded += SecondMenuCheckBox_Unloaded;
+            //            CheckBox checkBox = new CheckBox();
+            //            checkBox.Tag = _childrenItem;
+            //            string code = $"{plugin.Key}-{_childrenItem.ParentCode}-{_childrenItem.Code}";
+            //            checkBox.IsChecked = UserMenus.Any(c => c == code);
+            //            checkBox.Loaded += SecondMenuCheckBox_Loaded;
+            //            checkBox.Unloaded += SecondMenuCheckBox_Unloaded;
 
-                        Label label = new Label();
-                        label.Content = _childrenItem.Name;
+            //            Label label = new Label();
+            //            label.Content = _childrenItem.Name;
 
-                        stackPanel.Children.Add(checkBox);
-                        stackPanel.Children.Add(label);
-                        listBox.Items.Add(stackPanel);
-                    }
+            //            stackPanel.Children.Add(checkBox);
+            //            stackPanel.Children.Add(label);
+            //            listBox.Items.Add(stackPanel);
+            //        }
 
-                    grid.Children.Add(listBox);
-                    tabItem.Content = grid;
-                    tabMenus.Items.Add(tabItem);
-                }
-            }
+            //        grid.Children.Add(listBox);
+            //        tabItem.Content = grid;
+            //        tabMenus.Items.Add(tabItem);
+            //    }
+            //}
             
         }
 
@@ -150,36 +149,36 @@ namespace Client.Windows
 
         private void SecondMenuCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = sender as CheckBox;
-            Grid parentGrid = ((checkBox.Parent as StackPanel).Parent as ListBox).Parent as Grid;
-            MenuItemModel itemModel = checkBox.Tag as MenuItemModel;
+            //CheckBox checkBox = sender as CheckBox;
+            //Grid parentGrid = ((checkBox.Parent as StackPanel).Parent as ListBox).Parent as Grid;
+            //MenuItemModel itemModel = checkBox.Tag as MenuItemModel;
 
-            if (parentGrid.Children.Count == 2)
-            {
-                WrapPanel wrapPanel = parentGrid.Children[0] as WrapPanel;
-                foreach (var item in wrapPanel.Children)
-                {
-                    CheckBox button = item as CheckBox;
-                    button.IsChecked = false;
-                }
-            }
+            //if (parentGrid.Children.Count == 2)
+            //{
+            //    WrapPanel wrapPanel = parentGrid.Children[0] as WrapPanel;
+            //    foreach (var item in wrapPanel.Children)
+            //    {
+            //        CheckBox button = item as CheckBox;
+            //        button.IsChecked = false;
+            //    }
+            //}
 
-            string code = $"{itemModel.PluginCode}-{itemModel.ParentCode}-{itemModel.Code}";
-            if (UserMenus.Contains(code))
-            {
-                UserMenus.Remove(code);
-            }
+            //string code = $"{itemModel.PluginCode}-{itemModel.ParentCode}-{itemModel.Code}";
+            //if (UserMenus.Contains(code))
+            //{
+            //    UserMenus.Remove(code);
+            //}
         }
 
         private void SecondMenuCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = sender as CheckBox;
-            MenuItemModel itemModel = checkBox.Tag as MenuItemModel;
-            string code = $"{itemModel.PluginCode}-{itemModel.ParentCode}-{itemModel.Code}";
-            if (!UserMenus.Contains(code))
-            {
-                UserMenus.Add(code);
-            }
+            //CheckBox checkBox = sender as CheckBox;
+            //MenuItemModel itemModel = checkBox.Tag as MenuItemModel;
+            //string code = $"{itemModel.PluginCode}-{itemModel.ParentCode}-{itemModel.Code}";
+            //if (!UserMenus.Contains(code))
+            //{
+            //    UserMenus.Add(code);
+            //}
         }
 
         private void MenuButtonCheckBox_Unchecked(object sender, RoutedEventArgs e)

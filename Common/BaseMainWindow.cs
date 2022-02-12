@@ -9,9 +9,33 @@ namespace Common
 {
     public abstract class BaseMainWindow : WindowX
     {
+        /// <summary>
+        /// 当前窗体中的插件
+        /// </summary>
+        public List<UserGlobal.PluginsModel> CurrWindowPlugins = new List<UserGlobal.PluginsModel>();
+
+        /// <summary>
+        /// 添加插件信息
+        /// </summary>
+        /// <param name="_models"></param>
+        public void AddPluginModels(List<UserGlobal.PluginsModel> _models)
+        {
+            foreach (var model in _models)
+            {
+                if (CurrWindowPlugins.Contains(model))
+                {
+                    continue;
+                }
+                CurrWindowPlugins.Add(model);
+            }
+            CurrWindowPlugins = CurrWindowPlugins.OrderBy(c => c.Order).ToList();//排序
+            UpdateMenus();//触发更新导航
+        }
+
         public abstract void ShowLeftMenu(bool _show);//显示、隐藏左侧导航
         public abstract void ShowTopMenu(bool _show);//显示、隐藏上面导航
         public abstract void ReLoadCurrTopMenu();//刷新当前导航
         public abstract void SetFrameSource(string _s);//设置Frame内页
+        public abstract void UpdateMenus();//更新导航
     }
 }

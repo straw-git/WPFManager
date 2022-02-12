@@ -20,6 +20,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static Common.UserGlobal;
 
 namespace DemoPlugin
 {
@@ -44,10 +45,7 @@ namespace DemoPlugin
             LocalServer.Init();
             //初始化样式
             StyleHelper.Init();
-            //加载导航
-            MenuManager.InitMenus();
 
-            UserGlobal.Dic = MenuManager.PluginDic;
 
             using (DBContext context = new DBContext())
             {
@@ -55,8 +53,12 @@ namespace DemoPlugin
             }
 
             WindowGlobal.MainWindow = this;
+
+            AddPluginModels(new List<PluginsModel>() { GetPluginsModel(0) });
         }
 
+
+        #region override BaseMainWindow
 
         public override void ShowLeftMenu(bool _show)
         {
@@ -92,11 +94,67 @@ namespace DemoPlugin
             mainFrame.Source = new Uri(_s, UriKind.RelativeOrAbsolute);
         }
 
+        public override void UpdateMenus()
+        {
+            tabMenu.Items.Clear();
+
+            int currIndex = 0;
+            foreach (var plugin in CurrWindowPlugins)
+            {
+                foreach (var modules in plugin.Modules)
+                {
+                    TabItem _tabItem = new TabItem();
+                    _tabItem.Tag = modules;
+                    _tabItem.Header = modules.Name;
+                    _tabItem.GotFocus += _tabItem_GotFocus;
+
+                    tabMenu.Items.Add(_tabItem);
+                    if (currIndex == 0)
+                    {
+                        currIndex = 1;
+                        _tabItem_GotFocus(_tabItem, null);
+                    }
+                }
+            }
+
+            tabMenu.SelectedIndex = 0;
+        }
+
+        private void _tabItem_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TabItem currTab = sender as TabItem;
+
+            ModuleModel selectedMenu = currTab.Tag as ModuleModel;
+            tvMenu.Items.Clear();
+            var _pages = selectedMenu.Pages.OrderBy(c => c.Order).ToList();//页面排序
+
+            int currIndex = 0;
+            foreach (var page in _pages)
+            {
+                TreeViewItem _treeViewItem = new TreeViewItem();
+                _treeViewItem.Header = page.Code;
+                _treeViewItem.Margin = new Thickness(0, 2, 0, 2);
+                _treeViewItem.Padding = new Thickness(10, 0, 0, 0);
+                _treeViewItem.Background = Brushes.Transparent;
+                _treeViewItem.Tag = page;
+                _treeViewItem.IsSelected = currIndex == 0;
+
+                tvMenu.Items.Add(_treeViewItem);
+
+                if (currIndex == 0)
+                {
+                    currIndex = 1;
+                    mainFrame.Source = new Uri(page.Url, UriKind.RelativeOrAbsolute);
+                }
+            }
+        }
+
+        #endregion 
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateTitle();
-            LoadMenu();
 
             lblCurrUser.Text = UserGlobal.CurrUser.Name;
         }
@@ -155,97 +213,14 @@ namespace DemoPlugin
             if (tvMenu.SelectedItem != null)
             {
                 TreeViewItem targetItem = tvMenu.SelectedItem as TreeViewItem;
-                if (targetItem.Tag != null && !string.IsNullOrEmpty(targetItem.Tag.ToString()))
-                {
-                    string url = targetItem.Tag.ToString();
-                    mainFrame.Source = new Uri(url, UriKind.RelativeOrAbsolute);
-                }
+                PageModel page = targetItem.Tag as PageModel;
+                mainFrame.Source = new Uri(page.Url, UriKind.RelativeOrAbsolute);
             }
         }
 
         #endregion
 
         #region Private Method
-
-        private void LoadMenu()
-        {
-            tabMenu.Items.Clear();
-            List<string> UserMenu = new List<string>();
-
-            if (UserGlobal.CurrUser.Menus.NotEmpty())
-                UserMenu = UserGlobal.CurrUser.Menus.Split('|').ToList();
-
-            int currIndex = 0;
-
-            foreach (var plugin in MenuManager.PluginDic)
-            {
-                var mainMenus = plugin.Value.Keys.OrderBy(c => c.SelfOrder).ToList();
-                for (int i = 0; i < mainMenus.Count; i++)
-                {
-                    var _menu = mainMenus[i];
-
-                    //这里筛选主导航
-                    if (UserMenu.Any(c => c.StartsWith($"{plugin.Key}-{_menu.Code}-")) || UserGlobal.CurrUser.Name == "admin")
-                    {
-                        TabItem _tabItem = new TabItem();
-                        _tabItem.Tag = _menu;
-                        _tabItem.Name = $"{plugin.Key}0{_menu.Code}";
-                        _tabItem.Header = _menu.Name;
-                        _tabItem.GotFocus += _tabItem_GotFocus;
-
-                        tabMenu.Items.Add(_tabItem);
-                        if (currIndex == 0)
-                        {
-                            currIndex = 1;
-                            _tabItem_GotFocus(_tabItem, null);
-                        }
-                    }
-                }
-            }
-
-            tabMenu.SelectedIndex = 0;
-        }
-
-        private void _tabItem_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TabItem currTab = sender as TabItem;
-
-            BaseMenuInfo selectedMenu = currTab.Tag as BaseMenuInfo;
-            string name = currTab.Name;
-            var arr = name.Split('0');
-
-            tvMenu.Items.Clear();
-            List<string> UserMenu = new List<string>();
-            if (UserGlobal.CurrUser.Menus.NotEmpty())
-                UserMenu = UserGlobal.CurrUser.Menus.Split('|').ToList();
-
-            var childrens = MenuManager.PluginDic[arr[0]][selectedMenu].OrderBy(c => c.Order).ToList();
-
-            int currIndex = 0;
-            for (int i = 0; i < childrens.Count; i++)
-            {
-                var _menu = childrens[i];
-
-                if (UserMenu.Any(c => c == $"{_menu.PluginCode}-{_menu.ParentCode}-{_menu.Code}") || UserGlobal.CurrUser.Name == "admin")
-                {
-                    TreeViewItem _treeViewItem = new TreeViewItem();
-                    _treeViewItem.Header = _menu.Name;
-                    _treeViewItem.Margin = new Thickness(0, 2, 0, 2);
-                    _treeViewItem.Padding = new Thickness(10, 0, 0, 0);
-                    _treeViewItem.Background = Brushes.Transparent;
-                    _treeViewItem.Tag = _menu.Url;
-                    _treeViewItem.IsSelected = currIndex == 0;
-
-                    tvMenu.Items.Add(_treeViewItem);
-
-                    if (currIndex == 0)
-                    {
-                        currIndex = 1;
-                        mainFrame.Source = new Uri(_menu.Url, UriKind.RelativeOrAbsolute);
-                    }
-                }
-            }
-        }
 
         public void UpdateTitle()
         {
@@ -273,6 +248,105 @@ namespace DemoPlugin
         {
             Application.Current.Shutdown();
         }
+
+        /// <summary>
+        /// 查找dll中的Page所在的空间
+        /// </summary>
+        /// <param name="_dllOrder">dll排序</param>
+        public static PluginsModel GetPluginsModel(int _dllOrder)
+        {
+            Assembly currAssembly = Assembly.GetExecutingAssembly();
+
+            var pluginsInfo = new PluginsInfo();
+            PluginsModel pluginsModel = new PluginsModel();
+            pluginsModel.Code = pluginsInfo.dllName;
+            pluginsModel.Name = pluginsInfo.pluginsCode;
+            pluginsModel.Order = _dllOrder;
+            pluginsModel.LogoImageSource = new BitmapImage(new Uri($"pack://application:,,,/{pluginsInfo.DLLName};component/{pluginsInfo.LogoImageName}"));
+            pluginsModel.Modules = new List<ModuleModel>();
+
+            //根据插件说明中的命名空间查找页面
+            string[] pfs = pluginsInfo.PageFolderNames.Split(',');
+            foreach (string pf in pfs)
+            {
+                if (string.IsNullOrEmpty(pf)) continue;
+
+                //查找到的页面
+                string _pfNames = $"{pluginsInfo.dllName}.{pf}";
+
+                //此处挑选出带有MenuClassName的命名空间（文件夹）
+                var _moduleFolders = (from t in currAssembly.GetTypes()
+                                      where t.IsClass
+                                      && t.Namespace != null
+                                      && t.Namespace.StartsWith(_pfNames)
+                                      && t.FullName.Contains(pluginsInfo.MenuClassName)
+                                      && !t.FullName.Contains("<")
+                                      && !t.FullName.Contains(">")
+                                      && !t.FullName.Contains("+")
+                                      select t.FullName).ToList();
+
+                foreach (var _moduleFolder in _moduleFolders)
+                {
+                    BaseMenuInfo menuInfo = null;
+                    //获取MenuIfo
+                    menuInfo = (BaseMenuInfo)Activator.CreateInstance(Type.GetType(_moduleFolder));
+
+                    if (menuInfo == null) continue;
+
+                    ModuleModel moduleModel = new ModuleModel();
+                    moduleModel.Code = menuInfo.Code;
+                    moduleModel.Name = menuInfo.Name;
+                    moduleModel.Order = menuInfo.SelfOrder;
+                    moduleModel.Pages = new List<PageModel>();
+
+                    //获取命名空间
+                    string _moduleFolderNsp = _moduleFolder.Substring(0, _moduleFolder.LastIndexOf('.'));
+                    //查找模块下的所有页面
+                    var _currPages = (from t in currAssembly.GetTypes()
+                                      where t.IsClass
+                                      && t.Namespace != null
+                                      && t.Namespace.StartsWith(_moduleFolderNsp)
+                                      && !t.FullName.Contains(pluginsInfo.MenuClassName)
+                                      && !t.FullName.Contains("<")
+                                      && !t.FullName.Contains(">")
+                                      && !t.FullName.Contains("+")
+                                      select t.FullName).ToList();
+
+                    try
+                    {
+                        foreach (var _currPage in _currPages)
+                        {
+                            #region 获取页面说明
+
+                            Type itemObj = Type.GetType(_currPage);
+                            BasePage itemPage = (BasePage)Activator.CreateInstance(itemObj);
+                            if (!itemPage.IsMenu) continue;//不是导航 排除
+
+                            itemPage.Code = $"{_currPage.Substring(_currPage.LastIndexOf('.') + 1)}";
+
+                            #endregion
+
+                            PageModel pageModel = new PageModel();
+                            pageModel.Code = itemPage.Title;
+                            pageModel.Order = itemPage.Order;
+                            pageModel.Url = $"/{pf}/{moduleModel.Code}/{itemPage.Code}.xaml";
+
+                            moduleModel.Pages.Add(pageModel);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        continue;
+                    }
+
+                    pluginsModel.Modules.Add(moduleModel);
+                }
+            }
+
+            return pluginsModel;
+        }
+
 
         #endregion
 

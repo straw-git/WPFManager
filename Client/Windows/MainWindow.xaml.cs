@@ -24,8 +24,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Common.Entities;
 using Common.Data.Local;
+using Client.CurrGlobal;
+using static Common.UserGlobal;
 
 namespace Client
 {
@@ -34,14 +35,20 @@ namespace Client
     /// </summary>
     public partial class MainWindow : BaseMainWindow
     {
-        public MainWindow()
+        public MainWindow(string _currWindowName)
         {
             InitializeComponent();
-            UserGlobal.Dic = MenuManager.PluginDic;
+            CurrWindowName = _currWindowName;
 
-            WindowGlobal.MainWindow = this;
+            Closing += WindowX_Closing;
         }
 
+        /// <summary>
+        /// 当前窗体名称（用于MainWindowsGlobal.cs 控制窗体）
+        /// </summary>
+        public string CurrWindowName = "";
+
+        #region override BaseMainWindow
 
         public override void ShowLeftMenu(bool _show)
         {
@@ -77,16 +84,84 @@ namespace Client
             mainFrame.Source = new Uri(_s, UriKind.RelativeOrAbsolute);
         }
 
+        public override void UpdateMenus()
+        {
+            tabMenu.Items.Clear();
+
+            int currIndex = 0;
+            foreach (var plugin in CurrWindowPlugins)
+            {
+                foreach (var modules in plugin.Modules)
+                {
+                    TabItem _tabItem = new TabItem();
+                    _tabItem.Tag = modules;
+                    _tabItem.Header = modules.Name;
+                    _tabItem.GotFocus += _tabItem_GotFocus;
+
+                    tabMenu.Items.Add(_tabItem);
+                    if (currIndex == 0)
+                    {
+                        currIndex = 1;
+                        _tabItem_GotFocus(_tabItem, null);
+                    }
+                }
+            }
+
+            tabMenu.SelectedIndex = 0;
+        }
+
+        private void _tabItem_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TabItem currTab = sender as TabItem;
+
+            ModuleModel selectedMenu = currTab.Tag as ModuleModel;
+            tvMenu.Items.Clear();
+            var _pages = selectedMenu.Pages.OrderBy(c => c.Order).ToList();//页面排序
+
+            int currIndex = 0;
+            foreach (var page in _pages)
+            {
+                TreeViewItem _treeViewItem = new TreeViewItem();
+                _treeViewItem.Header = page.Code;
+                _treeViewItem.Margin = new Thickness(0, 2, 0, 2);
+                _treeViewItem.Padding = new Thickness(10, 0, 0, 0);
+                _treeViewItem.Background = Brushes.Transparent;
+                _treeViewItem.Tag = page;
+                _treeViewItem.IsSelected = currIndex == 0;
+
+                tvMenu.Items.Add(_treeViewItem);
+
+                if (currIndex == 0)
+                {
+                    currIndex = 1;
+                    mainFrame.Source = new Uri(page.Url, UriKind.RelativeOrAbsolute);
+                }
+            }
+        }
+
+        #endregion 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateTitle();
-            LoadMenu();
+            UpdateMenus();
 
             lblCurrUser.Text = UserGlobal.CurrUser.Name;
         }
 
+        public void UpdateTitle()
+        {
+            Title = lblTitle.Text = $"{LocalSettings.settings.MainWindowTitle}(V{LocalSettings.settings.Versions})";
+        }
+
         #region UI Method
+
+        private void btnSelectedPlugins_Click(object sender, RoutedEventArgs e)
+        {
+            SelectPlugins selectPlugins = new SelectPlugins();
+            selectPlugins.ShowPlugins(CurrWindowName);
+            selectPlugins.Show();
+        }
 
         private void btnChangePwd_Click(object sender, RoutedEventArgs e)
         {
@@ -101,8 +176,10 @@ namespace Client
             var result = MessageBoxX.Show("是否注销本次登录", "注销提醒", null, MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                Process.Start(Assembly.GetExecutingAssembly().GetName().CodeBase);
-                CloseWindow();
+                MainWindowsGlobal.MainWindowsDic.Clear();
+                Login login = new Login();
+                login.Show();
+                Close();
             }
         }
 
@@ -122,22 +199,13 @@ namespace Client
             IsMaskVisible = false;
         }
 
-        private void btnSignout_Click(object sender, RoutedEventArgs e)
-        {
-            var result = MessageBoxX.Show("是否退出应用", "退出提醒", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                Process.Start(Assembly.GetExecutingAssembly().GetName().CodeBase);
-                CloseWindow();
-            }
-        }
-
         private void WindowX_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
-            var result = MessageBoxX.Show("是否退出应用", "退出提醒", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
+            var result = MessageBoxX.Show("是否退出当前账套", "账套关闭提醒", this, MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
+                Closing -= WindowX_Closing;
                 CloseWindow();
             }
         }
@@ -147,102 +215,14 @@ namespace Client
             if (tvMenu.SelectedItem != null)
             {
                 TreeViewItem targetItem = tvMenu.SelectedItem as TreeViewItem;
-                if (targetItem.Tag != null && !string.IsNullOrEmpty(targetItem.Tag.ToString()))
-                {
-                    string url = targetItem.Tag.ToString();
-                    mainFrame.Source = new Uri(url, UriKind.RelativeOrAbsolute);
-                }
+                PageModel page = targetItem.Tag as PageModel;
+                mainFrame.Source = new Uri(page.Url, UriKind.RelativeOrAbsolute);
             }
         }
 
         #endregion
 
-        #region Private Method
-
-        private void LoadMenu()
-        {
-            tabMenu.Items.Clear();
-            List<string> UserMenu = new List<string>();
-
-            if (UserGlobal.CurrUser.Menus.NotEmpty())
-                UserMenu = UserGlobal.CurrUser.Menus.Split('|').ToList();
-
-            int currIndex = 0;
-
-            foreach (var plugin in MenuManager.PluginDic)
-            {
-                var mainMenus = plugin.Value.Keys.OrderBy(c => c.SelfOrder).ToList();
-                for (int i = 0; i < mainMenus.Count; i++)
-                {
-                    var _menu = mainMenus[i];
-
-                    //这里筛选主导航
-                    if (UserMenu.Any(c => c.StartsWith($"{plugin.Key}-{_menu.Code}-")) || UserGlobal.CurrUser.Name == "admin")
-                    {
-                        TabItem _tabItem = new TabItem();
-                        _tabItem.Tag = _menu;
-                        _tabItem.Name = $"{plugin.Key}0{_menu.Code}";
-                        _tabItem.Header = _menu.Name;
-                        _tabItem.GotFocus += _tabItem_GotFocus;
-
-                        tabMenu.Items.Add(_tabItem);
-                        if (currIndex == 0)
-                        {
-                            currIndex = 1;
-                            _tabItem_GotFocus(_tabItem, null);
-                        }
-                    }
-                }
-            }
-
-            tabMenu.SelectedIndex = 0;
-        }
-
-        private void _tabItem_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TabItem currTab = sender as TabItem;
-
-            BaseMenuInfo selectedMenu = currTab.Tag as BaseMenuInfo;
-            string name = currTab.Name;
-            var arr = name.Split('0');
-
-            tvMenu.Items.Clear();
-            List<string> UserMenu = new List<string>();
-            if (UserGlobal.CurrUser.Menus.NotEmpty())
-                UserMenu = UserGlobal.CurrUser.Menus.Split('|').ToList();
-
-            var childrens = MenuManager.PluginDic[arr[0]][selectedMenu].OrderBy(c => c.Order).ToList();
-
-            int currIndex = 0;
-            for (int i = 0; i < childrens.Count; i++)
-            {
-                var _menu = childrens[i];
-
-                if (UserMenu.Any(c => c == $"{_menu.PluginCode}-{_menu.ParentCode}-{_menu.Code}") || UserGlobal.CurrUser.Name == "admin")
-                {
-                    TreeViewItem _treeViewItem = new TreeViewItem();
-                    _treeViewItem.Header = _menu.Name;
-                    _treeViewItem.Margin = new Thickness(0, 2, 0, 2);
-                    _treeViewItem.Padding = new Thickness(10, 0, 0, 0);
-                    _treeViewItem.Background = Brushes.Transparent;
-                    _treeViewItem.Tag = _menu.Url;
-                    _treeViewItem.IsSelected = currIndex == 0;
-
-                    tvMenu.Items.Add(_treeViewItem);
-
-                    if (currIndex == 0)
-                    {
-                        currIndex = 1;
-                        mainFrame.Source = new Uri(_menu.Url, UriKind.RelativeOrAbsolute);
-                    }
-                }
-            }
-        }
-
-        public void UpdateTitle()
-        {
-            Title = lblTitle.Text = $"{LocalSettings.settings.MainWindowTitle}(V{LocalSettings.settings.Versions})";
-        }
+        #region 完全关闭窗体
 
         private void CloseWindow()
         {
@@ -263,7 +243,10 @@ namespace Client
 
         private void AnimationCompleted(object sender, EventArgs e)
         {
-            Application.Current.Shutdown();
+            MainWindowsGlobal.MainWindowsDic.Remove(CurrWindowName);//将自己移除
+            if (MainWindowsGlobal.MainWindowsDic.Keys.Count > 0)
+                Close();
+            else Application.Current.Shutdown();
         }
 
         #endregion

@@ -87,6 +87,7 @@
     <Compile Include="GoodsDetails.xaml.cs">
       <DependentUpon>GoodsDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PluginsInfo.cs" />
     <Compile Include="StoreOutDetail.xaml.cs">
       <DependentUpon>StoreOutDetail.xaml</DependentUpon>
     </Compile>
@@ -203,6 +204,9 @@
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
       <Name>DBModels</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="logo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

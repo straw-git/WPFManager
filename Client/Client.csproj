@@ -91,14 +91,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Animation\3DWall\Particle.cs" />
     <Compile Include="Animation\3DWave\Particle.cs" />
     <Compile Include="Animation\Close_WH.cs" />
     <Compile Include="Animation\WindowAnimation.cs" />
     <Compile Include="AutoUpdatePlugins.cs" />
+    <Compile Include="CheckPluginsDLL.cs" />
+    <Compile Include="CurrGlobal\MainWindowsGlobal.cs" />
     <Compile Include="Events\LocalEventKeys.cs" />
     <Compile Include="Events\LocalEventObserver.cs" />
-    <Compile Include="Global.cs" />
+    <Compile Include="CurrGlobal\Global.cs" />
     <Compile Include="InitData.cs" />
     <Compile Include="Helper\DelayHelper.cs" />
     <Compile Include="Login.xaml.cs">
@@ -108,7 +109,7 @@
       <DependentUpon>Index.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Manager\MenuInfo.cs" />
-    <Compile Include="Pages\MenuManager.cs" />
+    <Compile Include="PluginsInfo.cs" />
     <Compile Include="Windows\EditDic.xaml.cs">
       <DependentUpon>EditDic.xaml</DependentUpon>
     </Compile>
@@ -127,8 +128,14 @@
     <Compile Include="Windows\Authorization2User.xaml.cs">
       <DependentUpon>Authorization2User.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\LogoBox.xaml.cs">
+      <DependentUpon>LogoBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Plugins.xaml.cs">
       <DependentUpon>Plugins.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SelectPlugins.xaml.cs">
+      <DependentUpon>SelectPlugins.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\UpdatePassword.xaml.cs">
       <DependentUpon>UpdatePassword.xaml</DependentUpon>
@@ -183,7 +190,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\LogoBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\Plugins.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SelectPlugins.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -257,9 +272,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +292,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\warning-solid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\opennew.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

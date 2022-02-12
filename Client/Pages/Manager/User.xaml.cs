@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using Common;
 using Common.Windows;
 using System.Reflection;
+using Client.CurrGlobal;
 
 namespace Client.Pages.Manager
 {

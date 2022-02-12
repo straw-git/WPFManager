@@ -36,7 +36,7 @@ namespace Common.Data.Local
             if (Models == null||Models.Count==0)
             {
                 Models = new List<DBModel>();
-                Models.Add(new DBModel() { DLLPageName = "Client.Pages",Order=0 });
+                Models.Add(new DBModel() { DLLPageName = "Client",Order=0 });
 
                 Save();
             }

@@ -134,7 +134,7 @@
             <Border  Grid.Row="1" Grid.Column="1" BorderThickness="1,3,3,3" BorderBrush="{DynamicResource SkinColor}">
                 <Grid>
                     <GridSplitter Width="1" />
-                    <Frame x:Name="mainFrame" Source="/Pages/Welcome.xaml"  NavigationUIVisibility="Hidden"/>
+                    <Frame x:Name="mainFrame"  NavigationUIVisibility="Hidden"/>
                 </Grid>
             </Border>
             <!--底部-->
@@ -145,7 +145,7 @@
                         <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <Label Foreground="White" Margin="0,0,10,0" Content="by Zyue    V1.0"/>
+                        <Label Foreground="White" Margin="0,0,10,0" Content="by 1020    V1.1-001"/>
                     </Border>
                 </Grid>
             </Border>

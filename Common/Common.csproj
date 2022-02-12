@@ -134,7 +134,6 @@
     <Compile Include="Data\Local\LocalSettings.cs" />
     <Compile Include="Data\Local\LocalSkin.cs" />
     <Compile Include="DicData.cs" />
-    <Compile Include="Entities\MenuItemModel.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TextBoxExtensions.cs" />
@@ -255,6 +254,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Entities\" />
     <Folder Include="MyUserControl\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using Client.Animation;
 using Client.Animation._3DWave;
+using Client.CurrGlobal;
 using Client.Pages;
 using Client.Windows;
 using Common;
@@ -32,12 +33,6 @@ namespace Client
         private readonly ParticleSystem _ps;
         private DispatcherTimer _frameTimer;
 
-        #region Client.Animation._3DWall
-        //private readonly ParticleSystem _ps;
-        //private DispatcherTimer _frameTimer;
-        //private Point pMouse = new Point(500, 500);
-        #endregion 
-
         public Login()
         {
             InitializeComponent();
@@ -61,18 +56,6 @@ namespace Client
 
             _ps.SpawnParticle(30);
 
-            #region Client.Animation._3DWall
-
-            //_frameTimer = new DispatcherTimer();
-            //_frameTimer.Tick += OnFrame;
-            //_frameTimer.Interval = TimeSpan.FromMilliseconds(100);
-            //_frameTimer.Start();
-
-            //_ps = new ParticleSystem(30, 30, Colors.White);
-            //WorldModels.Children.Add(_ps.ParticleModel);
-            //_ps.SpawnParticle(50);
-
-            #endregion 
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -88,86 +71,39 @@ namespace Client
             _ps.Update();
         }
 
-        #region Client.Animation._3DWall
-
-        //private void OnFrame(object sender, EventArgs e)
-        //{
-        //    _ps.Update(pMouse);
-        //}
-
-        //private void Grid_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    Point mouseposition = e.GetPosition(myViewport);
-        //    PointHitTestParameters pointparams = new PointHitTestParameters(mouseposition);
-        //    VisualTreeHelper.HitTest(myViewport, null, HTResult, pointparams);
-        //}
-
-        ///// <summary>
-        //    /// 获取鼠标在场景中的3D坐标
-        //    /// </summary>
-        //public HitTestResultBehavior HTResult(System.Windows.Media.HitTestResult rawresult)
-        //{
-        //    RayHitTestResult rayResult = rawresult as RayHitTestResult;
-        //    if (rayResult != null)
-        //    {
-        //        RayMeshGeometry3DHitTestResult rayMeshResult = rayResult as RayMeshGeometry3DHitTestResult;
-        //        if (rayMeshResult != null)
-        //        {
-        //            GeometryModel3D hitgeo = rayMeshResult.ModelHit as GeometryModel3D;
-        //            MeshGeometry3D hitmesh = hitgeo.Geometry as MeshGeometry3D;
-        //            Point3D p1 = hitmesh.Positions.ElementAt(rayMeshResult.VertexIndex1);
-        //            double weight1 = rayMeshResult.VertexWeight1;
-        //            Point3D p2 = hitmesh.Positions.ElementAt(rayMeshResult.VertexIndex2);
-        //            double weight2 = rayMeshResult.VertexWeight2;
-        //            Point3D p3 = hitmesh.Positions.ElementAt(rayMeshResult.VertexIndex3);
-        //            double weight3 = rayMeshResult.VertexWeight3;
-        //            Point3D prePoint = new Point3D(p1.X * weight1 + p2.X * weight2 + p3.X * weight3, p1.Y * weight1 + p2.Y * weight2 + p3.Y * weight3, p1.Z * weight1 + p2.Z * weight2 + p3.Z * weight3);
-        //            pMouse = new Point(prePoint.X, prePoint.Y);
-        //        }
-        //    }
-        //    return HitTestResultBehavior.Continue;
-        //}
-
-        //private void Grid_MouseLeave(object sender, MouseEventArgs e)
-        //{
-        //    pMouse = new Point(9999, 9999);
-        //}
-
-        #endregion 
-
         private async void CheckNullData()
         {
-            //读取及更新数据连接配置文件
-            XmlDocument doc = new XmlDocument();
-            doc.Load("..//..//App.config");
-            XmlNode root = doc.SelectSingleNode("configuration");
-            XmlNode node = root.SelectSingleNode("connectionStrings/add[@name='ZDBConnectionString']");
-            XmlElement el = node as XmlElement;
-            el.SetAttribute("connectionString", $"Data Source={LocalDB.Model.DataSource};Initial Catalog={LocalDB.Model.InitialCatalog};User ID={LocalDB.Model.UserId};Password={LocalDB.Model.Password};");
-            doc.Save("..//..//App.config");
-
-            var handler = PendingBox.Show("正在连接数据库...", "请等待", false, Application.Current.MainWindow, new PendingBoxConfigurations()
+            IsEnabled = false;
+            var handler = PendingBox.Show("正在连读取配置...", "请等待", false, Application.Current.MainWindow, new PendingBoxConfigurations()
             {
                 LoadingForeground = "#5DBBEC".ToColor().ToBrush(),
                 ButtonBrush = "#5DBBEC".ToColor().ToBrush(),
             });
-            IsEnabled = false;
-            bool connectionSucceed = false;
+
             await Task.Run(() =>
             {
-                //空数据检查
-                connectionSucceed = InitData.NullDataCheck();
-
-                UIGlobal.RunUIAction(()=> 
-                {
-                    //获取所有系统导航
-                    MenuManager.InitMenus();
-                });
+                //读取及更新数据连接配置文件
+                XmlDocument doc = new XmlDocument();
+                doc.Load("..//..//App.config");
+                XmlNode root = doc.SelectSingleNode("configuration");
+                XmlNode node = root.SelectSingleNode("connectionStrings/add[@name='ZDBConnectionString']");
+                XmlElement el = node as XmlElement;
+                el.SetAttribute("connectionString", $"Data Source={LocalDB.Model.DataSource};Initial Catalog={LocalDB.Model.InitialCatalog};User ID={LocalDB.Model.UserId};Password={LocalDB.Model.Password};");
+                doc.Save("..//..//App.config");
             });
 
+            handler.UpdateMessage("连接数据库...");
+            await Task.Delay(200);
+            bool connectionSucceed = false;
+            //检查数据
+            await Task.Run(() =>
+            {
+                connectionSucceed = InitData.NullDataCheck();
+            });
             if (connectionSucceed)
                 handler.UpdateMessage("连接成功");
-            await Task.Delay(300);
+
+            await Task.Delay(200);
             handler.Close();
 
             IsEnabled = true;
@@ -209,6 +145,7 @@ namespace Client
 
             bool loginSucceed = true;//是否登录成功
             string errorStr = "";//错误信息
+            DBModels.Sys.User userModel = null;
 
             #region 登录
 
@@ -223,12 +160,12 @@ namespace Client
                     }
                     else
                     {
-                        UserGlobal.CurrUser = context.User.First(c => c.Name == userName && c.Pwd == userPwd);
-                        if (UserGlobal.CurrUser == null || UserGlobal.CurrUser.Id <= 0)
+                        userModel = context.User.First(c => c.Name == userName && c.Pwd == userPwd);
+                        if (userModel == null || userModel.Id <= 0)
                         {
                             errorStr = "未知错误";
                         }
-                        if (!UserGlobal.CurrUser.CanLogin)
+                        if (!userModel.CanLogin)
                         {
                             errorStr = "无权登录";
                         }
@@ -243,7 +180,7 @@ namespace Client
             #endregion 
 
             //有错误证明未成功
-            loginSucceed = string.IsNullOrEmpty(errorStr);
+            loginSucceed = string.IsNullOrEmpty(errorStr) && userModel != null;
 
             if (!loginSucceed)
             {
@@ -254,19 +191,18 @@ namespace Client
             else
             {
                 handler.UpdateMessage("登录成功,正在装载用户数据...");
-
                 await Task.Delay(500);
-
                 handler.Close();
 
-                #region 打开新页面
-
-                this.Visibility = Visibility.Hidden;
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
+                // 登录成功 
+                //填充用户数据
+                UserGlobal.SetCurrUser(userModel);
+                //打开账套选择
+                SelectPlugins selectPlugins = new SelectPlugins();
+                selectPlugins.ShowPlugins();
+                selectPlugins.Show();
+                //关闭当前页
                 this.Close();
-
-                #endregion 
 
                 Notice.Show($"{UserGlobal.CurrUser.Name}登录", "欢迎", 3, MessageBoxIcon.Success);
             }
@@ -276,7 +212,7 @@ namespace Client
         {
             Windows.DBSettingWindow a = new Windows.DBSettingWindow();
             a.ShowDialog();
-            if (a.Succeed) 
+            if (a.Succeed)
             {
                 CheckNullData();
             }
@@ -289,10 +225,17 @@ namespace Client
             a.ShowDialog();
         }
 
-        private void btnExit_Click(object sender, MouseEventArgs e)
+        private void gTitle_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            this.Close();
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
         }
 
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

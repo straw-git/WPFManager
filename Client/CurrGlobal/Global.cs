@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Client
+namespace Client.CurrGlobal
 {
 
     public class SoftInfo 

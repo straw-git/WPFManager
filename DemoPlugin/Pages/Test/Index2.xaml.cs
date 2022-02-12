@@ -32,7 +32,7 @@ namespace DemoPlugin.Pages.Test
 
         #region Models
 
-        class UIModel : INotifyPropertyChanged
+        class UIModel : BaseUIModel
         {
             public int Id { get; set; }
 
@@ -77,32 +77,7 @@ namespace DemoPlugin.Pages.Test
                     NotifyPropertyChanged("CanLogin");
                 }
             }
-
-            public Visibility Text 
-            {
-                get 
-                {
-                    if (GetRights("", "", "", "")) 
-                    {
-                        return Visibility.Visible;
-                    }
-
-                    return Visibility.Collapsed;
-                }
-            }
-
-            private bool GetRights(string v1, string v2, string v3, string v4)
-            {
-                return false;
-            }
-
             public string CreateTime { get; set; }
-
-            public event PropertyChangedEventHandler PropertyChanged;
-            public void NotifyPropertyChanged(string propertyName)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         #endregion

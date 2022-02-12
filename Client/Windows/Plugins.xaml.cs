@@ -68,8 +68,6 @@ namespace Client.Windows
 
             #endregion 
 
-            MenuManager.InitMenus();
-
             await Task.Delay(200);
             handler.UpdateMessage("更新完成！");
             await Task.Delay(200);
@@ -107,11 +105,8 @@ namespace Client.Windows
             if (dlls.Items.Count > 0 && dlls.SelectedItem != null)
             {
                 string dllName = dlls.SelectedItem.ToString();
-                string fName = dllName.Substring(0, dllName.IndexOf('.'));
-                string sName = "Pages";
+                string pName = dllName.Substring(0, dllName.IndexOf('.'));
                 int order = 0;
-
-                string pName = $"{fName}.{sName}";
 
                 if (LocalPlugins.Models.Any(c => c.DLLPageName == pName))
                 {
@@ -133,7 +128,7 @@ namespace Client.Windows
             {
                 string pluginName = plugins.SelectedItem.ToString();
 
-                if (pluginName == "Client.Pages")
+                if (pluginName == "Client")
                 {
                     MessageBoxX.Show("此项不允许删除", "错误");
                     return;

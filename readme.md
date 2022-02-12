@@ -3,6 +3,7 @@
 项目采用插件式方式开发,在开发时可以更好的业务分离,提高多人协作开发效率.
 
 # WPF中的样式收集已转移至  
+
 [https://zhuanlan.zhihu.com/p/459008647](https://zhuanlan.zhihu.com/p/459008647)  
 
 # 项目中使用到的技术
@@ -17,71 +18,23 @@ NPOI.Excel
 VS2019  
 Sqlserver2019  
 
-# 正在进行中
+# 正在进行中（闲时开发中，尚不完善）
 
-更新账套（重新编辑权限部分）  
-附件管理（计划中 使用 .Net Core3.1 WebAPI）  
+编辑主题功能  
+编辑页面样式  
+删除部分插件功能    
 
-# 示例文章
+# 更新日志
 
-[客户管理插件文章](https://zhuanlan.zhihu.com/p/439497177)    
-[搭建及扩展文章](https://zhuanlan.zhihu.com/p/428356007)  
-[基础功能示例文章](https://zhuanlan.zhihu.com/p/431962796)
-
-# 基础目录介绍
-
-DBs/DBModels ： 基础数据实体类库[DbContext文件为 DBModels.DBContext]  
---包含：  
-----Activities 活动   
---------MJActivity 满减活动  
-----ERP 进销存  
---------Goods 物品  
---------PurchasePlan 采购计划  
---------PurchasePlanItem 采购计划详情  
---------PurchasePlanLog 实际采购详情  
---------Stock 库存  
---------StockLog 库存日志  
---------Supplier 供应商  
-----Finance 财务  
---------FinanceBill 财务账单  
---------FinanceType 财务类型  
---------Payment 支付  
---------PaymentLog 支付日志  
---------PayOrder 付款账单  
-----Member 用户  
---------Customer 顾客  
---------CustomerTemp 顾客临时表（来访记录）  
---------Member 会员  
---------MemberLevel 会员等级  
---------MemberRecharge 会员充值记录  
-----Staffs 员工  
---------Staff 员工信息  
---------StaffContract 合同  
---------StaffInsurance 保险  
---------StaffSalary 工资  
---------StaffSalaryOther 奖罚  
---------StaffSalarySettlement 工资结算  
---------StaffSalarySettlementLog 工资结算日志  
-----Sys 系统  
---------Attachment 附件表
---------Log 日志  
---------SysDic 数据字典  
---------User 系统账户  
-
-Common：公用类库  
-Client：主客户端（包含管理中心）  
-CustomerPlugin：客户管理插件  
-ERPPlugin：库存管理插件  
-FinancePlugin：财务中心插件  
-HRPlugin：人事管理插件  
-
-# 扩展插件介绍
-
-FixedAssetsPlugin：固定资产管理插件  
-LiveChartsTestPlugin：图表工具测试插件  
-DBs/SaleDBModels ： 销售数据实体  
---------SaleOrder 客户销售订单表  
-SalePlugin：销售订单中心插件（进行中）  
+220212更新：V1.1-001
+精简功能，完善插件标记，添加账套，去除权限
 
 
+# 如何新增插件  
+
+1. 复制DemoPlugin项目并重命名插件名称  
+需注意项目属性中的‘程序集名称’和‘默认命名空间’与新名称对应  
+2. 删除Pages文件夹下的文件夹（仅删除示例文件夹即可）或 将文件夹内的MenuInfo.cs删除  
+3. 编辑项目根目录logo.jpg（标准尺寸宽高比例 2:1） 作为当前插件的logo （logo名称与PluginsInfo.cs中对应） 
+4. 在Client/AutoUpdatePlugins.cs中将新建的插件dll路径加入到自动更新中（便于开发调试,不用经常手动更新）  
 

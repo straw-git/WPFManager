@@ -12,19 +12,6 @@
         Background="Transparent"
          AllowsTransparency="True" 
         WindowStartupLocation="CenterScreen">
-    <!--<Window.Triggers>
-        <EventTrigger RoutedEvent="Page.Loaded">
-            <BeginStoryboard Name="backgroundAnimationsBeginStoryboard">
-                <Storyboard >
-                    <ColorAnimation Storyboard.TargetName="root" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Drawing).(DrawingGroup.Children)[0].(GeometryDrawing.Brush).(SolidColorBrush.Color)" From="LightGray" To="DarkGray" Duration="0:0:50" RepeatBehavior="Forever" AutoReverse="True"/>
-                    <DoubleAnimation Storyboard.TargetName="root" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Transform).(RotateTransform.Angle)" From="0" To="360" Duration="0:5:00" RepeatBehavior="Forever" AutoReverse="True"/>
-                    <DoubleAnimation Storyboard.TargetName="root" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Drawing).(DrawingGroup.Children)[1].(GeometryDrawing.Geometry).(EllipseGeometry.RadiusX)" From="0.1" To="0.25" Duration="0:0:5" RepeatBehavior="Forever" AutoReverse="True"/>
-                    <PointAnimation Storyboard.TargetName="root" Storyboard.TargetProperty="(DockPanel.Background).(DrawingBrush.Drawing).(DrawingGroup.Children)[2].(GeometryDrawing.Geometry).(EllipseGeometry.Center)" From="-0.25, -0.25" To="1.25,1.25" Duration="0:0:10" RepeatBehavior="Forever" AutoReverse="True"/>
-                </Storyboard>
-            </BeginStoryboard>
-        </EventTrigger>
-    </Window.Triggers>-->
-
     <Border x:Name="wb" BorderThickness="3" BorderBrush="{DynamicResource SkinColor}">
         <Border.Background>
             <LinearGradientBrush EndPoint="0.8,1" StartPoint="0.33,0">
@@ -41,41 +28,6 @@
             </GeometryGroup>
         </Border.Clip>
         <Grid x:Name="root">
-            <!--<Grid.Background>
-                <DrawingBrush TileMode="Tile" Viewport="0,0,100,100" ViewportUnits="Absolute">
-                    <DrawingBrush.Drawing>
-                        <DrawingGroup>
-                            <DrawingGroup.Children>
-                                <GeometryDrawing>
-                                    <GeometryDrawing.Geometry>
-                                        <RectangleGeometry Rect="0,0,1,1" />
-                                    </GeometryDrawing.Geometry>
-                                    <GeometryDrawing.Brush>
-                                        <SolidColorBrush Color="LightGray" />
-                                    </GeometryDrawing.Brush>
-                                    <GeometryDrawing.Pen>
-                                        <Pen Thickness="0.01" Brush="DarkGray" />
-                                    </GeometryDrawing.Pen>
-                                </GeometryDrawing>
-                                <GeometryDrawing Brush="#99CCCCCC">
-                                    <GeometryDrawing.Geometry>
-                                        <EllipseGeometry Center="0.75,0.5" RadiusX="0.25" RadiusY="0.25" />
-                                    </GeometryDrawing.Geometry>
-                                </GeometryDrawing>
-                                <GeometryDrawing Brush="#66CCCCCC">
-                                    <GeometryDrawing.Geometry>
-                                        <EllipseGeometry Center="0.25,0.25" RadiusX="0.1" RadiusY="0.1" />
-                                    </GeometryDrawing.Geometry>
-                                </GeometryDrawing>
-                            </DrawingGroup.Children>
-                        </DrawingGroup>
-                    </DrawingBrush.Drawing>
-                    <DrawingBrush.Transform>
-                        <RotateTransform CenterX="0.5" CenterY="0.5" />
-                    </DrawingBrush.Transform>
-                </DrawingBrush>
-            </Grid.Background>-->
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="400"/>

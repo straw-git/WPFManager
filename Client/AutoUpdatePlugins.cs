@@ -64,6 +64,14 @@ namespace Client
             }
         }
 
+        public static async void UpdateAsync() 
+        {
+            await Task.Run(()=> 
+            {
+                Update();
+            });
+        }
+
         /// <summary>
         /// 判断两个文件是否相同
         /// </summary>

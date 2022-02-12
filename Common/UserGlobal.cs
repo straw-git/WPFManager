@@ -1,9 +1,9 @@
-﻿using Common.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace Common
 {
@@ -16,26 +16,28 @@ namespace Common
 
         public class PluginsModel
         {
+            public string Name { get; set; }
             public string Code { get; set; }
+            public BitmapImage LogoImageSource { get; set; }
             public List<ModuleModel> Modules { get; set; }
+            public int Order { get; set; }
         }
 
         public class ModuleModel
         {
             public string Code { get; set; }
+            public string Name { get; set; }
             public List<PageModel> Pages { get; set; }
+            public int Order { get; set; }
         }
 
         public class PageModel
         {
             public string Code { get; set; }
-            public List<ElementModel> Elements { get; set; }
+            public string Url { get; set; }
+            public int Order { get; set; }
         }
 
-        public class ElementModel
-        {
-            public string Code { get; set; }
-        }
 
         #endregion 
 
@@ -46,19 +48,36 @@ namespace Common
         /// <summary>
         /// 所有的插件信息
         /// </summary>
-        public static List<PluginsModel> Plugins = new List<PluginsModel>();
+        public static List<PluginsModel> SelectedPlugins = new List<PluginsModel>();
 
         /// <summary>
         /// 设置当前用户的信息
         /// </summary>
-        public static void SetCurrUser(DBModels.Sys.User _user) 
+        public static void SetCurrUser(DBModels.Sys.User _user)
         {
             CurrUser = _user;
-
         }
 
+        /// <summary>
+        /// 添加插件
+        /// </summary>
+        /// <param name="_plugins"></param>
+        public static void AddPluginModel(List<PluginsModel> _plugins)
+        {
+            bool _update = false;
+            foreach (var p in _plugins)
+            {
+                if (SelectedPlugins.Contains(p))
+                {
+                    //加入选中列表
+                    SelectedPlugins.Add(p);
+                    _update = true;
+                }
+            }
 
-        public static Dictionary<string, Dictionary<BaseMenuInfo, List<MenuItemModel>>> Dic;
+            //排序
+            if (_update) SelectedPlugins = SelectedPlugins.OrderBy(c => c.Order).ToList();
+        }
 
         /// <summary>
         /// 当前是否是员工登录
