@@ -152,6 +152,7 @@ namespace Client
         public void UpdateTitle()
         {
             Title = lblTitle.Text = $"{LocalSettings.settings.MainWindowTitle}(V{LocalSettings.settings.Versions})";
+            lblV.Content = $"by 1020    V{LocalSettings.settings.Versions}";
         }
 
         #region UI Method

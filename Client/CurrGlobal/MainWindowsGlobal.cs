@@ -44,18 +44,5 @@ namespace Client.CurrGlobal
         {
             return MainWindowsDic.Keys.ToList();
         }
-
-        /// <summary>
-        /// 设置MainWindow Enable
-        /// </summary>
-        /// <param name="_windowName"></param>
-        /// <param name="_enable"></param>
-        public static void EnableWindow(string _windowName, bool _enable)
-        {
-            if (MainWindowsDic.ContainsKey(_windowName))
-            {
-                MainWindowsDic[_windowName].IsEnabled = _enable;
-            }
-        }
     }
 }

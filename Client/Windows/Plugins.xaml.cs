@@ -128,12 +128,6 @@ namespace Client.Windows
             {
                 string pluginName = plugins.SelectedItem.ToString();
 
-                if (pluginName == "Client")
-                {
-                    MessageBoxX.Show("此项不允许删除", "错误");
-                    return;
-                }
-
                 var result = MessageBoxX.Show($"是否确认移除插件{pluginName}", "插件移除提醒", null, MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {

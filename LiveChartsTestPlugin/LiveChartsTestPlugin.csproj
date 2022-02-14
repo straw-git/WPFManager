@@ -136,6 +136,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\iconfont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -144,6 +145,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{869c0fb2-249d-46d9-9dac-56bb85bbc26e}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBModels\DBModels.csproj">
+      <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
+      <Name>DBModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -105,29 +105,6 @@
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Manager\Index.xaml.cs">
-      <DependentUpon>Index.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Manager\MenuInfo.cs" />
-    <Compile Include="PluginsInfo.cs" />
-    <Compile Include="Windows\EditDic.xaml.cs">
-      <DependentUpon>EditDic.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\EditJobPost.xaml.cs">
-      <DependentUpon>EditJobPost.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Manager\Dic.xaml.cs">
-      <DependentUpon>Dic.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Manager\User.xaml.cs">
-      <DependentUpon>User.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\AddUser.xaml.cs">
-      <DependentUpon>AddUser.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Authorization2User.xaml.cs">
-      <DependentUpon>Authorization2User.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\LogoBox.xaml.cs">
       <DependentUpon>LogoBox.xaml</DependentUpon>
     </Compile>
@@ -136,9 +113,6 @@
     </Compile>
     <Compile Include="Windows\SelectPlugins.xaml.cs">
       <DependentUpon>SelectPlugins.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\UpdatePassword.xaml.cs">
-      <DependentUpon>UpdatePassword.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Setting\General.xaml.cs">
       <DependentUpon>General.xaml</DependentUpon>
@@ -155,40 +129,12 @@
     <Compile Include="Windows\SkinWindow.xaml.cs">
       <DependentUpon>SkinWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\UpdateCount.xaml.cs">
-      <DependentUpon>UpdateCount.xaml</DependentUpon>
+    <Compile Include="Windows\UpdatePassword.xaml.cs">
+      <DependentUpon>UpdatePassword.xaml</DependentUpon>
     </Compile>
     <Page Include="Login.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Manager\Index.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\EditDic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\EditJobPost.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Manager\Dic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Manager\User.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\AddUser.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\Authorization2User.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\LogoBox.xaml">
       <SubType>Designer</SubType>
@@ -199,10 +145,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SelectPlugins.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\UpdatePassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -238,9 +180,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\UpdateCount.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Windows\UpdatePassword.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -34,12 +34,14 @@ namespace Client
             //构造
             dllPaths = new List<string>()
             {
+                $@"{basePath}CorePlugin\bin\Debug\CorePlugin.dll",
                 $@"{basePath}CustomerPlugin\bin\Debug\CustomerPlugin.dll",
                 $@"{basePath}ERPPlugin\bin\Debug\ERPPlugin.dll",
                 $@"{basePath}FinancePlugin\bin\Debug\FinancePlugin.dll",
                 $@"{basePath}FixedAssetsPlugin\bin\Debug\FixedAssetsPlugin.dll",
                 $@"{basePath}HRPlugin\bin\Debug\HRPlugin.dll",
-                $@"{basePath}SalePlugin\bin\Debug\SalePlugin.dll"
+                $@"{basePath}HRPlugin\bin\Debug\HRPlugin.dll",
+                $@"{basePath}LiveChartsTestPlugin\bin\Debug\LiveChartsTestPlugin.dll"
             };
         }
 
@@ -55,7 +57,14 @@ namespace Client
                     string fileName = path.Substring(path.LastIndexOf('\\') + 1);
                     string newPath = $"{pluginsFolderPath}{fileName}";
 
-                    if (!isValidFileContent(path, newPath)) 
+                    if (!File.Exists(newPath))
+                    {
+                        //如果在插件列表中没有存在这个插件 直接复制进来
+                        File.Copy(path, newPath, true);
+                        continue;
+                    }
+
+                    if (!isValidFileContent(path, newPath))
                     {
                         //将文件复制到插件文件夹
                         File.Copy(path, newPath, true);
@@ -64,9 +73,9 @@ namespace Client
             }
         }
 
-        public static async void UpdateAsync() 
+        public static async void UpdateAsync()
         {
-            await Task.Run(()=> 
+            await Task.Run(() =>
             {
                 Update();
             });

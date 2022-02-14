@@ -14,6 +14,17 @@ namespace Common
         /// </summary>
         public List<UserGlobal.PluginsModel> CurrWindowPlugins = new List<UserGlobal.PluginsModel>();
 
+
+        public void EnableMainWindow(bool _enable)
+        {
+            IsEnabled = _enable;
+        }
+
+        public void MaskVisible(bool _visible)
+        {
+            IsMaskVisible = _visible;
+        }
+
         /// <summary>
         /// 添加插件信息
         /// </summary>
