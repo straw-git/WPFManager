@@ -1,5 +1,4 @@
 ﻿
-using DBModels.Sys;
 using Client.Events;
 using Client.Helper;
 using Client.Pages;
@@ -107,6 +106,16 @@ namespace Client
                 }
             }
 
+            if (CurrWindowPlugins.Count == 1 && CurrWindowPlugins[0].Modules.Count == 1)
+            {
+                //如果只有一个模块 隐藏上部导航
+                ShowTopMenu(false);
+            }
+            else 
+            {
+                ShowTopMenu(true);
+            }
+
             tabMenu.SelectedIndex = 0;
         }
 
@@ -160,7 +169,7 @@ namespace Client
         private void btnSelectedPlugins_Click(object sender, RoutedEventArgs e)
         {
             SelectPlugins selectPlugins = new SelectPlugins();
-            selectPlugins.ShowPlugins(CurrWindowName);
+            selectPlugins.ShowPluginsAsync(CurrWindowName);
             selectPlugins.Show();
         }
 
@@ -170,18 +179,6 @@ namespace Client
             Windows.UpdatePassword updatePassword = new Windows.UpdatePassword();
             updatePassword.ShowDialog();
             IsMaskVisible = false;
-        }
-
-        private void btnReLogin_Click(object sender, RoutedEventArgs e)
-        {
-            var result = MessageBoxX.Show("是否注销本次登录", "注销提醒", null, MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                MainWindowsGlobal.MainWindowsDic.Clear();
-                Login login = new Login();
-                login.Show();
-                Close();
-            }
         }
 
         private void btnSkin_Click(object sender, RoutedEventArgs e)

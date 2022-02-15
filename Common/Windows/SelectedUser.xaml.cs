@@ -1,4 +1,4 @@
-﻿using DBModels.Sys;
+﻿using CoreDBModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -65,7 +65,7 @@ namespace Common.Windows
             IEnumerable<User> users = null;
             await Task.Run(() =>
             {
-                using (DBContext context = new DBContext())
+                using (CoreDBContext context = new CoreDBContext())
                 {
                     users = context.User.Where(c=>c.CanLogin);
                     List<User> staffList = users.ToList();

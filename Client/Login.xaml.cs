@@ -145,11 +145,11 @@ namespace Client
 
             bool loginSucceed = true;//是否登录成功
             string errorStr = "";//错误信息
-            DBModels.Sys.User userModel = null;
+            CoreDBModels.Models.User userModel = null;
 
             #region 登录
 
-            using (var context = new DBContext())
+            using (var context = new CoreDBContext())
             {
                 if (context.User.Any(c => c.Name == userName))
                 {
@@ -192,14 +192,18 @@ namespace Client
             {
                 handler.UpdateMessage("登录成功,正在装载用户数据...");
                 await Task.Delay(500);
-                handler.Close();
 
                 // 登录成功 
                 //填充用户数据
                 UserGlobal.SetCurrUser(userModel);
                 //打开账套选择
                 SelectPlugins selectPlugins = new SelectPlugins();
-                selectPlugins.ShowPlugins();
+                selectPlugins.ShowPluginsAsync();
+
+                handler.UpdateMessage("数据装载成功！");
+                await Task.Delay(300);
+                handler.Close();
+
                 selectPlugins.Show();
                 //关闭当前页
                 this.Close();

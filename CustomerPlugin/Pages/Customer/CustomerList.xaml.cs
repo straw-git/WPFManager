@@ -3,6 +3,8 @@ using Common.Data.Local;
 using Common.MyAttributes;
 using Common.Utils;
 using Common.Windows;
+using CustomerDBModels.Models;
+using CustomerPlugin.Windows;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -193,14 +195,14 @@ namespace CustomerPlugin.Pages.Customer
 
             Data.Clear();//先清空再加入页面数据
 
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
-                Expression<Func<DBModels.Member.Customer, bool>> _where = n => GetPagerWhere(n, name, phone, isMember, isBlack, enableTime, startTime, endTime);//按条件查询
-                Expression<Func<DBModels.Member.Customer, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
+                Expression<Func<CustomerDBModels.Models.Customer, bool>> _where = n => GetPagerWhere(n, name, phone, isMember, isBlack, enableTime, startTime, endTime);//按条件查询
+                Expression<Func<CustomerDBModels.Models.Customer, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
                 //开始分页查询数据
                 var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Customer, _where, _orderByDesc, gLoading, gPager, bNoData, new Control[1] { list });
                 if (!_zPager.Result) return;
-                List<DBModels.Member.Customer> _list = _zPager.EFDataList;
+                List<CustomerDBModels.Models.Customer> _list = _zPager.EFDataList;
 
                 #region 页面数据填充
 
@@ -245,7 +247,7 @@ namespace CustomerPlugin.Pages.Customer
             PagerCommon.EndEFDataPager();
         }
 
-        private UIModel DBItem2UIModel(DBModels.Member.Customer item, string _listName)
+        private UIModel DBItem2UIModel(CustomerDBModels.Models.Customer item, string _listName)
         {
             UIModel _model = new UIModel();
             _model.CreateTime = item.CreateTime.ToString("yy年MM月dd日");
@@ -302,7 +304,7 @@ namespace CustomerPlugin.Pages.Customer
         /// <param name="_start"></param>
         /// <param name="_end"></param>
         /// <returns></returns>
-        protected bool GetPagerWhere(DBModels.Member.Customer _customer, string _name, string _phone, bool _isMember, bool _isBlcak, bool _enableTime, DateTime _start, DateTime _end)
+        protected bool GetPagerWhere(CustomerDBModels.Models.Customer _customer, string _name, string _phone, bool _isMember, bool _isBlcak, bool _enableTime, DateTime _start, DateTime _end)
         {
             bool resultCondition = true;
             if (_name.NotEmpty())
@@ -391,7 +393,7 @@ namespace CustomerPlugin.Pages.Customer
                 newModel.Promotioner = "";
                 if (editCustomer.Result.BePromotionCode.NotEmpty())
                 {
-                    using (DBContext context = new DBContext())
+                    using (CustomerDBContext context = new CustomerDBContext())
                         if (context.Customer.Any(c => c.PromotionCode == editCustomer.Result.BePromotionCode))
                             newModel.Promotioner = context.Customer.First(c => c.PromotionCode == editCustomer.Result.BePromotionCode).Name;
                 }
@@ -418,7 +420,7 @@ namespace CustomerPlugin.Pages.Customer
 
             if (target.Content.ToString() == "加入黑名单")
             {
-                using (DBContext context = new DBContext())
+                using (CustomerDBContext context = new CustomerDBContext())
                 {
                     var _customer = context.Customer.Single(c => c.Id == id);
                     _customer.IsBlack = true;
@@ -434,7 +436,7 @@ namespace CustomerPlugin.Pages.Customer
             }
             else
             {
-                using (DBContext context = new DBContext())
+                using (CustomerDBContext context = new CustomerDBContext())
                 {
                     var _customer = context.Customer.Single(c => c.Id == id);
                     _customer.IsBlack = false;
@@ -462,7 +464,7 @@ namespace CustomerPlugin.Pages.Customer
                 var result = MessageBoxX.Show($"是否将 [{_model.Name}] 办理为会员？ ", "会员办理提醒", null, MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    using (DBContext context = new DBContext())
+                    using (CustomerDBContext context = new CustomerDBContext())
                     {
                         var _customer = context.Customer.Single(c => c.Id == id);
                         _customer.IsMember = true;
@@ -471,7 +473,7 @@ namespace CustomerPlugin.Pages.Customer
                         _model.MemberLinkContent = "会员信息";
 
                         //添加会员信息
-                        DBModels.Member.Member _member = new DBModels.Member.Member();
+                        Member _member = new Member();
                         _member.Birthday = _customer.IdCard.NotEmpty() ? IdCardCommon.GetBirthday(_customer.IdCard).ToString("yyyy-MM-dd") : "";
                         _member.CardNumber = "";
                         _member.CreateTime = DateTime.Now;
@@ -539,7 +541,7 @@ namespace CustomerPlugin.Pages.Customer
 
             List<string> lableData = new List<string>();
 
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 for (int i = 7; i >= 0; i--)
                 {
@@ -573,7 +575,7 @@ namespace CustomerPlugin.Pages.Customer
             #region 会员比例图表
 
             pcState.Series.Clear();
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 int count = context.Customer.Count(c => !c.IsMember);
                 int memberCount = context.Customer.Count(c => c.IsMember);
@@ -654,8 +656,8 @@ namespace CustomerPlugin.Pages.Customer
 
             await Task.Run(() =>
             {
-                var _list = new List<DBModels.Member.Customer>();
-                using (DBContext context = new DBContext())
+                var _list = new List<CustomerDBModels.Models.Customer>();
+                using (CustomerDBContext context = new CustomerDBContext())
                 {
                     _list = context.Customer.OrderByDescending(c => c.CreateTime).ToList();
                     foreach (var item in _list)

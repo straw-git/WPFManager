@@ -1,6 +1,5 @@
 ﻿
-using DBModels.Finance;
-using DBModels.Sys;
+using CoreDBModels.Models;
 using Panuon.UI.Silver;
 using System;
 using System.Linq;
@@ -18,7 +17,7 @@ namespace Client
         {
             try
             {
-                using (var context = new DBContext())
+                using (var context = new CoreDBContext())
                 {
                     //如果没有任何信息 则添加默认管理员账户 admin/123456
 

@@ -1,6 +1,4 @@
-﻿
-using DBModels.Sys;
-using CorePlugin.Pages;
+﻿using CorePlugin.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +35,7 @@ namespace CorePlugin.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 var user = context.User.Single(c => c.Id == userId);
                 if (user.Menus.NotEmpty())
@@ -215,7 +213,7 @@ namespace CorePlugin.Windows
                 menus = menus.Substring(0, menus.Length - 1);
             }
 
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 var user = context.User.Single(c => c.Id == userId);
                 user.Menus = menus;

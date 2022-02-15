@@ -1,5 +1,4 @@
-﻿using DBModels.Sys;
-using Panuon.UI.Silver;
+﻿using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +19,7 @@ using System.Linq.Expressions;
 using Common.Utils;
 using Common.MyAttributes;
 using Common.Windows;
+using ERPPlugin.Windows;
 
 namespace ERPPlugin.Pages.ERP
 {
@@ -78,14 +78,14 @@ namespace ERPPlugin.Pages.ERP
 
             Data.Clear();//先清空再加入页面数据
 
-            using (DBContext context = new DBContext())
+            using (ERPDBContext context = new ERPDBContext())
             {
-                Expression<Func<DBModels.ERP.Supplier, bool>> _where = n => GetPagerWhere(n, name);//按条件查询
-                Expression<Func<DBModels.ERP.Supplier, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
+                Expression<Func<ERPDBModels.Models.Supplier, bool>> _where = n => GetPagerWhere(n, name);//按条件查询
+                Expression<Func<ERPDBModels.Models.Supplier, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
                 //开始分页查询数据
                 var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Supplier, _where, _orderByDesc, gLoading, gPager, bNoData, new Control[1] { list });
                 if (!_zPager.Result) return;
-                List<DBModels.ERP.Supplier> _list = _zPager.EFDataList;
+                List<ERPDBModels.Models.Supplier> _list = _zPager.EFDataList;
 
                 #region 页面数据填充
 
@@ -104,7 +104,7 @@ namespace ERPPlugin.Pages.ERP
             PagerCommon.EndEFDataPager();
         }
 
-        private UIModel DBItem2UIModel(DBModels.ERP.Supplier item, string _listName, string _typeName)
+        private UIModel DBItem2UIModel(ERPDBModels.Models.Supplier item, string _listName, string _typeName)
         {
             return new UIModel()
             {
@@ -125,7 +125,7 @@ namespace ERPPlugin.Pages.ERP
         /// <param name="_supplier"></param>
         /// <param name="_name"></param>
         /// <returns></returns>
-        protected bool GetPagerWhere(DBModels.ERP.Supplier _supplier, string _name)
+        protected bool GetPagerWhere(ERPDBModels.Models.Supplier _supplier, string _name)
         {
             bool resultCondition = true;
             if (_name.NotEmpty())
@@ -169,7 +169,7 @@ namespace ERPPlugin.Pages.ERP
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            using (DBContext context = new DBContext())
+            using (ERPDBContext context = new ERPDBContext())
             {
                 var selectModel = context.Supplier.First(c => c.Id == (sender as Button).Tag.ToString().AsInt());
                 var result = MessageBoxX.Show($"是否删除[{selectModel.Name}]", "删除数据提醒", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
@@ -220,8 +220,8 @@ namespace ERPPlugin.Pages.ERP
 
             await Task.Run(() =>
             {
-                var _list = new List<DBModels.ERP.Supplier>();
-                using (DBContext context = new DBContext())
+                var _list = new List<ERPDBModels.Models.Supplier>();
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     _list = context.Supplier.OrderByDescending(c => c.CreateTime).ToList();
                     foreach (var item in _list)

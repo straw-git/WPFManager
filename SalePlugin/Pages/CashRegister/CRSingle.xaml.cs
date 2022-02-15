@@ -1,5 +1,6 @@
 ﻿using Common;
 using Panuon.UI.Silver;
+using SalePlugin.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -155,7 +156,7 @@ namespace SalePlugin.Pages.CashRegister
                     Data.Clear();
 
 
-                    using (DBContext context = new DBContext())
+                    using (ERPDBContext context = new ERPDBContext())
                     {
                         var goods = context.Goods.Where(c => c.Name.Contains(name) || c.QuickCode.Contains(name)).ToList();
                         foreach (var g in goods)

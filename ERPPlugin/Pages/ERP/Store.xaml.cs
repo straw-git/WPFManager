@@ -1,5 +1,4 @@
-﻿using DBModels.ERP;
-using Panuon.UI.Silver;
+﻿using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +17,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
 using Common.Windows;
+using ERPPlugin.Windows;
+using ERPDBModels.Models;
 
 namespace ERPPlugin.Pages.ERP
 {
@@ -128,7 +129,7 @@ namespace ERPPlugin.Pages.ERP
             List<StockLog> stockLogs = new List<StockLog>();
             await Task.Run(() =>
             {
-                using (DBContext context = new DBContext())
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     stockLogs = context.StockLog.OrderByDescending(c => c.CreateTime).Take(20).ToList();
                 }
@@ -138,7 +139,7 @@ namespace ERPPlugin.Pages.ERP
 
             bNoData.Visibility = stockLogs.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
 
-            using (DBContext context = new DBContext())
+            using (ERPDBContext context = new ERPDBContext())
             {
                 for (int i = 0; i < stockLogs.Count; i++)
                 {
@@ -185,7 +186,7 @@ namespace ERPPlugin.Pages.ERP
             var result = MessageBoxX.Show("请确认核对信息后入库,当前采购单将无法再次入库", "入库警告", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                using (DBContext context = new DBContext())
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     DateTime createTime = DateTime.Now;
                     for (int i = 0; i < planItemUIModels.Count; i++)
@@ -328,7 +329,7 @@ namespace ERPPlugin.Pages.ERP
             if (s.Ids.Count == 1)
             {
                 goodsId = s.Ids[0];
-                using (DBContext context = new DBContext())
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     var _goods = context.Goods.First(c => c.Id == goodsId);
                     goodsName = _goods.Name;
@@ -429,7 +430,7 @@ namespace ERPPlugin.Pages.ERP
 
                 #region 添加库存记录
 
-                using (DBContext context = new DBContext())
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     if (context.Stock.Any(c => c.StoreId == _item.StoreId && c.GoodsId == _item.TargetId))
                     {
@@ -581,7 +582,7 @@ namespace ERPPlugin.Pages.ERP
             if (s.Ids.Count == 1)
             {
                 goodsId = s.Ids[0];
-                using (DBContext context = new DBContext())
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     var _goods = context.Goods.First(c => c.Id == goodsId);
                     goodsName = _goods.Name;
@@ -640,7 +641,7 @@ namespace ERPPlugin.Pages.ERP
 
                 #region 编辑库存记录
 
-                using (DBContext context = new DBContext())
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     if (context.Stock.Any(c => c.StoreId == _item.StoreId && c.GoodsId == _item.TargetId))
                     {
@@ -687,7 +688,7 @@ namespace ERPPlugin.Pages.ERP
         {
             cbPlanCode.SelectedItem = null;
             cbPlanCode.Items.Clear();
-            using (DBContext context = new DBContext())
+            using (ERPDBContext context = new ERPDBContext())
             {
                 var planList = context.PurchasePlan.Where(c => !c.Stock).OrderByDescending(c => c.CreateTime).ToList();
 
@@ -704,7 +705,7 @@ namespace ERPPlugin.Pages.ERP
 
             string planCode = cbPlanCode.SelectedItem.ToString();//获得选中的采购计划号
 
-            using (DBContext context = new DBContext())
+            using (ERPDBContext context = new ERPDBContext())
             {
                 if (!context.PurchasePlan.Any(c => c.PlanCode == planCode && !c.IsDel && c.Finished && !c.Stock))
                 {

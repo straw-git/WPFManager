@@ -1,0 +1,123 @@
+﻿<p:BasePage x:Class="HRPlugin.Pages.Finance.Wage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:HRPlugin.Pages.Finance"
+               xmlns:p="clr-namespace:Common;assembly=Common"  
+      mc:Ignorable="d" 
+      d:DesignHeight="730" d:DesignWidth="1190"
+      Title="工资月结">
+    <Grid>
+        <Border Background="White"/>
+        <Grid>
+            <TabControl   VerticalAlignment="Stretch"
+                      x:Name="tabMain"
+                          Margin="10,10,10,0"
+                          pu:TabControlHelper.ItemHeight="30"
+                          pu:TabControlHelper.ItemPadding="20,0"
+                          pu:TabControlHelper.SelectedForeground="{DynamicResource SkinColor}"
+                          pu:TabControlHelper.ItemsAlignment="Center">
+                <TabItem Header="工资月结" >
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" Height="40" Margin="10" VerticalAlignment="Top">
+                            <Label VerticalAlignment="Center" Content="账期：" Width="80"/>
+                            <ComboBox  Height="30"
+                                       x:Name="cbMonth"
+                                      SelectionChanged="cbMonth_SelectionChanged"
+                                    Width="100"
+                                    Background="{DynamicResource TextBoxBgColor}"
+                                    pu:ComboBoxHelper.HoverBackground="{DynamicResource ButtonHoverColor}"
+                                    pu:ComboBoxHelper.SelectedBackground="{DynamicResource SkinColor}">
+                                <ComboBoxItem IsSelected="True">2108</ComboBoxItem>
+                            </ComboBox>
+                            <Button  Content="计 算"
+                                     IsEnabled="False"
+                                     x:Name="btnCalculate"
+                                     Click="btnCalculate_Click"
+                                         Margin="20,0,0,0"
+                                         Width="100" Height="30"
+                                         Background="{DynamicResource ButtonBgColor}"
+                                         BorderBrush="{DynamicResource ButtonBorderColor}"
+                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                            <Label VerticalContentAlignment="Center" Content="发放人数：" Margin="20,0,0,0"/>
+                            <Label x:Name="lblCount"  VerticalContentAlignment="Center" Content="0" Foreground="Green"/>
+                            <Label VerticalContentAlignment="Center"  Content="人"/>
+                            <Label VerticalContentAlignment="Center"  Content="本期工资总额：" Margin="30,0,0,0"/>
+                            <Label x:Name="lblPriceCount" VerticalContentAlignment="Center"  Content="0" Foreground="Red"/>
+                            <Label VerticalContentAlignment="Center"  Content="元"/>
+                        </StackPanel>
+                        <DataGrid HorizontalAlignment="Center"
+                                  x:Name="list"
+                              ItemsSource="{Binding}"
+                              IsReadOnly="True"
+                              Margin="0,60,5,50"
+                              Grid.Row="0"
+                              AutoGenerateColumns="False"
+                              pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                              pu:DataGridHelper.HeaderPadding="5,0"
+                              pu:DataGridHelper.CellPadding="5,0"
+                              pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="姓名" Width="150" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="职务" Width="100" Binding="{Binding JobPostName}"/>
+                                <DataGridTextColumn Header="基础工资" Width="150" Binding="{Binding BasePrice}"/>
+                                <DataGridTextColumn Header="销售提成" Width="120" Binding="{Binding SalePrice}"/>
+                                <DataGridTextColumn Header="保险扣费" Width="100" Binding="{Binding InsurancePrice}"/>
+                                <DataGridTextColumn Header="罚款" Width="100" Binding="{Binding FinePrice}"/>
+                                <DataGridTextColumn Header="奖励" Width="100" Binding="{Binding RewardPrice}"/>
+                                <DataGridTextColumn Header="工资总额" Width="*" Binding="{Binding Price}"/>
+                                <DataGridTemplateColumn Header="操作" Width="80" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button  Content="移除" Tag="{Binding Id}" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnRemove" Click="btnRemove_Click"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <pu:Loading x:Name="loading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
+                        <Button  Content="确认结算"
+                                 x:Name="btnSubmit"
+                                 Click="btnSubmit_Click"
+                             VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                                         Margin="10"
+                                         Width="100" Height="30"
+                                         Background="{DynamicResource ButtonBgColor}"
+                                         BorderBrush="{DynamicResource ButtonBorderColor}"
+                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="结算历史">
+                    <Grid>
+                        <DataGrid HorizontalAlignment="Center"
+                                  x:Name="hisList"
+                              ItemsSource="{Binding}"
+                              IsReadOnly="True"
+                              Margin="0,10,0,0"
+                              Grid.Row="0"
+                              AutoGenerateColumns="False"
+                              pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                              pu:DataGridHelper.HeaderPadding="5,0"
+                              pu:DataGridHelper.CellPadding="5,0"
+                              pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="账期" Width="*" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="结算人数" Width="200" Binding="{Binding StaffCount}"/>
+                                <DataGridTextColumn Header="结算金额" Width="200" Binding="{Binding Price}"/>
+                                <DataGridTextColumn Header="结算账号" Width="200" Binding="{Binding CreatorName}"/>
+                                <DataGridTextColumn Header="结算时间" Width="200" Binding="{Binding CreateTime}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</p:BasePage>
+

@@ -1,8 +1,10 @@
 ﻿using Common;
 using Common.Utils;
 using Common.Windows;
-using DBModels.Member;
+using CoreDBModels.Models;
+using CustomerDBModels.Models;
 using Panuon.UI.Silver;
+using SalePlugin.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -148,7 +150,7 @@ namespace SalePlugin.Pages.CustomerOrder
 
             #endregion
 
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 if (SelectedCustomer == null)
                 {
@@ -273,7 +275,7 @@ namespace SalePlugin.Pages.CustomerOrder
                 return;
             }
 
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 if (context.Customer.Any(c => c.Name.Contains(name) || c.QuickCode.Contains(name)))
                 {
@@ -306,7 +308,7 @@ namespace SalePlugin.Pages.CustomerOrder
             if (selectedModel == null) return;
 
             EnableRegisterUI(false);
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 SelectedCustomer = context.Customer.First(c => c.Id == selectedModel.CustomerId);
 
@@ -378,7 +380,7 @@ namespace SalePlugin.Pages.CustomerOrder
             if (txtIdCard.Text.Length == 15 || txtIdCard.Text.Length == 18)
             {
                 string idCard = txtIdCard.Text;
-                using (DBContext context = new DBContext())
+                using (CustomerDBContext context = new CustomerDBContext())
                 {
                     if (context.Customer.Any(c => c.IdCard == idCard))
                     {
@@ -396,7 +398,7 @@ namespace SalePlugin.Pages.CustomerOrder
             if (txtPhone.Text.Length == 11) 
             {
                 string phone = txtPhone.Text;
-                using (DBContext context = new DBContext())
+                using (CustomerDBContext context = new CustomerDBContext())
                 {
                     if (context.Customer.Any(c => c.Phone == phone))
                     {

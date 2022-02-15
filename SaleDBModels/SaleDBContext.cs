@@ -1,4 +1,7 @@
-﻿using System.Data.Entity;
+﻿using CoreDBModels.Models;
+using CustomerDBModels.Models;
+using SaleDBModels.Models;
+using System.Data.Entity;
 
 namespace SaleDBModels
 {
@@ -8,6 +11,8 @@ namespace SaleDBModels
         {
 
         }
+
+        public DbSet<Customer> Customer { get; set; }
 
         public DbSet<SaleOrder> SaleOrders { get; set; }
     }

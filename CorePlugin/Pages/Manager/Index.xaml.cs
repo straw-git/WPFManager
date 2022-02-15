@@ -40,7 +40,7 @@ namespace CorePlugin.Pages.Manager
 
         private void LoadLog()
         {
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 log.ItemsSource = null;
                 log.ItemsSource = context.Log.OrderByDescending(c => c.CreateTime).Take(15).ToList();
@@ -91,11 +91,11 @@ namespace CorePlugin.Pages.Manager
             SeriesCollection = series;
 
             List<string> _s = new List<string>();
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
-                lblGoodsCount.Content = context.Goods.Count(c => !c.IsDel);
-                lblStaffCount.Content = context.Staff.Count(c => !c.IsDel);
-                lblUserCount.Content = context.User.Count(c => !c.IsDel);
+                //lblGoodsCount.Content = context.Goods.Count(c => !c.IsDel);
+                //lblStaffCount.Content = context.Staff.Count(c => !c.IsDel);
+                //lblUserCount.Content = context.User.Count(c => !c.IsDel);
 
                 for (int i = 0; i < 7; i++)
                 {

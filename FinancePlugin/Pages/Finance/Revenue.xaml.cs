@@ -1,5 +1,4 @@
-﻿using DBModels.Staffs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,7 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
-using DBModels.Finance;
+using CoreDBModels.Models;
+using FinanceDBModels.Models;
+using FinancePlugin.Windows;
 
 namespace FinancePlugin.Pages.Finance
 {
@@ -122,7 +123,7 @@ namespace FinancePlugin.Pages.Finance
         private void LoadAddType()
         {
             cbType.Items.Clear();
-            using (DBContext context = new DBContext())
+            using (FinanceDBContext context = new FinanceDBContext())
             {
                 var types = context.FinanceType.ToList();
 
@@ -143,7 +144,7 @@ namespace FinancePlugin.Pages.Finance
 
         private void LoadPager()
         {
-            using (var context = new DBContext())
+            using (var context = new FinanceDBContext())
             {
                 int typeId = cbType.SelectedValue.ToString().AsInt();
 
@@ -187,7 +188,7 @@ namespace FinancePlugin.Pages.Finance
 
             await Task.Run(() =>
             {
-                using (var context = new DBContext())
+                using (var context = new FinanceDBContext())
                 {
                     var financeBill = context.FinanceBill.AsEnumerable();
 
@@ -208,7 +209,7 @@ namespace FinancePlugin.Pages.Finance
 
             bNoData.Visibility = models.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
 
-            using (DBContext context = new DBContext())
+            using (FinanceDBContext context = new FinanceDBContext())
             {
                 foreach (var item in models)
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreDBModels.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,7 +45,7 @@ namespace Common
         /// <summary>
         /// 数据表
         /// </summary>
-        public static DBModels.Sys.User CurrUser { get; set; }
+        public static User CurrUser { get; set; }
         /// <summary>
         /// 所有的插件信息
         /// </summary>
@@ -53,7 +54,7 @@ namespace Common
         /// <summary>
         /// 设置当前用户的信息
         /// </summary>
-        public static void SetCurrUser(DBModels.Sys.User _user)
+        public static void SetCurrUser(User _user)
         {
             CurrUser = _user;
         }

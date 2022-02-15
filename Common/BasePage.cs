@@ -81,7 +81,7 @@ namespace Common
             if (ParentWindow == null)
             {
                 //使用页面 测试时会进入这里使用管理员账户
-                using (DBContext context = new DBContext())
+                using (CoreDBContext context = new CoreDBContext())
                     UserGlobal.CurrUser = context.User.First(c => c.Name == "admin");
             }
 

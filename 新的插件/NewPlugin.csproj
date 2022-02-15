@@ -5,7 +5,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{30827CDD-354D-4E5D-A0FA-62FFCE2B4329}</ProjectGuid>
+    <ProjectGuid>{A15CC37A-1405-4BD6-8C73-96D98BE3D48E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>NewPlugin</RootNamespace>
     <AssemblyName>NewPlugin</AssemblyName>
@@ -135,13 +135,16 @@
       <Project>{869c0fb2-249d-46d9-9dac-56bb85bbc26e}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DBModels\DBModels.csproj">
+    <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
       <Name>DBModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Windows\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

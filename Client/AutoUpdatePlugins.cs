@@ -18,9 +18,13 @@ namespace Client
         /// </summary>
         public static bool enable = true;
         /// <summary>
-        /// 所有dll
+        /// 所有插件dll
         /// </summary>
-        public static List<string> dllPaths;
+        public static List<string> pluginDLLPaths;
+        /// <summary>
+        /// 所有数据dll
+        /// </summary>
+        public static List<string> DBDLLPaths;
         /// <summary>
         /// 插件所在文件夹路径
         /// </summary>
@@ -31,17 +35,28 @@ namespace Client
             //获取项目根目录
             string basePath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.IndexOf("Client"));
 
-            //构造
-            dllPaths = new List<string>()
+            //需要检查更新的窗体DLL
+            pluginDLLPaths = new List<string>()
             {
-                $@"{basePath}CorePlugin\bin\Debug\CorePlugin.dll",
+                $@"{basePath}FinanceDBModels\bin\Debug\FinanceDBModels.dll",
                 $@"{basePath}CustomerPlugin\bin\Debug\CustomerPlugin.dll",
                 $@"{basePath}ERPPlugin\bin\Debug\ERPPlugin.dll",
                 $@"{basePath}FinancePlugin\bin\Debug\FinancePlugin.dll",
                 $@"{basePath}FixedAssetsPlugin\bin\Debug\FixedAssetsPlugin.dll",
                 $@"{basePath}HRPlugin\bin\Debug\HRPlugin.dll",
-                $@"{basePath}HRPlugin\bin\Debug\HRPlugin.dll",
+                $@"{basePath}SalePlugin\bin\Debug\SalePlugin.dll",
                 $@"{basePath}LiveChartsTestPlugin\bin\Debug\LiveChartsTestPlugin.dll"
+            };
+            //需要检查更新的数据实体 DLL
+            DBDLLPaths = new List<string>() 
+            {
+                $@"{basePath}CorePlugin\bin\Debug\CorePlugin.dll",
+                $@"{basePath}FixedAssetsDBModels\bin\Debug\FixedAssetsDBModels.dll",
+                $@"{basePath}CoreDBModels\bin\Debug\CoreDBModels.dll",
+                $@"{basePath}ERPDBModels\bin\Debug\ERPDBModels.dll",
+                $@"{basePath}CustomerDBModels\bin\Debug\CustomerDBModels.dll",
+                $@"{basePath}HRDBModels\bin\Debug\HRDBModels.dll",
+                $@"{basePath}SaleDBModels\bin\Debug\SaleDBModels.dll",
             };
         }
 
@@ -49,7 +64,9 @@ namespace Client
         {
             if (!enable) return;
 
-            foreach (var path in dllPaths)
+            #region 核对窗体DLL
+
+            foreach (var path in pluginDLLPaths)
             {
                 //将当前路径文件复制到plugin文件夹下
                 if (File.Exists(path)) //是否存在文件
@@ -64,13 +81,42 @@ namespace Client
                         continue;
                     }
 
-                    if (!isValidFileContent(path, newPath))
+                    if (!IsValidFileContent(path, newPath))
                     {
                         //将文件复制到插件文件夹
                         File.Copy(path, newPath, true);
                     }
                 }
             }
+
+            #endregion
+
+            #region 核对 DBModels
+
+            foreach (var path in DBDLLPaths)
+            {
+                //将当前路径文件复制到plugin文件夹下
+                if (File.Exists(path)) //是否存在文件
+                {
+                    string fileName = path.Substring(path.LastIndexOf('\\') + 1);
+                    string newPath = $"{AppDomain.CurrentDomain.BaseDirectory}{fileName}";
+
+                    if (!File.Exists(newPath))
+                    {
+                        //如果在插件列表中没有存在这个插件 直接复制进来
+                        File.Copy(path, newPath, true);
+                        continue;
+                    }
+
+                    if (!IsValidFileContent(path, newPath))
+                    {
+                        //将文件复制到插件文件夹
+                        File.Copy(path, newPath, true);
+                    }
+                }
+            }
+
+            #endregion
         }
 
         public static async void UpdateAsync()
@@ -87,7 +133,7 @@ namespace Client
         /// <param name="filePath1"></param>
         /// <param name="filePath2"></param>
         /// <returns></returns>
-        public static bool isValidFileContent(string filePath1, string filePath2)
+        public static bool IsValidFileContent(string filePath1, string filePath2)
         {
             //创建一个哈希算法对象
             using (HashAlgorithm hash = HashAlgorithm.Create())

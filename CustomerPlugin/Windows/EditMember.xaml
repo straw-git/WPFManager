@@ -1,0 +1,182 @@
+﻿<Window x:Class="CustomerPlugin.Windows.EditMember"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CustomerPlugin.Windows"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+            Height="400"
+            Width="650"
+        Title="会员信息"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+            ResizeMode="NoResize"
+            WindowStartupLocation="CenterScreen">
+    <Border Background="White" CornerRadius="5">
+        <Grid>
+            <TabControl Name="tab" VerticalAlignment="Stretch"
+                        Margin="10,0"
+                        pu:TabControlHelper.ItemHeight="50"
+                        pu:TabControlHelper.ItemPadding="20,0"
+                        pu:TabControlHelper.SelectedForeground="{DynamicResource SkinColor}"
+                        pu:TabControlHelper.ItemsAlignment="Center">
+
+                <TabItem Header="会员信息" >
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                <Label VerticalAlignment="Center" Content="姓名：" Width="80"/>
+                                <TextBox  Height="30"
+                                      x:Name="txtName"
+                                      Width="200"
+                                      pu:TextBoxHelper.Watermark="姓名"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                <Label VerticalAlignment="Center" Content="性别：" Width="80" Margin="20,0,0,0"/>
+                                <ComboBox  Height="30"
+                                       x:Name="cbSex"
+                                    Width="200"
+                                    Background="{DynamicResource TextBoxBgColor}"
+                                    pu:ComboBoxHelper.HoverBackground="{DynamicResource ButtonHoverColor}"
+                                    pu:ComboBoxHelper.SelectedBackground="{DynamicResource SkinColor}">
+                                    <ComboBoxItem IsSelected="True">男</ComboBoxItem>
+                                    <ComboBoxItem>女</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <Label VerticalAlignment="Center" Content="身份证号：" Width="80"/>
+                                <TextBox  Height="30"
+                                      x:Name="txtIdCard"
+                                      Width="200"
+                                      pu:TextBoxHelper.Watermark="身份证号"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                <Label VerticalAlignment="Center" Content="手机号：" Width="80" Margin="20,0,0,0"/>
+                                <TextBox  Height="30"
+                                      x:Name="txtPhone"
+                                      Width="200"
+                                      pu:TextBoxHelper.Watermark="手机号"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <Label VerticalAlignment="Center" Content="户籍地址：" Width="80"/>
+                                <TextBox  Height="30"
+                                      x:Name="txtAddress"
+                                      Width="500"
+                                      pu:TextBoxHelper.Watermark="户籍地址"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <Label VerticalAlignment="Center" Content="现住址：" Width="80"/>
+                                <TextBox  Height="30"
+                                      x:Name="txtNowAddress"
+                                      Width="500"
+                                      pu:TextBoxHelper.Watermark="现住址"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                <Button x:Name="btnCopyAddress" Content="同户籍" Width="100"  Margin="-150,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" Click="btnCopyAddress_Click"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <Label VerticalAlignment="Center" Content="被推荐码：" Width="80"/>
+                                <TextBox  Height="30" IsEnabled="False"
+                                      x:Name="txtBePromotionCode"
+                                      Width="200"
+                                      pu:TextBoxHelper.Watermark="被推荐码"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                <Button x:Name="btnFindBePromotionCode" Click="btnFindBePromotionCode_Click" Content="查找" Width="100"  Margin="-150,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                                <Label VerticalAlignment="Center" Content="会员卡号：" Width="80" Margin="20,0,0,0"/>
+                                <TextBox  Height="30" x:Name="txtMemberCard"
+                                      Width="200"
+                                      pu:TextBoxHelper.Watermark="卡号"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <Label VerticalAlignment="Center" Content="充值金额：" Width="80"/>
+                                <TextBox  Height="30" x:Name="txtRechargePrice"
+                                      Width="200"
+                                      Text="0"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                <Label VerticalAlignment="Center" Content="账户余额：" Width="80"  Margin="20,0,0,0"/>
+                                <TextBox  Height="30" x:Name="txtPrice"
+                                          IsEnabled="False"
+                                      Width="200"
+                                      Text="0"
+                                      Background="{DynamicResource TextBoxBgColor}"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                      pu:TextBoxHelper.IsClearButtonVisible="True" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20">
+                            <Button  Content="取 消"
+                                     x:Name="btnExit"
+                                     Click="btnExit_Click"
+                                     Margin="20,0,0,0"
+                                             Width="100" Height="30"
+                                             Background="{DynamicResource ButtonBgColor}"
+                                             BorderBrush="{DynamicResource ButtonBorderColor}"
+                                             pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                            <Button  Content="注销会员"
+                                     x:Name="btnDeleteMember"
+                                     Click="btnDeleteMember_Click"
+                                     Margin="20,0,0,0"
+                                             Width="100" Height="30"
+                                             Background="Red"
+                                             BorderBrush="{DynamicResource ButtonBorderColor}"
+                                             pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                            <Button  Content="更 新"
+                                     x:Name="btnUpdate"
+                                     Click="btnUpdate_Click"
+                                     Margin="20,0,0,0"
+                                             Width="100" Height="30"
+                                             Background="{DynamicResource ButtonBgColor}"
+                                             BorderBrush="{DynamicResource ButtonBorderColor}"
+                                             pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="账户变动信息" >
+                    <DataGrid HorizontalAlignment="Center"
+                              x:Name="list"
+                              ItemsSource="{Binding}"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                              pu:DataGridHelper.HeaderPadding="5,0"
+                              pu:DataGridHelper.CellPadding="5,0"
+                              pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="时间" Width="*" Binding="{Binding CreateTime}" />
+                            <DataGridTextColumn Header="充值金额" Width="100" Binding="{Binding Price}" />
+                            <DataGridTextColumn Header="账户余额" Width="100" Binding="{Binding MemberPrice}" />
+                            <DataGridTextColumn Header="充值人" Width="150" Binding="{Binding Creator}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Border>
+</Window>

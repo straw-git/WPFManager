@@ -71,35 +71,45 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PluginsInfo.cs" />
-    <Compile Include="UpdatePrice.xaml.cs">
+    <Compile Include="Windows\UpdatePrice.xaml.cs">
       <DependentUpon>UpdatePrice.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddFinanceItem.xaml">
+    <Compile Include="Windows\ReceivePayment.xaml.cs">
+      <DependentUpon>ReceivePayment.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Windows\AddFinanceItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AddFinanceType.xaml">
+    <Page Include="Windows\AddFinanceType.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AddPayment.xaml">
+    <Page Include="Windows\AddPayment.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AddFinanceItem.xaml.cs">
+    <Compile Include="Windows\AddFinanceItem.xaml.cs">
       <DependentUpon>AddFinanceItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddFinanceType.xaml.cs">
+    <Compile Include="Windows\AddFinanceType.xaml.cs">
       <DependentUpon>AddFinanceType.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddPayment.xaml.cs">
+    <Compile Include="Windows\AddPayment.xaml.cs">
       <DependentUpon>AddPayment.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\Finance\Payment.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -108,11 +118,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Finance\Wage.xaml">
+    <Page Include="Windows\UpdatePrice.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UpdatePrice.xaml">
+    <Page Include="Windows\ReceivePayment.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -124,9 +134,6 @@
     </Compile>
     <Compile Include="Pages\Finance\Revenue.xaml.cs">
       <DependentUpon>Revenue.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Finance\Wage.xaml.cs">
-      <DependentUpon>Wage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -159,9 +166,13 @@
       <Project>{869c0fb2-249d-46d9-9dac-56bb85bbc26e}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DBModels\DBModels.csproj">
+    <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
-      <Name>DBModels</Name>
+      <Name>CoreDBModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FinanceDBModels\FinanceDBModels.csproj">
+      <Project>{a999aacb-b99d-4dab-9d90-6243703e51da}</Project>
+      <Name>FinanceDBModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -90,11 +90,8 @@ namespace Client.Windows
                 string extension = info.Extension.ToLower();
                 if (extension == ".dll")
                 {
-                    if (fullName.EndsWith("Plugin.dll"))
-                    {
-                        //插件要求命名必须以Plugin结尾的dll文件
-                        dlls.Items.Add(info.Name);
-                    }
+                    //插件要求命名必须以Plugin结尾的dll文件
+                    dlls.Items.Add(info.Name);
                 }
             }
 

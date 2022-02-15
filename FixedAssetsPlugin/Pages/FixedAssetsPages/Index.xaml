@@ -1,0 +1,193 @@
+﻿<p:BasePage x:Class="FixedAssetsPlugin.Pages.FixedAssetsPages.Index"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="FixedAssetsPlugin.Pages.FixedAssetsPages"
+      xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+               xmlns:p="clr-namespace:Common;assembly=Common"  
+      mc:Ignorable="d" 
+      d:DesignHeight="730" d:DesignWidth="1190"
+      Title="首页">
+
+    <Grid>
+        <TabControl   VerticalAlignment="Stretch"
+                          pu:TabControlHelper.ItemHeight="50"
+                          pu:TabControlHelper.ItemPadding="20,0"
+                          pu:TabControlHelper.SelectedForeground="{DynamicResource SkinColor}"
+                          pu:TabControlHelper.ItemsAlignment="Center">
+            <TabItem Header="概览" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--资产分类情况（按存放位置）-->
+                            <Grid Grid.Column="1">
+                                <GroupBox  Header="资产分类情况（按存放位置）" 
+                                           Margin="5,10,10,5"
+                                            pu:GroupBoxHelper.Icon="&#xF11C;"
+                                            pu:GroupBoxHelper.CornerRadius="10"
+                                            pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                                            pu:GroupBoxHelper.IsSplitLineVisible="True"
+                                            pu:GroupBoxHelper.ShadowColor="LightGray" >
+                                    <Grid>
+                                        <lvc:CartesianChart  x:Name="ccLocation" LegendLocation="Bottom" />
+                                        <Border x:Name="b2" Background="White"/>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+
+                            <!--资产状态占比-->
+
+                            <Grid Grid.Column="0">
+                                <GroupBox  Header="资产状态占比" Opacity="1"
+                           Margin="10,10,5,5"
+                            pu:GroupBoxHelper.Icon="&#xF11C;"
+                            pu:GroupBoxHelper.CornerRadius="10"
+                            pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                            pu:GroupBoxHelper.IsSplitLineVisible="True"
+                            pu:GroupBoxHelper.ShadowColor="LightGray" >
+                                    <Grid>
+                                        <lvc:PieChart x:Name="pcState" DataClick="pcState_DataClick" LegendLocation="Left" Hoverable="False"/>
+                                        <Border x:Name="b1" Background="White"/>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <!--资产数量分析-->
+
+                    <Grid Grid.Row="1">
+                        <GroupBox  Header="资产数量分析" Opacity="1"
+                           Grid.Column="0"
+                           Margin="10"
+                            pu:GroupBoxHelper.Icon="&#xF11C;"
+                            pu:GroupBoxHelper.CornerRadius="10"
+                            pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                            pu:GroupBoxHelper.IsSplitLineVisible="True"
+                            pu:GroupBoxHelper.ShadowColor="LightGray" >
+                            <Grid>
+                                <lvc:CartesianChart  LegendLocation="None" x:Name="ccCount" />
+                                <Border x:Name="b3" Background="White"/>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="资产明细" >
+                <Grid>
+                    <Grid Height="50" VerticalAlignment="Top">
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <Label VerticalAlignment="Center" Content="资产编号："/>
+                            <TextBox  Height="30"
+                                      x:Name="txtCode"
+                                          Width="200"
+                                          pu:TextBoxHelper.Watermark="资产编号"
+                                          Background="{DynamicResource TextBoxBgColor}"
+                                          pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                          pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                          pu:TextBoxHelper.IsClearButtonVisible="True" />
+                            <Label VerticalAlignment="Center" Content="资产状态：" Margin="20,0,0,0"/>
+                            <ComboBox  Height="30"
+                                       x:Name="cbState"
+                                    Width="200"
+                                    Background="{DynamicResource TextBoxBgColor}"
+                                    pu:ComboBoxHelper.Icon="&#xf11c;"
+                                    pu:ComboBoxHelper.HoverBackground="{DynamicResource ButtonHoverColor}"
+                                    pu:ComboBoxHelper.SelectedBackground="{DynamicResource SkinColor}">
+                                <ComboBoxItem Tag="0" IsSelected="True">闲置</ComboBoxItem>
+                            </ComboBox>
+                            <Label VerticalAlignment="Center" Content="名称：" Margin="20,0,0,0"/>
+                            <TextBox  Height="30"
+                                      x:Name="txtName"
+                                          Width="200"
+                                          pu:TextBoxHelper.Watermark="名称"
+                                          Background="{DynamicResource TextBoxBgColor}"
+                                          pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                          pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                          pu:TextBoxHelper.IsClearButtonVisible="True" />
+                            <Button  Content="查 询"
+                                     x:Name="btnSelect"
+                                     Click="btnSelect_Click"
+                                         Margin="20,0,0,0"
+                                         Width="100" Height="30"
+                                         Background="{DynamicResource ButtonBgColor}"
+                                         BorderBrush="{DynamicResource ButtonBorderColor}"
+                                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                        </StackPanel>
+                    </Grid>
+                    <DataGrid HorizontalAlignment="Center"
+                              x:Name="list"
+                              ItemsSource="{Binding}"
+                              IsReadOnly="True"
+                              Margin="0,50,5,50"
+                              Grid.Row="0"
+                              AutoGenerateColumns="False"
+                              pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                              pu:DataGridHelper.HeaderPadding="5,0"
+                              pu:DataGridHelper.CellPadding="5,0"
+                              pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="资产编号" Width="120" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="名称" Width="*" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="型号" Width="80" Binding="{Binding ModelName}"/>
+                            <DataGridTextColumn Header="单位" Width="80" Binding="{Binding UnitName}"/>
+                            <DataGridTextColumn Header="数量" Width="100" Binding="{Binding Count}"/>
+                            <DataGridTextColumn Header="状态" Width="80" Binding="{Binding StateName}"/>
+                            <DataGridTextColumn Header="资产位置" Width="*" Binding="{Binding SubLocationName}"/>
+                            <DataGridTextColumn Header="负责人" Width="100" Binding="{Binding PrincipalName}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <pu:Pagination x:Name="gPager" Height="28"  VerticalAlignment="Bottom"  CurrentIndexChanged="gPager_CurrentIndexChanged" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
+                    <Border Background="White" x:Name="bNoData" Visibility="Visible" Margin="0,50,0,5">
+                        <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Border>
+                    <pu:Loading x:Name="gLoading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="盘点记录" >
+                <Grid>
+                    <DataGrid HorizontalAlignment="Center"
+                              x:Name="logList"
+                              ItemsSource="{Binding}"
+                              IsReadOnly="True"
+                              Margin="0,0,5,50"
+                              Grid.Row="0"
+                              AutoGenerateColumns="False"
+                              pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                              pu:DataGridHelper.HeaderPadding="5,0"
+                              pu:DataGridHelper.CellPadding="5,0"
+                              pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="盘点时间" Width="200" Binding="{Binding CheckTime}"/>
+                            <DataGridTextColumn Header="名称" Width="*" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="型号" Width="100" Binding="{Binding ModelName}"/>
+                            <DataGridTextColumn Header="单位" Width="100" Binding="{Binding UnitName}"/>
+                            <DataGridTextColumn Header="盘点修改项" FontSize="12" Width="400" Binding="{Binding UpdateStr}"/>
+                            <DataGridTextColumn Header="盘点人" Width="100" Binding="{Binding CheckStaffName}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <pu:Pagination x:Name="gLogPager" Height="28"  VerticalAlignment="Bottom"  CurrentIndexChanged="gLogPager_CurrentIndexChanged" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
+                    <Border Background="White" x:Name="bLogNoData" Visibility="Collapsed" Margin="0,50,0,5">
+                        <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Border>
+                    <pu:Loading x:Name="gLogLoading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+
+    </p:BasePage>
+

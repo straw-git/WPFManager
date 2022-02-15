@@ -1,6 +1,6 @@
 ﻿using Common;
-using DBModels;
-using DBModels.Sys;
+using CoreDBModels;
+using CoreDBModels.Models;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -54,7 +54,7 @@ namespace CorePlugin.Windows
 
             string newCode = $"{parentCode}-{txtName.Text.Convert2Pinyin()}";
 
-            using (var context = new DBContext())
+            using (var context = new CoreDBContext())
             {
                 if (isEdit)
                 {

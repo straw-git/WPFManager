@@ -159,17 +159,8 @@
     <Compile Include="Utils\RoleTreeViewCommon.cs" />
     <Compile Include="Utils\StyleHelper.cs" />
     <Compile Include="WindowsThumbnailProvider.cs" />
-    <Compile Include="Windows\ReceivePayment.xaml.cs">
-      <DependentUpon>ReceivePayment.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\BasePageVisibilititySetting.xaml.cs">
       <DependentUpon>BasePageVisibilititySetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\SelectedGoods.xaml.cs">
-      <DependentUpon>SelectedGoods.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\SelectedCustomer.xaml.cs">
-      <DependentUpon>SelectedCustomer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\SelectedStaff.xaml.cs">
       <DependentUpon>SelectedStaff.xaml</DependentUpon>
@@ -188,12 +179,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <Resource Include="Resources\iconfont.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DBModels\DBModels.csproj">
-      <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
-      <Name>DBModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\data_empty.png" />
@@ -220,21 +205,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\ReceivePayment.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Windows\BasePageVisibilititySetting.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\SelectedGoods.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\SelectedCustomer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\SelectedStaff.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -260,6 +233,12 @@
   <ItemGroup>
     <Resource Include="Images\个人号csharp手记.jpg" />
     <Resource Include="Images\公众号csharp手记.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
+      <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
+      <Name>CoreDBModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

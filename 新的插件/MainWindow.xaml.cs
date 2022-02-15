@@ -46,14 +46,13 @@ namespace NewPlugin
             //初始化样式
             StyleHelper.Init();
 
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 UserGlobal.CurrUser = context.User.First(c => c.Name == "admin");
             }
 
             AddPluginModels(new List<PluginsModel>() { GetPluginsModel(0) });
         }
-
 
         #region override BaseMainWindow
 
@@ -114,6 +113,16 @@ namespace NewPlugin
                 }
             }
 
+            if (CurrWindowPlugins.Count == 1 && CurrWindowPlugins[0].Modules.Count == 1)
+            {
+                //如果只有一个模块 隐藏上部导航
+                ShowTopMenu(false);
+            }
+            else
+            {
+                ShowTopMenu(true);
+            }
+
             tabMenu.SelectedIndex = 0;
         }
 
@@ -147,7 +156,6 @@ namespace NewPlugin
         }
 
         #endregion 
-
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

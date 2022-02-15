@@ -1,6 +1,5 @@
 ﻿
-using DBModels;
-using DBModels.Sys;
+using CoreDBModels;
 using CorePlugin.Windows;
 using Panuon.UI.Silver;
 using System;
@@ -20,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
+using CoreDBModels.Models;
 
 namespace CorePlugin.Pages.Manager
 {
@@ -115,7 +115,7 @@ namespace CorePlugin.Pages.Manager
             tvMain.Items.Clear();
 
             List<SysDic> list = new List<SysDic>();
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 list = context.SysDic.Where(c => c.ParentCode == "").ToList();
 
@@ -157,7 +157,7 @@ namespace CorePlugin.Pages.Manager
             {
                 #region normal pager
 
-                using (var context = new DBContext())
+                using (var context = new CoreDBContext())
                 {
                     dataCount = context.SysDic.Where(c => c.ParentCode == selectedCode).Count();
                 }
@@ -196,7 +196,7 @@ namespace CorePlugin.Pages.Manager
 
                 List<SysDic> dics = new List<SysDic>();
 
-                using (var context = new DBContext())
+                using (var context = new CoreDBContext())
                 {
                     var jobpostList = context.SysDic.Where(c => c.ParentCode == DicData.JobPost);
                     foreach (var dic in jobpostList)
@@ -227,7 +227,7 @@ namespace CorePlugin.Pages.Manager
                 List<SysDic> dics = new List<SysDic>();
                 await Task.Run(() =>
                 {
-                    using (DBContext context = new DBContext())
+                    using (CoreDBContext context = new CoreDBContext())
                     {
                         dics = context.SysDic.Where(c => c.ParentCode == selectedCode).OrderByDescending(c => c.Id).Skip(pageSize * (currPage - 1)).Take(pageSize).ToList();
                     }
@@ -237,7 +237,7 @@ namespace CorePlugin.Pages.Manager
                 string parentName = (tvMain.SelectedItem as TreeViewItem).Header.ToString();
                 parentName = parentName.Substring(0, parentName.LastIndexOf('-'));
 
-                using (DBContext context = new DBContext())
+                using (CoreDBContext context = new CoreDBContext())
                 {
                     foreach (var item in dics)
                     {
@@ -267,7 +267,7 @@ namespace CorePlugin.Pages.Manager
 
         private void GetChildItem(string _parentCode, TreeViewItem _parentItem)
         {
-            using (var context = new DBContext())
+            using (var context = new CoreDBContext())
             {
                 var dics = context.SysDic.Where(c => c.ParentCode == _parentCode);
                 if (dics == null || dics.Count() == 0) return;
@@ -374,7 +374,7 @@ namespace CorePlugin.Pages.Manager
             string code = target.Tag.ToString();
 
             SysDic editModel = new SysDic();
-            using (var context = new DBContext())
+            using (var context = new CoreDBContext())
             {
                 editModel = context.SysDic.First(c => c.QuickCode == code);
             }
@@ -396,7 +396,7 @@ namespace CorePlugin.Pages.Manager
             Button target = sender as Button;
             string code = target.Tag.ToString();
 
-            using (var context = new DBContext())
+            using (var context = new CoreDBContext())
             {
                 SysDic dic = context.SysDic.First(c => c.QuickCode == code);
                 if (dic.Creater == 0)
@@ -424,7 +424,7 @@ namespace CorePlugin.Pages.Manager
 
             string name = item.Header.ToString();
             string code = item.Tag.ToString();
-            using (var context = new DBContext())
+            using (var context = new CoreDBContext())
             {
                 var result = MessageBoxX.Show($"是否确认删除[{name}]？", "删除提醒", null, MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
@@ -446,7 +446,7 @@ namespace CorePlugin.Pages.Manager
             string code = focusModel.Code;
 
             SysDic editModel = new SysDic();
-            using (var context = new DBContext())
+            using (var context = new CoreDBContext())
             {
                 editModel = context.SysDic.First(c => c.QuickCode == code);
             }

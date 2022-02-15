@@ -75,13 +75,16 @@
       <DependentUpon>CustomerRegister.xaml</DependentUpon>
     </Compile>
     <Compile Include="PluginsInfo.cs" />
-    <Compile Include="WinAddUserCommonObj.xaml.cs">
+    <Compile Include="Windows\WinAddUserCommonObj.xaml.cs">
       <DependentUpon>WinAddUserCommonObj.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WinTempSingle.xaml.cs">
+    <Compile Include="Windows\SelectedCustomer.xaml.cs">
+      <DependentUpon>SelectedCustomer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WinTempSingle.xaml.cs">
       <DependentUpon>WinTempSingle.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WinUserCommonObj.xaml.cs">
+    <Compile Include="Windows\WinUserCommonObj.xaml.cs">
       <DependentUpon>WinUserCommonObj.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -120,15 +123,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WinAddUserCommonObj.xaml">
+    <Page Include="Windows\WinAddUserCommonObj.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WinTempSingle.xaml">
+    <Page Include="Windows\SelectedCustomer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\WinTempSingle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WinUserCommonObj.xaml">
+    <Page Include="Windows\WinUserCommonObj.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -183,18 +190,24 @@
       <Project>{869c0fb2-249d-46d9-9dac-56bb85bbc26e}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DBModels\DBModels.csproj">
+    <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
-      <Name>DBModels</Name>
+      <Name>CoreDBModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomerDBModels\CustomerDBModels.csproj">
+      <Project>{b960e9b9-68a2-406a-8c94-3f05f6c2750f}</Project>
+      <Name>CustomerDBModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ERPDBModels\ERPDBModels.csproj">
+      <Project>{e4e77bb2-e23a-4b21-acea-db6f4c07955f}</Project>
+      <Name>ERPDBModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\SaleDBModels\SaleDBModels.csproj">
       <Project>{17f1b7ee-06a2-40a5-bd0d-2f37b91eeb21}</Project>
       <Name>SaleDBModels</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="logo.jpg" />
   </ItemGroup>

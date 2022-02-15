@@ -70,7 +70,7 @@ namespace CorePlugin.Windows
                 return;
             }
 
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 context.User.Single(c => c.Id == UserGlobal.CurrUser.Id).Pwd = txtNewPwd.Password;
                 UserGlobal.CurrUser.Pwd = txtNewPwd.Password;

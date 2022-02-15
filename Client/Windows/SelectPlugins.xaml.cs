@@ -51,7 +51,7 @@ namespace Client.Windows
         /// 显示
         /// </summary>
         /// <param name="_currWindowName"></param>
-        public void ShowPlugins(string _currWindowName = "")
+        public async void ShowPluginsAsync(string _currWindowName = "")
         {
             CurrFocusModels.Clear();//清空临时账套
             CurrWindowName = _currWindowName;//更新调用窗体名称
@@ -59,34 +59,45 @@ namespace Client.Windows
             gPlugins.Children.Clear();//初始化列表
             UpdatePluginsButtons();//检查一下按钮显示隐藏
 
+
             List<PluginsModel> pluginsModels = new List<PluginsModel>();
-            //添加本地允许的dll
-            var _localPlugins = LocalPlugins.Models.OrderBy(c => c.Order).ToList();
-            foreach (var m in _localPlugins)
+
+            await Task.Run(() =>
             {
-                //查看dll中的模块
-                var _currDLLPluginsModel = CheckPluginsDLL.GetPluginsModel(m.DLLPageName, m.Order);
-                if (_currDLLPluginsModel != null)
+
+                //添加本地允许的dll
+                var _localPlugins = LocalPlugins.Models.OrderBy(c => c.Order).ToList();
+
+                UIGlobal.RunUIAction(()=> 
                 {
-                    pluginsModels.Add(_currDLLPluginsModel);
-                }
-            }
+                    foreach (var m in _localPlugins)
+                    {
+                        //查看dll中的模块
+                        var _currDLLPluginsModel = CheckPluginsDLL.GetPluginsModel(m.DLLPageName, m.Order);
+                        if (_currDLLPluginsModel != null)
+                        {
+                            pluginsModels.Add(_currDLLPluginsModel);
+                        }
+                    }
+                });
 
-            pluginsModels = pluginsModels.OrderBy(c => c.Order).ToList();//排序
+                pluginsModels = pluginsModels.OrderBy(c => c.Order).ToList();//排序
 
-            #region 将当前页面中的账套排除
+                #region 将当前页面中的账套排除
 
-            if (_currWindowName.NotEmpty())
-            {
-                var currWindowPlugins = MainWindowsGlobal.MainWindowsDic[_currWindowName].CurrWindowPlugins;
-                foreach (var p in currWindowPlugins)
+                if (_currWindowName.NotEmpty())
                 {
-                    //已经选择的 不在列表中显示
-                    pluginsModels.Remove(pluginsModels.First(c => c.Code == p.Code));
+                    var currWindowPlugins = MainWindowsGlobal.MainWindowsDic[_currWindowName].CurrWindowPlugins;
+                    foreach (var p in currWindowPlugins)
+                    {
+                        //已经选择的 不在列表中显示
+                        pluginsModels.Remove(pluginsModels.First(c => c.Code == p.Code));
+                    }
                 }
-            }
 
-            #endregion
+                #endregion
+
+            });
 
             #region 显示列表
 

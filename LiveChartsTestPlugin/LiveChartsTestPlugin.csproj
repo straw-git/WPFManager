@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{809E4C10-F122-4A18-8576-D56EE363F0BC}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>LiveChartsTestPlugin</RootNamespace>
     <AssemblyName>LiveChartsTestPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -73,10 +73,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="App.xaml">
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </ApplicationDefinition>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -146,9 +146,9 @@
       <Project>{869c0fb2-249d-46d9-9dac-56bb85bbc26e}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DBModels\DBModels.csproj">
+    <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
-      <Name>DBModels</Name>
+      <Name>CoreDBModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -66,7 +66,6 @@
                     <pu:DropDown.Child>
                         <StackPanel Width="100" HorizontalAlignment="Center">
                             <Button  Content="修改密码" Margin="0,20,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnChangePwd" Click="btnChangePwd_Click"/>
-                            <Button  Content="注销登录" Margin="0,10,0,20" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnReLogin" Click="btnReLogin_Click"/>
                         </StackPanel>
                     </pu:DropDown.Child>
                 </pu:DropDown>

@@ -30,7 +30,7 @@ namespace CustomerPlugin.Pages.Customer
         }
 
         //页面数据集合
-        ObservableCollection<DBModels.Member.MemberLevel> Data = new ObservableCollection<DBModels.Member.MemberLevel>();
+        ObservableCollection<CustomerDBModels.Models.MemberLevel> Data = new ObservableCollection<CustomerDBModels.Models.MemberLevel>();
         bool running = false;
 
         protected override void OnPageLoaded()
@@ -64,11 +64,11 @@ namespace CustomerPlugin.Pages.Customer
                 return;
             }
 
-            DBModels.Member.MemberLevel level = new DBModels.Member.MemberLevel();
+            CustomerDBModels.Models.MemberLevel level = new CustomerDBModels.Models.MemberLevel();
             level.Name = name;
             level.LogPriceCount = price;
 
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 level = context.MemberLevel.Add(level);
                 context.SaveChanges();
@@ -92,11 +92,11 @@ namespace CustomerPlugin.Pages.Customer
             running = true;
             Data.Clear();
 
-            List<DBModels.Member.MemberLevel> models = new List<DBModels.Member.MemberLevel>();
+            List<CustomerDBModels.Models.MemberLevel> models = new List<CustomerDBModels.Models.MemberLevel>();
 
             await Task.Run(() =>
             {
-                using (var context = new DBContext())
+                using (var context = new CustomerDBContext())
                 {
                     models = context.MemberLevel.OrderBy(c => c.LogPriceCount).ToList();
                 }
@@ -122,7 +122,7 @@ namespace CustomerPlugin.Pages.Customer
             var result = MessageBoxX.Show($"是否确认删除会员标识[{selectModel.Name}]？", "删除提醒", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                using (DBContext context = new DBContext())
+                using (CustomerDBContext context = new CustomerDBContext())
                 {
                     context.MemberLevel.Remove(selectModel);
                     Data.Remove(selectModel);

@@ -1,7 +1,6 @@
 ﻿using Common;
 using Common.Data.Local;
 using Common.Utils;
-using LiveChartsTestPlugin.Pages;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -46,7 +45,7 @@ namespace LiveChartsTestPlugin
             //初始化样式
             StyleHelper.Init();
 
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 UserGlobal.CurrUser = context.User.First(c => c.Name == "admin");
             }
@@ -112,6 +111,16 @@ namespace LiveChartsTestPlugin
                         _tabItem_GotFocus(_tabItem, null);
                     }
                 }
+            }
+
+            if (CurrWindowPlugins.Count == 1 && CurrWindowPlugins[0].Modules.Count == 1)
+            {
+                //如果只有一个模块 隐藏上部导航
+                ShowTopMenu(false);
+            }
+            else
+            {
+                ShowTopMenu(true);
             }
 
             tabMenu.SelectedIndex = 0;

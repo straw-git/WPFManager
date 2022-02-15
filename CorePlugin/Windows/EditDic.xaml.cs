@@ -1,7 +1,7 @@
 ﻿
 using Common;
-using DBModels;
-using DBModels.Sys;
+using CoreDBModels;
+using CoreDBModels.Models;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace CorePlugin.Windows
             InitializeComponent();
 
             //父级
-            if (parentCode.NotEmpty()) using (DBContext context = new DBContext()) parentInfo = context.SysDic.First(c => c.QuickCode == parentCode);
+            if (parentCode.NotEmpty()) using (CoreDBContext context = new CoreDBContext()) parentInfo = context.SysDic.First(c => c.QuickCode == parentCode);
 
             isEdit = edit;
             if (edit)
@@ -62,7 +62,7 @@ namespace CorePlugin.Windows
         {
             if (!txtName.IsEmpty("名称")) return;
 
-            using (var context = new DBContext())
+            using (var context = new CoreDBContext())
             {
                 if (isEdit)
                 {

@@ -1,6 +1,6 @@
 ﻿using Common;
 using Common.Data.Local;
-using DBModels.Activities;
+using CustomerDBModels.Models;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -56,7 +56,7 @@ namespace CustomerPlugin.Pages.Customer
 
             List<MJActivity> normalList = new List<MJActivity>();
 
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 if (context.MJActivity.Any(c => c.MemberTypeId == 0))
                 {
@@ -107,7 +107,7 @@ namespace CustomerPlugin.Pages.Customer
 
             List<MJActivity> memberList = new List<MJActivity>();
 
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 //存在会员活动
                 if (context.MJActivity.Any(c => c.MemberTypeId == memberType))
@@ -169,7 +169,7 @@ namespace CustomerPlugin.Pages.Customer
 
         private void LoadMemberLevel()
         {
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 var _levels = context.MemberLevel.OrderBy(c => c.LogPriceCount).ToList();
 
@@ -239,7 +239,7 @@ namespace CustomerPlugin.Pages.Customer
             activity.MemberTypeId = 0;
             activity.Type = 0;
 
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 activity = context.MJActivity.Add(activity);
                 context.SaveChanges();
@@ -300,7 +300,7 @@ namespace CustomerPlugin.Pages.Customer
             activity.MemberTypeId = memberLevel;
             activity.Type = 0;
 
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 activity = context.MJActivity.Add(activity);
                 context.SaveChanges();

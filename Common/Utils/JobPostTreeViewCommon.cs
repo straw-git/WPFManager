@@ -34,7 +34,7 @@ namespace Common.Utils
                 tvJobPost.Items.Add(fristItem);
             }
 
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 var jobPosts = context.SysDic.Where(c => c.ParentCode == DicData.JobPost).ToList();
                 for (int i = 0; i < jobPosts.Count; i++)
@@ -56,7 +56,7 @@ namespace Common.Utils
 
         private void GetChildItem(string _parentCode, TreeViewItem _parentItem, int _selectedId = 0)
         {
-            using (var context = new DBContext())
+            using (var context = new CoreDBContext())
             {
                 var dics = context.SysDic.Where(c => c.ParentCode == _parentCode);
                 if (dics == null || dics.Count() == 0) return;

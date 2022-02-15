@@ -1,5 +1,4 @@
 ﻿
-using DBModels.Sys;
 using CorePlugin.Windows;
 using Panuon.UI.Silver;
 using System;
@@ -111,7 +110,7 @@ namespace CorePlugin.Pages.Manager
 
         private void LoadPager()
         {
-            using (var context = new DBContext())
+            using (var context = new CoreDBContext())
             {
                 var users = context.User.Where(c => !c.IsDel);
                 dataCount = users.Count();
@@ -153,11 +152,11 @@ namespace CorePlugin.Pages.Manager
             running = true;
             Data.Clear();
 
-            List<DBModels.Sys.User> models = new List<DBModels.Sys.User>();
+            List<CoreDBModels.Models.User> models = new List<CoreDBModels.Models.User>();
 
             await Task.Run(() =>
             {
-                using (var context = new DBContext())
+                using (var context = new CoreDBContext())
                 {
 
                     var users = context.User.Where(c => !c.IsDel);
@@ -170,7 +169,7 @@ namespace CorePlugin.Pages.Manager
 
             bNoData.Visibility = models.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
 
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 foreach (var item in models)
                 {
@@ -202,7 +201,7 @@ namespace CorePlugin.Pages.Manager
             var result = MessageBoxX.Show($"是否确认重置[{selectModel.Name}]密码？", "密码初始化提醒", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                using (DBContext context = new DBContext())
+                using (CoreDBContext context = new CoreDBContext())
                 {
                     var user = context.User.Single(c => c.Id == id);
                     user.Pwd = "123456";
@@ -240,7 +239,7 @@ namespace CorePlugin.Pages.Manager
             var result = MessageBoxX.Show($"是否确认删除账户[{selectModel.Name}]？", "删除提醒", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                using (DBContext context = new DBContext())
+                using (CoreDBContext context = new CoreDBContext())
                 {
                     var user = context.User.Single(c => c.Id == id);
                     if (user.Creator == 0) 
@@ -270,7 +269,7 @@ namespace CorePlugin.Pages.Manager
             if (s.Succeed)
             {
                 string staffId = s.Ids[0];
-                using (DBContext context = new DBContext())
+                using (CoreDBContext context = new CoreDBContext())
                 {
                     context.User.Single(c => c.Id == id).StaffId = staffId;
                     context.SaveChanges();
@@ -289,7 +288,7 @@ namespace CorePlugin.Pages.Manager
             ParentWindow.MaskVisible(false);
             if (a.Succeed)
             {
-                using (DBContext context = new DBContext())
+                using (CoreDBContext context = new CoreDBContext())
                 {
                     Data.Insert(0, new UIModel()
                     {

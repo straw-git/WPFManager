@@ -1,5 +1,4 @@
-﻿using DBModels.ERP;
-using Panuon.UI.Silver;
+﻿using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,6 +20,8 @@ using System.Linq.Expressions;
 using Common.Utils;
 using Common.MyAttributes;
 using Common.Windows;
+using ERPDBModels.Models;
+using ERPPlugin.Windows;
 
 namespace ERPPlugin.Pages.ERP
 {
@@ -149,7 +150,7 @@ namespace ERPPlugin.Pages.ERP
             var result = MessageBoxX.Show($"是否确认删除编号为[{selectModel.PlanCode}]的采购计划？", "删除提醒", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                using (DBContext context = new DBContext())
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     //删除计划
                     context.PurchasePlan.Remove(context.PurchasePlan.First(c => c.Id == id));
@@ -181,7 +182,7 @@ namespace ERPPlugin.Pages.ERP
 
             Data.Clear();//先清空再加入页面数据
 
-            using (DBContext context = new DBContext())
+            using (ERPDBContext context = new ERPDBContext())
             {
                 Expression<Func<PurchasePlan, bool>> _where = n => GetPagerWhere(n, code, finished, enableTime, start, end);//按条件查询
                 Expression<Func<PurchasePlan, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
@@ -310,7 +311,7 @@ namespace ERPPlugin.Pages.ERP
             await Task.Run(() =>
             {
                 var _list = new List<PurchasePlan>();
-                using (DBContext context = new DBContext())
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     _list = context.PurchasePlan.OrderByDescending(c => c.CreateTime).ToList();
                     foreach (var item in _list)

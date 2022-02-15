@@ -1,5 +1,4 @@
-﻿using DBModels;
-using DBModels.Sys;
+﻿using CoreDBModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿using DBModels.Staffs;
+﻿
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
 using Common.Windows;
+using HRDBModels.Models;
 
 namespace HRPlugin.Pages.HR
 {
@@ -65,7 +66,7 @@ namespace HRPlugin.Pages.HR
             MaskVisible(false);
             if (a.Succeed)
             {
-                using (DBContext context = new DBContext())
+                using (HRDBContext context = new HRDBContext())
                 {
                     string id = a.Ids[0];
                     var staff = context.Staff.First(c => c.Id == id);
@@ -107,7 +108,7 @@ namespace HRPlugin.Pages.HR
         private void btnAll_Click(object sender, RoutedEventArgs e)
         {
             btnClear_Click(null, null);
-            using (DBContext context = new DBContext())
+            using (HRDBContext context = new HRDBContext())
             {
                 string monthCode = $"{DateTime.Now.ToString("yyMM")}";
                 var rp = context.StaffSalaryOther.Where(c => c.MonthCode == monthCode).ToList() ;
@@ -147,7 +148,7 @@ namespace HRPlugin.Pages.HR
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             int id = (sender as Button).Tag.ToString().AsInt();
-            using (DBContext context = new DBContext())
+            using (HRDBContext context = new HRDBContext())
             {
                 context.StaffSalaryOther.Remove(context.StaffSalaryOther.First(c => c.Id == id));
                 Data.Remove(Data.First(c => c.Id == id));
@@ -172,7 +173,7 @@ namespace HRPlugin.Pages.HR
                 return;
             }
 
-            using (DBContext context = new DBContext())
+            using (HRDBContext context = new HRDBContext())
             {
                 StaffSalaryOther model = new StaffSalaryOther();
                 model.CreateTime = DateTime.Now;
@@ -226,7 +227,7 @@ namespace HRPlugin.Pages.HR
                 return;
             }
 
-            using (DBContext context = new DBContext())
+            using (HRDBContext context = new HRDBContext())
             {
                 StaffSalaryOther model = new StaffSalaryOther();
                 model.CreateTime = DateTime.Now;

@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.Utils;
 using Panuon.UI.Silver;
+using SalePlugin.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -133,7 +134,7 @@ namespace SalePlugin.Pages.CustomerOrder
         private void ReLoadTodayCustomerTemp()
         {
             CustomerData.Clear();
-            using (DBContext context = new DBContext())
+            using (CustomerDBContext context = new CustomerDBContext())
             {
                 //获取当天所有访客
                 DateTime minDate = DateTime.Now.MinDate();
@@ -184,7 +185,7 @@ namespace SalePlugin.Pages.CustomerOrder
                     Data.Clear();
 
 
-                    using (DBContext context = new DBContext())
+                    using (ERPDBContext context = new ERPDBContext())
                     {
                         var goods = context.Goods.Where(c => c.Name.Contains(name) || c.QuickCode.Contains(name)).ToList();
                         foreach (var g in goods)

@@ -28,7 +28,7 @@
                 <UniformGrid x:Name="gPlugins"  Columns="3" VerticalAlignment="Top"/>
             </ScrollViewer>
         </Border>
-        <Border Grid.Row="0" x:Name="bTitle" MouseDown="bTitle_MouseDown" BorderThickness="1" Height="50" VerticalAlignment="Top" BorderBrush="{DynamicResource SkinColor}" CornerRadius="20,20,0,0" Background="{DynamicResource SkinColor}" >
+        <Border Grid.Row="0" x:Name="bTitle" MouseDown="bTitle_MouseDown" BorderThickness="1" Height="50" VerticalAlignment="Top" BorderBrush="{DynamicResource SkinColor}"  Background="{DynamicResource SkinColor}" >
             <Grid>
                 <Label Content="选择账套" Foreground="White" VerticalAlignment="Center"  FontSize="18" Margin="20,0,0,0"/>
                 <Button  Margin="0,0,20,0"
@@ -42,7 +42,7 @@
                          Foreground="White"/>
             </Grid>
         </Border>
-        <Border Grid.Row="2" Height="40" CornerRadius="0,0,20,20" Background="{DynamicResource SkinColor}" >
+        <Border Grid.Row="2" Height="40" Background="{DynamicResource SkinColor}" >
             <StackPanel x:Name="bMenus" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button  Content="加入当前窗口" Margin="20,0,20,0" pu:ButtonHelper.ButtonStyle="Link"  FontFamily="{StaticResource FontAwesome}" pu:ButtonHelper.Icon="&#xf067;" pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}" Foreground="White" x:Name="btnAddCurrWindow" Click="btnAddCurrWindow_Click"/>
                 <Button  Content="新窗口" Margin="20,0,20,0" pu:ButtonHelper.ButtonStyle="Link"  FontFamily="{StaticResource FontAwesome}" pu:ButtonHelper.Icon="&#xf260;" pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}" Foreground="White" x:Name="btnNewWindow" Click="btnNewWindow_Click"/>

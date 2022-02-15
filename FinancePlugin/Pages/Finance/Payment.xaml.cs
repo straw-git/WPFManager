@@ -1,4 +1,4 @@
-﻿using DBModels;
+﻿using CoreDBModels;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
+using FinancePlugin.Windows;
 
 namespace FinancePlugin.Pages.Finance
 {
@@ -80,7 +81,7 @@ namespace FinancePlugin.Pages.Finance
             MaskVisible(false);
             if (a.Succeed)
             {
-                using (DBContext context = new DBContext())
+                using (FinanceDBContext context = new FinanceDBContext())
                 {
                     context.Payment.Single(c => c.Id == id).Price = a.NewPrice;
                     context.SaveChanges();
@@ -125,7 +126,7 @@ namespace FinancePlugin.Pages.Finance
         {
             tvMain.Items.Clear();
 
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 var payModels = context.SysDic.Where(c => c.ParentCode == DicData.PayModel).ToList();
                 foreach (var item in payModels)
@@ -151,7 +152,7 @@ namespace FinancePlugin.Pages.Finance
             ShowLoadingPanel();
             Data.Clear();
 
-            List<DBModels.Finance. Payment> models = new List<DBModels.Finance.Payment>();
+            List<FinanceDBModels.Models.Payment> models = new List<FinanceDBModels.Models.Payment>();
 
             int typeId = 0;
 
@@ -160,7 +161,7 @@ namespace FinancePlugin.Pages.Finance
 
             await Task.Run(() =>
             {
-                using (var context = new DBContext())
+                using (var context = new FinanceDBContext())
                 {
                     var payments = context.Payment.Where(c => !c.IsDel);
 
@@ -177,7 +178,7 @@ namespace FinancePlugin.Pages.Finance
 
             bNoData.Visibility = models.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
 
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 foreach (var item in models)
                 {

@@ -1,4 +1,4 @@
-﻿using DBModels.Sys;
+﻿using CoreDBModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace Common.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 models = context.SysDic.Where(c => c.ParentCode == DicData.Store).ToList();
                 if (models == null) models = new List<SysDic>();

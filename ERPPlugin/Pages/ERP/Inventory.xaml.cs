@@ -1,5 +1,4 @@
-﻿using DBModels.ERP;
-using Panuon.UI.Silver;
+﻿using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,6 +22,8 @@ using Common.Windows;
 using Common.MyAttributes;
 using LiveCharts;
 using LiveCharts.Wpf;
+using ERPDBModels.Models;
+using ERPPlugin.Windows;
 
 namespace ERPPlugin.Pages.ERP
 {
@@ -85,7 +86,7 @@ namespace ERPPlugin.Pages.ERP
         {
             ccCount.Series = new SeriesCollection();
             ccCount.Series.Clear();
-            using (DBContext context = new DBContext())
+            using (ERPDBContext context = new ERPDBContext())
             {
                 var store = context.Stock.GroupBy(c => c.StoreId).ToList();
                 ccCount.Series.Add(new ColumnSeries()
@@ -113,7 +114,7 @@ namespace ERPPlugin.Pages.ERP
 
             Data.Clear();//先清空再加入页面数据
 
-            using (DBContext context = new DBContext())
+            using (ERPDBContext context = new ERPDBContext())
             {
                 Expression<Func<Stock, int>> _orderByDesc = n => n.Id;//按Id倒序
                 //开始分页查询数据
@@ -138,7 +139,7 @@ namespace ERPPlugin.Pages.ERP
             //结尾处必须结束分页查询
             PagerCommon.EndEFDataPager();
         }
-        private UIModel DBItem2UIModel(DBModels.ERP.Stock item, string goodsName, string storeName, int count)
+        private UIModel DBItem2UIModel(Stock item, string goodsName, string storeName, int count)
         {
             UIModel _model = new UIModel();
             _model.Count = count;
@@ -170,7 +171,7 @@ namespace ERPPlugin.Pages.ERP
             if (checkStore.Succeed)
             {
                 //数量盘点成功
-                using (DBContext context = new DBContext())
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     var stock = context.Stock.Single(c => c.Id == id);
                     stock.Count = checkStore.Model.NewCount;
@@ -245,7 +246,7 @@ namespace ERPPlugin.Pages.ERP
             await Task.Run(() =>
             {
                 var _list = new List<Stock>();
-                using (DBContext context = new DBContext())
+                using (ERPDBContext context = new ERPDBContext())
                 {
                     _list = context.Stock.ToList();
                     foreach (var item in _list)

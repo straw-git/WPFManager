@@ -33,7 +33,7 @@ namespace Common.Utils
                 tv.Items.Add(fristItem);
             }
 
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 var roles = context.SysDic.Where(c => c.ParentCode == DicData.Role).ToList();
                 for (int i = 0; i < roles.Count; i++)

@@ -1,4 +1,4 @@
-﻿using DBModels.Sys;
+﻿using CoreDBModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ public class DataGlobal
     /// <returns></returns>
     public static List<SysDic> GetDic(string _parentCode)
     {
-        using (DBContext context = new DBContext())
+        using (CoreDBContext context = new CoreDBContext())
         {
             return context.SysDic.Where(c => c.ParentCode == _parentCode).ToList();
         }

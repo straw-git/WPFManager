@@ -1,7 +1,7 @@
 ﻿
 using Common;
 using Common.Utils;
-using DBModels.Sys;
+using CoreDBModels.Models;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,7 @@ namespace CorePlugin.Windows
             {
                 isEdit = true;
 
-                using (DBContext context = new DBContext())
+                using (CoreDBContext context = new CoreDBContext())
                 {
                     Model = context.User.First(c => c.Id == _userId);
                     var role = context.SysDic.First(c => c.Id == Model.RoleId);
@@ -113,7 +113,7 @@ namespace CorePlugin.Windows
             }
 
 
-            using (DBContext context = new DBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 if (isEdit)
                 {

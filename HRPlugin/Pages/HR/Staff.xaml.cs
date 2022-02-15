@@ -1,5 +1,4 @@
-﻿using DBModels.Staffs;
-using DBModels.Sys;
+﻿
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -22,6 +21,8 @@ using Common.Utils;
 using System.Linq.Expressions;
 using Common.Windows;
 using Common.MyAttributes;
+using HRDBModels.Models;
+using HRPlugin.Windows;
 
 namespace HRPlugin.Pages.HR
 {
@@ -143,7 +144,7 @@ namespace HRPlugin.Pages.HR
                     #region 刷新数据
 
                     var _model = Data.Single(c => c.Id == selectedModel.Id);
-                    using (DBContext context = new DBContext())
+                    using (CoreDBContext context = new CoreDBContext())
                     {
                         _model.Age = 0;
                         _model.CreateTime = a.StaffModel.CreateTime.ToString("yy-MM-dd");
@@ -266,7 +267,7 @@ namespace HRPlugin.Pages.HR
                 MaskVisible(false);
                 if (s.Succeed)
                 {
-                    using (DBContext context = new DBContext())
+                    using (HRDBContext context = new HRDBContext())
                     {
                         var staff = context.Staff.Single(c => c.Id == id);
                         staff.IsDel = true;
@@ -352,7 +353,7 @@ namespace HRPlugin.Pages.HR
         /// </summary>
         private void UpdateGauge()
         {
-            using (DBContext context = new DBContext())
+            using (HRDBContext context = new HRDBContext())
             {
                 int staffCount = context.Staff.Count(c => !c.IsDel);
                 pInsurance.To = staffCount;
@@ -378,14 +379,14 @@ namespace HRPlugin.Pages.HR
 
             Data.Clear();//先清空再加入页面数据
 
-            using (DBContext context = new DBContext())
+            using (HRDBContext context = new HRDBContext())
             {
-                Expression<Func<DBModels.Staffs.Staff, bool>> _where = n => GetPagerWhere(n, name, isNoInsurance, isNoContract, enableTime, startTime, endTime);//按条件查询
-                Expression<Func<DBModels.Staffs.Staff, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
+                Expression<Func<CoreDBModels.Models.Staff, bool>> _where = n => GetPagerWhere(n, name, isNoInsurance, isNoContract, enableTime, startTime, endTime);//按条件查询
+                Expression<Func<CoreDBModels.Models.Staff, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
                 //开始分页查询数据
                 var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Staff, _where, _orderByDesc, gLoading, gPager, bNoData, new Control[1] { list });
                 if (!_zPager.Result) return;
-                List<DBModels.Staffs.Staff> _list = _zPager.EFDataList;
+                List<CoreDBModels.Models.Staff> _list = _zPager.EFDataList;
 
                 #region 页面数据填充
 
@@ -430,7 +431,7 @@ namespace HRPlugin.Pages.HR
             PagerCommon.EndEFDataPager();
         }
 
-        private UIModel DBItem2UIModel(DBModels.Staffs.Staff item, string _jobpostName, string _listName)
+        private UIModel DBItem2UIModel(CoreDBModels.Models.Staff item, string _jobpostName, string _listName)
         {
             UIModel _model = new UIModel()
             {
@@ -449,7 +450,7 @@ namespace HRPlugin.Pages.HR
         /// <summary>
         /// 查找表格的条件
         /// </summary>
-        protected bool GetPagerWhere(DBModels.Staffs.Staff _staff, string _name, bool _isNoInsurance, bool _isNoContract, bool _enableTime, DateTime _start, DateTime _end)
+        protected bool GetPagerWhere(CoreDBModels.Models.Staff _staff, string _name, bool _isNoInsurance, bool _isNoContract, bool _enableTime, DateTime _start, DateTime _end)
         {
             bool resultCondition = true;
             if (_name.NotEmpty())
@@ -464,7 +465,7 @@ namespace HRPlugin.Pages.HR
             if (_isNoInsurance)
             {
                 //未参保
-                using (DBContext context = new DBContext())
+                using (HRDBContext context = new HRDBContext())
                 {
                     resultCondition &= !context.StaffInsurance.Any(c => c.StaffId == _staff.Id && !c.Stop);
                 }
@@ -472,7 +473,7 @@ namespace HRPlugin.Pages.HR
             if (_isNoContract)
             {
                 //未签合同
-                using (DBContext context = new DBContext())
+                using (HRDBContext context = new HRDBContext())
                 {
                     resultCondition &= !context.StaffContract.Any(c => c.StaffId == _staff.Id && !c.Stop);
                 }
@@ -512,8 +513,8 @@ namespace HRPlugin.Pages.HR
 
             await Task.Run(() =>
             {
-                var _list = new List<DBModels.Staffs.Staff>();
-                using (DBContext context = new DBContext())
+                var _list = new List<CoreDBModels.Models.Staff>();
+                using (HRDBContext context = new HRDBContext())
                 {
                     _list = context.Staff.OrderByDescending(c => c.CreateTime).ToList();
                     foreach (var item in _list)

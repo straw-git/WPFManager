@@ -1,4 +1,4 @@
-﻿using DBModels.Staffs;
+﻿using CoreDBModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -68,7 +68,7 @@ namespace Common.Windows
             List<Staff> staffs = new List<Staff>();
             await Task.Run(() =>
             {
-                using (DBContext context = new DBContext())
+                using (CoreDBContext context = new CoreDBContext())
                 {
                     if (roleId > 0)
                     {
