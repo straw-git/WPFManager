@@ -1,10 +1,6 @@
 ﻿# WPF开发的管理系统（数据库MSSqlserver）
 
-项目采用插件式方式开发,在开发时可以更好的业务分离,提高多人协作开发效率.
-
-# WPF中的样式收集已转移至  
-
-[https://zhuanlan.zhihu.com/p/459008647](https://zhuanlan.zhihu.com/p/459008647)  
+项目采用插件式方式开发,在开发时可以更好的业务分离,提高多人协作开发效率.  
 
 # 项目中使用到的技术
 
@@ -18,16 +14,26 @@ NPOI.Excel
 VS2019  
 Sqlserver2019  
 
+# 代码目录  
+
+![image](https://github.com/straw-git/WPFManager/blob/master/效果图/目录.jpg)  
+
+
 # 正在进行中（闲时开发中，尚不完善）
 
 更改主题和页面布局  
-
-![image](https://github.com/straw-git/WPFManager/blob/master/效果图/目录.jpg)
+细化插件功能  
 
 # 更新日志
 
 220212更新：V1.1-001  
-完善客户端及插件端功能配置    
+完善客户端及插件端功能  
+添加账套管理来展现插件信息  
+添加窗口管理器管理多窗口  
+各插件端可独立编辑测试  
+各插件端数据管理独立  
+账套动态读取插件信息  
+可根据账套选择打开多个主窗口  
 
 # 如何新增插件  
 
@@ -44,3 +50,8 @@ Sqlserver2019
 2. 将插件项目APP.config属性中生成操作设置为‘ApplicationDefinition’  
 3. 将插件项目设置为启动项  
 
+
+# WPF中的样式收集已转移至  
+
+[知乎文章 WPF样式收集](https://zhuanlan.zhihu.com/p/459008647)  
+[源码](https://github.com/straw-git/WPFStyles)  
