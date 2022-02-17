@@ -11,7 +11,101 @@
       d:DesignHeight="730" d:DesignWidth="1190"
       Title="待办事项">
 
-    <Grid>
-        
+    <Grid Width="200" Margin="0">
+        <StackPanel>
+            <Expander  Header="人事管理"
+                       pu:ExpanderHelper.ExpanderStyle ="Classic"
+                  pu:ExpanderHelper.Icon="&#xf260;"
+            pu:ExpanderHelper.HeaderPadding="5,10" >
+                <TreeView  MaxHeight="300"  pu:TreeViewHelper.TreeViewStyle="Modern"
+                        pu:TreeViewHelper.ExpandMode="SingleClick"
+                        pu:TreeViewHelper.ExpandBehaviour="OnlyOne"
+                         pu:TreeViewHelper.SelectedBackground="{DynamicResource TreeViewSelectedBgColor}"
+                        pu:TreeViewHelper.ItemPadding="3,10,10,10"
+                            Background="White"
+                         BorderBrush="{DynamicResource TreeViewSelectedHeaderColor}">
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="人员管理"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="人员管理"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="人员管理"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="人员管理"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="人员管理"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="人员管理"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="人员管理"/>
+                </TreeView>
+            </Expander>
+            <Expander  Header="固定资产管理"
+                       pu:ExpanderHelper.ExpanderStyle ="Classic"
+                  pu:ExpanderHelper.Icon="&#xf260;"
+            pu:ExpanderHelper.HeaderPadding="5,10" >
+                <TreeView    MaxHeight="300"    pu:TreeViewHelper.TreeViewStyle="Modern"
+                        pu:TreeViewHelper.ExpandMode="SingleClick"
+                        pu:TreeViewHelper.ExpandBehaviour="OnlyOne"
+                         pu:TreeViewHelper.SelectedBackground="{DynamicResource TreeViewSelectedBgColor}"
+                        pu:TreeViewHelper.ItemPadding="3,10,10,10"
+                            Background="White"
+                         BorderBrush="{DynamicResource TreeViewSelectedHeaderColor}">
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="添加"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                              Header="列表"/>
+                </TreeView>
+            </Expander>
+        </StackPanel>
+
     </Grid>
 </p:BasePage>

@@ -111,7 +111,7 @@ namespace Client
                 //如果只有一个模块 隐藏上部导航
                 ShowTopMenu(false);
             }
-            else 
+            else
             {
                 ShowTopMenu(true);
             }
@@ -137,6 +137,7 @@ namespace Client
                 _treeViewItem.Background = Brushes.Transparent;
                 _treeViewItem.Tag = page;
                 _treeViewItem.IsSelected = currIndex == 0;
+                TreeViewHelper.SetItemIcon(_treeViewItem, page.Icon);
 
                 tvMenu.Items.Add(_treeViewItem);
 

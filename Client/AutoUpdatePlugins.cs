@@ -38,25 +38,25 @@ namespace Client
             //需要检查更新的窗体DLL
             pluginDLLPaths = new List<string>()
             {
-                $@"{basePath}FinanceDBModels\bin\Debug\FinanceDBModels.dll",
                 $@"{basePath}CustomerPlugin\bin\Debug\CustomerPlugin.dll",
                 $@"{basePath}ERPPlugin\bin\Debug\ERPPlugin.dll",
                 $@"{basePath}FinancePlugin\bin\Debug\FinancePlugin.dll",
                 $@"{basePath}FixedAssetsPlugin\bin\Debug\FixedAssetsPlugin.dll",
                 $@"{basePath}HRPlugin\bin\Debug\HRPlugin.dll",
                 $@"{basePath}SalePlugin\bin\Debug\SalePlugin.dll",
-                $@"{basePath}LiveChartsTestPlugin\bin\Debug\LiveChartsTestPlugin.dll"
+                $@"{basePath}LiveChartsTestPlugin\bin\Debug\LiveChartsTestPlugin.dll",
+                 $@"{basePath}CorePlugin\bin\Debug\CorePlugin.dll"
             };
             //需要检查更新的数据实体 DLL
-            DBDLLPaths = new List<string>() 
+            DBDLLPaths = new List<string>()
             {
-                $@"{basePath}CorePlugin\bin\Debug\CorePlugin.dll",
                 $@"{basePath}FixedAssetsDBModels\bin\Debug\FixedAssetsDBModels.dll",
                 $@"{basePath}CoreDBModels\bin\Debug\CoreDBModels.dll",
                 $@"{basePath}ERPDBModels\bin\Debug\ERPDBModels.dll",
                 $@"{basePath}CustomerDBModels\bin\Debug\CustomerDBModels.dll",
                 $@"{basePath}HRDBModels\bin\Debug\HRDBModels.dll",
                 $@"{basePath}SaleDBModels\bin\Debug\SaleDBModels.dll",
+                $@"{basePath}FinanceDBModels\bin\Debug\FinanceDBModels.dll",
             };
         }
 

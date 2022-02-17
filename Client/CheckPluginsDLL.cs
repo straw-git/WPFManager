@@ -97,6 +97,7 @@ namespace Client
                     moduleModel.Name = menuInfo.Name;
                     moduleModel.Order = menuInfo.SelfOrder;
                     moduleModel.Pages = new List<PageModel>();
+                    moduleModel.Icon = menuInfo.Icon;
 
                     //获取命名空间
                     string _moduleFolderNsp = _moduleFolder.Substring(0, _moduleFolder.LastIndexOf('.'));
@@ -131,6 +132,7 @@ namespace Client
                             pageModel.Url = _dllName == EXEName
                                         ? $"/{pf}/{moduleModel.Code}/{itemPage.Code}.xaml"
                                         : $"pack://application:,,,/{_dllName};component/{pf}/{moduleModel.Code}/{itemPage.Code}.xaml";
+                            pageModel.Icon = itemPage.MenuIcon;
 
                             moduleModel.Pages.Add(pageModel);
                         }

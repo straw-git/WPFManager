@@ -33,7 +33,9 @@ namespace Common
         /// 是否包含在导航内
         /// </summary>
         public bool IsMenu = true;
-        
+
+        public string MenuIcon = "\xf260";
+
         public string Code = "";
         protected BaseMainWindow ParentWindow = null;//父窗体
 

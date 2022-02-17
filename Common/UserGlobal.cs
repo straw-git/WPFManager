@@ -30,6 +30,7 @@ namespace Common
             public string Name { get; set; }
             public List<PageModel> Pages { get; set; }
             public int Order { get; set; }
+            public string Icon { get; set; }
         }
 
         public class PageModel
@@ -37,6 +38,7 @@ namespace Common
             public string Code { get; set; }
             public string Url { get; set; }
             public int Order { get; set; }
+            public string Icon { get; set; }
         }
 
 

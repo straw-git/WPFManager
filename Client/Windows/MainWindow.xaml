@@ -102,12 +102,11 @@
         </Grid>
     </pu:WindowXCaption.Header>
     <Grid>
-
         <Grid Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="0"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -125,20 +124,22 @@
             </Grid>
             <!--主导航-->
             <Border Grid.Row="1" Width="200" Grid.Column="0" x:Name="bSecondMenu" BorderThickness="3,3,0,3" BorderBrush="{DynamicResource SkinColor}">
-                <TreeView  Margin="10,20,0,0" 
-                           x:Name="tvMenu"
+                <TreeView  x:Name="tvMenu"
                         pu:TreeViewHelper.TreeViewStyle="Modern"
                         pu:TreeViewHelper.ExpandMode="SingleClick"
                         pu:TreeViewHelper.ExpandBehaviour="OnlyOne"
                          pu:TreeViewHelper.SelectedBackground="{DynamicResource TreeViewSelectedBgColor}"
-                        pu:TreeViewHelper.ItemPadding="3,0,0,0"
+                        pu:TreeViewHelper.ItemPadding="3,10,10,10"
+                            Background="LightGray"
                          BorderBrush="{DynamicResource TreeViewSelectedHeaderColor}"
-                         Background="Transparent" 
                           PreviewMouseUp="TreeView_PreviewMouseUp">
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xe96d;"
+                              Header="Music"
+                              IsSelected="True" />
                 </TreeView>
             </Border>
             <!--内页-->
-            <Border  Grid.Row="1" Grid.Column="1" BorderThickness="1,3,3,3" BorderBrush="{DynamicResource SkinColor}">
+            <Border  Grid.Row="1" Grid.Column="1" BorderThickness="0,3,3,3" BorderBrush="{DynamicResource SkinColor}">
                 <Grid>
                     <GridSplitter Width="1" />
                     <Frame x:Name="mainFrame" Source="/Pages/Welcome.xaml"  NavigationUIVisibility="Hidden"/>
