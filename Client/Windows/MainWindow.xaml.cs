@@ -1,6 +1,4 @@
-﻿
-using Client.Events;
-using Client.Helper;
+﻿using Client.Helper;
 using Client.Pages;
 using Client.Windows;
 using Common;

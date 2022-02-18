@@ -97,15 +97,19 @@
     <Compile Include="AutoUpdatePlugins.cs" />
     <Compile Include="CheckPluginsDLL.cs" />
     <Compile Include="CurrGlobal\MainWindowsGlobal.cs" />
-    <Compile Include="Events\LocalEventKeys.cs" />
-    <Compile Include="Events\LocalEventObserver.cs" />
     <Compile Include="CurrGlobal\Global.cs" />
     <Compile Include="InitData.cs" />
     <Compile Include="Helper\DelayHelper.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\LogoBox.xaml.cs">
+    <Compile Include="MyControls\LeftMenuBox.xaml.cs">
+      <DependentUpon>LeftMenuBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControls\LoginBox.xaml.cs">
+      <DependentUpon>LoginBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControls\LogoBox.xaml.cs">
       <DependentUpon>LogoBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Plugins.xaml.cs">
@@ -136,7 +140,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\LogoBox.xaml">
+    <Page Include="MyControls\LeftMenuBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControls\LoginBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControls\LogoBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

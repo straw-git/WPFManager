@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static Common.UserGlobal;
 
-namespace Client.Windows
+namespace Client.MyControls
 {
     /// <summary>
     /// LogoBox.xaml 的交互逻辑

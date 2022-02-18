@@ -241,5 +241,13 @@ namespace Client
         {
             Close();
         }
+
+        private void wb_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
+        }
     }
 }

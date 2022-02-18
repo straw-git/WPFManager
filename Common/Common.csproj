@@ -140,7 +140,7 @@
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Extensions\WindowXExtensions.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="ObserverBase.cs" />
+    <Compile Include="Events\Observer\ObserverBase.cs" />
     <Compile Include="PagerGlobal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Singleton.cs" />
@@ -227,7 +227,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entities\" />
+    <Folder Include="Events\Code\" />
     <Folder Include="MyUserControl\" />
   </ItemGroup>
   <ItemGroup>

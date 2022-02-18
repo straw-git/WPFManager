@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="Client.Windows.LogoBox"
+﻿<UserControl x:Class="Client.MyControls.LogoBox"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-             xmlns:local="clr-namespace:Client.Windows" x:Name="MyLogo" Loaded="MyLogo_Loaded" Unloaded="MyLogo_Unloaded">
+             xmlns:local="clr-namespace:Client.MyControls" x:Name="MyLogo" Loaded="MyLogo_Loaded" Unloaded="MyLogo_Unloaded">
     <Border x:Name="bLogo" Background="LightGray" Height="200" Cursor="Hand" MouseDown="bLogo_MouseDown" BorderBrush="{DynamicResource SkinColor}">
         <Grid>
             <Grid.RowDefinitions>

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
+        xmlns:myBox="clr-namespace:Client.MyControls"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         Title="登录" 
         Height="400" Width="800"
@@ -12,13 +13,13 @@
         Background="Transparent"
          AllowsTransparency="True" 
         WindowStartupLocation="CenterScreen">
-    <Border x:Name="wb" BorderThickness="3" BorderBrush="{DynamicResource SkinColor}">
-        <Border.Background>
+    <Border x:Name="wb" BorderThickness="3" Background="{DynamicResource SkinColor}" BorderBrush="{DynamicResource SkinColor}"  MouseDown="wb_MouseDown">
+        <!--<Border.Background>
             <LinearGradientBrush EndPoint="0.8,1" StartPoint="0.33,0">
                 <GradientStop Color="#FF50B3E2" Offset="0"/>
                 <GradientStop Color="#FF084168" Offset="1"/>
             </LinearGradientBrush>
-        </Border.Background>
+        </Border.Background>-->
         <Border.Clip>
             <GeometryGroup FillRule="Nonzero">
                 <RectangleGeometry x:Name="r1" Rect="0,50,800,100"/>
@@ -28,12 +29,34 @@
             </GeometryGroup>
         </Border.Clip>
         <Grid x:Name="root">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="400"/>
-            </Grid.ColumnDefinitions>
             <Grid Grid.ColumnSpan="2">
                 <!--<Image Source="pack://application:,,,/Common;component/Images/login_bg.png" Stretch="Fill"/>-->
+                <Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Background="Black" CornerRadius="5" >
+                    <Grid>
+                        <Label Content="未登录" Foreground="White" Margin="5"/>
+                        <pu:DropDown Margin="5" Visibility="Collapsed">
+                            <StackPanel VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <TextBlock Text="Zeoun's"
+                                   x:Name="lblCurrUser"
+                                   FontWeight="Light"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   Margin="5,0,0,0" />
+                                <TextBlock Text="&#xe651;"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   FontFamily="/Resources/#iconfont"
+                                   Margin="10,0,0,0" />
+                            </StackPanel>
+                            <pu:DropDown.Child>
+                                <StackPanel  HorizontalAlignment="Center">
+                                    <Button  Content="注销登录" pu:ButtonHelper.Icon="&#xf1a0;"  Margin="20" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnChangePwd"/>
+                                </StackPanel>
+                            </pu:DropDown.Child>
+                        </pu:DropDown>
+                    </Grid>
+                </Border>
                 <Viewport3D Name="World">
                     <Viewport3D.Camera>
                         <PerspectiveCamera Position="0,50,1000" LookDirection="0,2,-1" UpDirection="0,-1,-1" FieldOfView="10000" NearPlaneDistance="10" FarPlaneDistance="8000"/>
@@ -49,9 +72,10 @@
                     </Viewport3D.Children>
                 </Viewport3D>
             </Grid>
-            <Border  Grid.Column="1" Background="White" Opacity="0.75" Margin="30,20,30,20" CornerRadius="20" >
+            <!--<myBox:LoginBox Grid.Column="1"/>-->
+            <Border  Grid.Column="1" Width="340" HorizontalAlignment="Center" Background="White" Opacity="0.75" Margin="100,20,0,20" >
                 <Border.Effect>
-                    <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
+                    <DropShadowEffect Color="White" BlurRadius="10" ShadowDepth="0" Opacity="1" />
                 </Border.Effect>
                 <Grid >
                     <StackPanel  VerticalAlignment="Center" Width="280">

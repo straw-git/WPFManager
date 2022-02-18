@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         xmlns:local="clr-namespace:Client"
             xmlns:p="clr-namespace:Common;assembly=Common"  
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
     mc:Ignorable="d"
         d:DesignHeight="900" d:DesignWidth="1600"
         Style="{StaticResource MainWindowStyle}"  
@@ -95,9 +95,6 @@
                         pu:ButtonHelper.HoverBrush="White"
                         VerticalAlignment="Center"
                         Margin="0,0,18,2" />
-                <!--<Border BorderBrush="#FF9B1C1C"
-                        BorderThickness="0,0,1,0"
-                        Margin="5,5,5,5" />-->
             </StackPanel>
         </Grid>
     </pu:WindowXCaption.Header>
