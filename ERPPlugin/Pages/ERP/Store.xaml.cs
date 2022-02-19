@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 using Common;
 using Common.Windows;
 using ERPPlugin.Windows;
-using ERPDBModels.Models;
+using ERPDBModels;
 
 namespace ERPPlugin.Pages.ERP
 {
@@ -744,7 +744,7 @@ namespace ERPPlugin.Pages.ERP
                         Count = item.Count,
                         TargetId = item.GoodsId,
                         Name = _goods.Name,
-                        TypeName = context.SysDic.First(c => c.Id == _goods.TypeId).Name,
+                        TypeName = "",// context.SysDic.First(c => c.Id == _goods.TypeId).Name,
                         StoreId = _storeId,
                         StoreName = _storeName
                     };

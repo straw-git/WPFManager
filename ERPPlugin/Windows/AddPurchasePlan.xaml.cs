@@ -1,6 +1,6 @@
 ﻿using Common;
 using Common.Windows;
-using ERPDBModels.Models;
+using ERPDBModels;
 using ERPPlugin.Windows;
 using Panuon.UI.Silver;
 using System;

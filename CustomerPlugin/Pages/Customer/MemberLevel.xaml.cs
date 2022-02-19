@@ -30,7 +30,7 @@ namespace CustomerPlugin.Pages.Customer
         }
 
         //页面数据集合
-        ObservableCollection<CustomerDBModels.Models.MemberLevel> Data = new ObservableCollection<CustomerDBModels.Models.MemberLevel>();
+        ObservableCollection<CustomerDBModels.MemberLevel> Data = new ObservableCollection<CustomerDBModels.MemberLevel>();
         bool running = false;
 
         protected override void OnPageLoaded()
@@ -64,7 +64,7 @@ namespace CustomerPlugin.Pages.Customer
                 return;
             }
 
-            CustomerDBModels.Models.MemberLevel level = new CustomerDBModels.Models.MemberLevel();
+            CustomerDBModels.MemberLevel level = new CustomerDBModels.MemberLevel();
             level.Name = name;
             level.LogPriceCount = price;
 
@@ -92,7 +92,7 @@ namespace CustomerPlugin.Pages.Customer
             running = true;
             Data.Clear();
 
-            List<CustomerDBModels.Models.MemberLevel> models = new List<CustomerDBModels.Models.MemberLevel>();
+            List<CustomerDBModels.MemberLevel> models = new List<CustomerDBModels.MemberLevel>();
 
             await Task.Run(() =>
             {

@@ -96,6 +96,7 @@
     <Compile Include="Animation\WindowAnimation.cs" />
     <Compile Include="AutoUpdatePlugins.cs" />
     <Compile Include="CheckPluginsDLL.cs" />
+    <Compile Include="CoreDBContext.cs" />
     <Compile Include="CurrGlobal\MainWindowsGlobal.cs" />
     <Compile Include="CurrGlobal\Global.cs" />
     <Compile Include="InitData.cs" />

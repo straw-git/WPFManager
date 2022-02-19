@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Common.Utils;
 using Common;
-using ERPDBModels.Models;
+using ERPDBModels;
 
 namespace ERPPlugin.Windows
 {
@@ -64,13 +64,16 @@ namespace ERPPlugin.Windows
 
         private void LoadSupplierType()
         {
-            var _source = DataGlobal.GetDic(DicData.SupplierType);
-            cbType.ItemsSource = _source;
-            cbType.DisplayMemberPath = "Name";
-            cbType.SelectedValuePath = "Id";
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                var _source =  context.SysDic.Where(c => c.ParentCode == DicData.SupplierType).ToList();
+                cbType.ItemsSource = _source;
+                cbType.DisplayMemberPath = "Name";
+                cbType.SelectedValuePath = "Id";
 
-            if (_source.Count > 0)
-                cbType.SelectedIndex = 0;
+                if (_source.Count > 0)
+                    cbType.SelectedIndex = 0;
+            }
         }
 
         #region Convert

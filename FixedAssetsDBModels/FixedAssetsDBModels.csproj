@@ -51,21 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FixedAssetsDBContext.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\FixedAssets.cs" />
-    <Compile Include="Models\FixedAssetsCheck.cs" />
+    <Compile Include="DBInfo.cs" />
+    <Compile Include="FixedAssets.cs" />
+    <Compile Include="FixedAssetsCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
-      <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
-      <Name>CoreDBModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

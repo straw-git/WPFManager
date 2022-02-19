@@ -1,6 +1,6 @@
 ﻿
 using Common.Windows;
-using FinanceDBModels.Models;
+using FinanceDBModels;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -93,11 +93,16 @@ namespace FinancePlugin.Windows
 
             DateTime currTime = DateTime.Now;
 
+            CoreDBModels.Staff staff = new CoreDBModels.Staff();
+            string staffId = btnSelectedStaff.Tag.ToString();
+
+            using (CoreDBContext context = new CoreDBContext())
+            {   
+                staff = context.Staff.First(c => c.Id == staffId);
+            }
+
             using (FinanceDBContext context = new FinanceDBContext())
             {
-                string staffId = btnSelectedStaff.Tag.ToString();
-                var staff = context.Staff.First(c => c.Id == staffId);
-
                 FinanceBill model = new FinanceBill();
                 model.AddType = cbType.SelectedValue.ToString().AsInt();
                 model.BillTime = dtBill.SelectedDate;

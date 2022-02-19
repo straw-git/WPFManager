@@ -74,9 +74,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreDBContext.cs" />
+    <Compile Include="ERPDBContext.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windows\SelectedGoods.xaml.cs">
       <DependentUpon>SelectedGoods.xaml</DependentUpon>
     </Compile>
@@ -94,6 +97,9 @@
       <DependentUpon>GoodsDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="PluginsInfo.cs" />
+    <Compile Include="Windows\SelectedStore.xaml.cs">
+      <DependentUpon>SelectedStore.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\StoreOutDetail.xaml.cs">
       <DependentUpon>StoreOutDetail.xaml</DependentUpon>
     </Compile>
@@ -154,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Windows\SelectedStore.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\StoreOutDetail.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -201,7 +211,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

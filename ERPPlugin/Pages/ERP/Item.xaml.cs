@@ -21,8 +21,8 @@ using System.Linq.Expressions;
 using Common.Utils;
 using Common.MyAttributes;
 using Common.Windows;
-using CoreDBModels.Models;
-using ERPDBModels.Models;
+using CoreDBModels;
+using ERPDBModels;
 using ERPPlugin.Windows;
 
 namespace ERPPlugin.Pages.ERP
@@ -144,19 +144,22 @@ namespace ERPPlugin.Pages.ERP
         /// </summary>
         private void LoadType()
         {
-            var _source = DataGlobal.GetDic(DicData.GoodsType);
-
-            _source.Insert(0, new SysDic()
+            using (CoreDBContext context = new CoreDBContext())
             {
-                Id = -1,
-                Name = "全部"
-            });
+                var _source = context.SysDic.Where(c => c.ParentCode == DicData.GoodsType).ToList();
 
-            cbType.ItemsSource = _source;
-            cbType.DisplayMemberPath = "Name";
-            cbType.SelectedValuePath = "Id";
+                _source.Insert(0, new SysDic()
+                {
+                    Id = -1,
+                    Name = "全部"
+                });
 
-            cbType.SelectedIndex = 0;
+                cbType.ItemsSource = _source;
+                cbType.DisplayMemberPath = "Name";
+                cbType.SelectedValuePath = "Id";
+
+                cbType.SelectedIndex = 0;
+            }
         }
 
         #region UI Method
@@ -184,8 +187,8 @@ namespace ERPPlugin.Pages.ERP
 
                 foreach (var item in _list)
                 {
-                    string typeName = context.SysDic.First(c => c.Id == item.TypeId).Name;
-                    string unitName = context.SysDic.First(c => c.Id == item.UnitId).Name;
+                    string typeName = "";// context.SysDic.First(c => c.Id == item.TypeId).Name;
+                    string unitName = "";// context.SysDic.First(c => c.Id == item.UnitId).Name;
                     int count = context.Stock.Any(c => c.GoodsId == item.Id) ? context.Stock.Where(c => c.GoodsId == item.Id).Sum(c => c.Count) : 0;
                     var _model = DBItem2UIModel(item, typeName, unitName, count);
                     Data.Add(_model);
@@ -359,8 +362,8 @@ namespace ERPPlugin.Pages.ERP
                     _list = context.Goods.ToList();
                     foreach (var item in _list)
                     {
-                        string typeName = context.SysDic.First(c => c.Id == item.TypeId).Name;
-                        string unitName = context.SysDic.First(c => c.Id == item.UnitId).Name;
+                        string typeName = "";//context.SysDic.First(c => c.Id == item.TypeId).Name;
+                        string unitName = "";// context.SysDic.First(c => c.Id == item.UnitId).Name;
                         int count = context.Stock.Any(c => c.GoodsId == item.Id) ? context.Stock.Where(c => c.GoodsId == item.Id).Sum(c => c.Count) : 0;
                         var _model = DBItem2UIModel(item, typeName, unitName, count);
                         allData.Add(_model);

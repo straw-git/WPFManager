@@ -1,5 +1,5 @@
 ﻿
-using CoreDBModels.Models;
+using CoreDBModels;
 using LiveCharts;
 using LiveCharts.Wpf;
 using System;
@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
-using FixedAssetsDBModels.Models;
+using FixedAssetsDBModels;
 
 namespace FixedAssetsPlugin.Pages.FixedAssetsPages
 {
@@ -63,10 +63,13 @@ namespace FixedAssetsPlugin.Pages.FixedAssetsPages
         private void LoadChartByLocation()
         {
             ccLocation.Series = new SeriesCollection();
-
+            List<CoreDBModels.SysDic> locations = new List<SysDic>();
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                locations = context.SysDic.Where(c => c.ParentCode == DicData.FixedAssetsLocation).ToList();
+            }
             using (FixedAssetsDBContext context = new FixedAssetsDBContext())
             {
-                var locations = context.SysDic.Where(c => c.ParentCode == DicData.FixedAssetsLocation).ToList();
                 ccLocation.Series.Add(new RowSeries()
                 {
                     Title = "按存放位置",
@@ -92,9 +95,14 @@ namespace FixedAssetsPlugin.Pages.FixedAssetsPages
         private void LoadChartByState()
         {
             pcState.Series.Clear();
+            List<CoreDBModels.SysDic> states = new List<SysDic>();
+            using (CoreDBContext context = new CoreDBContext()) 
+            {
+                states = context.SysDic.Where(c => c.ParentCode == DicData.FixedAssetsState).ToList();
+            }
             using (FixedAssetsDBContext context = new FixedAssetsDBContext())
             {
-                var states = context.SysDic.Where(c => c.ParentCode == DicData.FixedAssetsState).ToList();
+
                 foreach (var item in states)
                 {
                     int count = 0;
@@ -356,21 +364,21 @@ namespace FixedAssetsPlugin.Pages.FixedAssetsPages
                     {
                         updateStr += $"数量[{item.OldCount}->{item.NewCount }];";
                     }
-                    if (item.OldLocation != item.NewLocation)
-                    {
-                        string oldName = item.OldLocation == 0 ? "无" : context.SysDic.First(c => c.Id == item.OldLocation).Name;
-                        updateStr += $"位置[{oldName}->{context.SysDic.First(c => c.Id == item.NewLocation).Name}];";
-                    }
+                    //if (item.OldLocation != item.NewLocation)
+                    //{
+                    //    string oldName = item.OldLocation == 0 ? "无" : context.SysDic.First(c => c.Id == item.OldLocation).Name;
+                    //    updateStr += $"位置[{oldName}->{context.SysDic.First(c => c.Id == item.NewLocation).Name}];";
+                    //}
                     if (item.OldPrincipalName != item.NewPrincipalName)
                     {
                         string oldName = item.OldPrincipalName.IsNullOrEmpty() ? "无" : item.OldPrincipalName;
                         updateStr += $"负责人[{oldName}->{item.NewPrincipalName}];";
                     }
-                    if (item.OldState != item.NewState)
-                    {
-                        string oldName = item.OldState == 0 ? "无" : context.SysDic.First(c => c.Id == item.OldState).Name;
-                        updateStr += $"状态[{oldName}->{context.SysDic.First(c => c.Id == item.NewState).Name}];";
-                    }
+                    //if (item.OldState != item.NewState)
+                    //{
+                    //    string oldName = item.OldState == 0 ? "无" : context.SysDic.First(c => c.Id == item.OldState).Name;
+                    //    updateStr += $"状态[{oldName}->{context.SysDic.First(c => c.Id == item.NewState).Name}];";
+                    //}
                     if (item.OldPrincipalPhone != item.NewPrincipalPhone)
                     {
                         updateStr += $"负责人电话号;";

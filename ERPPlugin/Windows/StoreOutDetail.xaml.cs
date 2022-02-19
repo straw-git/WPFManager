@@ -1,4 +1,4 @@
-﻿using CoreDBModels.Models;
+﻿using CoreDBModels;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -124,7 +124,7 @@ namespace ERPPlugin.Windows
         private void LoadStore()
         {
             cbStore.Items.Clear();
-            using (ERPDBContext context = new ERPDBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 var _store = context.SysDic.Where(c => c.ParentCode == DicData.Store).ToList();
 

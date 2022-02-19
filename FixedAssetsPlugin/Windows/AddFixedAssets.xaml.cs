@@ -15,8 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Common.Utils;
 using Common;
-using FixedAssetsDBModels.Models;
-using CoreDBModels.Models;
+using FixedAssetsDBModels;
+using CoreDBModels;
 
 namespace FixedAssetsPlugin.Windows
 {
@@ -54,7 +54,7 @@ namespace FixedAssetsPlugin.Windows
 
         private void LoadLocation()
         {
-            using (FixedAssetsDBContext context = new FixedAssetsDBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 var locations = context.SysDic.Where(c => c.ParentCode == DicData.FixedAssetsLocation).ToList();
                 if (locations == null || locations.Count == 0)
@@ -150,9 +150,15 @@ namespace FixedAssetsPlugin.Windows
             #endregion
 
             FixedAssets model = new FixedAssets();
+            CoreDBModels.Staff staff = new Staff();
+            using (CoreDBContext context = new CoreDBContext()) 
+            {
+                 staff = context.Staff.First(c => c.Id == UserGlobal.CurrUser.StaffId);
+            }
+
             using (FixedAssetsDBContext context = new FixedAssetsDBContext())
             {
-                var staff = context.Staff.First(c => c.Id == UserGlobal.CurrUser.StaffId);
+               
 
                 model.Count = count;
                 model.CreateTime = DateTime.Now;

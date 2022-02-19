@@ -14,8 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
-using CoreDBModels.Models;
-using FinanceDBModels.Models;
+using CoreDBModels;
+using FinanceDBModels;
 using FinancePlugin.Windows;
 
 namespace FinancePlugin.Pages.Finance
@@ -209,7 +209,7 @@ namespace FinancePlugin.Pages.Finance
 
             bNoData.Visibility = models.Count() == 0 ? Visibility.Visible : Visibility.Collapsed;
 
-            using (FinanceDBContext context = new FinanceDBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 foreach (var item in models)
                 {
@@ -225,7 +225,7 @@ namespace FinancePlugin.Pages.Finance
                         Price = item.Price,
                         StaffName = item.StaffName,
                         Things = item.Things,
-                        TypeName = context.FinanceType.First(c => c.Id == item.AddType).Name
+                        TypeName ="待更新"// context.FinanceType.First(c => c.Id == item.AddType).Name
                     };
 
                     Data.Add(_model);

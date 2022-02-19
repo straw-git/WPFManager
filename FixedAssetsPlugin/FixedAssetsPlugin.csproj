@@ -85,6 +85,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="CoreDBContext.cs" />
+    <Compile Include="FixedAssetsDBContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windows\AddFixedAssets.xaml.cs">
       <DependentUpon>AddFixedAssets.xaml</DependentUpon>
     </Compile>
@@ -136,7 +139,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -51,26 +51,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ERPDBContext.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Goods.cs" />
-    <Compile Include="Models\PurchasePlan.cs" />
-    <Compile Include="Models\PurchasePlanItem.cs" />
-    <Compile Include="Models\PurchasePlanLog.cs" />
-    <Compile Include="Models\Stock.cs" />
-    <Compile Include="Models\StockLog.cs" />
-    <Compile Include="Models\Supplier.cs" />
+    <Compile Include="DBInfo.cs" />
+    <Compile Include="Goods.cs" />
+    <Compile Include="PurchasePlan.cs" />
+    <Compile Include="PurchasePlanItem.cs" />
+    <Compile Include="PurchasePlanLog.cs" />
+    <Compile Include="Stock.cs" />
+    <Compile Include="StockLog.cs" />
+    <Compile Include="Supplier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
-      <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
-      <Name>CoreDBModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

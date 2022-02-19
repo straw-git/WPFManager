@@ -73,9 +73,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreDBContext.cs" />
+    <Compile Include="CustomerDBContext.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Windows\SelectedCustomer.xaml.cs">
       <DependentUpon>SelectedCustomer.xaml</DependentUpon>
     </Compile>

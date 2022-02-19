@@ -1,6 +1,6 @@
 ﻿using Common;
 using Common.Utils;
-using CustomerDBModels.Models;
+using CustomerDBModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,7 +25,7 @@ namespace CustomerPlugin.Windows
     public partial class SelectedCustomer : Window
     {
         public bool Succeed = false;
-        public CustomerDBModels.Models.Customer Model = new CustomerDBModels.Models.Customer();
+        public CustomerDBModels.Customer Model = new CustomerDBModels.Customer();
 
         string mainPromotionCode = "";
 
@@ -63,7 +63,7 @@ namespace CustomerPlugin.Windows
 
         #region Private Method
 
-        private UIModel DBItem2UIModel(CustomerDBModels.Models.Customer item)
+        private UIModel DBItem2UIModel(CustomerDBModels.Customer item)
         {
             UIModel _model = new UIModel();
             _model.CreateTime = item.CreateTime.ToString("yy年MM月dd日");
@@ -81,7 +81,7 @@ namespace CustomerPlugin.Windows
         /// <param name="_customer"></param>
         /// <param name="_searchText"></param>
         /// <returns></returns>
-        protected bool GetPagerWhere(CustomerDBModels.Models.Customer _customer, string _searchText)
+        protected bool GetPagerWhere(CustomerDBModels.Customer _customer, string _searchText)
         {
             bool resultCondition = true;
             if (_searchText.NotEmpty())
@@ -153,12 +153,12 @@ namespace CustomerPlugin.Windows
 
                 using (CustomerDBContext context = new CustomerDBContext())
                 {
-                    Expression<Func<CustomerDBModels.Models.Customer, bool>> _where = n => GetPagerWhere(n, searchText);//按条件查询
-                    Expression<Func<CustomerDBModels.Models.Customer, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
+                    Expression<Func<CustomerDBModels.Customer, bool>> _where = n => GetPagerWhere(n, searchText);//按条件查询
+                    Expression<Func<CustomerDBModels.Customer, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
                     //开始分页查询数据
                     var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Customer, _where, _orderByDesc, null, null, null, null, 0);
                     if (!_zPager.Result) return;
-                    List<CustomerDBModels.Models.Customer> _list = _zPager.EFDataList;
+                    List<CustomerDBModels.Customer> _list = _zPager.EFDataList;
 
                     #region 页面数据填充
 

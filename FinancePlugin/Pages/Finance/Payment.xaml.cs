@@ -152,7 +152,7 @@ namespace FinancePlugin.Pages.Finance
             ShowLoadingPanel();
             Data.Clear();
 
-            List<FinanceDBModels.Models.Payment> models = new List<FinanceDBModels.Models.Payment>();
+            List<FinanceDBModels.Payment> models = new List<FinanceDBModels.Payment>();
 
             int typeId = 0;
 

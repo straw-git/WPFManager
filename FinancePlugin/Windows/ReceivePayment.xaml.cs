@@ -1,6 +1,6 @@
 ﻿using Common;
-using CoreDBModels.Models;
-using FinanceDBModels.Models;
+using CoreDBModels;
+using FinanceDBModels;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;

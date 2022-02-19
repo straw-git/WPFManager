@@ -185,23 +185,23 @@ namespace SalePlugin.Pages.CustomerOrder
                     Data.Clear();
 
 
-                    using (ERPDBContext context = new ERPDBContext())
-                    {
-                        var goods = context.Goods.Where(c => c.Name.Contains(name) || c.QuickCode.Contains(name)).ToList();
-                        foreach (var g in goods)
-                        {
-                            UIModel model = new UIModel();
-                            model.Count = 1;
-                            model.GoodsId = g.Id;
-                            model.GoodsName = g.Name;
-                            model.Price = g.SalePrice;
-                            model.Specification = g.Specification;
-                            model.StockCount = g.IsStock && context.Stock.Any(c => c.GoodsId == g.Id) ? context.Stock.First(c => c.GoodsId == g.Id).Count.ToString() : "无";
-                            model.UnitName = context.SysDic.Any(c => c.Id == g.UnitId) ? context.SysDic.First(c => c.Id == g.UnitId).Name : "已删除";
+                    //using (ERPDBContext context = new ERPDBContext())
+                    //{
+                    //    var goods = context.Goods.Where(c => c.Name.Contains(name) || c.QuickCode.Contains(name)).ToList();
+                    //    foreach (var g in goods)
+                    //    {
+                    //        UIModel model = new UIModel();
+                    //        model.Count = 1;
+                    //        model.GoodsId = g.Id;
+                    //        model.GoodsName = g.Name;
+                    //        model.Price = g.SalePrice;
+                    //        model.Specification = g.Specification;
+                    //        model.StockCount = g.IsStock && context.Stock.Any(c => c.GoodsId == g.Id) ? context.Stock.First(c => c.GoodsId == g.Id).Count.ToString() : "无";
+                    //        model.UnitName = context.SysDic.Any(c => c.Id == g.UnitId) ? context.SysDic.First(c => c.Id == g.UnitId).Name : "已删除";
 
-                            Data.Add(model);
-                        }
-                    }
+                    //        Data.Add(model);
+                    //    }
+                    //}
 
                     if (Data.Count > 0)
                     {

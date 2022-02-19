@@ -1,8 +1,8 @@
 ﻿using Common;
 using Common.Utils;
 using Common.Windows;
-using CoreDBModels.Models;
-using CustomerDBModels.Models;
+using CoreDBModels;
+using CustomerDBModels;
 using CustomerPlugin.Windows;
 using Panuon.UI.Silver;
 using System;

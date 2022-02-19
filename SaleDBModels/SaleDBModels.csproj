@@ -51,38 +51,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\202201260752113_saleorders_init.cs" />
-    <Compile Include="Migrations\202201260752113_saleorders_init.designer.cs">
-      <DependentUpon>202201260752113_saleorders_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="SaleDBContext.cs" />
+    <Compile Include="DBInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\SaleOrder.cs" />
-    <Compile Include="Models\SaleDetail.cs" />
-    <Compile Include="Models\TempSingleDetail.cs" />
-    <Compile Include="Models\TempSingleOrder.cs" />
-    <Compile Include="Models\UserCommonItem.cs" />
-    <Compile Include="Models\UserCommonObj.cs" />
+    <Compile Include="SaleOrder.cs" />
+    <Compile Include="SaleDetail.cs" />
+    <Compile Include="TempSingleDetail.cs" />
+    <Compile Include="TempSingleOrder.cs" />
+    <Compile Include="UserCommonItem.cs" />
+    <Compile Include="UserCommonObj.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202201260752113_saleorders_init.resx">
-      <DependentUpon>202201260752113_saleorders_init.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
-      <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
-      <Name>CoreDBModels</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CustomerDBModels\CustomerDBModels.csproj">
-      <Project>{b960e9b9-68a2-406a-8c94-3f05f6c2750f}</Project>
-      <Name>CustomerDBModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

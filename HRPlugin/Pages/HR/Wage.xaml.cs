@@ -16,8 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
-using HRDBModels.Models;
-using CoreDBModels.Models;
+using HRDBModels;
+using CoreDBModels;
 
 namespace HRPlugin.Pages.Finance
 {
@@ -124,14 +124,17 @@ namespace HRPlugin.Pages.Finance
         {
             cbMonth.Items.Clear();
             string currMonthCode = DateTime.Now.ToString("yyMM");
-
-            using (HRDBContext context = new HRDBContext())
+            DateTime minTime = DateTime.Now;
+            using (CoreDBContext context = new CoreDBContext()) 
             {
-                DateTime minTime = DateTime.Now;
                 if (context.Staff.Any())
                 {
                     minTime = context.Staff.Min(c => c.Register);
                 }
+            }
+            using (HRDBContext context = new HRDBContext())
+            {
+
                 while (true)
                 {
                     string code = minTime.ToString("yyMM");
@@ -221,89 +224,89 @@ namespace HRPlugin.Pages.Finance
 
             await Task.Run(() =>
             {
-                using (HRDBContext context = new HRDBContext())
-                {
-                    foreach (var item in Data)
-                    {
-                        //员工
-                        var staff = context.Staff.First(c => c.Id == item.Id);
-                        //工资
-                        var wage = context.StaffSalary.Where(c => c.StaffId == staff.Id).OrderBy(c => c.CreateTime).ToList();
+                //using (HRDBContext context = new HRDBContext())
+                //{
+                //    foreach (var item in Data)
+                //    {
+                //        //员工
+                //        var staff = context.Staff.First(c => c.Id == item.Id);
+                //        //工资
+                //        var wage = context.StaffSalary.Where(c => c.StaffId == staff.Id).OrderBy(c => c.CreateTime).ToList();
 
-                        Dictionary<int, decimal> wageDic = new Dictionary<int, decimal>();
-                        for (int i = minTimeNumber; i <= maxTimeNumber; i++)
-                        {
-                            wageDic.Add(i, 0);
-                        }
+                //        Dictionary<int, decimal> wageDic = new Dictionary<int, decimal>();
+                //        for (int i = minTimeNumber; i <= maxTimeNumber; i++)
+                //        {
+                //            wageDic.Add(i, 0);
+                //        }
 
-                        foreach (var w in wage)
-                        {
-                            if (!w.IsEnd)
-                            {
-                                w.End = maxTime;
-                            }
-                            int xMinNumber = w.Start.ToString("yyMMdd").AsInt();
-                            int xMaxNumber = w.End.ToString("yyMMdd").AsInt();
-                            if (xMaxNumber < minTimeNumber) continue;
-                            if (xMinNumber > maxTimeNumber) continue;
-                            if (xMinNumber < minTimeNumber) xMinNumber = minTimeNumber;
-                            if (xMaxNumber > maxTimeNumber) xMaxNumber = maxTimeNumber;
-                            for (int i = xMinNumber; i <= xMaxNumber; i++)
-                            {
-                                wageDic[i] = w.Price;
-                            }
-                        }
+                //        foreach (var w in wage)
+                //        {
+                //            if (!w.IsEnd)
+                //            {
+                //                w.End = maxTime;
+                //            }
+                //            int xMinNumber = w.Start.ToString("yyMMdd").AsInt();
+                //            int xMaxNumber = w.End.ToString("yyMMdd").AsInt();
+                //            if (xMaxNumber < minTimeNumber) continue;
+                //            if (xMinNumber > maxTimeNumber) continue;
+                //            if (xMinNumber < minTimeNumber) xMinNumber = minTimeNumber;
+                //            if (xMaxNumber > maxTimeNumber) xMaxNumber = maxTimeNumber;
+                //            for (int i = xMinNumber; i <= xMaxNumber; i++)
+                //            {
+                //                wageDic[i] = w.Price;
+                //            }
+                //        }
 
-                        item.BasePrice = Math.Round(wageDic.Values.Sum() / wageDic.Keys.Count, 0);
+                //        item.BasePrice = Math.Round(wageDic.Values.Sum() / wageDic.Keys.Count, 0);
 
-                        //奖罚
-                        decimal fPrice = 0;
-                        decimal rPrice = 0;
-                        if (context.StaffSalaryOther.Any(c => c.StaffId == staff.Id && c.DoTime >= minTime && c.DoTime <= maxTime))
-                        {
-                            var other = context.StaffSalaryOther.Where(c => c.StaffId == staff.Id && c.DoTime >= minTime && c.DoTime <= maxTime);
-                            foreach (var o in other)
-                            {
-                                if (o.Type == 0)
-                                {
-                                    fPrice += o.Price;
-                                }
-                                if (o.Type == 1)
-                                {
-                                    rPrice += o.Price;
-                                }
-                            }
-                        }
-                        item.RewardPrice = rPrice;
-                        item.FinePrice = fPrice;
-                        //保险
-                        decimal iPrice = 0;
-                        if (context.StaffInsurance.Any(c => c.StaffId == staff.Id && c.Start > minTime))
-                        {
-                            var insurances = context.StaffInsurance.Where(c => c.StaffId == staff.Id && c.Start > minTime);
-                            foreach (var i in insurances)
-                            {
-                                if (i.Stop)
-                                {
-                                    //当月保险已停
-                                    if (i.End < minTime) continue;
-                                }
-                                if (i.Monthly)
-                                {
-                                    iPrice += i.StaffPrice;
-                                }
-                                else
-                                {
-                                    if (i.Start.Year == minTime.Year && i.Start.Month == minTime.Month)
-                                    {
-                                        iPrice += i.StaffPrice;
-                                    }
-                                }
-                            }
-                        }
-                        item.InsurancePrice = iPrice;
-                    }
-                }
+                //        //奖罚
+                //        decimal fPrice = 0;
+                //        decimal rPrice = 0;
+                //        if (context.StaffSalaryOther.Any(c => c.StaffId == staff.Id && c.DoTime >= minTime && c.DoTime <= maxTime))
+                //        {
+                //            var other = context.StaffSalaryOther.Where(c => c.StaffId == staff.Id && c.DoTime >= minTime && c.DoTime <= maxTime);
+                //            foreach (var o in other)
+                //            {
+                //                if (o.Type == 0)
+                //                {
+                //                    fPrice += o.Price;
+                //                }
+                //                if (o.Type == 1)
+                //                {
+                //                    rPrice += o.Price;
+                //                }
+                //            }
+                //        }
+                //        item.RewardPrice = rPrice;
+                //        item.FinePrice = fPrice;
+                //        //保险
+                //        decimal iPrice = 0;
+                //        if (context.StaffInsurance.Any(c => c.StaffId == staff.Id && c.Start > minTime))
+                //        {
+                //            var insurances = context.StaffInsurance.Where(c => c.StaffId == staff.Id && c.Start > minTime);
+                //            foreach (var i in insurances)
+                //            {
+                //                if (i.Stop)
+                //                {
+                //                    //当月保险已停
+                //                    if (i.End < minTime) continue;
+                //                }
+                //                if (i.Monthly)
+                //                {
+                //                    iPrice += i.StaffPrice;
+                //                }
+                //                else
+                //                {
+                //                    if (i.Start.Year == minTime.Year && i.Start.Month == minTime.Month)
+                //                    {
+                //                        iPrice += i.StaffPrice;
+                //                    }
+                //                }
+                //            }
+                //        }
+                //        item.InsurancePrice = iPrice;
+                //    }
+                //}
             });
             await Task.Delay(300);
 
@@ -343,27 +346,27 @@ namespace HRPlugin.Pages.Finance
 
                     HisData.Insert(0, model);
 
-                    foreach (var item in Data)
-                    {
-                        var staff = contex.Staff.First(c => c.Id == item.Id);
+                    //foreach (var item in Data)
+                    //{
+                    //    var staff = contex.Staff.First(c => c.Id == item.Id);
 
-                        StaffSalarySettlementLog itemModel = new StaffSalarySettlementLog();
-                        itemModel.AwardPrice = item.RewardPrice;
-                        itemModel.BasePrice = item.BasePrice;
-                        itemModel.CreateTime = model.CreateTime;
-                        itemModel.Creator = model.Creator;
-                        itemModel.DeductionPrice = item.FinePrice;
-                        itemModel.InsurancePrice = item.InsurancePrice;
-                        itemModel.MonthCode = model.Id;
-                        itemModel.Price = item.Price;
-                        itemModel.SalePrice = 0;
-                        itemModel.StaffId = staff.Id;
-                        itemModel.StaffName = staff.Name;
-                        itemModel.StaffQuickCode = staff.QuickCode;
+                    //    StaffSalarySettlementLog itemModel = new StaffSalarySettlementLog();
+                    //    itemModel.AwardPrice = item.RewardPrice;
+                    //    itemModel.BasePrice = item.BasePrice;
+                    //    itemModel.CreateTime = model.CreateTime;
+                    //    itemModel.Creator = model.Creator;
+                    //    itemModel.DeductionPrice = item.FinePrice;
+                    //    itemModel.InsurancePrice = item.InsurancePrice;
+                    //    itemModel.MonthCode = model.Id;
+                    //    itemModel.Price = item.Price;
+                    //    itemModel.SalePrice = 0;
+                    //    itemModel.StaffId = staff.Id;
+                    //    itemModel.StaffName = staff.Name;
+                    //    itemModel.StaffQuickCode = staff.QuickCode;
 
-                        contex.StaffSalarySettlementLog.Add(itemModel);
-                    }
-                    contex.SaveChanges();
+                    //    contex.StaffSalarySettlementLog.Add(itemModel);
+                    //}
+                    //contex.SaveChanges();
                 }
 
                 MessageBoxX.Show("成功", "成功");

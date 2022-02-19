@@ -77,9 +77,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CoreDBContext.cs" />
+    <Compile Include="HRDBContext.cs" />
+    <Compile Include="JobPostTreeViewCommon.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pages\HR\Todo.xaml.cs">
       <DependentUpon>Todo.xaml</DependentUpon>
     </Compile>
@@ -87,6 +91,9 @@
       <DependentUpon>Wage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PluginsInfo.cs" />
+    <Compile Include="Windows\SelectedStaff.xaml.cs">
+      <DependentUpon>SelectedStaff.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\StaffDelete.xaml.cs">
       <DependentUpon>StaffDelete.xaml</DependentUpon>
     </Compile>
@@ -121,6 +128,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Windows\SelectedStaff.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\StaffDelete.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -151,7 +162,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

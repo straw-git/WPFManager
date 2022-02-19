@@ -14,8 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
-using CoreDBModels.Models;
-using FixedAssetsDBModels.Models;
+using CoreDBModels;
+using FixedAssetsDBModels;
 using FixedAssetsPlugin.Windows;
 
 namespace FixedAssetsPlugin.Pages.FixedAssetsPages
@@ -74,7 +74,7 @@ namespace FixedAssetsPlugin.Pages.FixedAssetsPages
         private void LoadState()
         {
             cbState.Items.Clear();
-            using (FixedAssetsDBContext context = new FixedAssetsDBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 var states = context.SysDic.Where(c => c.ParentCode == DicData.FixedAssetsState).ToList();
                 if (states == null) states = new List<SysDic>();

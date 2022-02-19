@@ -145,7 +145,7 @@ namespace Client
 
             bool loginSucceed = true;//是否登录成功
             string errorStr = "";//错误信息
-            CoreDBModels.Models.User userModel = null;
+            CoreDBModels.User userModel = null;
 
             #region 登录
 

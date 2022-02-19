@@ -51,17 +51,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoreDBContext.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="DBInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Staff.cs" />
-    <Compile Include="Models\Log.cs" />
-    <Compile Include="Models\Menu.cs" />
-    <Compile Include="Models\SysDic.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Staff.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="SysDic.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

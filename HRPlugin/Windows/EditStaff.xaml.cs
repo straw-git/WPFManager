@@ -1,8 +1,8 @@
 ﻿using Common;
 using Common.Utils;
 using Common.Windows;
-using CoreDBModels.Models;
-using HRDBModels.Models;
+using CoreDBModels;
+using HRDBModels;
 using Microsoft.Win32;
 using Panuon.UI.Silver;
 using System;

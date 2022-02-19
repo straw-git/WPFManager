@@ -19,10 +19,6 @@ namespace Client
     public class CheckPluginsDLL
     {
         /// <summary>
-        /// 主程序窗口
-        /// </summary>
-        public static string EXEName = "Client";
-        /// <summary>
         /// 插件介绍类名
         /// </summary>
         public static string PluginsClassName = "PluginsInfo";
@@ -39,18 +35,16 @@ namespace Client
         public static PluginsModel GetPluginsModel(string _dllName, int _dllOrder)
         {
             //判断dll文件是否存在
-            if (_dllName != EXEName && !File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}plugins\\{_dllName}.dll"))
+            if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}plugins\\{_dllName}.dll"))
             {
                 Notice.Show("DLL格式不正确,请将页面放置在[ dll命名空间.页面命名空间.导航命名空间 ]下", $"{_dllName}加载失败");
                 return null;
             }
 
-            Assembly currAssembly = _dllName == EXEName ? Assembly.GetExecutingAssembly() : Assembly.LoadFrom($"{PluginFolderName}\\{_dllName}.dll");
+            Assembly currAssembly = Assembly.LoadFrom($"{PluginFolderName}\\{_dllName}.dll");
 
             //获取PluginsInfo
-            BasePlugins pluginsInfo = _dllName == EXEName
-                        ? (BasePlugins)Activator.CreateInstance(Type.GetType($"{_dllName}.{PluginsClassName}"))
-                        : (BasePlugins)Activator.CreateInstance(currAssembly.GetType($"{_dllName}.{PluginsClassName}"));
+            BasePlugins pluginsInfo =  (BasePlugins)Activator.CreateInstance(currAssembly.GetType($"{_dllName}.{PluginsClassName}"));
 
             if (pluginsInfo == null) return null;
 
@@ -86,9 +80,7 @@ namespace Client
                 {
                     BaseMenuInfo menuInfo = null;
                     //获取MenuIfo
-                    menuInfo = _dllName == EXEName
-                        ? (BaseMenuInfo)Activator.CreateInstance(Type.GetType(_moduleFolder))
-                                    : (BaseMenuInfo)Activator.CreateInstance(currAssembly.GetType(_moduleFolder));
+                    menuInfo = (BaseMenuInfo)Activator.CreateInstance(currAssembly.GetType(_moduleFolder));
 
                     if (menuInfo == null) continue;
 
@@ -118,7 +110,7 @@ namespace Client
                         {
                             #region 获取页面说明
 
-                            Type itemObj = _dllName == EXEName ? Type.GetType(_currPage) : currAssembly.GetType(_currPage);
+                            Type itemObj = currAssembly.GetType(_currPage);
                             BasePage itemPage = (BasePage)Activator.CreateInstance(itemObj);
                             if (!itemPage.IsMenu) continue;//不是导航 排除
 
@@ -129,9 +121,7 @@ namespace Client
                             PageModel pageModel = new PageModel();
                             pageModel.Code = itemPage.Title;
                             pageModel.Order = itemPage.Order;
-                            pageModel.Url = _dllName == EXEName
-                                        ? $"/{pf}/{moduleModel.Code}/{itemPage.Code}.xaml"
-                                        : $"pack://application:,,,/{_dllName};component/{pf}/{moduleModel.Code}/{itemPage.Code}.xaml";
+                            pageModel.Url =  $"pack://application:,,,/{_dllName};component/{pf}/{moduleModel.Code}/{itemPage.Code}.xaml";
                             pageModel.Icon = itemPage.MenuIcon;
 
                             moduleModel.Pages.Add(pageModel);

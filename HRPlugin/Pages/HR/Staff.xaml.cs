@@ -21,7 +21,7 @@ using Common.Utils;
 using System.Linq.Expressions;
 using Common.Windows;
 using Common.MyAttributes;
-using HRDBModels.Models;
+using HRDBModels;
 using HRPlugin.Windows;
 
 namespace HRPlugin.Pages.HR
@@ -267,13 +267,20 @@ namespace HRPlugin.Pages.HR
                 MaskVisible(false);
                 if (s.Succeed)
                 {
+                    CoreDBModels.Staff staff = new CoreDBModels.Staff();
+                    using (CoreDBContext context = new CoreDBContext()) 
+                    {
+                        var staff1 = context.Staff.Single(c => c.Id == id);
+                        staff1.IsDel = true;
+                        staff1.DelUser = UserGlobal.CurrUser.Id;
+                        staff1.DelTime = s.Model.StopTime;
+                        context.SaveChanges();
+
+                        ModelCommon.CopyPropertyToModel(staff1,ref staff) ;
+                    }
+
                     using (HRDBContext context = new HRDBContext())
                     {
-                        var staff = context.Staff.Single(c => c.Id == id);
-                        staff.IsDel = true;
-                        staff.DelUser = UserGlobal.CurrUser.Id;
-                        staff.DelTime = s.Model.StopTime;
-
                         context.StaffSalary.Add(new StaffSalary()
                         {
                             CreateTime = staff.DelTime,
@@ -353,9 +360,13 @@ namespace HRPlugin.Pages.HR
         /// </summary>
         private void UpdateGauge()
         {
+            int staffCount = 0;
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                staffCount = context.Staff.Count(c => !c.IsDel);
+            }
             using (HRDBContext context = new HRDBContext())
             {
-                int staffCount = context.Staff.Count(c => !c.IsDel);
                 pInsurance.To = staffCount;
                 pInsurance.Value = context.StaffInsurance.Where(c => !c.Stop).GroupBy(c=>c.StaffId).Count();
 
@@ -379,14 +390,14 @@ namespace HRPlugin.Pages.HR
 
             Data.Clear();//先清空再加入页面数据
 
-            using (HRDBContext context = new HRDBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
-                Expression<Func<CoreDBModels.Models.Staff, bool>> _where = n => GetPagerWhere(n, name, isNoInsurance, isNoContract, enableTime, startTime, endTime);//按条件查询
-                Expression<Func<CoreDBModels.Models.Staff, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
+                Expression<Func<CoreDBModels.Staff, bool>> _where = n => GetPagerWhere(n, name, isNoInsurance, isNoContract, enableTime, startTime, endTime);//按条件查询
+                Expression<Func<CoreDBModels.Staff, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
                 //开始分页查询数据
                 var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Staff, _where, _orderByDesc, gLoading, gPager, bNoData, new Control[1] { list });
                 if (!_zPager.Result) return;
-                List<CoreDBModels.Models.Staff> _list = _zPager.EFDataList;
+                List<CoreDBModels.Staff> _list = _zPager.EFDataList;
 
                 #region 页面数据填充
 
@@ -394,33 +405,33 @@ namespace HRPlugin.Pages.HR
                 {
                     string jobpostName = context.SysDic.Any(c => c.Id == item.JobPostId) ? context.SysDic.First(c => c.Id == item.JobPostId).Name : "无";
                     var _model = DBItem2UIModel(item, jobpostName, listName);
-                    //类型为社保 并且没有被停止的数量
-                    _model.SBInsuranceCount = context.StaffInsurance.Count(c => c.Type == 0 && c.StaffId == item.Id && !c.Stop);
-                    //类型为商业保险 并且没有被停止的数量
-                    _model.SYInsuranceCount = context.StaffInsurance.Count(c => c.Type == 1 && c.StaffId == item.Id && !c.Stop);
-                    //合同剩余天数
-                    _model.ContractSurplusDays = "无合同";
-                    var contractList = context.StaffContract.Where(c => c.StaffId == item.Id && !c.Stop).ToList();//所有合同
+                    ////类型为社保 并且没有被停止的数量
+                    //_model.SBInsuranceCount = context.StaffInsurance.Count(c => c.Type == 0 && c.StaffId == item.Id && !c.Stop);
+                    ////类型为商业保险 并且没有被停止的数量
+                    //_model.SYInsuranceCount = context.StaffInsurance.Count(c => c.Type == 1 && c.StaffId == item.Id && !c.Stop);
+                    ////合同剩余天数
+                    //_model.ContractSurplusDays = "无合同";
+                    //var contractList = context.StaffContract.Where(c => c.StaffId == item.Id && !c.Stop).ToList();//所有合同
 
-                    var nowTime = DateTime.Now.MinDate();
-                    if (contractList != null && contractList.Count > 0)
-                    {
-                        if (contractList.Any(c => c.End >= nowTime))
-                        {
-                            _model.ContractSurplusDays = Math.Round((contractList.First(c => c.End >= nowTime).End - DateTime.Now).TotalDays).ToString();
-                        }
-                        else
-                        {
-                            _model.ContractSurplusDays = "已过期";
-                        }
-                    }
-                    //基础工资
-                    _model.Wage = 0;
-                    if (context.StaffSalary.Any(c => c.StaffId == item.Id && c.Start <= nowTime && c.End >= nowTime))
-                    {
-                        var wage = context.StaffSalary.Where(c => c.StaffId == item.Id && c.Start <= nowTime && c.End >= nowTime).OrderByDescending(c => c.CreateTime).First();
-                        _model.Wage = wage.Price;
-                    }
+                    //var nowTime = DateTime.Now.MinDate();
+                    //if (contractList != null && contractList.Count > 0)
+                    //{
+                    //    if (contractList.Any(c => c.End >= nowTime))
+                    //    {
+                    //        _model.ContractSurplusDays = Math.Round((contractList.First(c => c.End >= nowTime).End - DateTime.Now).TotalDays).ToString();
+                    //    }
+                    //    else
+                    //    {
+                    //        _model.ContractSurplusDays = "已过期";
+                    //    }
+                    //}
+                    ////基础工资
+                    //_model.Wage = 0;
+                    //if (context.StaffSalary.Any(c => c.StaffId == item.Id && c.Start <= nowTime && c.End >= nowTime))
+                    //{
+                    //    var wage = context.StaffSalary.Where(c => c.StaffId == item.Id && c.Start <= nowTime && c.End >= nowTime).OrderByDescending(c => c.CreateTime).First();
+                    //    _model.Wage = wage.Price;
+                    //}
                     Data.Add(_model);
                 }
 
@@ -431,7 +442,7 @@ namespace HRPlugin.Pages.HR
             PagerCommon.EndEFDataPager();
         }
 
-        private UIModel DBItem2UIModel(CoreDBModels.Models.Staff item, string _jobpostName, string _listName)
+        private UIModel DBItem2UIModel(CoreDBModels.Staff item, string _jobpostName, string _listName)
         {
             UIModel _model = new UIModel()
             {
@@ -450,7 +461,7 @@ namespace HRPlugin.Pages.HR
         /// <summary>
         /// 查找表格的条件
         /// </summary>
-        protected bool GetPagerWhere(CoreDBModels.Models.Staff _staff, string _name, bool _isNoInsurance, bool _isNoContract, bool _enableTime, DateTime _start, DateTime _end)
+        protected bool GetPagerWhere(CoreDBModels.Staff _staff, string _name, bool _isNoInsurance, bool _isNoContract, bool _enableTime, DateTime _start, DateTime _end)
         {
             bool resultCondition = true;
             if (_name.NotEmpty())
@@ -513,41 +524,41 @@ namespace HRPlugin.Pages.HR
 
             await Task.Run(() =>
             {
-                var _list = new List<CoreDBModels.Models.Staff>();
-                using (HRDBContext context = new HRDBContext())
+                var _list = new List<CoreDBModels.Staff>();
+                using (CoreDBContext context = new CoreDBContext())
                 {
                     _list = context.Staff.OrderByDescending(c => c.CreateTime).ToList();
                     foreach (var item in _list)
                     {
                         string jobpostName = context.SysDic.Any(c => c.Id == item.JobPostId) ? context.SysDic.First(c => c.Id == item.JobPostId).Name : "无";
                         var _model = DBItem2UIModel(item, jobpostName, listName);
-                        //类型为社保 并且没有被停止的数量
-                        _model.SBInsuranceCount = context.StaffInsurance.Count(c => c.Type == 0 && c.StaffId == item.Id && !c.Stop);
-                        //类型为商业保险 并且没有被停止的数量
-                        _model.SYInsuranceCount = context.StaffInsurance.Count(c => c.Type == 1 && c.StaffId == item.Id && !c.Stop);
-                        //合同剩余天数
-                        _model.ContractSurplusDays = "无合同";
-                        var contractList = context.StaffContract.Where(c => c.StaffId == item.Id && !c.Stop).ToList();//所有合同
+                        ////类型为社保 并且没有被停止的数量
+                        //_model.SBInsuranceCount = context.StaffInsurance.Count(c => c.Type == 0 && c.StaffId == item.Id && !c.Stop);
+                        ////类型为商业保险 并且没有被停止的数量
+                        //_model.SYInsuranceCount = context.StaffInsurance.Count(c => c.Type == 1 && c.StaffId == item.Id && !c.Stop);
+                        ////合同剩余天数
+                        //_model.ContractSurplusDays = "无合同";
+                        //var contractList = context.StaffContract.Where(c => c.StaffId == item.Id && !c.Stop).ToList();//所有合同
 
-                        var nowTime = DateTime.Now.MinDate();
-                        if (contractList != null && contractList.Count > 0)
-                        {
-                            if (contractList.Any(c => c.End >= nowTime))
-                            {
-                                _model.ContractSurplusDays = Math.Round((contractList.First(c => c.End >= nowTime).End - DateTime.Now).TotalDays).ToString();
-                            }
-                            else
-                            {
-                                _model.ContractSurplusDays = "已过期";
-                            }
-                        }
-                        //基础工资
-                        _model.Wage = 0;
-                        if (context.StaffSalary.Any(c => c.StaffId == item.Id && c.Start >= nowTime && c.End <= nowTime))
-                        {
-                            var wage = context.StaffSalary.Where(c => c.StaffId == item.Id && c.Start >= nowTime && c.End <= nowTime).OrderByDescending(c => c.CreateTime).First();
-                            _model.Wage = wage.Price;
-                        }
+                        //var nowTime = DateTime.Now.MinDate();
+                        //if (contractList != null && contractList.Count > 0)
+                        //{
+                        //    if (contractList.Any(c => c.End >= nowTime))
+                        //    {
+                        //        _model.ContractSurplusDays = Math.Round((contractList.First(c => c.End >= nowTime).End - DateTime.Now).TotalDays).ToString();
+                        //    }
+                        //    else
+                        //    {
+                        //        _model.ContractSurplusDays = "已过期";
+                        //    }
+                        //}
+                        ////基础工资
+                        //_model.Wage = 0;
+                        //if (context.StaffSalary.Any(c => c.StaffId == item.Id && c.Start >= nowTime && c.End <= nowTime))
+                        //{
+                        //    var wage = context.StaffSalary.Where(c => c.StaffId == item.Id && c.Start >= nowTime && c.End <= nowTime).OrderByDescending(c => c.CreateTime).First();
+                        //    _model.Wage = wage.Price;
+                        //}
                         allData.Add(_model);
                     }
                 }

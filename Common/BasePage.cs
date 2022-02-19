@@ -80,12 +80,6 @@ namespace Common
         {
             StartPageInAnimation();
             ParentWindow = System.Windows.Window.GetWindow(this) as BaseMainWindow;
-            if (ParentWindow == null)
-            {
-                //使用页面 测试时会进入这里使用管理员账户
-                using (CoreDBContext context = new CoreDBContext())
-                    UserGlobal.CurrUser = context.User.First(c => c.Name == "admin");
-            }
 
             OnPageLoaded();
         }

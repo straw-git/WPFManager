@@ -1,7 +1,7 @@
 ﻿
 using Common;
 using Common.Utils;
-using CoreDBModels.Models;
+using CoreDBModels;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;

@@ -1,8 +1,8 @@
 ﻿using Common;
 using Common.Utils;
 using Common.Windows;
-using CoreDBModels.Models;
-using CustomerDBModels.Models;
+using CoreDBModels;
+using CustomerDBModels;
 using CustomerPlugin.Windows;
 using Panuon.UI.Silver;
 using System;
@@ -123,7 +123,7 @@ namespace CustomerPlugin.Windows
                 {
                     UIModel model = new UIModel();
                     model.CreateTime = item.CreateTime.ToString("yy年MM月dd日");
-                    model.Creator = context.User.Any(c => c.Id == item.Creator) ? context.User.First(c => c.Id == item.Creator).Name : "";
+                    model.Creator = "";//context.User.Any(c => c.Id == item.Creator) ? context.User.First(c => c.Id == item.Creator).Name : "";
                     model.MemberPrice = item.NewPrice.ToString();
                     model.Price = item.Price.ToString();
 
@@ -276,7 +276,7 @@ namespace CustomerPlugin.Windows
 
                 if (price > 0)
                 {
-                    CustomerDBModels.Models.MemberRecharge _recharge = new CustomerDBModels.Models.MemberRecharge();
+                    CustomerDBModels.MemberRecharge _recharge = new CustomerDBModels.MemberRecharge();
                     _recharge.CreateTime = DateTime.Now;
                     _recharge.Creator = UserGlobal.CurrUser.Id;
                     _recharge.CustomerId = CustomerModel.Id;

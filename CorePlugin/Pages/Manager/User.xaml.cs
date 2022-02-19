@@ -141,7 +141,7 @@ namespace CorePlugin.Pages.Manager
                     }
                 }
                 catch (Exception ex)
-                { }
+                { Console.WriteLine(ex.Message); }
             }
         }
 
@@ -152,7 +152,7 @@ namespace CorePlugin.Pages.Manager
             running = true;
             Data.Clear();
 
-            List<CoreDBModels.Models.User> models = new List<CoreDBModels.Models.User>();
+            List<CoreDBModels.User> models = new List<CoreDBModels.User>();
 
             await Task.Run(() =>
             {

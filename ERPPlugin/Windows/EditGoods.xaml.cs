@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Common.Utils;
 using Common;
-using ERPDBModels.Models;
+using ERPDBModels;
 
 namespace ERPPlugin.Windows
 {
@@ -138,13 +138,17 @@ namespace ERPPlugin.Windows
         /// </summary>
         private void LoadUnit()
         {
-            var _source = DataGlobal.GetDic(DicData.GoodsUnit);
-            cbUnit.ItemsSource = _source;
-            cbUnit.DisplayMemberPath = "Name";
-            cbUnit.SelectedValuePath = "Id";
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                var _source = context.SysDic.Where(c => c.ParentCode == DicData.GoodsUnit).ToList();
+                cbUnit.ItemsSource = _source;
+                cbUnit.DisplayMemberPath = "Name";
+                cbUnit.SelectedValuePath = "Id";
 
-            if (_source.Count > 0)
-                cbUnit.SelectedIndex = 0;
+                if (_source.Count > 0)
+                    cbUnit.SelectedIndex = 0;
+            }
+
         }
 
         /// <summary>
@@ -152,13 +156,19 @@ namespace ERPPlugin.Windows
         /// </summary>
         private void LoadType()
         {
-            var _source = DataGlobal.GetDic(DicData.GoodsType);
-            cbType.ItemsSource = _source;
-            cbType.DisplayMemberPath = "Name";
-            cbType.SelectedValuePath = "Id";
 
-            if (_source.Count > 0)
-                cbType.SelectedIndex = 0;
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                var _source = context.SysDic.Where(c => c.ParentCode == DicData.GoodsType).ToList();
+                cbType.ItemsSource = _source;
+                cbType.DisplayMemberPath = "Name";
+                cbType.SelectedValuePath = "Id";
+
+                if (_source.Count > 0)
+                    cbType.SelectedIndex = 0;
+
+            }
+
         }
 
         #endregion

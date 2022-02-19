@@ -1,5 +1,5 @@
 ﻿
-using CoreDBModels.Models;
+using CoreDBModels;
 using Panuon.UI.Silver;
 using System;
 using System.Linq;

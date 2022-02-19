@@ -80,18 +80,18 @@ namespace ERPPlugin.Pages.ERP
 
             using (ERPDBContext context = new ERPDBContext())
             {
-                Expression<Func<ERPDBModels.Models.Supplier, bool>> _where = n => GetPagerWhere(n, name);//按条件查询
-                Expression<Func<ERPDBModels.Models.Supplier, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
+                Expression<Func<ERPDBModels.Supplier, bool>> _where = n => GetPagerWhere(n, name);//按条件查询
+                Expression<Func<ERPDBModels.Supplier, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
                 //开始分页查询数据
                 var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Supplier, _where, _orderByDesc, gLoading, gPager, bNoData, new Control[1] { list });
                 if (!_zPager.Result) return;
-                List<ERPDBModels.Models.Supplier> _list = _zPager.EFDataList;
+                List<ERPDBModels.Supplier> _list = _zPager.EFDataList;
 
                 #region 页面数据填充
 
                 foreach (var item in _list)
                 {
-                    string typeName = context.SysDic.First(c => c.Id == item.Type).Name;
+                    string typeName = "";// context.SysDic.First(c => c.Id == item.Type).Name;
                     var _model = DBItem2UIModel(item, listName, typeName);
 
                     Data.Add(_model);
@@ -104,7 +104,7 @@ namespace ERPPlugin.Pages.ERP
             PagerCommon.EndEFDataPager();
         }
 
-        private UIModel DBItem2UIModel(ERPDBModels.Models.Supplier item, string _listName, string _typeName)
+        private UIModel DBItem2UIModel(ERPDBModels.Supplier item, string _listName, string _typeName)
         {
             return new UIModel()
             {
@@ -125,7 +125,7 @@ namespace ERPPlugin.Pages.ERP
         /// <param name="_supplier"></param>
         /// <param name="_name"></param>
         /// <returns></returns>
-        protected bool GetPagerWhere(ERPDBModels.Models.Supplier _supplier, string _name)
+        protected bool GetPagerWhere(ERPDBModels.Supplier _supplier, string _name)
         {
             bool resultCondition = true;
             if (_name.NotEmpty())
@@ -220,13 +220,13 @@ namespace ERPPlugin.Pages.ERP
 
             await Task.Run(() =>
             {
-                var _list = new List<ERPDBModels.Models.Supplier>();
+                var _list = new List<ERPDBModels.Supplier>();
                 using (ERPDBContext context = new ERPDBContext())
                 {
                     _list = context.Supplier.OrderByDescending(c => c.CreateTime).ToList();
                     foreach (var item in _list)
                     {
-                        string typeName = context.SysDic.First(c => c.Id == item.Type).Name;
+                        string typeName = "";// context.SysDic.First(c => c.Id == item.Type).Name;
                         var _model = DBItem2UIModel(item, listName, typeName);
 
                         allData.Add(_model);

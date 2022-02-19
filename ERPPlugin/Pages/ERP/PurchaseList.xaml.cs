@@ -20,7 +20,7 @@ using System.Linq.Expressions;
 using Common.Utils;
 using Common.MyAttributes;
 using Common.Windows;
-using ERPDBModels.Models;
+using ERPDBModels;
 using ERPPlugin.Windows;
 
 namespace ERPPlugin.Pages.ERP
@@ -195,7 +195,7 @@ namespace ERPPlugin.Pages.ERP
 
                 foreach (var item in _list)
                 {
-                    string creator = context.User.Any(c => c.Id == item.Creator) ? context.User.First(c => c.Id == item.Creator).Name : "已删除";
+                    string creator = "";// context.User.Any(c => c.Id == item.Creator) ? context.User.First(c => c.Id == item.Creator).Name : "已删除";
                     var items = context.PurchasePlanItem.Where(c => c.PlanCode == item.PlanCode).ToList();
 
                     decimal priceCount = 0;
@@ -316,7 +316,7 @@ namespace ERPPlugin.Pages.ERP
                     _list = context.PurchasePlan.OrderByDescending(c => c.CreateTime).ToList();
                     foreach (var item in _list)
                     {
-                        string creator = context.User.Any(c => c.Id == item.Creator) ? context.User.First(c => c.Id == item.Creator).Name : "已删除";
+                        string creator = "";// context.User.Any(c => c.Id == item.Creator) ? context.User.First(c => c.Id == item.Creator).Name : "已删除";
                         var items = context.PurchasePlanItem.Where(c => c.PlanCode == item.PlanCode).ToList();
 
                         decimal priceCount = 0;

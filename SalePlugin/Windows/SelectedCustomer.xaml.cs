@@ -1,6 +1,6 @@
 ﻿using Common;
 using Common.Utils;
-using CustomerDBModels.Models;
+using CustomerDBModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -182,18 +182,18 @@ namespace SalePlugin.Windows
 
                         if (item.IsMember)
                         {
-                            //会员
-                            decimal rechargeSum = 0;
-                            if (context.MemberRecharge.Any(c => c.CustomerId == item.Id))
-                                rechargeSum = context.MemberRecharge.Where(c => c.CustomerId == item.Id).Sum(c => c.Price);//历史充值总金额
-                            if (context.MemberLevel.OrderByDescending(c => c.LogPriceCount).Any(c => c.LogPriceCount <= rechargeSum))
-                            {
-                                _model.MemberLevel = context.MemberLevel.OrderByDescending(c => c.LogPriceCount).First(c => c.LogPriceCount <= rechargeSum).Name;
-                            }
-                            else
-                            {
-                                _model.MemberLevel = "无会员等级";
-                            }
+                            ////会员
+                            //decimal rechargeSum = 0;
+                            //if (context.MemberRecharge.Any(c => c.CustomerId == item.Id))
+                            //    rechargeSum = context.MemberRecharge.Where(c => c.CustomerId == item.Id).Sum(c => c.Price);//历史充值总金额
+                            //if (context.MemberLevel.OrderByDescending(c => c.LogPriceCount).Any(c => c.LogPriceCount <= rechargeSum))
+                            //{
+                            //    _model.MemberLevel = context.MemberLevel.OrderByDescending(c => c.LogPriceCount).First(c => c.LogPriceCount <= rechargeSum).Name;
+                            //}
+                            //else
+                            //{
+                            //    _model.MemberLevel = "无会员等级";
+                            //}
                         }
                         else
                         {

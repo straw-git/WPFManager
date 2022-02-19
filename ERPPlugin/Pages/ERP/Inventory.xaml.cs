@@ -22,7 +22,7 @@ using Common.Windows;
 using Common.MyAttributes;
 using LiveCharts;
 using LiveCharts.Wpf;
-using ERPDBModels.Models;
+using ERPDBModels;
 using ERPPlugin.Windows;
 
 namespace ERPPlugin.Pages.ERP
@@ -101,7 +101,7 @@ namespace ERPPlugin.Pages.ERP
                 foreach (var item in store)
                 {
                     ccCount.Series[0].Values.Add(item.Count());
-                    ccCount.AxisX[0].Labels.Add(context.SysDic.First(c => c.Id == item.Key).Name);
+                    //ccCount.AxisX[0].Labels.Add(context.SysDic.First(c => c.Id == item.Key).Name);
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace ERPPlugin.Pages.ERP
                 foreach (var item in _list)
                 {
                     string goodsName = context.Goods.Any(c => c.Id == item.GoodsId && !c.IsDel) ? context.Goods.First(c => c.Id == item.GoodsId).Name : "物品已删除";
-                    string storeName = context.SysDic.Any(c => c.Id == item.StoreId) ? context.SysDic.First(c => c.Id == item.StoreId).Name : "仓库已删除"; ;
+                    string storeName = "";// context.SysDic.Any(c => c.Id == item.StoreId) ? context.SysDic.First(c => c.Id == item.StoreId).Name : "仓库已删除"; ;
                     int count = context.StockLog.Any(c => c.GoodsId == item.GoodsId) ? context.StockLog.Where(c => c.GoodsId == item.GoodsId).OrderByDescending(c => c.CreateTime).First().Surplus : 0;
                     var _model = DBItem2UIModel(item, goodsName, storeName, count);
                     Data.Add(_model);
@@ -252,7 +252,7 @@ namespace ERPPlugin.Pages.ERP
                     foreach (var item in _list)
                     {
                         string goodsName = context.Goods.Any(c => c.Id == item.GoodsId && !c.IsDel) ? context.Goods.First(c => c.Id == item.GoodsId).Name : "物品已删除";
-                        string storeName = context.SysDic.Any(c => c.Id == item.StoreId) ? context.SysDic.First(c => c.Id == item.StoreId).Name : "仓库已删除"; ;
+                        string storeName = "";// context.SysDic.Any(c => c.Id == item.StoreId) ? context.SysDic.First(c => c.Id == item.StoreId).Name : "仓库已删除"; ;
                         int count = context.StockLog.Any(c => c.GoodsId == item.GoodsId) ? context.StockLog.Where(c => c.GoodsId == item.GoodsId).OrderByDescending(c => c.CreateTime).First().Surplus : 0;
                         var _model = DBItem2UIModel(item, goodsName, storeName, count);
                         allData.Add(_model);

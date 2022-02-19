@@ -1,6 +1,6 @@
 ﻿using Common;
-using CoreDBModels.Models;
-using FixedAssetsDBModels.Models;
+using CoreDBModels;
+using FixedAssetsDBModels;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -71,7 +71,7 @@ namespace FixedAssetsPlugin.Windows
         private void LoadLocation()
         {
             cbLocation.Items.Clear();
-            using (FixedAssetsDBContext context = new FixedAssetsDBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 var locations = context.SysDic.Where(c => c.ParentCode == DicData.FixedAssetsLocation).ToList();
 
@@ -86,7 +86,7 @@ namespace FixedAssetsPlugin.Windows
         private void LoadState()
         {
             cbState.Items.Clear();
-            using (FixedAssetsDBContext context = new FixedAssetsDBContext())
+            using (CoreDBContext context = new CoreDBContext())
             {
                 var locations = context.SysDic.Where(c => c.ParentCode == DicData.FixedAssetsState).ToList();
 
@@ -122,7 +122,11 @@ namespace FixedAssetsPlugin.Windows
                 txtCount.SelectAll();
                 return;
             }
-
+            CoreDBModels.Staff staff = new Staff();
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                staff = context.Staff.First(c => c.Id == UserGlobal.CurrUser.StaffId);
+            }
             using (FixedAssetsDBContext context = new FixedAssetsDBContext()) 
             {
                 if (UserGlobal.CurrUser.StaffId.IsNullOrEmpty())
@@ -130,8 +134,6 @@ namespace FixedAssetsPlugin.Windows
                     MessageBoxX.Show("当前操作者不是员工", "加载信息失败");
                     return;
                 }
-
-                var staff = context.Staff.First(c => c.Id == UserGlobal.CurrUser.StaffId);
 
                 var fixedAssets = context.FixedAssets.Single(c => c.Id == code);
                 fixedAssets.Count = count;

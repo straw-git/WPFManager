@@ -124,7 +124,6 @@
     <Compile Include="BasePage.cs" />
     <Compile Include="BasePlugins.cs" />
     <Compile Include="BaseUIModel.cs" />
-    <Compile Include="DataGlobal.cs" />
     <Compile Include="MyAttributes\DataSourceBindingAttribute.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
     <Compile Include="Utils\PagerCommon.cs" />
@@ -149,30 +148,19 @@
     <Compile Include="Utils\ColorHelper.cs" />
     <Compile Include="Utils\IdCardCommon.cs" />
     <Compile Include="Utils\ImageCommon.cs" />
-    <Compile Include="Utils\JobPostTreeViewCommon.cs" />
     <Compile Include="Utils\JsonHelper.cs" />
     <Compile Include="Utils\LocalFileHelper.cs" />
     <Compile Include="Utils\ModelCommon.cs" />
     <Compile Include="Utils\PhoneNumberCommon.cs" />
     <Compile Include="Utils\PromotionCodeCommon.cs" />
     <Compile Include="Utils\QRCodeCommon.cs" />
-    <Compile Include="Utils\RoleTreeViewCommon.cs" />
     <Compile Include="Utils\StyleHelper.cs" />
     <Compile Include="WindowsThumbnailProvider.cs" />
     <Compile Include="Windows\BasePageVisibilititySetting.xaml.cs">
       <DependentUpon>BasePageVisibilititySetting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\SelectedStaff.xaml.cs">
-      <DependentUpon>SelectedStaff.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\SelectedDateTime.xaml.cs">
       <DependentUpon>SelectedDateTime.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\SelectedStore.xaml.cs">
-      <DependentUpon>SelectedStore.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\SelectedUser.xaml.cs">
-      <DependentUpon>SelectedUser.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -209,19 +197,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\SelectedStaff.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Windows\SelectedDateTime.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\SelectedStore.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\SelectedUser.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

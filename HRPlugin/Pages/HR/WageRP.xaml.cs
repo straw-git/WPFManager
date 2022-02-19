@@ -17,7 +17,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
 using Common.Windows;
-using HRDBModels.Models;
+using HRDBModels;
+using HRPlugin.Windows;
 
 namespace HRPlugin.Pages.HR
 {
@@ -66,30 +67,30 @@ namespace HRPlugin.Pages.HR
             MaskVisible(false);
             if (a.Succeed)
             {
-                using (HRDBContext context = new HRDBContext())
+                using (CoreDBContext context = new CoreDBContext())
                 {
                     string id = a.Ids[0];
                     var staff = context.Staff.First(c => c.Id == id);
                     btnSelectStaff.Content = staff.Name;
                     btnSelectStaff.Tag = staff.Id;
 
-                    string monthCode = $"{DateTime.Now.ToString("yyMM")}";
-                    Data.Clear();
-                    var rp = context.StaffSalaryOther.Where(c => c.StaffId == staff.Id && c.MonthCode == monthCode).ToList();
-                    bNoData.Visibility = rp.Count() > 0 ? Visibility.Collapsed : Visibility.Visible;
-                    foreach (var item in rp)
-                    {
-                        Data.Add(new UIModel()
-                        {
-                            FinePrice = item.Type == 0 ? item.Price : 0,
-                            Id = item.Id,
-                            JobpostName = context.SysDic.First(c => c.Id == staff.JobPostId).Name,
-                            Name = staff.Name,
-                            Remark = item.Remark,
-                            Days=item.DoTime.ToString("dd号"),
-                            RewardPrice = item.Type == 0 ? 0 : item.Price
-                        });
-                    }
+                    //string monthCode = $"{DateTime.Now.ToString("yyMM")}";
+                    //Data.Clear();
+                    //var rp = context.StaffSalaryOther.Where(c => c.StaffId == staff.Id && c.MonthCode == monthCode).ToList();
+                    //bNoData.Visibility = rp.Count() > 0 ? Visibility.Collapsed : Visibility.Visible;
+                    //foreach (var item in rp)
+                    //{
+                    //    Data.Add(new UIModel()
+                    //    {
+                    //        FinePrice = item.Type == 0 ? item.Price : 0,
+                    //        Id = item.Id,
+                    //        JobpostName = context.SysDic.First(c => c.Id == staff.JobPostId).Name,
+                    //        Name = staff.Name,
+                    //        Remark = item.Remark,
+                    //        Days=item.DoTime.ToString("dd号"),
+                    //        RewardPrice = item.Type == 0 ? 0 : item.Price
+                    //    });
+                    //}
                 }
                 txtPrice.IsEnabled = true;
                 txtRemark.IsEnabled = true;
@@ -108,25 +109,25 @@ namespace HRPlugin.Pages.HR
         private void btnAll_Click(object sender, RoutedEventArgs e)
         {
             btnClear_Click(null, null);
-            using (HRDBContext context = new HRDBContext())
-            {
-                string monthCode = $"{DateTime.Now.ToString("yyMM")}";
-                var rp = context.StaffSalaryOther.Where(c => c.MonthCode == monthCode).ToList() ;
-                bNoData.Visibility = rp.Count() > 0 ? Visibility.Collapsed : Visibility.Visible;
-                foreach (var item in rp)
-                {
-                    var staff = context.Staff.First(c => c.Id == item.StaffId);
-                    Data.Add(new UIModel()
-                    {
-                        FinePrice = item.Type == 0 ? item.Price : 0,
-                        Id = item.Id,
-                        JobpostName = context.SysDic.First(c => c.Id == staff.JobPostId).Name,
-                        Name = staff.Name,
-                        Remark = item.Remark,
-                        RewardPrice = item.Type == 0 ? 0 : item.Price
-                    });
-                }
-            }
+            //using (HRDBContext context = new HRDBContext())
+            //{
+            //    string monthCode = $"{DateTime.Now.ToString("yyMM")}";
+            //    var rp = context.StaffSalaryOther.Where(c => c.MonthCode == monthCode).ToList() ;
+            //    bNoData.Visibility = rp.Count() > 0 ? Visibility.Collapsed : Visibility.Visible;
+            //    foreach (var item in rp)
+            //    {
+            //        var staff = context.Staff.First(c => c.Id == item.StaffId);
+            //        Data.Add(new UIModel()
+            //        {
+            //            FinePrice = item.Type == 0 ? item.Price : 0,
+            //            Id = item.Id,
+            //            JobpostName = context.SysDic.First(c => c.Id == staff.JobPostId).Name,
+            //            Name = staff.Name,
+            //            Remark = item.Remark,
+            //            RewardPrice = item.Type == 0 ? 0 : item.Price
+            //        });
+            //    }
+            //}
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
@@ -172,7 +173,11 @@ namespace HRPlugin.Pages.HR
                 txtPrice.SelectAll();
                 return;
             }
-
+            CoreDBModels.Staff staff = new CoreDBModels.Staff();
+            using (CoreDBContext context = new CoreDBContext()) 
+            {
+                 staff = context.Staff.First(c => c.Id == btnSelectStaff.Tag.ToString());
+            }
             using (HRDBContext context = new HRDBContext())
             {
                 StaffSalaryOther model = new StaffSalaryOther();
@@ -193,16 +198,15 @@ namespace HRPlugin.Pages.HR
                 string monthCode = $"{DateTime.Now.ToString("yyMM")}";
                 if (model.MonthCode == monthCode)
                 {
-                    var staff = context.Staff.First(c => c.Id == btnSelectStaff.Tag.ToString());
                     Data.Insert(0, new UIModel()
                     {
                         FinePrice = 0,
                         Id = model.Id,
-                        JobpostName = context.SysDic.First(c => c.Id == staff.JobPostId).Name,
+                        JobpostName = "",//context.SysDic.First(c => c.Id == staff.JobPostId).Name,
                         Name = staff.Name,
                         Remark = txtRemark.Text,
                         RewardPrice = price
-                    });
+                    }); 
                 }
             }
             txtPrice.Clear();
@@ -247,16 +251,16 @@ namespace HRPlugin.Pages.HR
                 string monthCode = $"{DateTime.Now.ToString("yyMM")}";
                 if (model.MonthCode == monthCode)
                 {
-                    var staff = context.Staff.First(c => c.Id == btnSelectStaff.Tag.ToString());
-                    Data.Insert(0, new UIModel()
-                    {
-                        FinePrice = price,
-                        Id = model.Id,
-                        JobpostName = context.SysDic.First(c => c.Id == staff.JobPostId).Name,
-                        Name = staff.Name,
-                        Remark = txtRemark.Text,
-                        RewardPrice = 0
-                    });
+                    //var staff = context.Staff.First(c => c.Id == btnSelectStaff.Tag.ToString());
+                    //Data.Insert(0, new UIModel()
+                    //{
+                    //    FinePrice = price,
+                    //    Id = model.Id,
+                    //    JobpostName = context.SysDic.First(c => c.Id == staff.JobPostId).Name,
+                    //    Name = staff.Name,
+                    //    Remark = txtRemark.Text,
+                    //    RewardPrice = 0
+                    //});
                 }
             }
             txtPrice.Clear();

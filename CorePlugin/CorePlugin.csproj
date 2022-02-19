@@ -76,6 +76,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreDBContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="RoleTreeViewCommon.cs" />
     <Compile Include="Windows\AddUser.xaml.cs">
       <DependentUpon>AddUser.xaml</DependentUpon>
     </Compile>
@@ -93,6 +96,15 @@
     </Compile>
     <Compile Include="Windows\EditJobPost.xaml.cs">
       <DependentUpon>EditJobPost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SelectedStaff.xaml.cs">
+      <DependentUpon>SelectedStaff.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SelectedStore.xaml.cs">
+      <DependentUpon>SelectedStore.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SelectedUser.xaml.cs">
+      <DependentUpon>SelectedUser.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\UpdateCount.xaml.cs">
       <DependentUpon>UpdateCount.xaml</DependentUpon>
@@ -160,6 +172,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\EditJobPost.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SelectedStaff.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SelectedStore.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SelectedUser.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1,6 +1,6 @@
 ﻿using Common;
 using Common.Data.Local;
-using CustomerDBModels.Models;
+using CustomerDBModels;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;

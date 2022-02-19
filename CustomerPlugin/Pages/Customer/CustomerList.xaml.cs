@@ -3,7 +3,7 @@ using Common.Data.Local;
 using Common.MyAttributes;
 using Common.Utils;
 using Common.Windows;
-using CustomerDBModels.Models;
+using CustomerDBModels;
 using CustomerPlugin.Windows;
 using LiveCharts;
 using LiveCharts.Defaults;
@@ -197,12 +197,12 @@ namespace CustomerPlugin.Pages.Customer
 
             using (CustomerDBContext context = new CustomerDBContext())
             {
-                Expression<Func<CustomerDBModels.Models.Customer, bool>> _where = n => GetPagerWhere(n, name, phone, isMember, isBlack, enableTime, startTime, endTime);//按条件查询
-                Expression<Func<CustomerDBModels.Models.Customer, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
+                Expression<Func<CustomerDBModels.Customer, bool>> _where = n => GetPagerWhere(n, name, phone, isMember, isBlack, enableTime, startTime, endTime);//按条件查询
+                Expression<Func<CustomerDBModels.Customer, DateTime>> _orderByDesc = n => n.CreateTime;//按时间倒序
                 //开始分页查询数据
                 var _zPager = await PagerCommon.BeginEFDataPagerAsync(context.Customer, _where, _orderByDesc, gLoading, gPager, bNoData, new Control[1] { list });
                 if (!_zPager.Result) return;
-                List<CustomerDBModels.Models.Customer> _list = _zPager.EFDataList;
+                List<CustomerDBModels.Customer> _list = _zPager.EFDataList;
 
                 #region 页面数据填充
 
@@ -247,7 +247,7 @@ namespace CustomerPlugin.Pages.Customer
             PagerCommon.EndEFDataPager();
         }
 
-        private UIModel DBItem2UIModel(CustomerDBModels.Models.Customer item, string _listName)
+        private UIModel DBItem2UIModel(CustomerDBModels.Customer item, string _listName)
         {
             UIModel _model = new UIModel();
             _model.CreateTime = item.CreateTime.ToString("yy年MM月dd日");
@@ -304,7 +304,7 @@ namespace CustomerPlugin.Pages.Customer
         /// <param name="_start"></param>
         /// <param name="_end"></param>
         /// <returns></returns>
-        protected bool GetPagerWhere(CustomerDBModels.Models.Customer _customer, string _name, string _phone, bool _isMember, bool _isBlcak, bool _enableTime, DateTime _start, DateTime _end)
+        protected bool GetPagerWhere(CustomerDBModels.Customer _customer, string _name, string _phone, bool _isMember, bool _isBlcak, bool _enableTime, DateTime _start, DateTime _end)
         {
             bool resultCondition = true;
             if (_name.NotEmpty())
@@ -656,7 +656,7 @@ namespace CustomerPlugin.Pages.Customer
 
             await Task.Run(() =>
             {
-                var _list = new List<CustomerDBModels.Models.Customer>();
+                var _list = new List<CustomerDBModels.Customer>();
                 using (CustomerDBContext context = new CustomerDBContext())
                 {
                     _list = context.Customer.OrderByDescending(c => c.CreateTime).ToList();

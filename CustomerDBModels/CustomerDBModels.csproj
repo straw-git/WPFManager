@@ -51,25 +51,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomerDBContext.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\CustomerTemp.cs" />
-    <Compile Include="Models\Member.cs" />
-    <Compile Include="Models\MemberLevel.cs" />
-    <Compile Include="Models\MemberRecharge.cs" />
-    <Compile Include="Models\MJActivity.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="CustomerTemp.cs" />
+    <Compile Include="DBInfo.cs" />
+    <Compile Include="Member.cs" />
+    <Compile Include="MemberLevel.cs" />
+    <Compile Include="MemberRecharge.cs" />
+    <Compile Include="MJActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
-      <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
-      <Name>CoreDBModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

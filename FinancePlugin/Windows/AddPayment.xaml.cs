@@ -1,5 +1,5 @@
 ﻿
-using FinanceDBModels.Models;
+using FinanceDBModels;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
