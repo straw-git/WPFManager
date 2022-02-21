@@ -1,14 +1,8 @@
 ﻿using Client.CurrGlobal;
-using Client.MyControls;
-using Client.Pages;
-using Common;
 using Common.Data.Local;
-using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,21 +11,37 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static Common.UserGlobal;
 
-namespace Client.Windows
+namespace Client.MyControls
 {
     /// <summary>
     /// SelectPlugins.xaml 的交互逻辑
     /// </summary>
-    public partial class SelectPlugins : Window
+    public partial class SelectPlugins : UserControl
     {
+
+        Storyboard hideSb;
+        Storyboard showSb;
         public SelectPlugins()
         {
             InitializeComponent();
-            this.UseCloseAnimation();
+
+            hideSb = (Storyboard)this.Resources["hiddlePlugins"];
+            hideSb.Completed += (a, b) =>
+            {
+                Visibility = Visibility.Collapsed;
+                gPlugins.Children.Clear();
+            };
+            showSb = (Storyboard)this.Resources["showPlugins"];
+            showSb.Completed += (a, b) =>
+            {
+                UpdatePluginsAsync();
+            };
         }
 
         /// <summary>
@@ -43,23 +53,44 @@ namespace Client.Windows
         /// </summary>
         public string CurrWindowName = "";
 
-        private void WindowX_Loaded(object sender, RoutedEventArgs e)
+        public Action AddNewWindow;
+        public Action JoinWindow;
+        public Action OnBackLoginClick;
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             bMenus.Visibility = Visibility.Collapsed;
+        }
+       
+        private void btnBackLogin_Click(object sender, RoutedEventArgs e)
+        {
+            OnBackLoginClick?.Invoke();
+        }
+        public void HidePlugins()
+        {
+            hideSb.Begin();
+        }
+
+        public void ShowPlugins()
+        {
+            gLoading.Visibility = Visibility.Visible;
+            bPlugins.Width = 5;
+            Visibility = Visibility.Visible;
+
+            showSb.Begin();
         }
 
         /// <summary>
         /// 显示
         /// </summary>
         /// <param name="_currWindowName"></param>
-        public async void ShowPluginsAsync(string _currWindowName = "")
+        public async void UpdatePluginsAsync(string _currWindowName = "")
         {
+            await Task.Delay(200);
             CurrFocusModels.Clear();//清空临时账套
             CurrWindowName = _currWindowName;//更新调用窗体名称
-            Visibility = Visibility.Visible;//显示
             gPlugins.Children.Clear();//初始化列表
             UpdatePluginsButtons();//检查一下按钮显示隐藏
-
 
             List<PluginsModel> pluginsModels = new List<PluginsModel>();
 
@@ -69,7 +100,7 @@ namespace Client.Windows
                 //添加本地允许的dll
                 var _localPlugins = LocalPlugins.Models.OrderBy(c => c.Order).ToList();
 
-                UIGlobal.RunUIAction(()=> 
+                UIGlobal.RunUIAction(() =>
                 {
                     foreach (var m in _localPlugins)
                     {
@@ -114,15 +145,10 @@ namespace Client.Windows
             }
 
             #endregion
-        }
 
-        /// <summary>
-        /// 隐藏
-        /// </summary>
-        public void HidePlugins()
-        {
-            Visibility = Visibility.Collapsed;
-            gPlugins.Children.Clear();
+            await Task.Delay(200);
+
+            gLoading.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -162,36 +188,16 @@ namespace Client.Windows
             }
         }
 
-        private void bTitle_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                this.DragMove();
-            }
-        }
-
         private void btnNewWindow_Click(object sender, RoutedEventArgs e)
         {
             MainWindowsGlobal.Data2MainWindow(Guid.NewGuid().ToString(), CurrFocusModels);
-            Close();
-        }
-
-        private void btnHide_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainWindowsGlobal.MainWindowsDic.Keys.Count > 0)
-            {
-                Close();
-            }
-            else
-            {
-                Application.Current.Shutdown();
-            }
+            AddNewWindow?.Invoke();
         }
 
         private void btnAddCurrWindow_Click(object sender, RoutedEventArgs e)
         {
             MainWindowsGlobal.Data2MainWindow(CurrWindowName, CurrFocusModels);
-            Close();
+            JoinWindow?.Invoke();
         }
     }
 }

@@ -38,10 +38,6 @@ namespace SalePlugin
             LocalSkin.Init();
             //加载用户设置
             LocalSettings.Init();
-            //初始化数据库连接数据
-            LocalDB.Init();
-            //服务端设置
-            LocalServer.Init();
             //初始化样式
             StyleHelper.Init();
 

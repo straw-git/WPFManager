@@ -45,13 +45,13 @@ namespace Client
                 $@"{basePath}HRPlugin\bin\Debug\HRPlugin.dll",
                 $@"{basePath}SalePlugin\bin\Debug\SalePlugin.dll",
                 $@"{basePath}LiveChartsTestPlugin\bin\Debug\LiveChartsTestPlugin.dll",
-                 $@"{basePath}CorePlugin\bin\Debug\CorePlugin.dll"
+                $@"{basePath}CorePlugin\bin\Debug\CorePlugin.dll"
             };
             //需要检查更新的数据实体 DLL
             DBDLLPaths = new List<string>()
             {
                 $@"{basePath}FixedAssetsDBModels\bin\Debug\FixedAssetsDBModels.dll",
-                $@"{basePath}CoreDBModels\bin\Debug\CoreDBModels.dll",
+                //$@"{basePath}CoreDBModels\bin\Debug\CoreDBModels.dll", 这个是必须要连接的
                 $@"{basePath}ERPDBModels\bin\Debug\ERPDBModels.dll",
                 $@"{basePath}CustomerDBModels\bin\Debug\CustomerDBModels.dll",
                 $@"{basePath}HRDBModels\bin\Debug\HRDBModels.dll",

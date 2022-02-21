@@ -15,26 +15,48 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Client.Windows
+namespace Client.MyControls
 {
     /// <summary>
     /// Plugins.xaml 的交互逻辑
     /// </summary>
-    public partial class Plugins : WindowX
+    public partial class LocalPluginsBox : UserControl
     {
-        public Plugins()
+        Storyboard hideSb;
+        Storyboard showSb;
+        public LocalPluginsBox()
         {
             InitializeComponent();
-            this.UseCloseAnimation();
+
+            hideSb = (Storyboard)this.Resources["hiddlePlugins"];
+            hideSb.Completed += (a, b) =>
+            {
+                Visibility = Visibility.Collapsed;
+            };
+            showSb = (Storyboard)this.Resources["showPlugins"];
+            showSb.Completed += (a, b) =>
+            {
+                btnUpdateDLLs_Click(null, null);
+                UpdatePlugins();
+            };
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        public Action OnBackLoginClick;
+
+        public void HidePlugins()
         {
-            btnUpdateDLLs_Click(null, null);
-            UpdatePlugins();
+            hideSb.Begin();
+        }
+
+        public void ShowPlugins()
+        {
+            bPlugins.Width = 5;
+            Visibility = Visibility.Visible;
+            showSb.Begin();
         }
 
         private void UpdatePlugins()
@@ -72,7 +94,8 @@ namespace Client.Windows
             handler.UpdateMessage("更新完成！");
             await Task.Delay(200);
             handler.Close();
-            Close();
+
+            OnBackLoginClick?.Invoke();
         }
 
         private void btnUpdateDLLs_Click(object sender, RoutedEventArgs e)
@@ -95,6 +118,11 @@ namespace Client.Windows
                 }
             }
 
+        }
+
+        private void btnBackLogin_Click(object sender, RoutedEventArgs e)
+        {
+            OnBackLoginClick?.Invoke();
         }
 
         private void dlls_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -197,5 +225,6 @@ namespace Client.Windows
             }
             return null;
         }
+
     }
 }

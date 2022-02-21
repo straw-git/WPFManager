@@ -8,22 +8,61 @@
              Height="360"
               Opacity="0.9"
              xmlns:local="clr-namespace:Client.MyControls">
-    <Border Background="White" >
+    <UserControl.Resources>
+        <Storyboard x:Key="hiddleLogin">
+            <DoubleAnimation Storyboard.TargetName="bLogin" Storyboard.TargetProperty="Width"
+                                     To="0" Duration="0:0:0.15">
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="showLogin">
+            <DoubleAnimation Storyboard.TargetName="bLogin" Storyboard.TargetProperty="Width" From="0"
+                                     To="340" Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <Border Background="White" x:Name="bLogin" Width="340" >
         <Border.Effect>
             <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
         </Border.Effect>
         <Grid >
-            <StackPanel  VerticalAlignment="Center" Width="280">
+            <StackPanel  VerticalAlignment="Top" Margin="0,40,0,0" Width="280">
                 <StackPanel Orientation="Horizontal" Width="260">
-                    <Label Content="登录" FontSize="25" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Label Content="登录失败?" FontSize="12" VerticalContentAlignment="Center"/>
-                        <Label Content="设置数据" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" x:Name="btnDBSetting" MouseDown="btnDBSetting_Click"/>
+                    <TextBlock Text="登录LOGO" Width="200" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.75">
+                        <TextBlock.Foreground>
+                            <LinearGradientBrush SpreadMethod="Repeat">
+                                <LinearGradientBrush.Transform>
+                                    <TranslateTransform x:Name="LinearGradientBrushTranslate" />
+                                </LinearGradientBrush.Transform>
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0.00" Color="#FFFF2B88" />
+                                    <GradientStop Offset="0.14" Color="#FFFF9B6A" />
+                                    <GradientStop Offset="0.28" Color="#FFF3D64E" />
+                                    <GradientStop Offset="0.42" Color="#FFDCFF93" />
+                                    <GradientStop Offset="0.56" Color="#FFB8F1CC" />
+                                    <GradientStop Offset="0.70" Color="#FFD9B8F1" />
+                                    <GradientStop Offset="0.85" Color="#FFCA7497" />
+                                    <GradientStop Offset="1.00" Color="#FFFF2B88" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </TextBlock.Foreground>
+                        <TextBlock.Triggers>
+                            <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="LinearGradientBrushTranslate" Storyboard.TargetProperty="X" From="0" To="700" Duration="0:0:15" RepeatBehavior="Forever" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </TextBlock.Triggers>
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal" Width="60" VerticalAlignment="Bottom">
                         <Label Content="插件中心" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" x:Name="btnPlugins" MouseDown="btnPlugins_Click"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
-                    <TextBox  Height="30"
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
+                    <TextBox  Height="40"
+                              FontSize="16"
                                       Width="260"
                                       x:Name="txtUserName"
                                       Text="admin"
@@ -34,7 +73,8 @@
                                       pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                    <PasswordBox  Height="30"
+                    <PasswordBox  Height="40"
+                                  FontSize="16"
                                           Width="260"
                                           Password="123456"
                                           x:Name="txtPassword"
@@ -45,15 +85,16 @@
                                           pu:PasswordBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                           pu:PasswordBoxHelper.IsShowPwdButtonVisible="True" />
                 </StackPanel>
-                <Button  Height="30"
-                        Margin="0,40,0,10"
+                <Button  Height="40"
+                         FontSize="16"
+                         Width="260"
+                        Margin="0,60,0,10"
                         Content="登 录"
                         pu:ButtonHelper.ClickStyle="Sink"
                         FontFamily="{StaticResource FontAwesome}"
                         Background="{DynamicResource ButtonBgColor}"
                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"
                         pu:ButtonHelper.Icon="&#xf21d;" x:Name="btnLogin" Click="btnLogin_Click" />
-                <Label Content="取 消" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MouseDown="btnExit_Click"/>
             </StackPanel>
         </Grid>
     </Border>

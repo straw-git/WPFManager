@@ -127,9 +127,7 @@
     <Compile Include="MyAttributes\DataSourceBindingAttribute.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
     <Compile Include="Utils\PagerCommon.cs" />
-    <Compile Include="Data\Local\LocalDB.cs" />
     <Compile Include="Data\Local\LocalPlugins.cs" />
-    <Compile Include="Data\Local\LocalServer.cs" />
     <Compile Include="Data\Local\LocalSettings.cs" />
     <Compile Include="Data\Local\LocalSkin.cs" />
     <Compile Include="DicData.cs" />

@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Client.MyControls.SelectPlugins"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Client.MyControls"
+             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+             Height="360"
+             Opacity="0.9" Loaded="UserControl_Loaded"
+             Width="600" >
+    <UserControl.Resources>
+        <Storyboard x:Key="hiddlePlugins">
+            <DoubleAnimation Storyboard.TargetName="bPlugins" Storyboard.TargetProperty="Width"
+                                     To="0" Duration="0:0:0.15">
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="showPlugins">
+            <DoubleAnimation Storyboard.TargetName="bPlugins" Storyboard.TargetProperty="Width" From="0"
+                                     To="600" Duration="0:0:0.25">
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    <Grid>
+
+        <Border Background="White" x:Name="bPlugins">
+            <Border.Effect>
+                <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
+            </Border.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="Black">
+                    <Label Content="选择插件" VerticalAlignment="Center" Foreground="White" Margin="5,0,0,0"/>
+                    <Button  ToolTip="返回登录页面" Margin="0,0,5,0"
+                                    pu:ButtonHelper.Icon="&#xf060;"
+                                    FontFamily="/Resources/#iconfont"
+                                      Click="btnBackLogin_Click"
+                                    FontSize="16" 
+                                    Foreground="White" 
+                                    pu:ButtonHelper.HoverBrush="Green"  
+                                    pu:ButtonHelper.ButtonStyle="Link" 
+                                    HorizontalAlignment="Right"/>
+                </Grid>
+                <Border Grid.Row="1">
+                    <Border.Effect>
+                        <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
+                    </Border.Effect>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="10,5,10,5">
+                        <UniformGrid x:Name="gPlugins"  Columns="3" VerticalAlignment="Top"/>
+                    </ScrollViewer>
+                </Border>
+                <Border Grid.Row="2" Height="30" Background="Black" >
+                    <StackPanel x:Name="bMenus" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button  ToolTip="加入当前窗口" 
+                                    pu:ButtonHelper.Icon="&#xf2d0;"
+                                    FontFamily="/Resources/#iconfont"
+                                    FontSize="16" 
+                                    Foreground="White"  x:Name="btnAddCurrWindow" Click="btnAddCurrWindow_Click"
+                                    pu:ButtonHelper.HoverBrush="Green"  
+                                    pu:ButtonHelper.ButtonStyle="Link" 
+                                    HorizontalAlignment="Right"/>
+                        <Button  ToolTip="新窗口"  Margin="20,0,20,0"  
+                                    pu:ButtonHelper.Icon="&#xf2d2;"
+                                    FontFamily="/Resources/#iconfont"
+                                    FontSize="16" 
+                                    Foreground="White"   x:Name="btnNewWindow" Click="btnNewWindow_Click"
+                                    pu:ButtonHelper.HoverBrush="Green"  
+                                    pu:ButtonHelper.ButtonStyle="Link" 
+                                    HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+        <Border x:Name="gLoading" Visibility="Collapsed" Background="White">
+            <StackPanel VerticalAlignment="Center">
+                <pu:Loading Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
+                <Label Content="正在加载插件..." HorizontalAlignment="Center" Margin="0,20,0,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

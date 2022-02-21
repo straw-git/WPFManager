@@ -58,6 +58,7 @@ namespace Common
         /// </summary>
         public static void SetCurrUser(User _user)
         {
+            IsLogin = true;
             CurrUser = _user;
         }
 

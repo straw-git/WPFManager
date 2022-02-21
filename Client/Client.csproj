@@ -113,10 +113,10 @@
     <Compile Include="MyControls\LogoBox.xaml.cs">
       <DependentUpon>LogoBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Plugins.xaml.cs">
-      <DependentUpon>Plugins.xaml</DependentUpon>
+    <Compile Include="MyControls\LocalPluginsBox.xaml.cs">
+      <DependentUpon>LocalPluginsBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\SelectPlugins.xaml.cs">
+    <Compile Include="MyControls\SelectPlugins.xaml.cs">
       <DependentUpon>SelectPlugins.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Setting\General.xaml.cs">
@@ -124,9 +124,6 @@
     </Compile>
     <Compile Include="Pages\Welcome.xaml.cs">
       <DependentUpon>Welcome.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\DBSettingWindow.xaml.cs">
-      <DependentUpon>DBSettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
@@ -153,11 +150,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Plugins.xaml">
+    <Page Include="MyControls\LocalPluginsBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\SelectPlugins.xaml">
+    <Page Include="MyControls\SelectPlugins.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -169,7 +166,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MainWindow.xaml">
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -177,14 +174,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Windows\MainWindow.xaml.cs">
+    <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\DBSettingWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Windows\SettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

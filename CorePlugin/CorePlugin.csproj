@@ -88,9 +88,6 @@
     <Compile Include="Windows\BasePageVisibilititySetting.xaml.cs">
       <DependentUpon>BasePageVisibilititySetting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\DBSettingWindow.xaml.cs">
-      <DependentUpon>DBSettingWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\EditDic.xaml.cs">
       <DependentUpon>EditDic.xaml</DependentUpon>
     </Compile>
@@ -160,10 +157,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\BasePageVisibilititySetting.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\DBSettingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

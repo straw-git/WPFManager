@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         xmlns:myBox="clr-namespace:Client.MyControls"
-        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver" 
         Title="登录" 
         Height="400" Width="800"
         WindowStyle="None"
@@ -14,12 +14,6 @@
          AllowsTransparency="True" 
         WindowStartupLocation="CenterScreen">
     <Border x:Name="wb" BorderThickness="3" Background="{DynamicResource SkinColor}" BorderBrush="{DynamicResource SkinColor}"  MouseDown="wb_MouseDown">
-        <!--<Border.Background>
-            <LinearGradientBrush EndPoint="0.8,1" StartPoint="0.33,0">
-                <GradientStop Color="#FF50B3E2" Offset="0"/>
-                <GradientStop Color="#FF084168" Offset="1"/>
-            </LinearGradientBrush>
-        </Border.Background>-->
         <Border.Clip>
             <GeometryGroup FillRule="Nonzero">
                 <RectangleGeometry x:Name="r1" Rect="0,50,800,100"/>
@@ -29,12 +23,27 @@
             </GeometryGroup>
         </Border.Clip>
         <Grid x:Name="root">
-            <Grid Grid.ColumnSpan="2">
-                <!--<Image Source="pack://application:,,,/Common;component/Images/login_bg.png" Stretch="Fill"/>-->
+            <Grid>
+                <!--背景波浪动画-->
+                <Viewport3D Name="World">
+                    <Viewport3D.Camera>
+                        <PerspectiveCamera Position="0,50,1000" LookDirection="0,2,-1" UpDirection="0,-1,-1" FieldOfView="10000" NearPlaneDistance="10" FarPlaneDistance="8000"/>
+                    </Viewport3D.Camera>
+                    <Viewport3D.Children>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <Model3DGroup x:Name="WorldModels">
+                                    <AmbientLight Color="#FFFFFFFF" />
+                                </Model3DGroup>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                    </Viewport3D.Children>
+                </Viewport3D>
+                <!--用户信息-->
                 <Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Background="Black" CornerRadius="5" >
                     <Grid>
-                        <Label Content="未登录" Foreground="White" Margin="5"/>
-                        <pu:DropDown Margin="5" Visibility="Collapsed">
+                        <Label x:Name="lblNotLogin" Content="未登录" Foreground="White" Margin="5" ToolTip="当前未登录"/>
+                        <pu:DropDown x:Name="ddLogined" Margin="5" Visibility="Collapsed">
                             <StackPanel VerticalAlignment="Center"
                                 Orientation="Horizontal">
                                 <TextBlock Text="Zeoun's"
@@ -57,71 +66,19 @@
                         </pu:DropDown>
                     </Grid>
                 </Border>
-                <Viewport3D Name="World">
-                    <Viewport3D.Camera>
-                        <PerspectiveCamera Position="0,50,1000" LookDirection="0,2,-1" UpDirection="0,-1,-1" FieldOfView="10000" NearPlaneDistance="10" FarPlaneDistance="8000"/>
-                    </Viewport3D.Camera>
-                    <Viewport3D.Children>
-                        <ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <Model3DGroup x:Name="WorldModels">
-                                    <AmbientLight Color="#FFFFFFFF" />
-                                </Model3DGroup>
-                            </ModelVisual3D.Content>
-                        </ModelVisual3D>
-                    </Viewport3D.Children>
-                </Viewport3D>
+                <Button x:Name="btnClose"  ToolTip="关闭"
+                        pu:ButtonHelper.Icon="&#xf00d;"
+                        FontFamily="/Resources/#iconfont" 
+                        Width="50" Height="50" FontSize="25" 
+                        Foreground="{DynamicResource CloseButtonColor}" 
+                        pu:ButtonHelper.HoverBrush="{DynamicResource CloseButtonFocusColor}"  
+                        pu:ButtonHelper.ButtonStyle="Link" 
+                        VerticalAlignment="Top" 
+                        HorizontalAlignment="Right" Click="btnExit_Click"/>
             </Grid>
-            <!--<myBox:LoginBox Grid.Column="1"/>-->
-            <Border  Grid.Column="1" Width="340" HorizontalAlignment="Center" Background="White" Opacity="0.75" Margin="100,20,0,20" >
-                <Border.Effect>
-                    <DropShadowEffect Color="White" BlurRadius="10" ShadowDepth="0" Opacity="1" />
-                </Border.Effect>
-                <Grid >
-                    <StackPanel  VerticalAlignment="Center" Width="280">
-                        <StackPanel Orientation="Horizontal" Width="260">
-                            <Label Content="登录" FontSize="25" />
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Label Content="登录失败?" FontSize="12" VerticalContentAlignment="Center"/>
-                                <Label Content="设置数据" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" MouseDown="btnDBSetting_Click"/>
-                                <Label Content="插件中心" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" MouseDown="btnPlugins_Click"/>
-                            </StackPanel>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
-                            <TextBox  Height="30"
-                                      Width="260"
-                                      x:Name="txtUserName"
-                                      Text="admin"
-                                      Background="{DynamicResource TextBoxBgColor}"
-                                      pu:TextBoxHelper.Watermark="账户"
-                                      pu:TextBoxHelper.Icon="&#xf11c;"
-                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
-                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                            <PasswordBox  Height="30"
-                                          Width="260"
-                                          Password="123456"
-                                          x:Name="txtPassword"
-                                          Background="{DynamicResource TextBoxBgColor}"
-                                          pu:PasswordBoxHelper.Watermark="密码"
-                                          pu:PasswordBoxHelper.Icon="&#xf11c;"
-                                          pu:PasswordBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
-                                          pu:PasswordBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
-                                          pu:PasswordBoxHelper.IsShowPwdButtonVisible="True" />
-                        </StackPanel>
-                        <Button  Height="30"
-                        Margin="0,40,0,10"
-                        Content="登 录"
-                        pu:ButtonHelper.ClickStyle="Sink"
-                        FontFamily="{StaticResource FontAwesome}"
-                        Background="{DynamicResource ButtonBgColor}"
-                        pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"
-                        pu:ButtonHelper.Icon="&#xf21d;" x:Name="btnLogin" Click="btnLogin_Click" />
-                        <Label Content="取 消" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MouseDown="btnExit_Click"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
+            <myBox:SelectPlugins x:Name="selectPlugins"/>
+            <myBox:LocalPluginsBox x:Name="localPlugins" Visibility="Collapsed"/>
+            <myBox:LoginBox x:Name="login"/>
         </Grid>
     </Border>
     <Window.RenderTransform>

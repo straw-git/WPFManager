@@ -167,9 +167,9 @@ namespace Client
 
         private void btnSelectedPlugins_Click(object sender, RoutedEventArgs e)
         {
-            SelectPlugins selectPlugins = new SelectPlugins();
-            selectPlugins.ShowPluginsAsync(CurrWindowName);
-            selectPlugins.Show();
+            //SelectPlugins selectPlugins = new SelectPlugins();
+            //selectPlugins.ShowPluginsAsync(CurrWindowName);
+            //selectPlugins.Show();
         }
 
         private void btnChangePwd_Click(object sender, RoutedEventArgs e)

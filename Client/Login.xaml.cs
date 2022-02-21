@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation.Peers;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -62,8 +63,77 @@ namespace Client
         {
             stdStart.Begin();
 
+            login.Visibility = Visibility.Visible;
+            localPlugins.Visibility = Visibility.Collapsed;
+            selectPlugins.Visibility = Visibility.Collapsed;
+
+            #region 事件监听
+
+            login.OnLoginFinished += OnLoginFinished;
+            login.OnLocalPluginsClick += OnLocalPluginsClick;
+
+            localPlugins.OnBackLoginClick += LocalPluginsFinished;
+
+            selectPlugins.AddNewWindow += AddPlugins2NewWindow;
+            selectPlugins.JoinWindow += JoinPlugins2CurrWindow;
+            selectPlugins.OnBackLoginClick += SelectPlugins2Login;
+
+            #endregion 
+
             AutoUpdatePlugins.Update();
             CheckNullData();
+        }
+
+        private void SelectPlugins2Login()
+        {
+            selectPlugins.HidePlugins();
+            login.ShowLogin();
+        }
+
+        private void OnLocalPluginsClick()
+        {
+            //插件管理
+            login.HideLogin();
+            localPlugins.ShowPlugins();
+        }
+
+        private void JoinPlugins2CurrWindow()
+        {
+
+        }
+
+        private void AddPlugins2NewWindow()
+        {
+
+        }
+
+        private void LocalPluginsFinished()
+        {
+            localPlugins.HidePlugins();
+            login.ShowLogin();
+        }
+
+        private void OnLoginFinished()
+        {
+            UpdateLoginData();
+            login.HideLogin();
+            selectPlugins.ShowPlugins();
+        }
+
+        private void UpdateLoginData()
+        {
+            if (UserGlobal.IsLogin)
+            {
+                lblNotLogin.Visibility = Visibility.Collapsed;
+                ddLogined.Visibility = Visibility.Visible;
+
+                lblCurrUser.Text = UserGlobal.CurrUser.Name;
+            }
+            else
+            {
+                lblNotLogin.Visibility = Visibility.Visible;
+                ddLogined.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void OnFrame(object sender, EventArgs e)
@@ -74,35 +144,22 @@ namespace Client
         private async void CheckNullData()
         {
             IsEnabled = false;
-            var handler = PendingBox.Show("正在连读取配置...", "请等待", false, Application.Current.MainWindow, new PendingBoxConfigurations()
+            var handler = PendingBox.Show("连接数据库...", "请等待", false, Application.Current.MainWindow, new PendingBoxConfigurations()
             {
                 LoadingForeground = "#5DBBEC".ToColor().ToBrush(),
                 ButtonBrush = "#5DBBEC".ToColor().ToBrush(),
             });
-
-            await Task.Run(() =>
-            {
-                //读取及更新数据连接配置文件
-                XmlDocument doc = new XmlDocument();
-                doc.Load("..//..//App.config");
-                XmlNode root = doc.SelectSingleNode("configuration");
-                XmlNode node = root.SelectSingleNode("connectionStrings/add[@name='ZDBConnectionString']");
-                XmlElement el = node as XmlElement;
-                el.SetAttribute("connectionString", $"Data Source={LocalDB.Model.DataSource};Initial Catalog={LocalDB.Model.InitialCatalog};User ID={LocalDB.Model.UserId};Password={LocalDB.Model.Password};");
-                doc.Save("..//..//App.config");
-            });
-
-            handler.UpdateMessage("连接数据库...");
-            await Task.Delay(200);
             bool connectionSucceed = false;
             //检查数据
             await Task.Run(() =>
             {
                 connectionSucceed = InitData.NullDataCheck();
             });
+            await Task.Delay(200);
             if (connectionSucceed)
-                handler.UpdateMessage("连接成功");
-
+            {
+                handler.UpdateMessage("连接成功,正在加载插件...");
+            }
             await Task.Delay(200);
             handler.Close();
 
@@ -110,136 +167,13 @@ namespace Client
             if (!connectionSucceed)
             {
                 MessageBoxX.Show("数据库连接失败", "连接错误");
-                btnDBSetting_Click(null, null);
             }
         }
 
-        private async void btnLogin_Click(object sender, RoutedEventArgs e)
-        {
-            string userName = txtUserName.Text.Trim();
-            string userPwd = txtPassword.Password.Trim();
-
-            #region 验证
-
-            if (string.IsNullOrEmpty(userName))
-            {
-                MessageBoxX.Show("账户不能为空", "空值判断");
-                txtUserName.Focus();
-                return;
-            }
-
-            if (string.IsNullOrEmpty(userPwd))
-            {
-                MessageBoxX.Show("密码不能为空", "空值判断");
-                txtPassword.Focus();
-                return;
-            }
-
-            #endregion 
-
-            var handler = PendingBox.Show("正在登录...", "请等待", false, Application.Current.MainWindow, new PendingBoxConfigurations()
-            {
-                LoadingForeground = "#5DBBEC".ToColor().ToBrush(),
-                ButtonBrush = "#5DBBEC".ToColor().ToBrush(),
-            });
-
-            bool loginSucceed = true;//是否登录成功
-            string errorStr = "";//错误信息
-            CoreDBModels.User userModel = null;
-
-            #region 登录
-
-            using (var context = new CoreDBContext())
-            {
-                if (context.User.Any(c => c.Name == userName))
-                {
-                    bool hasAny = context.User.Any(c => c.Name == userName && c.Pwd == userPwd);
-                    if (!hasAny)
-                    {
-                        errorStr = "密码错误";
-                    }
-                    else
-                    {
-                        userModel = context.User.First(c => c.Name == userName && c.Pwd == userPwd);
-                        if (userModel == null || userModel.Id <= 0)
-                        {
-                            errorStr = "未知错误";
-                        }
-                        if (!userModel.CanLogin)
-                        {
-                            errorStr = "无权登录";
-                        }
-                    }
-                }
-                else
-                {
-                    errorStr = "账户名不存在";
-                }
-            }
-
-            #endregion 
-
-            //有错误证明未成功
-            loginSucceed = string.IsNullOrEmpty(errorStr) && userModel != null;
-
-            if (!loginSucceed)
-            {
-                Notice.Show($"{errorStr}！", "登录失败", 5, Panuon.UI.Silver.MessageBoxIcon.Error);
-                handler.Close();
-                return;
-            }
-            else
-            {
-                handler.UpdateMessage("登录成功,正在装载用户数据...");
-                await Task.Delay(500);
-
-                // 登录成功 
-                //填充用户数据
-                UserGlobal.SetCurrUser(userModel);
-                //打开账套选择
-                SelectPlugins selectPlugins = new SelectPlugins();
-                selectPlugins.ShowPluginsAsync();
-
-                handler.UpdateMessage("数据装载成功！");
-                await Task.Delay(300);
-                handler.Close();
-
-                selectPlugins.Show();
-                //关闭当前页
-                this.Close();
-
-                Notice.Show($"{UserGlobal.CurrUser.Name}登录", "欢迎", 3, MessageBoxIcon.Success);
-            }
-        }
-
-        public void btnDBSetting_Click(object sender, MouseEventArgs e)
-        {
-            Windows.DBSettingWindow a = new Windows.DBSettingWindow();
-            a.ShowDialog();
-            if (a.Succeed)
-            {
-                CheckNullData();
-            }
-        }
-
-        public void btnPlugins_Click(object sender, MouseEventArgs e)
-        {
-            //插件管理
-            Windows.Plugins a = new Windows.Plugins();
-            a.ShowDialog();
-        }
-
-        private void gTitle_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                this.DragMove();
-            }
-        }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            Application.Current.Shutdown();
         }
 
         private void wb_MouseDown(object sender, MouseButtonEventArgs e)
