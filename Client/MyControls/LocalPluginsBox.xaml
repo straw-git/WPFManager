@@ -37,7 +37,7 @@
                 <ListBox MouseDoubleClick="dlls_MouseDoubleClick" Margin="5,5,5,30" x:Name="dlls"/>
                 <Border Height="30" Background="Black" Margin="5,0,5,0" VerticalAlignment="Bottom">
                     <Grid>
-                        <Label Content="已有插件 [双击使用]" Foreground="White"/>
+                        <Label Content="服务端插件 [双击下载]" VerticalAlignment="Center" Foreground="White"/>
                         <Button  ToolTip="刷新本地插件"
                                     pu:ButtonHelper.Icon="&#xf01e;"
                                     FontFamily="/Resources/#iconfont"
@@ -54,7 +54,7 @@
                 <ListBox MouseDoubleClick="plugins_MouseDoubleClick"  Margin="5,5,5,30" x:Name="plugins" PreviewMouseMove="LBoxSort_OnPreviewMouseMove" Drop="LBoxSort_OnDrop" AllowDrop="True"/>
                 <Border Height="30" Background="Black" Margin="5,0,5,0" VerticalAlignment="Bottom">
                     <Grid>
-                        <Label Content="使用中的插件 [拖动移动显示顺序]" Foreground="White"/>
+                        <Label Content="本地插件 [拖动移动显示顺序]" VerticalAlignment="Center" Foreground="White"/>
                         <Button  ToolTip="更新并使用插件"
                                         pu:ButtonHelper.Icon="&#xf1d9;"
                                         FontFamily="/Resources/#iconfont"

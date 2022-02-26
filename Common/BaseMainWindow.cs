@@ -1,4 +1,5 @@
-﻿using Panuon.UI.Silver;
+﻿using CoreDBModels;
+using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Common
         /// <summary>
         /// 当前窗体中的插件
         /// </summary>
-        public List<UserGlobal.PluginsModel> CurrWindowPlugins = new List<UserGlobal.PluginsModel>();
+        public List<BasePlugins> CurrWindowPlugins = new List<BasePlugins>();
 
 
         public void EnableMainWindow(bool _enable)
@@ -29,7 +30,7 @@ namespace Common
         /// 添加插件信息
         /// </summary>
         /// <param name="_models"></param>
-        public void AddPluginModels(List<UserGlobal.PluginsModel> _models)
+        public void AddPluginModels(List<BasePlugins> _models)
         {
             foreach (var model in _models)
             {

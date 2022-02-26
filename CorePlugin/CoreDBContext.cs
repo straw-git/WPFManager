@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Data.Entity;
 
-namespace CorePlugin 
+namespace CorePlugin
 {
     public class CoreDBContext : DbContext
     {
@@ -14,12 +14,17 @@ namespace CorePlugin
 
         //字典
         public DbSet<SysDic> SysDic { get; set; }
-        //人员
-        public DbSet<Staff> Staff { get; set; }
         //系统账户
         public DbSet<User> User { get; set; }
         //日志
         public DbSet<Log> Log { get; set; }
+        //系统账户角色
+        public DbSet<Role> Role { get; set; }
+        //权限相关
+        public DbSet<Plugins> Plugins { get; set; }
+        public DbSet<PluginsPage> PluginsPage { get; set; }
+        public DbSet<RolePlugins> RolePlugins { get; set; }
+        public DbSet<UserPlugins> UserPlugins { get; set; }
     }
 
 }

@@ -1,7 +1,10 @@
 ﻿using Client.CurrGlobal;
+using Common;
 using Common.Data.Local;
+using CoreDBModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,15 +46,11 @@ namespace Client.MyControls
                 UpdatePluginsAsync();
             };
         }
-
-        /// <summary>
-        /// 当前选中的账套
-        /// </summary>
-        List<PluginsModel> CurrFocusModels = new List<PluginsModel>();
         /// <summary>
         /// 当前操作的窗体名称
         /// </summary>
         public string CurrWindowName = "";
+        List<BasePlugins> CurrFocusModels = new List<BasePlugins>();
 
         public Action AddNewWindow;
         public Action JoinWindow;
@@ -61,7 +60,7 @@ namespace Client.MyControls
         {
             bMenus.Visibility = Visibility.Collapsed;
         }
-       
+
         private void btnBackLogin_Click(object sender, RoutedEventArgs e)
         {
             OnBackLoginClick?.Invoke();
@@ -87,49 +86,59 @@ namespace Client.MyControls
         public async void UpdatePluginsAsync(string _currWindowName = "")
         {
             await Task.Delay(200);
-            CurrFocusModels.Clear();//清空临时账套
             CurrWindowName = _currWindowName;//更新调用窗体名称
             gPlugins.Children.Clear();//初始化列表
             UpdatePluginsButtons();//检查一下按钮显示隐藏
 
-            List<PluginsModel> pluginsModels = new List<PluginsModel>();
+            List<BasePlugins> pluginsModels = new List<BasePlugins>();//获取所有插件
 
-            await Task.Run(() =>
+            if (IsLogin && CurrUser.Name == "admin")
             {
+                #region 如果是初始的超级管理员账户 遍历插件目录下的所有dll文件
 
-                //添加本地允许的dll
-                var _localPlugins = LocalPlugins.Models.OrderBy(c => c.Order).ToList();
+                //创建一个DirectoryInfo的类
+                DirectoryInfo directoryInfo = new DirectoryInfo($"{AppDomain.CurrentDomain.BaseDirectory}{CheckPluginsDLL.PluginFolderName}\\");
+                //获取当前的目录的文件
+                FileInfo[] fileInfos = directoryInfo.GetFiles();
 
-                UIGlobal.RunUIAction(() =>
+                foreach (FileInfo info in fileInfos)
                 {
-                    foreach (var m in _localPlugins)
+                    //获取文件的名称(包括扩展名)
+                    //string fullName = info.FullName;
+                    //获取文件的扩展名
+                    string extension = info.Extension.ToLower();
+                    if (extension == ".dll")
                     {
+                        string pluginsName = info.Name.Substring(0, info.Name.LastIndexOf('.'));
                         //查看dll中的模块
-                        var _currDLLPluginsModel = CheckPluginsDLL.GetPluginsModel(m.DLLPageName, m.Order);
+                        var _currDLLPluginsModel = CheckPluginsDLL.GetPluginsModel(pluginsName,0);
                         if (_currDLLPluginsModel != null)
                         {
                             pluginsModels.Add(_currDLLPluginsModel);
                         }
                     }
-                });
+                }
 
-                pluginsModels = pluginsModels.OrderBy(c => c.Order).ToList();//排序
+                #endregion
+            }
+            else
+            {
+                #region 其它用户 根据权限加载遍历
 
-                #region 将当前页面中的账套排除
-
-                if (_currWindowName.NotEmpty())
+                foreach (var plugins in CanUsePlugins)
                 {
-                    var currWindowPlugins = MainWindowsGlobal.MainWindowsDic[_currWindowName].CurrWindowPlugins;
-                    foreach (var p in currWindowPlugins)
+                    //查看dll中的模块
+                    var _currDLLPluginsModel = CheckPluginsDLL.GetPluginsModel(plugins.DLLName,plugins.Id);
+                    if (_currDLLPluginsModel != null)
                     {
-                        //已经选择的 不在列表中显示
-                        pluginsModels.Remove(pluginsModels.First(c => c.Code == p.Code));
+                        pluginsModels.Add(_currDLLPluginsModel);
                     }
                 }
 
                 #endregion
+            }
 
-            });
+            pluginsModels = pluginsModels.OrderBy(c => c.Order).ToList();//排序
 
             #region 显示列表
 
@@ -137,8 +146,8 @@ namespace Client.MyControls
             {
                 LogoBox pluginsLogo = new LogoBox();
                 pluginsLogo.Margin = new Thickness(5);
-                pluginsLogo.LogoContent = p.Name;
-                pluginsLogo.ImageBack = p.LogoImageSource;
+                pluginsLogo.LogoContent = p.PluginsTitle;
+                pluginsLogo.ImageBack = new BitmapImage(new Uri($"pack://application:,,,/{p.PluginsDLLName};component/{p.logo}")); ;
                 pluginsLogo.PluginsData = p;
                 pluginsLogo.CheckChanged += OnPluginCheckChanged;
                 gPlugins.Children.Add(pluginsLogo);

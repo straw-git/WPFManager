@@ -1,71 +1,257 @@
-﻿<p:BasePage x:Class="CorePlugin.Pages.Manager.User"
+﻿<Page x:Class="CorePlugin.Pages.Manager.User"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CorePlugin.Pages.Manager"
-               xmlns:p="clr-namespace:Common;assembly=Common"  
-      mc:Ignorable="d" 
+      mc:Ignorable="d"  Loaded="Page_Loaded"
       d:DesignHeight="730" d:DesignWidth="1190"
       Title="系统账号">
 
     <Grid>
-        <Grid>
-            <GroupBox  Header="系统账号"
-                           Margin="10"
-                            pu:GroupBoxHelper.Icon="&#xf11c;"
-                            pu:GroupBoxHelper.CornerRadius="10"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <GroupBox  Header="角色"
+                   Grid.Column="0"
+                           Margin="10,10,0,0"
+                       BorderThickness="0,1,0,0"
+                            pu:GroupBoxHelper.Icon="&#xf0c0;"
                             pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
                             pu:GroupBoxHelper.IsSplitLineVisible="True"
                             pu:GroupBoxHelper.ShadowColor="LightGray" >
-                <pu:GroupBoxHelper.ExtendControl>
-                    <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
-                        <Button  Content="添加系统账号" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnAdd" Click="btnAdd_Click"/>
-                        <Button  Content="刷新列表" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue" x:Name="btnRef" Click="btnRef_Click"/>
-                    </StackPanel>
-                </pu:GroupBoxHelper.ExtendControl>
-                <Grid>
-                    <DataGrid HorizontalAlignment="Center"
+            <pu:GroupBoxHelper.ExtendControl>
+                <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
+                    <Button FontSize="16"
+                            Width="28"
+                            Height="28"
+                            Margin="10,0,0,0"
+                            ToolTip="添加角色"
+                            pu:ButtonHelper.ButtonStyle="Link"
+                            Foreground="#EAEAEA"
+                            Content="&#xf067;"
+                            FontFamily="{StaticResource FontAwesome}"
+                            pu:ButtonHelper.HoverBrush="Orange"/>
+                    <Button FontSize="16"
+                            Width="28"
+                            Height="28"
+                            Margin="10,0,0,0"
+                            ToolTip="全选/反选"
+                            pu:ButtonHelper.ButtonStyle="Link"
+                            Foreground="#EAEAEA"
+                            Content="&#xf05d;"
+                            FontFamily="{StaticResource FontAwesome}"
+                            pu:ButtonHelper.HoverBrush="Orange"/>
+                </StackPanel>
+            </pu:GroupBoxHelper.ExtendControl>
+            <WrapPanel Margin="0,10,0,0">
+                <CheckBox  Height="30"
+                           Content="超级管理员"
+                           Background="Gray"
+                           Foreground="White"
+                           Margin="5"
+                           pu:CheckBoxHelper.CheckBoxStyle="Button"
+                           pu:CheckBoxHelper.CheckedBackground="Black"
+                           pu:CheckBoxHelper.CornerRadius="5" />
+                <CheckBox  Height="30"
+                           Content="管理员"
+                           Background="Gray"
+                           Foreground="White"
+                           Margin="5"
+                           pu:CheckBoxHelper.CheckBoxStyle="Button"
+                           pu:CheckBoxHelper.CheckedBackground="Black"
+                           pu:CheckBoxHelper.CornerRadius="5" />
+                <CheckBox  Height="30"
+                           Content="数据维护员"
+                           Background="Gray"
+                           Foreground="White"
+                           Margin="5"
+                           pu:CheckBoxHelper.CheckBoxStyle="Button"
+                           pu:CheckBoxHelper.CheckedBackground="Black"
+                           pu:CheckBoxHelper.CornerRadius="5" />
+                <CheckBox  Height="30"
+                           Content="劳资员"
+                           Background="Gray"
+                           Foreground="White"
+                           Margin="5"
+                           pu:CheckBoxHelper.CheckBoxStyle="Button"
+                           pu:CheckBoxHelper.CheckedBackground="Black"
+                           pu:CheckBoxHelper.CornerRadius="5" />
+                <CheckBox  Height="30"
+                           Content="文员"
+                           Background="Gray"
+                           Foreground="White"
+                           Margin="5"
+                           pu:CheckBoxHelper.CheckBoxStyle="Button"
+                           pu:CheckBoxHelper.CheckedBackground="Black"
+                           pu:CheckBoxHelper.CornerRadius="5" />
+            </WrapPanel>
+        </GroupBox>
+        <GroupBox  Header="系统账号"
+                   Grid.Column="1"
+                           Margin="10,10,10,0"
+                       BorderThickness="0,1,0,0"
+                            pu:GroupBoxHelper.Icon="&#xf2bc;"
+                            pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                            pu:GroupBoxHelper.IsSplitLineVisible="True"
+                            pu:GroupBoxHelper.ShadowColor="LightGray" >
+            <pu:GroupBoxHelper.ExtendControl>
+                <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
+                    <TextBox  BorderBrush="White"
+                                       Margin="10,2,2,2"
+                              MinWidth="200"
+                                      BorderThickness="0,0,0,1"
+                                      pu:TextBoxHelper.Watermark="在这里,按名称搜索账号"
+                              pu:TextBoxHelper.FocusedBorderBrush="White"
+                              pu:TextBoxHelper.FocusedShadowColor="{x:Null}"
+                                      pu:TextBoxHelper.Icon="&#xf002;"/>
+                    <Button FontSize="16"
+                                Width="28"
+                                Height="28"
+                             Margin="10,0,0,0"
+                                ToolTip="添加系统账号"
+                                pu:ButtonHelper.ButtonStyle="Link"
+                                Foreground="#EAEAEA"
+                                Content="&#xf067;"
+                                FontFamily="{StaticResource FontAwesome}"
+                                pu:ButtonHelper.HoverBrush="Orange"
+                                 x:Name="btnAdd" 
+                                Click="btnAdd_Click"/>
+                    <Button FontSize="16"
+                                Margin="10,0,0,0"
+                                Width="28"
+                                Height="28"
+                                ToolTip="刷新列表"
+                                pu:ButtonHelper.ButtonStyle="Link"
+                                Foreground="#EAEAEA"
+                                Content="&#xf021;"
+                                FontFamily="{StaticResource FontAwesome}"
+                                pu:ButtonHelper.HoverBrush="Orange"
+                                 x:Name="btnRef" 
+                                Click="btnRef_Click"/>
+                </StackPanel>
+            </pu:GroupBoxHelper.ExtendControl>
+            <Grid>
+                <DataGrid HorizontalAlignment="Center"
                               x:Name="list"
                               ItemsSource="{Binding}"
-                              Margin="0,0,5,50"
+                              Margin="-5,-6,-1,35"
+                              BorderThickness="0,1,0,0"
                               IsReadOnly="True"
                               CanUserAddRows="False"
+                          CanUserSortColumns="False"
                               AutoGenerateColumns="False"
                               pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
                               pu:DataGridHelper.HeaderPadding="5,0"
+                              pu:DataGridHelper.HeaderMinHeight="40"
+                              pu:DataGridHelper.RowMinHeight="30"
                               pu:DataGridHelper.CellPadding="5,0"
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="账号" Width="*" Binding="{Binding Name}" />
-                            <DataGridTextColumn Header="角色" Width="150" Binding="{Binding RoleName}" />
-                            <DataGridTextColumn Header="绑定员工" Width="200" Binding="{Binding StaffName}" />
-                            <DataGridTextColumn Header="是否允许登录" Width="120" Binding="{Binding CanLogin}" />
-                            <DataGridTextColumn Header="注册时间" Width="200" Binding="{Binding CreateTime}" />
-                            <DataGridTemplateColumn Header="操作" Width="250" >
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button  Content="授权" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnAuthorization" Click="btnAuthorization_Click" />
-                                            <Button  Content="密码初始化" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}" Foreground="Blue" x:Name="btnRePwd" Click="btnRePwd_Click"/>
-                                            <Button  Content="绑定员工" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}" Foreground="Blue" x:Name="btnSelectStaff" Click="btnSelectStaff_Click"/>
-                                            <Button  Content="删除" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnDelete" Click="btnDelete_Click"/>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="基本信息" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Height="35">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="35"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="pack://application:,,,/Common;component/Images/normal_user_header_m.png" Width="35" Height="35"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <Label Margin="10,0,0,0" Content="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                            <Label Content="&#xf224;" FontFamily="{StaticResource FontAwesome}" />
                                         </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <pu:Pagination x:Name="gPager" Height="28"  VerticalAlignment="Bottom"  CurrentIndexChanged="gPager_CurrentIndexChanged" Margin="10" Background="{DynamicResource PagerBgColor}" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
-                    <Border Background="White" x:Name="bNoData" Visibility="Collapsed" Margin="0,50,0,5">
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="角色" Width="150" Binding="{Binding RoleName}" />
+                        <!--<DataGridTextColumn Header="账号" Width="*" Binding="{Binding Name}" />-->
+                        <!--<DataGridTextColumn Header="绑定员工" Width="200" Binding="{Binding StaffName}" />-->
+                        <DataGridTemplateColumn Header="登录权限" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding CanLogin}" Tag="{Binding Id}"  pu:CheckBoxHelper.CheckBoxStyle="Switch2" Background="Red" pu:CheckBoxHelper.CheckedBackground="Green"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="页面权限数量" Width="150" Binding="{Binding PagePluginsCount}" />
+                        <DataGridTemplateColumn Header="注册时间" Width="180">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Row="0"  Background="Green" CornerRadius="5" VerticalAlignment="Center">
+                                            <Label Content="2022" Foreground="White"/>
+                                        </Border>
+                                        <Grid Grid.Column="1" >
+                                            <Label Content="{Binding CreateTime}"/>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="操作" Width="*" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button  Content="&#xf084;" ToolTip="授权"   FontFamily="{StaticResource FontAwesome}" Margin="20,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}" FontSize="20"  Foreground="Orange" x:Name="btnAuthorization" Click="btnAuthorization_Click" />
+                                        <Button  Content="&#xf023;" ToolTip="初始化密码为 [123456]"   FontFamily="{StaticResource FontAwesome}" Margin="20,0,0,0"  pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}" FontSize="20"  Foreground="Gray" x:Name="btnRePwd" Click="btnRePwd_Click"/>
+                                        <Button  Content="&#xf014;"  ToolTip="删除"  FontFamily="{StaticResource FontAwesome}" Margin="20,0,20,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}" FontSize="20"  Foreground="Red" x:Name="btnDelete" Click="btnDelete_Click"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Border Height="30" VerticalAlignment="Bottom" Margin="-5,0,10,5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <ComboBox  Height="30" Width="80" Foreground="Gray" BorderBrush="White" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                                <ComboBoxItem Content="50 条/页" IsSelected="True"/>
+                                <ComboBoxItem Content="100条/页"/>
+                                <ComboBoxItem Content="150条/页"/>
+                                <ComboBoxItem Content="200条/页"/>
+                            </ComboBox>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" Grid.Column="2">
+
+                            <Button  Content="首页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
+                            <Button  Content="上一页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
+                            <TextBox  BorderBrush="White"
+                                       Margin="10,2,2,2"
+                                      BorderThickness="0,0,0,1"
+                                     pu:TextBoxHelper.FocusedBorderBrush="White"
+                                    pu:TextBoxHelper.FocusedShadowColor="{x:Null}"
+                                      pu:TextBoxHelper.Watermark="页码"
+                                      pu:TextBoxHelper.Icon="&#xf0a4;"/>
+                            <Label Content="/ 500" Foreground="Gray" VerticalAlignment="Center"/>
+                            <Button  Content="下一页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
+                            <Button  Content="末页" Cursor="Hand" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                        </StackPanel>
+                        <pu:Pagination x:Name="gPager" Grid.Column="3" Height="30" pu:PaginationStyle="Simple" Spacing="0" VerticalAlignment="Center" CurrentIndexChanged="gPager_CurrentIndexChanged"  CurrentIndex="1" TotalIndex="1"/>
+                    </Grid>
+                </Border>
+                <Grid Visibility="Visible">
+                    <Border Background="White" x:Name="bNoData" Margin="-5,35,0,-5">
                         <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
-                    <pu:Loading x:Name="gLoading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
+                    <pu:Loading x:Name="gLoading"  Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
                 </Grid>
-            </GroupBox>
-        </Grid>
+            </Grid>
+        </GroupBox>
     </Grid>
-</p:BasePage>
+</Page>
 

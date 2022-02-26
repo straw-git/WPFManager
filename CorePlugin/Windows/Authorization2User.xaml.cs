@@ -38,8 +38,8 @@ namespace CorePlugin.Windows
             using (CoreDBContext context = new CoreDBContext())
             {
                 var user = context.User.Single(c => c.Id == userId);
-                if (user.Menus.NotEmpty())
-                    UserMenus = user.Menus.Split('|').ToList();
+                //if (user.Menus.NotEmpty())
+                //    UserMenus = user.Menus.Split('|').ToList();
             }
             LoadMenu();
         }
@@ -216,7 +216,7 @@ namespace CorePlugin.Windows
             using (CoreDBContext context = new CoreDBContext())
             {
                 var user = context.User.Single(c => c.Id == userId);
-                user.Menus = menus;
+                //user.Menus = menus;
 
                 context.SaveChanges();
             }

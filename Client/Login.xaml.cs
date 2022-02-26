@@ -56,7 +56,6 @@ namespace Client
             WorldModels.Children.Add(_ps.ParticleModel);
 
             _ps.SpawnParticle(30);
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -81,6 +80,7 @@ namespace Client
             #endregion 
 
             AutoUpdatePlugins.Update();
+
             CheckNullData();
         }
 

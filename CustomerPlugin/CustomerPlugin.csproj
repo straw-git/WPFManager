@@ -173,10 +173,6 @@
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
       <Name>CoreDBModels</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CustomerDBModels\CustomerDBModels.csproj">
-      <Project>{b960e9b9-68a2-406a-8c94-3f05f6c2750f}</Project>
-      <Name>CustomerDBModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="logo.jpg" />

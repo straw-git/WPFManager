@@ -18,7 +18,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
-using Common.Windows;
 using System.Reflection;
 
 namespace CorePlugin.Pages.Manager
@@ -26,12 +25,12 @@ namespace CorePlugin.Pages.Manager
     /// <summary>
     /// Index.xaml 的交互逻辑
     /// </summary>
-    public partial class User : BasePage
+    public partial class User : Page
     {
         public User()
         {
             InitializeComponent();
-            this.Order = 1;
+            this.StartPageInAnimation();
         }
 
         #region Models
@@ -71,14 +70,25 @@ namespace CorePlugin.Pages.Manager
                     NotifyPropertyChanged("StaffName");
                 }
             }
-            private string canLogin = "";
-            public string CanLogin
+            private bool canLogin = false;
+            public bool CanLogin
             {
                 get => canLogin;
                 set
                 {
                     canLogin = value;
                     NotifyPropertyChanged("CanLogin");
+                }
+            }
+
+            private int pagePluginsCount = 0;
+            public int PagePluginsCount
+            {
+                get => pagePluginsCount;
+                set
+                {
+                    pagePluginsCount = value;
+                    NotifyPropertyChanged("PagePluginsCount");
                 }
             }
 
@@ -101,11 +111,6 @@ namespace CorePlugin.Pages.Manager
         int currPage = 1;
         bool running = false;
 
-        protected override void OnPageLoaded()
-        {
-            list.ItemsSource = Data;
-            btnRef_Click(null, null);
-        }
         #region Private Method
 
         private void LoadPager()
@@ -175,12 +180,12 @@ namespace CorePlugin.Pages.Manager
                 {
                     UIModel _model = new UIModel()
                     {
-                        CreateTime = item.CreateTime.ToString("yyyy年MM月dd日 HH时mm分"),
+                        CreateTime = item.CreateTime.ToString("MM-dd HH:mm"),
                         Id = item.Id,
                         Name = item.Name,
                         RoleName = context.SysDic.Any(c => c.Id == item.RoleId) ? context.SysDic.First(c => c.Id == item.RoleId).Name : "超级管理员",
-                        StaffName = string.IsNullOrEmpty(item.StaffId) ? "未绑定" : context.Staff.First(c => c.Id == item.StaffId).Name,
-                        CanLogin = item.CanLogin ? "允许" : "禁止"
+                        StaffName = item.StaffId,
+                        CanLogin = item.CanLogin 
                     };
 
                     Data.Add(_model);
@@ -218,12 +223,12 @@ namespace CorePlugin.Pages.Manager
         private void btnAuthorization_Click(object sender, RoutedEventArgs e)
         {
             int userId = (sender as Button).Tag.ToString().AsInt();
-            ParentWindow.MaskVisible(true);
+            this.MaskVisible(true);
 
             Authorization2User a = new Authorization2User(userId);
             a.ShowDialog();
 
-            ParentWindow.MaskVisible(false);
+            this.MaskVisible(false);
 
             if (a.Succeed)
             {
@@ -242,9 +247,9 @@ namespace CorePlugin.Pages.Manager
                 using (CoreDBContext context = new CoreDBContext())
                 {
                     var user = context.User.Single(c => c.Id == id);
-                    if (user.Creator == 0) 
+                    if (user.Creator == 0)
                     {
-                        MessageBoxX.Show("系统超级管理员账户不允许被删除","操作失败");
+                        MessageBoxX.Show("系统超级管理员账户不允许被删除", "操作失败");
                         return;
                     }
                     user.IsDel = true;
@@ -257,47 +262,24 @@ namespace CorePlugin.Pages.Manager
             }
         }
 
-        private void btnSelectStaff_Click(object sender, RoutedEventArgs e)
-        {
-            int id = (sender as Button).Tag.ToString().AsInt();
-            UIModel selectModel = Data.First(c => c.Id == id);
-
-            ParentWindow.MaskVisible(true);
-            SelectedStaff s = new SelectedStaff(1);
-            s.ShowDialog();
-            ParentWindow.MaskVisible(false);
-            if (s.Succeed)
-            {
-                string staffId = s.Ids[0];
-                using (CoreDBContext context = new CoreDBContext())
-                {
-                    context.User.Single(c => c.Id == id).StaffId = staffId;
-                    context.SaveChanges();
-
-                    var model = Data.Single(c => c.Id == id);
-                    model.StaffName = context.Staff.First(c => c.Id == staffId).Name;
-                }
-            }
-        }
-
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            ParentWindow.MaskVisible(true);
+            this.MaskVisible(true);
             AddUser a = new AddUser();
             a.ShowDialog();
-            ParentWindow.MaskVisible(false);
+            this.MaskVisible(false);
             if (a.Succeed)
             {
                 using (CoreDBContext context = new CoreDBContext())
                 {
                     Data.Insert(0, new UIModel()
                     {
-                        CreateTime = a.Model.CreateTime.ToString("yyyy年MM月dd日 HH时mm分"),
+                        CreateTime = a.Model.CreateTime.ToString("MM-dd HH:mm"),
                         Id = a.Model.Id,
                         Name = a.Model.Name,
                         RoleName = context.SysDic.First(c => c.Id == a.Model.RoleId).Name,
-                        StaffName = string.IsNullOrEmpty(a.Model.StaffId) ? "未绑定" : context.Staff.First(c => c.Id == a.Model.StaffId).Name,
-                        CanLogin = a.Model.CanLogin ? "允许" : "禁止"
+                        StaffName = a.Model.StaffId,
+                        CanLogin = a.Model.CanLogin
                     });
                 }
             }
@@ -356,6 +338,12 @@ namespace CorePlugin.Pages.Manager
         }
 
         #endregion
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            list.ItemsSource = Data;
+            btnRef_Click(null, null);
+        }
 
     }
 }

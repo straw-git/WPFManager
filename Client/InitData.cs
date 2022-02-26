@@ -17,31 +17,85 @@ namespace Client
         {
             try
             {
+                User user = null;
+                Role role = null;
                 using (var context = new CoreDBContext())
                 {
                     //如果没有任何信息 则添加默认管理员账户 admin/123456
+                    #region 角色
+
+                    if (!context.Role.Any())
+                    {
+                        role = context.Role.Add(new Role()
+                        {
+                            DelTime = DateTime.Now,
+                            DelUser = 0,
+                            DelUserName = "",
+                            IsDel = false,
+                            Name = "超级管理员"
+                        });
+                        context.SaveChanges();
+                    }
+
+                    #endregion 
 
                     #region admin 账号
 
                     if (!context.User.Any())
                     {
-                        context.User.Add(new User()
+                        user = context.User.Add(new User()
                         {
                             Name = "admin",
                             Pwd = "123456",
                             CanLogin = true,
-                            RoleId = 0,
+                            RoleId = role.Id,
                             StaffId = "",
                             CreateTime = DateTime.Now,
                             Creator = 0,
                             DelTime = DateTime.Now,
                             DelUser = 0,
-                            IsDel = false,
-                            Menus = ""
+                            IsDel = false
                         });
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        user = context.User.First(c => c.Name == "admin");
                     }
 
                     #endregion
+
+                    //#region 插件
+
+                    //if (!context.Plugins.Any())
+                    //{
+                    //    //获取项目根目录
+                    //    string basePath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.IndexOf("Client"));
+                    //    context.Plugins.Add(new Plugins()
+                    //    {
+                    //        DBModelUrl = $@"{basePath}CoreDBModels\bin\Debug\CoreDBModels.dll",
+                    //        DLLName = "CorePlugin",
+                    //        ModuleFolderPaths = "Pages",
+                    //        ModuleIcon = "\xf260",
+                    //        ModuleTitles = "管理中心",
+                    //        Order = 0,
+                    //        Title = "核心功能",
+                    //        UpdateTime = DateTime.Now,
+                    //        UpdateUrl = $@"{basePath}CorePlugin\bin\Debug\CorePlugin.dll"
+                    //    });
+                    //}
+
+                    //if (!context.RolePlugins.Any())
+                    //{
+                    //    context.RolePlugins.Add(new RolePlugins()
+                    //    {
+                    //        RoleId = role.Id,
+                    //        UpdateTime = DateTime.Now,
+                    //        Pages = ""
+                    //    });
+                    //}
+
+                    //#endregion
 
                     //如果没有dic 添加dic数据
 

@@ -96,7 +96,7 @@ namespace Common.Utils
                 else
                 {
                     dataCount = _where == null ? pd.Count() : pd.Where(_where.Compile()).Count();//数据总条数
-                    pagerCount = PagerGlobal.GetPagerCount(dataCount);//总页数
+                    pagerCount = global::PagerGlobal.GetPagerCount(dataCount);//总页数
 
                     #region 返回分页数据
 
@@ -215,7 +215,7 @@ namespace Common.Utils
                 else
                 {
                     dataCount = _where == null ? pd.Count() : pd.Where(_where.Compile()).Count();//数据总条数
-                    pagerCount = PagerGlobal.GetPagerCount(dataCount);//总页数
+                    pagerCount = global::PagerGlobal.GetPagerCount(dataCount);//总页数
 
                     #region 返回分页数据
 

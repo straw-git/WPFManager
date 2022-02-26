@@ -179,10 +179,6 @@
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
       <Name>CoreDBModels</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HRDBModels\HRDBModels.csproj">
-      <Project>{92af547a-cc1a-423f-9502-57fa91b6d148}</Project>
-      <Name>HRDBModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\contract.png" />

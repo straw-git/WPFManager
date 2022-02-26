@@ -77,7 +77,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreDBContext.cs" />
+    <Compile Include="Migrations\202202250349233_update_coredb.cs" />
+    <Compile Include="Migrations\202202250349233_update_coredb.designer.cs">
+      <DependentUpon>202202250349233_update_coredb.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Pages\Manager\PluginsMsg.xaml.cs">
+      <DependentUpon>PluginsMsg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Manager\Setting.xaml.cs">
+      <DependentUpon>Setting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PluginsInfo.cs" />
     <Compile Include="RoleTreeViewCommon.cs" />
     <Compile Include="Windows\AddUser.xaml.cs">
       <DependentUpon>AddUser.xaml</DependentUpon>
@@ -94,17 +105,8 @@
     <Compile Include="Windows\EditJobPost.xaml.cs">
       <DependentUpon>EditJobPost.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\SelectedStaff.xaml.cs">
-      <DependentUpon>SelectedStaff.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\SelectedStore.xaml.cs">
-      <DependentUpon>SelectedStore.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\SelectedUser.xaml.cs">
       <DependentUpon>SelectedUser.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\UpdateCount.xaml.cs">
-      <DependentUpon>UpdateCount.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\UpdatePassword.xaml.cs">
       <DependentUpon>UpdatePassword.xaml</DependentUpon>
@@ -119,11 +121,9 @@
     <Compile Include="Pages\Manager\Index.xaml.cs">
       <DependentUpon>Index.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Manager\MenuInfo.cs" />
     <Compile Include="Pages\Manager\User.xaml.cs">
       <DependentUpon>User.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PluginsInfo.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -143,6 +143,14 @@
     <Page Include="Pages\Manager\Index.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Manager\PluginsMsg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Manager\Setting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Manager\User.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -168,19 +176,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\SelectedStaff.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\SelectedStore.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Windows\SelectedUser.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\UpdateCount.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -203,6 +199,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\202202250349233_update_coredb.resx">
+      <DependentUpon>202202250349233_update_coredb.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

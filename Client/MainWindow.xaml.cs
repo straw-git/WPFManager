@@ -61,14 +61,14 @@ namespace Client
 
         public override void ShowTopMenu(bool _show)
         {
-            if (_show)
-            {
-                gMainMenu.Height = 55;
-            }
-            else
-            {
-                gMainMenu.Height = 0;
-            }
+            //if (_show)
+            //{
+            //    gMainMenu.Height = 55;
+            //}
+            //else
+            //{
+            //    gMainMenu.Height = 0;
+            //}
         }
 
         public override void ReLoadCurrTopMenu()
@@ -91,9 +91,10 @@ namespace Client
                 foreach (var modules in plugin.Modules)
                 {
                     TabItem _tabItem = new TabItem();
-                    _tabItem.Tag = modules;
-                    _tabItem.Header = modules.Name;
+                    _tabItem.Tag = plugin.Pages[modules.Title];
+                    _tabItem.Header = modules.Title;
                     _tabItem.GotFocus += _tabItem_GotFocus;
+                    TabControlHelper.SetItemIcon(_tabItem, modules.Icon);
 
                     tabMenu.Items.Add(_tabItem);
                     if (currIndex == 0)
@@ -121,15 +122,15 @@ namespace Client
         {
             TabItem currTab = sender as TabItem;
 
-            ModuleModel selectedMenu = currTab.Tag as ModuleModel;
+            List<PageInfo> _pages = currTab.Tag as List<PageInfo>;
             tvMenu.Items.Clear();
-            var _pages = selectedMenu.Pages.OrderBy(c => c.Order).ToList();//页面排序
+            _pages = _pages.OrderBy(c=>c.Order).ToList();//页面排序
 
             int currIndex = 0;
             foreach (var page in _pages)
             {
                 TreeViewItem _treeViewItem = new TreeViewItem();
-                _treeViewItem.Header = page.Code;
+                _treeViewItem.Header = page.Title;
                 _treeViewItem.Margin = new Thickness(0, 2, 0, 2);
                 _treeViewItem.Padding = new Thickness(10, 0, 0, 0);
                 _treeViewItem.Background = Brushes.Transparent;
@@ -142,7 +143,7 @@ namespace Client
                 if (currIndex == 0)
                 {
                     currIndex = 1;
-                    mainFrame.Source = new Uri(page.Url, UriKind.RelativeOrAbsolute);
+                    mainFrame.Source = new Uri( page.FullPath, UriKind.RelativeOrAbsolute);
                 }
             }
         }
@@ -154,13 +155,13 @@ namespace Client
             UpdateTitle();
             UpdateMenus();
 
-            lblCurrUser.Text = UserGlobal.CurrUser.Name;
+            //更改Grid的宽度
+            //xx.Width = new GridLength(50) ;
         }
 
         public void UpdateTitle()
         {
-            Title = lblTitle.Text = $"{LocalSettings.settings.MainWindowTitle}(V{LocalSettings.settings.Versions})";
-            lblV.Content = $"by 1020    V{LocalSettings.settings.Versions}";
+            //lblV.Content = $"by 1020    V{LocalSettings.settings.Versions}";
         }
 
         #region UI Method
@@ -212,8 +213,8 @@ namespace Client
             if (tvMenu.SelectedItem != null)
             {
                 TreeViewItem targetItem = tvMenu.SelectedItem as TreeViewItem;
-                PageModel page = targetItem.Tag as PageModel;
-                mainFrame.Source = new Uri(page.Url, UriKind.RelativeOrAbsolute);
+                PageInfo page = targetItem.Tag as PageInfo;
+                mainFrame.Source = new Uri(page.FullPath, UriKind.RelativeOrAbsolute);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿
 using Client.Pages;
 using Common.Data.Local;
+using CoreDBModels;
 using Panuon.UI.Silver;
 using Panuon.UI.Silver.Core;
 using System;
@@ -62,10 +63,35 @@ namespace Client.MyControls
         private void UpdatePlugins()
         {
             plugins.Items.Clear();
-            var pluginsData = LocalPlugins.Models.OrderBy(c => c.Order).ToList();
-            foreach (var item in pluginsData)
+            //var pluginsData = LocalPlugins.Models.OrderBy(c => c.Order).ToList();
+            //foreach (var item in pluginsData)
+            //{
+            //    plugins.Items.Add($"{item.DLLPageName}");
+            //}
+
+            //创建一个DirectoryInfo的类
+            DirectoryInfo directoryInfo = new DirectoryInfo($"{AppDomain.CurrentDomain.BaseDirectory}plugins\\");
+            //获取当前的目录的文件
+            FileInfo[] fileInfos = directoryInfo.GetFiles();
+            using (CoreDBContext context = new CoreDBContext())
             {
-                plugins.Items.Add($"{item.DLLPageName}");
+                foreach (FileInfo info in fileInfos)
+                {
+                    //获取文件的名称(包括扩展名)
+                    //string fullName = info.FullName;
+                    //获取文件的扩展名
+                    string extension = info.Extension.ToLower();
+                    if (extension == ".dll")
+                    {
+                        string pluginsName = info.Name.Substring(0, info.Name.LastIndexOf('.'));
+                        if (context.Plugins.Any(c => c.DLLName == pluginsName))
+                        {
+                            //数据在插件列表中
+                            var pluginItem = context.Plugins.First(c => c.DLLName == pluginsName);
+                            plugins.Items.Add(new ListBoxItem() { Content = pluginItem.Title, Tag = pluginItem });
+                        }
+                    }
+                }
             }
         }
 
@@ -101,23 +127,16 @@ namespace Client.MyControls
         private void btnUpdateDLLs_Click(object sender, RoutedEventArgs e)
         {
             dlls.Items.Clear();
-            //创建一个DirectoryInfo的类
-            DirectoryInfo directoryInfo = new DirectoryInfo($"{AppDomain.CurrentDomain.BaseDirectory}plugins\\");
-            //获取当前的目录的文件
-            FileInfo[] fileInfos = directoryInfo.GetFiles();
-            foreach (FileInfo info in fileInfos)
-            {
-                //获取文件的名称(包括扩展名)
-                string fullName = info.FullName;
-                //获取文件的扩展名
-                string extension = info.Extension.ToLower();
-                if (extension == ".dll")
-                {
-                    //插件要求命名必须以Plugin结尾的dll文件
-                    dlls.Items.Add(info.Name);
-                }
-            }
 
+            var serverPlugins = new List<Plugins>();
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                serverPlugins = context.Plugins.OrderBy(c => c.Order).ToList();
+            }
+            foreach (var pluginsItem in serverPlugins)
+            {
+                dlls.Items.Add(new ListBoxItem() { Content = pluginsItem.Title, Tag = pluginsItem });
+            }
         }
 
         private void btnBackLogin_Click(object sender, RoutedEventArgs e)

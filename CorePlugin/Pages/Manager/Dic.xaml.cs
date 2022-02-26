@@ -25,12 +25,12 @@ namespace CorePlugin.Pages.Manager
     /// <summary>
     /// Index.xaml 的交互逻辑
     /// </summary>
-    public partial class Dic : BasePage
+    public partial class Dic : Page
     {
         public Dic()
         {
             InitializeComponent();
-            this.Order = 2;
+            this.StartPageInAnimation();
         }
 
         /// <summary>
@@ -97,12 +97,6 @@ namespace CorePlugin.Pages.Manager
         //页数据
         private int pageSize = 10;
         bool running = false;
-
-        protected override void OnPageLoaded()
-        {
-            LoadTVMain();
-            InitList();
-        }
 
         #region Private Method
 
@@ -293,7 +287,7 @@ namespace CorePlugin.Pages.Manager
         {
             #region add dic item
 
-            ParentWindow.MaskVisible(true);
+            this.MaskVisible(true);
             EditDic add = new EditDic("");
             add.ShowDialog();
             if (add.Succeed)
@@ -302,7 +296,7 @@ namespace CorePlugin.Pages.Manager
                 UpdateGridAsync();
                 LoadPager();
             }
-            ParentWindow.MaskVisible(false);
+            this.MaskVisible(false);
 
             #endregion 
         }
@@ -342,7 +336,7 @@ namespace CorePlugin.Pages.Manager
         {
             #region add dic item
 
-            ParentWindow.MaskVisible(true);
+            this.MaskVisible(true);
             EditDic add = new EditDic(selectedCode);
             add.ShowDialog();
             if (add.Succeed)
@@ -350,7 +344,7 @@ namespace CorePlugin.Pages.Manager
                 UpdateGridAsync();
                 LoadPager();
             }
-            ParentWindow.MaskVisible(false);
+            this.MaskVisible(false);
 
             #endregion 
         }
@@ -377,7 +371,7 @@ namespace CorePlugin.Pages.Manager
             {
                 editModel = context.SysDic.First(c => c.QuickCode == code);
             }
-            ParentWindow.MaskVisible(true);
+            this.MaskVisible(true);
             EditDic edit = new EditDic(selectedCode, true, editModel);
             edit.ShowDialog();
             if (edit.Succeed)
@@ -387,7 +381,7 @@ namespace CorePlugin.Pages.Manager
                 targetData.Name = edit.ResultName;
                 targetData.Content = edit.ResultContent;
             }
-            ParentWindow.MaskVisible(false);
+            this.MaskVisible(false);
         }
 
         private void listDeleteButton_Click(object sender, RoutedEventArgs e)
@@ -456,7 +450,7 @@ namespace CorePlugin.Pages.Manager
                 return;
             }
 
-            ParentWindow.MaskVisible(true);
+            this.MaskVisible(true);
             EditDic edit = new EditDic(selectedCode, true, editModel);
             edit.ShowDialog();
             if (edit.Succeed)
@@ -466,7 +460,7 @@ namespace CorePlugin.Pages.Manager
                 targetData.Name = edit.ResultName;
                 targetData.Content = edit.ResultContent;
             }
-            ParentWindow.MaskVisible(false);
+            this.MaskVisible(false);
         }
 
         private void btnAddJobPost_Click(object sender, RoutedEventArgs e)
@@ -479,14 +473,14 @@ namespace CorePlugin.Pages.Manager
             string name = item.Header.ToString();
             string code = item.Tag.ToString();
 
-            ParentWindow.MaskVisible(true);
+            this.MaskVisible(true);
             EditJobPost add = new EditJobPost(name, code);
             add.ShowDialog();
             if (add.Succeed)
             {
                 btnRef_Click(null, null);
             }
-            ParentWindow.MaskVisible(false);
+            this.MaskVisible(false);
         }
 
         #endregion 
@@ -530,5 +524,10 @@ namespace CorePlugin.Pages.Manager
 
         #endregion
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadTVMain();
+            InitList();
+        }
     }
 }

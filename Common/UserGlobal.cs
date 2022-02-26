@@ -13,74 +13,28 @@ namespace Common
     /// </summary>
     public partial class UserGlobal
     {
-        #region Models
-
-        public class PluginsModel
-        {
-            public string Name { get; set; }
-            public string Code { get; set; }
-            public BitmapImage LogoImageSource { get; set; }
-            public List<ModuleModel> Modules { get; set; }
-            public int Order { get; set; }
-        }
-
-        public class ModuleModel
-        {
-            public string Code { get; set; }
-            public string Name { get; set; }
-            public List<PageModel> Pages { get; set; }
-            public int Order { get; set; }
-            public string Icon { get; set; }
-        }
-
-        public class PageModel
-        {
-            public string Code { get; set; }
-            public string Url { get; set; }
-            public int Order { get; set; }
-            public string Icon { get; set; }
-        }
-
-
-        #endregion 
-
         /// <summary>
         /// 数据表
         /// </summary>
         public static User CurrUser { get; set; }
         /// <summary>
-        /// 所有的插件信息
+        /// 所有页面信息
         /// </summary>
-        public static List<PluginsModel> SelectedPlugins = new List<PluginsModel>();
+        public static List<PluginsPage> CurrPluginsPage { get; set; }
+        /// <summary>
+        /// 用户可用的属性
+        /// </summary>
+        public static List<Plugins> CanUsePlugins { get; set; }
 
         /// <summary>
         /// 设置当前用户的信息
         /// </summary>
-        public static void SetCurrUser(User _user)
+        public static void SetCurrUser(User _user, List<Plugins> _canUsePlugins, List<PluginsPage> _pluginsPages)
         {
             IsLogin = true;
             CurrUser = _user;
-        }
-
-        /// <summary>
-        /// 添加插件
-        /// </summary>
-        /// <param name="_plugins"></param>
-        public static void AddPluginModel(List<PluginsModel> _plugins)
-        {
-            bool _update = false;
-            foreach (var p in _plugins)
-            {
-                if (SelectedPlugins.Contains(p))
-                {
-                    //加入选中列表
-                    SelectedPlugins.Add(p);
-                    _update = true;
-                }
-            }
-
-            //排序
-            if (_update) SelectedPlugins = SelectedPlugins.OrderBy(c => c.Order).ToList();
+            CurrPluginsPage = _pluginsPages;
+            CanUsePlugins = _canUsePlugins;
         }
 
         /// <summary>

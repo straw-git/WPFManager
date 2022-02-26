@@ -120,11 +120,15 @@
     </Compile>
     <Compile Include="AttachmentGlobal.cs" />
     <Compile Include="BaseMainWindow.cs" />
-    <Compile Include="BaseMenuInfo.cs" />
-    <Compile Include="BasePage.cs" />
     <Compile Include="BasePlugins.cs" />
     <Compile Include="BaseUIModel.cs" />
+    <Compile Include="Extensions\PageExtensions.cs" />
+    <Compile Include="ModuleInfo.cs" />
     <Compile Include="MyAttributes\DataSourceBindingAttribute.cs" />
+    <Compile Include="MyControls\InfoBorder.xaml.cs">
+      <DependentUpon>InfoBorder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageInfo.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
     <Compile Include="Utils\PagerCommon.cs" />
     <Compile Include="Data\Local\LocalPlugins.cs" />
@@ -154,17 +158,11 @@
     <Compile Include="Utils\QRCodeCommon.cs" />
     <Compile Include="Utils\StyleHelper.cs" />
     <Compile Include="WindowsThumbnailProvider.cs" />
-    <Compile Include="Windows\BasePageVisibilititySetting.xaml.cs">
-      <DependentUpon>BasePageVisibilititySetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\SelectedDateTime.xaml.cs">
-      <DependentUpon>SelectedDateTime.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <Resource Include="Resources\iconfont.ttf" />
+    <None Include="Resources\iconfont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\data_empty.png" />
@@ -183,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="MyControls\InfoBorder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Skin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -191,28 +193,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\BasePageVisibilititySetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\SelectedDateTime.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Events\Code\" />
-    <Folder Include="MyUserControl\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\个人号csharp手记.jpg" />
-    <Resource Include="Images\公众号csharp手记.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
       <Name>CoreDBModels</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\normal_user_header_m.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\normal_user_header_w.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

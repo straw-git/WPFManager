@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Common;
+using CoreDBModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,10 +47,10 @@ namespace Client.MyControls
             get { return (string)GetValue(LogoContentProperty); }
             set { SetValue(LogoContentProperty, value); }
         }
-        public static readonly DependencyProperty PluginsDataProperty = DependencyProperty.Register("PluginsData", typeof(PluginsModel), typeof(LogoBox), new PropertyMetadata(null));
-        public PluginsModel PluginsData
+        public static readonly DependencyProperty PluginsDataProperty = DependencyProperty.Register("PluginsData", typeof(BasePlugins), typeof(LogoBox), new PropertyMetadata(null));
+        public BasePlugins PluginsData
         {
-            get { return (PluginsModel)GetValue(PluginsDataProperty); }
+            get { return (BasePlugins)GetValue(PluginsDataProperty); }
             set { SetValue(PluginsDataProperty, value); }
         }
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(bool), typeof(LogoBox), new PropertyMetadata(null));

@@ -1,4 +1,6 @@
 ﻿using Client.Windows;
+using Common;
+using CoreDBModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +22,7 @@ namespace Client.CurrGlobal
         /// </summary>
         /// <param name="_windowName">窗体名、标题</param>
         /// <param name="_models">插件数据</param>
-        public static void Data2MainWindow(string _windowName, List<PluginsModel> _models)
+        public static void Data2MainWindow(string _windowName, List<BasePlugins> _models)
         {
             MainWindow mainWindow;
             if (MainWindowsDic.ContainsKey(_windowName))

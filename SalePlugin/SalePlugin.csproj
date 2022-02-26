@@ -198,18 +198,6 @@
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
       <Name>CoreDBModels</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CustomerDBModels\CustomerDBModels.csproj">
-      <Project>{b960e9b9-68a2-406a-8c94-3f05f6c2750f}</Project>
-      <Name>CustomerDBModels</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ERPDBModels\ERPDBModels.csproj">
-      <Project>{e4e77bb2-e23a-4b21-acea-db6f4c07955f}</Project>
-      <Name>ERPDBModels</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SaleDBModels\SaleDBModels.csproj">
-      <Project>{17f1b7ee-06a2-40a5-bd0d-2f37b91eeb21}</Project>
-      <Name>SaleDBModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

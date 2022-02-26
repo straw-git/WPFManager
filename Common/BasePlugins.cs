@@ -1,73 +1,78 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace Common
 {
     /// <summary>
-    /// 插件基类（在插件根目录PluginsInfo.cs中实现）
+    /// 插件中的模块
     /// </summary>
     public class BasePlugins
     {
         /// <summary>
-        /// 插件名称
+        /// 插件的数据库Id
         /// </summary>
-        public string Name = string.Empty;
+        public int Id = 0;
         /// <summary>
-        /// 插件dll名称
+        /// 插件标题
         /// </summary>
-        public string DLLName = string.Empty;
+        public string PluginsTitle = "";
         /// <summary>
-        /// 存放Page的文件夹名称 以,分割
+        /// 插件DLL名称
         /// </summary>
-        public string PageFolderNames = "";
+        public string PluginsDLLName = "";
         /// <summary>
-        /// Logo图片名称
+        /// 插件中的模块
+        /// Key 模块名称
+        /// Value 文件夹路径
         /// </summary>
-        public string LogoImageName = "logo.jpg";
+        public List<ModuleInfo> Modules = new List<ModuleInfo>();
         /// <summary>
-        /// 导航介绍类名
+        /// 规定插件显示的Logo图 默认[根目录（不带 /）logo.jpg]
         /// </summary>
-        public string MenuClassName = "MenuInfo";
+        public string logo = "logo.jpg";
+        /// <summary>
+        /// 插件排序
+        /// </summary>
+        public int Order = 0;
 
         /// <summary>
-        /// 添加页面文件夹
+        /// 模块中的页面
+        /// Key 模块名称
+        /// value 页面路径
+        /// value.key 页面标题
+        /// value.value 页面路径
         /// </summary>
-        /// <param name="_name"></param>
-        public void AddPageFolderName(string _name)
-        {
-            if (_name.IsNullOrEmpty()) return;
-            PageFolderNames += $",{_name}";
-        }
+        public Dictionary<string, List<PageInfo>> Pages = new Dictionary<string, List<PageInfo>>();
 
         /// <summary>
-        /// 清空页面文件夹
+        /// 注册模块
         /// </summary>
-        public void ClearFolderNames()
+        /// <param name="_moduleTitle">标题</param>
+        /// <param name="_modulePath">地址</param>
+        /// <param name="_moduleIcon">icon</param>
+        /// <param name="_pages">页面集合</param>
+        public void RegisterPages(ModuleInfo _module, List<PageInfo> _pages)
         {
-            PageFolderNames = "";
-        }
-
-        /// <summary>
-        /// 移除页面文件夹
-        /// </summary>
-        /// <param name="_name"></param>
-        public void RemoveFolderName(string _name)
-        {
-            List<string> folderNameList = PageFolderNames.Split(',').ToList();
-            if (folderNameList.Contains(_name))
+            if (Modules.Any(c => c.FullPath == _module.FullPath))
             {
-                folderNameList.Remove(_name);
+                //存在模块 说明多次添加 抛出异常
+                throw new Exception();
             }
-            else return;
-
-            PageFolderNames = "";
-            foreach (var fName in folderNameList)
+            else
             {
-                PageFolderNames += $",{fName}";
+                if (Modules.Any(c => c.Title == _module.Title)) 
+                {
+                    //存在相同标题 抛出异常
+                    throw new Exception();
+                }
+                //模块不存在
+                Modules.Add(_module);
+                Pages.Add(_module.Title, _pages);
             }
-
-            //如果前面带符号 移除
-            if (PageFolderNames.IndexOf(',') == 0) PageFolderNames = PageFolderNames.Substring(1);
         }
     }
 }

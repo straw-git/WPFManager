@@ -61,7 +61,7 @@
         <Setter Property="pu:WindowXCaption.Height"
                 Value="50" />
         <Setter Property="pu:WindowXCaption.Background"
-                Value="{DynamicResource SkinColor}" />
+                Value="White" />
         <Setter Property="pu:WindowXCaption.MinimizeButtonStyle">
             <Setter.Value>
                 <Style TargetType="{x:Type Button}"
@@ -84,9 +84,9 @@
                             <Setter Property="VerticalAlignment"
                                     Value="Center" />
                             <Setter Property="Foreground"
-                                    Value="{DynamicResource MinButtonColor}" />
+                                    Value="Gray" />
                             <Setter Property="pu:ButtonHelper.HoverBrush"
-                                    Value="{DynamicResource MinButtonFocusColor}" />
+                                    Value="Black" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -114,9 +114,9 @@
                             <Setter Property="VerticalAlignment"
                                     Value="Center" />
                             <Setter Property="Foreground"
-                                    Value="{DynamicResource MaxButtonColor}" />
+                                    Value="Gray" />
                             <Setter Property="pu:ButtonHelper.HoverBrush"
-                                    Value="{DynamicResource MaxButtonFocusColor}" />
+                                    Value="Black" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -146,9 +146,9 @@
                             <Setter Property="VerticalAlignment"
                                     Value="Center" />
                             <Setter Property="Foreground"
-                                    Value="{DynamicResource CloseButtonColor}" />
+                                    Value="Gray" />
                             <Setter Property="pu:ButtonHelper.HoverBrush"
-                                    Value="{DynamicResource CloseButtonFocusColor}" />
+                                    Value="Black" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
