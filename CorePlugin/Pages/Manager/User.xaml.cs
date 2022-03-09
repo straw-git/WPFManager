@@ -185,7 +185,7 @@ namespace CorePlugin.Pages.Manager
                         Name = item.Name,
                         RoleName = context.SysDic.Any(c => c.Id == item.RoleId) ? context.SysDic.First(c => c.Id == item.RoleId).Name : "超级管理员",
                         StaffName = item.StaffId,
-                        CanLogin = item.CanLogin 
+                        CanLogin = item.CanLogin
                     };
 
                     Data.Add(_model);
@@ -345,5 +345,14 @@ namespace CorePlugin.Pages.Manager
             btnRef_Click(null, null);
         }
 
+        private void list_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            UIModel userModel = e.Row.Item as UIModel;
+            if (userModel.Name == "admin") 
+            {
+                e.Row.IsEnabled = false;
+                e.Row.Background = new SolidColorBrush(Colors.LightBlue);//显示成灰色
+            }
+        }
     }
 }

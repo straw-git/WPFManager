@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Common.MyControls.MyPager_ZHHans"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+             xmlns:local="clr-namespace:Common.MyControls"
+             Height="40" Background="White">
+    <Border Height="40" VerticalAlignment="Top">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <ComboBox  Height="30" Width="80" Foreground="Gray" BorderBrush="White" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                    <ComboBoxItem Content="50 条/页" IsSelected="True"/>
+                    <ComboBoxItem Content="100条/页"/>
+                    <ComboBoxItem Content="150条/页"/>
+                    <ComboBoxItem Content="200条/页"/>
+                </ComboBox>
+            </Grid>
+            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                <Button  Content="首页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
+                <Button  Content="上一页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
+                <TextBox  BorderBrush="White"
+                                       Margin="10,2,2,2"
+                                      BorderThickness="0,0,0,1"
+                                     pu:TextBoxHelper.FocusedBorderBrush="White"
+                                    pu:TextBoxHelper.FocusedShadowColor="{x:Null}"
+                                      pu:TextBoxHelper.Watermark="页码"
+                                      pu:TextBoxHelper.Icon="&#xf0a4;"/>
+                <Label Content="/" Foreground="Gray" VerticalAlignment="Center"/>
+                <Label  Content="500" Foreground="Gray" VerticalAlignment="Center"/>
+                <Button  Content="下一页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
+                <Button  Content="尾页" Cursor="Hand" Margin="10,0,10,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                <Button  Content="尾页" Cursor="Hand" Margin="10,0,10,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

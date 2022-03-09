@@ -8,64 +8,15 @@
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver" 
         Title="登录" 
         Height="400" Width="800"
+        Loaded="Window_Loaded"
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="Transparent"
          AllowsTransparency="True" 
         WindowStartupLocation="CenterScreen">
-    <Border x:Name="wb" BorderThickness="3" Background="{DynamicResource SkinColor}" BorderBrush="{DynamicResource SkinColor}"  MouseDown="wb_MouseDown">
-        <Border.Clip>
-            <GeometryGroup FillRule="Nonzero">
-                <RectangleGeometry x:Name="r1" Rect="0,50,800,100"/>
-                <RectangleGeometry x:Name="r2" Rect="0,240,800,100"/>
-                <RectangleGeometry x:Name="r3" Rect="80,0,90,800"/>
-                <RectangleGeometry x:Name="r4" Rect="360,0,100,800"/>
-            </GeometryGroup>
-        </Border.Clip>
-        <Grid x:Name="root">
-            <Grid>
-                <!--背景波浪动画-->
-                <Viewport3D Name="World">
-                    <Viewport3D.Camera>
-                        <PerspectiveCamera Position="0,50,1000" LookDirection="0,2,-1" UpDirection="0,-1,-1" FieldOfView="10000" NearPlaneDistance="10" FarPlaneDistance="8000"/>
-                    </Viewport3D.Camera>
-                    <Viewport3D.Children>
-                        <ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <Model3DGroup x:Name="WorldModels">
-                                    <AmbientLight Color="#FFFFFFFF" />
-                                </Model3DGroup>
-                            </ModelVisual3D.Content>
-                        </ModelVisual3D>
-                    </Viewport3D.Children>
-                </Viewport3D>
-                <!--用户信息-->
-                <Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Background="Black" CornerRadius="5" >
-                    <Grid>
-                        <Label x:Name="lblNotLogin" Content="未登录" Foreground="White" Margin="5" ToolTip="当前未登录"/>
-                        <pu:DropDown x:Name="ddLogined" Margin="5" Visibility="Collapsed">
-                            <StackPanel VerticalAlignment="Center"
-                                Orientation="Horizontal">
-                                <TextBlock Text="Zeoun's"
-                                   x:Name="lblCurrUser"
-                                   FontWeight="Light"
-                                   VerticalAlignment="Center"
-                                   Foreground="White"
-                                   Margin="5,0,0,0" />
-                                <TextBlock Text="&#xe651;"
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   FontFamily="/Resources/#iconfont"
-                                   Margin="10,0,0,0" />
-                            </StackPanel>
-                            <pu:DropDown.Child>
-                                <StackPanel  HorizontalAlignment="Center">
-                                    <Button  Content="注销登录" pu:ButtonHelper.Icon="&#xf1a0;"  Margin="20" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}"  Foreground="Blue" x:Name="btnChangePwd"/>
-                                </StackPanel>
-                            </pu:DropDown.Child>
-                        </pu:DropDown>
-                    </Grid>
-                </Border>
+    <Border MouseDown="wb_MouseDown">
+        <Grid>
+            <!--<Grid>
                 <Button x:Name="btnClose"  ToolTip="关闭"
                         pu:ButtonHelper.Icon="&#xf00d;"
                         FontFamily="/Resources/#iconfont" 
@@ -75,30 +26,10 @@
                         pu:ButtonHelper.ButtonStyle="Link" 
                         VerticalAlignment="Top" 
                         HorizontalAlignment="Right" Click="btnExit_Click"/>
-            </Grid>
+            </Grid>-->
             <myBox:SelectPlugins x:Name="selectPlugins"/>
             <myBox:LocalPluginsBox x:Name="localPlugins" Visibility="Collapsed"/>
             <myBox:LoginBox x:Name="login"/>
         </Grid>
     </Border>
-    <Window.RenderTransform>
-        <TransformGroup>
-            <RotateTransform x:Name="rt" Angle="0"/>
-            <ScaleTransform x:Name="sct" ScaleX="1" ScaleY="1"/>
-        </TransformGroup>
-    </Window.RenderTransform>
-    <Window.Resources>
-        <Storyboard x:Key="start">
-            <RectAnimation Storyboard.TargetName="r1" Storyboard.TargetProperty="Rect"  
-                           Duration="0:0:1" To="0,0,800,800"/>
-            <RectAnimation Storyboard.TargetName="r2" Storyboard.TargetProperty="Rect"  
-                           Duration="0:0:1" To="20,20,500,700"/>
-            <RectAnimation Storyboard.TargetName="r3" Storyboard.TargetProperty="Rect"  
-                           Duration="0:0:1" To="85,0,750,600"/>
-            <RectAnimation Storyboard.TargetName="r4" Storyboard.TargetProperty="Rect"  
-                           Duration="0:0:1" To="0,250,700,600"/>
-            <DoubleAnimation Storyboard.TargetName="wb" Storyboard.TargetProperty="Opacity"  
-                             From="0.2" To="1" Duration="0:0:1"/>
-        </Storyboard>
-    </Window.Resources>
 </Window>

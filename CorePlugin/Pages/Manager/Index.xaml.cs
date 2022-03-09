@@ -53,5 +53,6 @@ namespace CorePlugin.Pages.Manager
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
         }
+
     }
 }

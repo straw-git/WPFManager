@@ -148,6 +148,7 @@
                               pu:DataGridHelper.HeaderMinHeight="40"
                               pu:DataGridHelper.RowMinHeight="30"
                               pu:DataGridHelper.CellPadding="5,0"
+                          LoadingRow="list_LoadingRow"
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
                     <DataGrid.Columns>

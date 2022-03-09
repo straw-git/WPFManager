@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CorePlugin.Pages.Manager"
       xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+      xmlns:my="clr-namespace:Common.MyControls;assembly=Common"
       xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" Loaded="Page_Loaded"
       d:DesignHeight="730" d:DesignWidth="1190"
@@ -133,7 +134,35 @@
         </Grid>
         <!--第二区域-->
         <Grid Grid.Row="1">
-            
+            <Grid Margin="10,0,10,0" Background="White">
+
+                <TabControl VerticalAlignment="Stretch"
+                                    pu:TabControlHelper.TabControlStyle="Standard"
+                                    pu:TabControlHelper.ItemHeight="40"
+                                    FontSize="12"
+                                    Margin="0,0,0,40"
+                                    pu:TabControlHelper.ItemPadding="12,0"
+                                    pu:TabControlHelper.SelectedForeground="{DynamicResource SkinColor}"
+                                    pu:TabControlHelper.ItemsAlignment="LeftOrTop">
+                    <TabItem Header="系统日志"></TabItem>
+                    <TabItem Header="授权记录"></TabItem>
+                    <TabItem Header="操作记录"></TabItem>
+                    <TabItem Header="插件更新"></TabItem>
+                </TabControl>
+                <Button FontSize="16"
+                    Width="28"
+                    Height="28"
+                    ToolTip="添加日志类型"
+                    pu:ButtonHelper.ButtonStyle="Link"
+                    Foreground="#EAEAEA"
+                    Content="&#xf067;"
+                    FontFamily="{StaticResource FontAwesome}"
+                    pu:ButtonHelper.HoverBrush="Gray"
+                    Margin="5"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right" />
+                <my:MyPager_ZHHans VerticalAlignment="Bottom"/>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

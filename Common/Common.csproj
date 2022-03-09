@@ -128,6 +128,12 @@
     <Compile Include="MyControls\InfoBorder.xaml.cs">
       <DependentUpon>InfoBorder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyControls\MyPagerDataGrid.xaml.cs">
+      <DependentUpon>MyPagerDataGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControls\MyPager_ZHHans.xaml.cs">
+      <DependentUpon>MyPager_ZHHans.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PageInfo.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
     <Compile Include="Utils\PagerCommon.cs" />
@@ -182,6 +188,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MyControls\InfoBorder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControls\MyPagerDataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControls\MyPager_ZHHans.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

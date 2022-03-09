@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:Client.MyControls" 
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver" 
         Height="360"
-             Opacity="0.9"
         Width="600" >
     <UserControl.Resources>
         <Storyboard x:Key="hiddlePlugins">
@@ -20,13 +19,13 @@
             </DoubleAnimation>
         </Storyboard>
     </UserControl.Resources>
-    <Border Background="White" x:Name="bPlugins" Width="600" >
+    <Border Background="White" x:Name="bPlugins" Width="600" BorderThickness="1" BorderBrush="LightGray" >
         <Border.Effect>
             <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
         </Border.Effect>
-        <Grid Margin="0,0,0,5">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -34,11 +33,11 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Grid.Row="1">
-                <ListBox MouseDoubleClick="dlls_MouseDoubleClick" Margin="5,5,5,30" x:Name="dlls"/>
-                <Border Height="30" Background="Black" Margin="5,0,5,0" VerticalAlignment="Bottom">
+                <ListBox MouseDoubleClick="dlls_MouseDoubleClick" Margin="0,0,0,40" x:Name="dlls"/>
+                <Border BorderThickness="0,0,1,0" BorderBrush="White" Height="40" Background="Black" VerticalAlignment="Bottom">
                     <Grid>
-                        <Label Content="服务端插件 [双击下载]" VerticalAlignment="Center" Foreground="White"/>
-                        <Button  ToolTip="刷新本地插件"
+                        <Label Margin="5,0,0,0" FontSize="16" Content="服务端插件 [双击下载]" VerticalAlignment="Center" Foreground="White"/>
+                        <Button  ToolTip="刷新服务端插件"
                                     pu:ButtonHelper.Icon="&#xf01e;"
                                     FontFamily="/Resources/#iconfont"
                                       Click="btnUpdateDLLs_Click"
@@ -51,11 +50,11 @@
                 </Border>
             </Grid>
             <Grid Grid.Column="1" Grid.Row="1">
-                <ListBox MouseDoubleClick="plugins_MouseDoubleClick"  Margin="5,5,5,30" x:Name="plugins" PreviewMouseMove="LBoxSort_OnPreviewMouseMove" Drop="LBoxSort_OnDrop" AllowDrop="True"/>
-                <Border Height="30" Background="Black" Margin="5,0,5,0" VerticalAlignment="Bottom">
+                <ListBox MouseDoubleClick="plugins_MouseDoubleClick"  Margin="0,0,0,40" x:Name="plugins" PreviewMouseMove="LBoxSort_OnPreviewMouseMove" Drop="LBoxSort_OnDrop" AllowDrop="True"/>
+                <Border BorderThickness="1,0,0,0" BorderBrush="White" Height="40" Background="Black" VerticalAlignment="Bottom">
                     <Grid>
-                        <Label Content="本地插件 [拖动移动显示顺序]" VerticalAlignment="Center" Foreground="White"/>
-                        <Button  ToolTip="更新并使用插件"
+                        <Label Margin="5,0,0,0" FontSize="16"  Content="本地插件 [拖动移动显示顺序]" VerticalAlignment="Center" Foreground="White"/>
+                        <Button  ToolTip="更新并使用本地插件"
                                         pu:ButtonHelper.Icon="&#xf1d9;"
                                         FontFamily="/Resources/#iconfont"
                                           Click="btnSubmit_Click"
@@ -68,7 +67,10 @@
                 </Border>
             </Grid>
             <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="Black">
-                <Label Content="插件中心" VerticalAlignment="Center" Foreground="White" Margin="5,0,0,0"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="&#xf260;" FontFamily="{StaticResource FontAwesome}" FontSize="16" VerticalAlignment="Center" Foreground="White" Margin="5,0,0,0"/>
+                    <Label Content="插件中心" FontSize="16" VerticalAlignment="Center" Foreground="White"/>
+                </StackPanel>
                 <Button  ToolTip="返回登录页面" Margin="0,0,5,0"
                                     pu:ButtonHelper.Icon="&#xf060;"
                                     FontFamily="/Resources/#iconfont"

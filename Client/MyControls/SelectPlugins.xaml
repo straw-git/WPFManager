@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Client.MyControls"
              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
              Height="360"
-             Opacity="0.9" Loaded="UserControl_Loaded"
+             Loaded="UserControl_Loaded"
              Width="600" >
     <UserControl.Resources>
         <Storyboard x:Key="hiddlePlugins">
@@ -21,19 +21,21 @@
         </Storyboard>
     </UserControl.Resources>
     <Grid>
-
-        <Border Background="White" x:Name="bPlugins">
+        <Border BorderThickness="1" BorderBrush="LightGray" Background="White" x:Name="bPlugins">
             <Border.Effect>
                 <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
             </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="40"/>
                     <RowDefinition/>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="Black">
-                    <Label Content="选择插件" VerticalAlignment="Center" Foreground="White" Margin="5,0,0,0"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Content="&#xf260;" FontFamily="{StaticResource FontAwesome}" FontSize="16" VerticalAlignment="Center" Foreground="White" Margin="5,0,0,0"/>
+                        <Label Content="选择插件" FontSize="16" VerticalAlignment="Center" Foreground="White"/>
+                    </StackPanel>
                     <Button  ToolTip="返回登录页面" Margin="0,0,5,0"
                                     pu:ButtonHelper.Icon="&#xf060;"
                                     FontFamily="/Resources/#iconfont"
@@ -52,7 +54,7 @@
                         <UniformGrid x:Name="gPlugins"  Columns="3" VerticalAlignment="Top"/>
                     </ScrollViewer>
                 </Border>
-                <Border Grid.Row="2" Height="30" Background="Black" >
+                <Border Grid.Row="2" Height="40" Background="Black" >
                     <StackPanel x:Name="bMenus" Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button  ToolTip="加入当前窗口" 
                                     pu:ButtonHelper.Icon="&#xf2d0;"

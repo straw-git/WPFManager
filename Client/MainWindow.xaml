@@ -89,10 +89,10 @@
             </Grid>
             <Grid Grid.Column="3">
                 <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
-                    <Grid  Margin="10,0,0,0"  VerticalAlignment="Center">
-                        <Button  FontSize="16"
-                            Width="28"
-                            Height="28"
+                    <Grid  Margin="15,0,0,0"  VerticalAlignment="Center">
+                        <Button  FontSize="20"
+                            Width="35"
+                            Height="30"
                             ToolTip="邮件"
                             pu:ButtonHelper.ButtonStyle="Link"
                             Foreground="Gray"
@@ -102,11 +102,10 @@
                         VerticalAlignment="Center"/>
                         <pu:Badge HorizontalAlignment="Right" VerticalAlignment="Top"  IsWaving="False" FontSize="8" Width="15" Height="15" Background="Red" />
                     </Grid>
-                    <Grid  Margin="10,0,0,0"  VerticalAlignment="Center">
-                        <Button  
-                        FontSize="16"
-                        Width="28"
-                        Height="28"
+                    <Grid  Margin="15,0,0,0"  VerticalAlignment="Center">
+                        <Button FontSize="20"
+                            Width="35"
+                            Height="30"
                         ToolTip="消息"
                         pu:ButtonHelper.ButtonStyle="Link"
                         Foreground="Orange"
@@ -114,15 +113,15 @@
                         FontFamily="{StaticResource FontAwesome}"
                         pu:ButtonHelper.HoverBrush="Black"
                         VerticalAlignment="Center"/>
-                        <pu:Badge HorizontalAlignment="Right" VerticalAlignment="Top"  IsWaving="False" FontSize="8" Width="15" Height="15" Background="Orange" />
+                        <pu:Badge Text="99+" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="10"  IsWaving="True" Foreground="White"  Background="Orange" />
                     </Grid>
 
                     <Button x:Name="btnSkin" 
                         Click="btnSkin_Click"
-                            Margin="10,0,0,0"
-                        FontSize="16"
-                        Width="28"
-                        Height="28"
+                            Margin="15,0,0,0"
+                        FontSize="20"
+                        Width="30"
+                        Height="30"
                         ToolTip="皮肤"
                         pu:ButtonHelper.ButtonStyle="Link"
                         Foreground="Gray"
@@ -130,12 +129,12 @@
                         FontFamily="{StaticResource FontAwesome}"
                         pu:ButtonHelper.HoverBrush="Black"
                         VerticalAlignment="Center"/>
-                    <Button FontSize="16"
+                    <Button FontSize="20"
                         x:Name="btnSetting"
-                            Margin="10,0,0,0"
+                            Margin="15,0,0,0"
                         Click="btnSetting_Click"
-                        Width="28"
-                        Height="28"
+                        Width="30"
+                        Height="30"
                         ToolTip="设置"
                         pu:ButtonHelper.ButtonStyle="Link"
                         Content="&#xf085;"
@@ -189,7 +188,7 @@
                             <Label Width="28" Height="28" FontSize="16" Foreground="Gray" Margin="10,0,0,0" FontFamily="{StaticResource FontAwesome}" Content="&#xf027;"/>
                             <Label Foreground="Gray" Margin="5,0,0,0" x:Name="lblInfo" Content="等待操作..."/>
                         </StackPanel>
-                        <Label Foreground="Gray" Content="zyue-1.0" VerticalAlignment="Center" Margin="0,0,10,0" HorizontalAlignment="Right"/>
+                        <Label x:Name="lblV" Foreground="Gray" Content="zyue-1.0" VerticalAlignment="Center" Margin="0,0,10,0" HorizontalAlignment="Right"/>
                     </Grid>
                 </Grid>
             </Border>

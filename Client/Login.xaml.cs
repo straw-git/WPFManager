@@ -30,38 +30,14 @@ namespace Client
     /// </summary>
     public partial class Login : Window
     {
-        Storyboard stdStart;
-        private readonly ParticleSystem _ps;
-        private DispatcherTimer _frameTimer;
-
         public Login()
         {
             InitializeComponent();
             this.UseCloseAnimation();
-
-            stdStart = (Storyboard)this.Resources["start"];
-            stdStart.Completed += (a, b) =>
-            {
-                this.root.Clip = null;
-            };
-            this.Loaded += Window_Loaded;
-
-            _frameTimer = new DispatcherTimer();
-            _frameTimer.Tick += OnFrame;
-            _frameTimer.Interval = TimeSpan.FromSeconds(1.0 / 60.0);
-            _frameTimer.Start();
-
-            _ps = new ParticleSystem(50, 50, Colors.White, 30);
-
-            WorldModels.Children.Add(_ps.ParticleModel);
-
-            _ps.SpawnParticle(30);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            stdStart.Begin();
-
             login.Visibility = Visibility.Visible;
             localPlugins.Visibility = Visibility.Collapsed;
             selectPlugins.Visibility = Visibility.Collapsed;
@@ -115,31 +91,26 @@ namespace Client
 
         private void OnLoginFinished()
         {
-            UpdateLoginData();
+            //UpdateLoginData();
             login.HideLogin();
             selectPlugins.ShowPlugins();
         }
 
-        private void UpdateLoginData()
-        {
-            if (UserGlobal.IsLogin)
-            {
-                lblNotLogin.Visibility = Visibility.Collapsed;
-                ddLogined.Visibility = Visibility.Visible;
+        //private void UpdateLoginData()
+        //{
+        //    if (UserGlobal.IsLogin)
+        //    {
+        //        lblNotLogin.Visibility = Visibility.Collapsed;
+        //        ddLogined.Visibility = Visibility.Visible;
 
-                lblCurrUser.Text = UserGlobal.CurrUser.Name;
-            }
-            else
-            {
-                lblNotLogin.Visibility = Visibility.Visible;
-                ddLogined.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void OnFrame(object sender, EventArgs e)
-        {
-            _ps.Update();
-        }
+        //        lblCurrUser.Text = UserGlobal.CurrUser.Name;
+        //    }
+        //    else
+        //    {
+        //        lblNotLogin.Visibility = Visibility.Visible;
+        //        ddLogined.Visibility = Visibility.Collapsed;
+        //    }
+        //}
 
         private async void CheckNullData()
         {

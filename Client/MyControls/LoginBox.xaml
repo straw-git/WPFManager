@@ -6,7 +6,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              Width="340"
              Height="360"
-              Opacity="0.9"
              xmlns:local="clr-namespace:Client.MyControls">
     <UserControl.Resources>
         <Storyboard x:Key="hiddleLogin">
@@ -21,7 +20,7 @@
         </Storyboard>
     </UserControl.Resources>
 
-    <Border Background="White" x:Name="bLogin" Width="340" >
+    <Border Background="White" BorderThickness="1" BorderBrush="LightGray" x:Name="bLogin" Width="340" >
         <Border.Effect>
             <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
         </Border.Effect>
@@ -57,7 +56,7 @@
                         </TextBlock.Triggers>
                     </TextBlock>
                     <StackPanel Orientation="Horizontal" Width="60" VerticalAlignment="Bottom">
-                        <Label Content="插件中心" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" x:Name="btnPlugins" MouseDown="btnPlugins_Click"/>
+                        <Label Content="插件中心" Cursor="Hand" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" x:Name="btnPlugins" MouseDown="btnPlugins_Click"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
@@ -66,11 +65,12 @@
                                       Width="260"
                                       x:Name="txtUserName"
                                       Text="admin"
-                                      Background="{DynamicResource TextBoxBgColor}"
+                                      Background="White"
                                       pu:TextBoxHelper.Watermark="账户"
-                                      pu:TextBoxHelper.Icon="&#xf11c;"
-                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
-                                      pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}" />
+                                      pu:TextBoxHelper.Icon="&#xf007;"
+                              BorderThickness="0,0,0,1"
+                                      pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource SkinColor}"
+                                      pu:TextBoxHelper.FocusedShadowColor="{x:Null}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
                     <PasswordBox  Height="40"
@@ -78,24 +78,37 @@
                                           Width="260"
                                           Password="123456"
                                           x:Name="txtPassword"
-                                          Background="{DynamicResource TextBoxBgColor}"
+                                          Background="White"
                                           pu:PasswordBoxHelper.Watermark="密码"
-                                          pu:PasswordBoxHelper.Icon="&#xf11c;"
-                                          pu:PasswordBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
-                                          pu:PasswordBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                          pu:PasswordBoxHelper.Icon="&#xf023;"
+                                   BorderThickness="0,0,0,1"
+                                          pu:PasswordBoxHelper.FocusedBorderBrush="{DynamicResource SkinColor}"
+                                          pu:PasswordBoxHelper.FocusedShadowColor="{x:Null}"
                                           pu:PasswordBoxHelper.IsShowPwdButtonVisible="True" />
                 </StackPanel>
                 <Button  Height="40"
+                         Cursor="Hand"
                          FontSize="16"
                          Width="260"
                         Margin="0,60,0,10"
                         Content="登 录"
+                         pu:ButtonHelper.CornerRadius="10"
                         pu:ButtonHelper.ClickStyle="Sink"
-                        FontFamily="{StaticResource FontAwesome}"
-                        Background="{DynamicResource ButtonBgColor}"
+                         Foreground="White"
+                        Background="Black"
                         pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"
-                        pu:ButtonHelper.Icon="&#xf21d;" x:Name="btnLogin" Click="btnLogin_Click" />
+                        x:Name="btnLogin" Click="btnLogin_Click" />
+                
             </StackPanel>
+            <Button x:Name="btnClose"  ToolTip="关闭"
+                        pu:ButtonHelper.Icon="&#xf00d;"
+                        FontFamily="/Resources/#iconfont" 
+                        Width="50" Height="50" FontSize="25" 
+                        Foreground="LightBlue" 
+                        pu:ButtonHelper.HoverBrush="Black"  
+                        pu:ButtonHelper.ButtonStyle="Link" 
+                        VerticalAlignment="Top" 
+                        HorizontalAlignment="Right"/>
         </Grid>
     </Border>
 </UserControl>

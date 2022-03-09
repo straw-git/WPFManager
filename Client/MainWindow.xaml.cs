@@ -124,7 +124,7 @@ namespace Client
 
             List<PageInfo> _pages = currTab.Tag as List<PageInfo>;
             tvMenu.Items.Clear();
-            _pages = _pages.OrderBy(c=>c.Order).ToList();//页面排序
+            _pages = _pages.OrderBy(c => c.Order).ToList();//页面排序
 
             int currIndex = 0;
             foreach (var page in _pages)
@@ -143,7 +143,7 @@ namespace Client
                 if (currIndex == 0)
                 {
                     currIndex = 1;
-                    mainFrame.Source = new Uri( page.FullPath, UriKind.RelativeOrAbsolute);
+                    mainFrame.Source = new Uri(page.FullPath, UriKind.RelativeOrAbsolute);
                 }
             }
         }
@@ -161,7 +161,8 @@ namespace Client
 
         public void UpdateTitle()
         {
-            //lblV.Content = $"by 1020    V{LocalSettings.settings.Versions}";
+            lblTitle.Text = Title = LocalSettings.settings.MainWindowTitle;
+            lblV.Content = $"{LocalSettings.settings.CompanyName}-{LocalSettings.settings.Versions}";
         }
 
         #region UI Method
