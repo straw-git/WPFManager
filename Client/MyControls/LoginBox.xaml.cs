@@ -40,12 +40,6 @@ namespace Client.MyControls
         }
 
         public Action OnLoginFinished;
-        public Action OnLocalPluginsClick;
-
-        private void btnPlugins_Click(object sender, MouseButtonEventArgs e)
-        {
-            OnLocalPluginsClick?.Invoke();
-        }
 
         public void HideLogin()
         {
@@ -96,7 +90,7 @@ namespace Client.MyControls
                     ButtonBrush = "#5DBBEC".ToColor().ToBrush(),
                 });
 
-                CoreDBModels.User userModel = null;
+                User userModel = null;
 
                 #region 登录
 
@@ -118,113 +112,80 @@ namespace Client.MyControls
                             {
                                 //继续装载数据
                                 handler.UpdateMessage("登录成功,正在装载用户数据...");
-                                string userPluginsStr = context.UserPlugins.Any(c => c.UserId == userModel.Id) ? context.UserPlugins.First(c => c.UserId == userModel.Id).Pages : "";
-                                string rolePluginsStr = context.RolePlugins.Any(c => c.RoleId == userModel.RoleId) ? context.RolePlugins.First(c => c.RoleId == userModel.RoleId).Pages : "";
-                                List<PluginsPage> pages = new List<PluginsPage>();
-                                List<Plugins> canUsePlugins = new List<Plugins>();//允许使用的插件信息
+                                //清空数据
+                                UserGlobal.Plugins.Clear();
+                                UserGlobal.PluginsModules.Clear();
+                                UserGlobal.ModulePages.Clear();
 
-                                //查找用户页面
-                                switch (userModel.LoadPluginsType)
+                                #region 加载权限
+
+                                if (userModel.RoleId == context.Role.First(c => c.Name == "超级管理员").Id)
                                 {
-                                    case 0:
-                                        #region Role 按角色方式加载
-                                        string[] _rps = rolePluginsStr.Split(',');
-                                        foreach (var pId in _rps)
-                                        {
-                                            int pluginsId = 0;
-                                            int.TryParse(pId, out pluginsId);
-                                            if (pluginsId == 0) continue;
+                                    #region 超级管理员
 
-                                            if (context.PluginsPage.Any(c => c.Id == pluginsId))
+                                    UserGlobal.Plugins = context.Plugins.ToList();
+                                    UserGlobal.PluginsModules = context.PluginsModule.ToList();
+                                    UserGlobal.ModulePages = context.ModulePage.ToList();
+
+                                    #endregion 
+                                }
+                                else
+                                {
+                                    //获取角色权限
+                                    string rolePluginsStr = context.RolePlugins.Any(c => c.RoleId == userModel.RoleId) ? context.RolePlugins.First(c => c.RoleId == userModel.RoleId).Pages : "";
+                                    //获取用户自定义权限
+                                    UserPlugins userPlugins = context.UserPlugins.FirstOrDefault(c => c.Id == userModel.Id);
+                                    if (userPlugins != null && userPlugins.Id > 0)
+                                    {
+                                        if (userPlugins.IncreasePages.NotEmpty())
+                                        {
+                                            //在角色权限基础上的增加页面
+                                            string[] increasePages = userPlugins.IncreasePages.Split(',');
+                                            foreach (var _iPage in increasePages)
                                             {
-                                                var pp = context.PluginsPage.First(c => c.Id == pluginsId);
-                                                if (!canUsePlugins.Any(c => c.Id == pp.PluginsId))
+                                                int _pageId = 0;
+                                                if (int.TryParse(_iPage, out _pageId))
                                                 {
-                                                    //不存在当前插件 将当前插件加入到允许使用的插件列表
-                                                    var p = context.Plugins.First(c => c.Id == pp.PluginsId);
-                                                    canUsePlugins.Add(p);
+                                                    string _iStr = rolePluginsStr.NotEmpty() ? $",{_pageId}" : _pageId.ToString();
+                                                    rolePluginsStr += _iStr;//将字符串追加到末尾
                                                 }
-                                                pages.Add(pp);
+                                                else
+                                                {
+                                                    continue;
+                                                }
                                             }
                                         }
-                                        #endregion 
-                                        break;
-                                    case 1:
-                                        #region User 按用户方式加载
-                                        string[] _ups = rolePluginsStr.Split(',');
-                                        foreach (var pId in _ups)
+                                        if (userPlugins.DecrementPages.NotEmpty())
                                         {
-                                            int pluginsId = 0;
-                                            int.TryParse(pId, out pluginsId);
-                                            if (pluginsId == 0) continue;
-
-                                            if (context.PluginsPage.Any(c => c.Id == pluginsId))
+                                            //在角色权限基础上的减少页面
+                                            string[] decrementPages = userPlugins.DecrementPages.Split(',');
+                                            List<string> _currRoles = rolePluginsStr.Split(',').ToList();//当前的所有角色
+                                            bool _currRolesUpdate = false;//当前所有角色是否更新
+                                            foreach (var _iPage in decrementPages)
                                             {
-                                                var pp = context.PluginsPage.First(c => c.Id == pluginsId);
-                                                if (!canUsePlugins.Any(c => c.Id == pp.PluginsId))
+                                                if (_iPage.NotEmpty())
                                                 {
-                                                    //不存在当前插件 将当前插件加入到允许使用的插件列表
-                                                    var p = context.Plugins.First(c => c.Id == pp.PluginsId);
-                                                    canUsePlugins.Add(p);
+                                                    if (_currRoles.Contains(_iPage))
+                                                    {
+                                                        _currRolesUpdate = true;
+                                                        _currRoles.Remove(_iPage); //如果有这一项 移除
+                                                    }
                                                 }
-                                                pages.Add(pp);
+                                                else { continue; }
                                             }
+                                            if (_currRolesUpdate)
+                                                rolePluginsStr = string.Join(",", _currRoles); //如果有更改，重新整理移除后的字符串
                                         }
-                                        #endregion
-                                        break;
-                                    case 2:
-                                        #region  All 覆盖用户与角色权限
-                                        List<string> _rpsList = rolePluginsStr.Split(',').ToList();
-                                        List<string> _upsList = rolePluginsStr.Split(',').ToList();
+                                    }
 
-                                        foreach (var pId in _rpsList)
-                                        {
-                                            if (!string.IsNullOrEmpty(pId) && _upsList.Contains(pId))
-                                            {
-                                                _upsList.Remove(pId);
-                                            }
-                                            int pluginsId = 0;
-                                            int.TryParse(pId, out pluginsId);
-                                            if (pluginsId == 0) continue;
-
-                                            if (context.PluginsPage.Any(c => c.Id == pluginsId))
-                                            {
-                                                var pp = context.PluginsPage.First(c => c.Id == pluginsId);
-                                                if (!canUsePlugins.Any(c => c.Id == pp.PluginsId))
-                                                {
-                                                    //不存在当前插件 将当前插件加入到允许使用的插件列表
-                                                    var p = context.Plugins.First(c => c.Id == pp.PluginsId);
-                                                    canUsePlugins.Add(p);
-                                                }
-                                                pages.Add(pp);
-                                            }
-                                        }
-                                        foreach (var pId in _upsList)
-                                        {
-                                            int pluginsId = 0;
-                                            int.TryParse(pId, out pluginsId);
-                                            if (pluginsId == 0) continue;
-
-                                            if (context.PluginsPage.Any(c => c.Id == pluginsId))
-                                            {
-                                                var pp = context.PluginsPage.First(c => c.Id == pluginsId);
-                                                if (!canUsePlugins.Any(c => c.Id == pp.PluginsId))
-                                                {
-                                                    //不存在当前插件 将当前插件加入到允许使用的插件列表
-                                                    var p = context.Plugins.First(c => c.Id == pp.PluginsId);
-                                                    canUsePlugins.Add(p);
-                                                }
-                                                pages.Add(pp);
-                                            }
-                                        }
-                                        #endregion 
-                                        break;
-                                    default:
-                                        throw new Exception();//没有处理的加载插件形式 抛出异常
+                                    GetRightByPageStr(context, rolePluginsStr);
                                 }
 
+                                #endregion
+
                                 await Task.Delay(500);
-                                UserGlobal.SetCurrUser(userModel, canUsePlugins, pages);
+
+                                UserGlobal.SetCurrUser(userModel, context.CoreSetting.First());
                                 handler.UpdateMessage("数据装载成功！");
                                 await Task.Delay(300);
                                 handler.Close();
@@ -248,6 +209,47 @@ namespace Client.MyControls
                 }
                 #endregion
             }
+        }
+
+        /// <summary>
+        /// 根据权限数据设置用户权限
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="_str"></param>
+        private void GetRightByPageStr(CoreDBContext context, string _str)
+        {
+            string[] _rps = _str.Split(',');
+            foreach (string _pageId in _rps)
+            {
+                int pageId = 0;
+                int.TryParse(_pageId, out pageId);
+                if (pageId == 0) continue;
+
+                if (context.ModulePage.Any(c => c.Id == pageId))
+                {
+                    var pageInfo = context.ModulePage.First(c => c.Id == pageId);//获取页面信息
+                    var moduleInfo = context.PluginsModule.First(c => c.Id == pageInfo.ModuleId);//获取模块信息
+                    var pluginInfo = context.Plugins.First(c => c.Id == moduleInfo.PluginsId);//获取插件信息
+
+                    if (pageInfo != null && moduleInfo != null && pluginInfo != null)
+                    {
+                        if (!UserGlobal.Plugins.Contains(pluginInfo))
+                        {
+                            //将已有插件的连接加入连接管理器
+                            if (pluginInfo.ConnectionName.NotEmpty() && pluginInfo.ConnectionString.NotEmpty())
+                                DBConnections.Set(pluginInfo.ConnectionName, pluginInfo.ConnectionString);
+                            UserGlobal.Plugins.Add(pluginInfo);//添加插件
+                        }
+                        if (!UserGlobal.PluginsModules.Contains(moduleInfo)) UserGlobal.PluginsModules.Add(moduleInfo);//添加模块
+                        if (!UserGlobal.ModulePages.Contains(pageInfo)) UserGlobal.ModulePages.Add(pageInfo);//添加页面
+                    }
+                }
+            }
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

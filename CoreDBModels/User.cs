@@ -14,11 +14,8 @@ namespace CoreDBModels
         public string Pwd { get; set; }
 
         public int RoleId { get; set; }//角色
-        [MaxLength(50)]
-        public string StaffId { get; set; }
 
         public bool CanLogin { get; set; }//是否允许登录
-        public int LoadPluginsType { get; set; }//0:Role 按角色方式加载  1：User 按用户方式加载 2：All 覆盖用户与角色权限
 
         //删除状态
         public bool IsDel { get; set; }

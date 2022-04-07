@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="Common.MyControls.EditMenuItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Common.MyControls">
+    <Grid Cursor="Hand" Margin="0,10,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3"/>
+            <ColumnDefinition Width="28"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1">
+            <pu:DropDown>
+                <Button FontSize="16"
+                    Width="28"
+                    Height="28"
+                    ToolTip="刷新"
+                    pu:ButtonHelper.ButtonStyle="Link"
+                    Foreground="#EAEAEA"
+                    Content="&#xf021;"
+                    FontFamily="{StaticResource FontAwesome}"
+                    pu:ButtonHelper.HoverBrush="Orange" />
+                <pu:DropDown.Child>
+                    <StackPanel Width="100" HorizontalAlignment="Center">
+                        <Button  Content="修改密码" Margin="0,20,0,0" pu:ButtonHelper.ButtonStyle="Link"/>
+                    </StackPanel>
+                </pu:DropDown.Child>
+            </pu:DropDown>
+        </Grid>
+        <Grid Grid.Column="2">
+            <TextBox Foreground="White" 
+                 BorderThickness="3,0,0,0" 
+                 BorderBrush="Black" 
+                 IsReadOnly="True"
+                 Height="50"  
+                 Background="Black" 
+                 Text="名称1"/>
+        </Grid>
+    </Grid>
+</UserControl>

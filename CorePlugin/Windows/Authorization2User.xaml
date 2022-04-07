@@ -3,64 +3,55 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CorePlugin.Windows"
+        xmlns:local="clr-namespace:CorePlugin.MyControls"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-        mc:Ignorable="d"        
-        Title="用户授权"
-            Height="400"
-            Width="600" Loaded="Window_Loaded"
-            WindowStartupLocation="CenterScreen">
-    <Grid Background="White">
-        <Border  Background="White" BorderBrush="{DynamicResource SkinColor}" BorderThickness="1" Margin="0,0,0,50">
-            <TabControl x:Name="tabMenus"  VerticalAlignment="Stretch"
-                        pu:TabControlHelper.ItemHeight="30"
-                        pu:TabControlHelper.ItemPadding="20,0"
-                        pu:TabControlHelper.SelectedForeground="{DynamicResource SkinColor}"
-                        pu:TabControlHelper.ItemsAlignment="LeftOrTop">
-                <TabItem Header="导航名称" >
-                    <Grid>
-                        <!--<StackPanel x:Name="tvMenu" Width="150" HorizontalAlignment="Left">
-                            <CheckBox Content="首页" Margin="5"/>
-                            <CheckBox Content="首页" Margin="5"/>
-                            <CheckBox Content="首页" Margin="5"/>
-                            <CheckBox Content="首页" Margin="5"/>
-                            <CheckBox Content="首页" Margin="5"/>
-                            <CheckBox Content="首页" Margin="5"/>
-                        </StackPanel>-->
-                        <ListBox  >
-                            <CheckBox Content="首页" Margin="5"/>
-                            <CheckBox Content="首页" Margin="5"/>
-                            <CheckBox Content="首页" Margin="5"/>
-                            <CheckBox Content="首页" Margin="5"/>
-                            <CheckBox Content="首页" Margin="5"/>
-                            <CheckBox Content="首页" Margin="5"/>
-                        </ListBox>
-                    </Grid>
-                </TabItem>
-            </TabControl>
-        </Border>
-       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button  Content="取 消"
-                     x:Name="btnClose"
-                     Click="btnClose_Click"
-                     Width="100" Height="30"
-                     Margin="10"
-                     Background="{DynamicResource ButtonBgColor}"
-                     pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
-            <Button  Content="清除权限"
-                     x:Name="btnClear"
-                     Click="btnClear_Click"
-                     Width="100" Height="30"
-                     Margin="10"
-                     Background="{DynamicResource ButtonBgColor}"
-                     pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
-            <Button  Content="授 权"
-                     x:Name="btnSubmit"
-                     Click="btnSubmit_Click"
-                     Width="100" Height="30"
-                     Margin="10"
-                     Background="{DynamicResource ButtonBgColor}"
-                     pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
-        </StackPanel>
-    </Grid>
+        WindowStyle="None"
+        Background="Transparent"
+        Title="账号授权"
+        Height="450"
+        Width="650"
+       ResizeMode="NoResize" 
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
+    <Border BorderThickness="1" BorderBrush="LightGray">
+        <Grid Background="#FFF8F5F5" x:Name="edit" MouseDown="edit_MouseDown">
+            <GroupBox  Header="账号授权"
+                   pu:GroupBoxHelper.Icon="&#xf084;"
+                           BorderThickness="0"
+                   pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                   pu:GroupBoxHelper.IsSplitLineVisible="True">
+                <pu:GroupBoxHelper.ExtendControl>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                        <Button FontSize="16"
+                                    Margin="10,0,0,0"
+                                    Width="28"
+                                    Height="28"
+                                    ToolTip="保存"
+                                    pu:ButtonHelper.ButtonStyle="Link"
+                                    Foreground="Black"
+                                    Content="&#xf00c;"
+                                    x:Name="btnSave"
+                                    Click="btnSave_Click"
+                                    FontFamily="{StaticResource FontAwesome}"
+                                    pu:ButtonHelper.HoverBrush="Orange"/>
+                        <!--关闭按钮-->
+                        <Button FontSize="16"
+                                     Margin="10,0,0,0"
+                                    Width="28"
+                                    Height="28"
+                                    ToolTip="关闭"
+                                    pu:ButtonHelper.ButtonStyle="Link"
+                                    Foreground="Black"
+                                    Content="&#xf00d;"
+                                    FontFamily="{StaticResource FontAwesome}"
+                                    pu:ButtonHelper.HoverBrush="Orange"
+                                    x:Name="btnClose" Click="btnClose_Click"/>
+                    </StackPanel>
+                </pu:GroupBoxHelper.ExtendControl>
+                <Grid>
+                    <local:AuthorizationItems x:Name="atPages" Margin="-6,0,-1,-6"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Border>
 </Window>

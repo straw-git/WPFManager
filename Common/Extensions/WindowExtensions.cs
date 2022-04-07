@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,16 @@ public static class WindowExtensions
     {
         window.Closing += Window_Closing;
         window.Tag = closeApp;
+    }
+
+    /// <summary>
+    /// 扩展Windows的Log
+    /// </summary>
+    /// <param name="_window"></param>
+    /// <param name="_logStr"></param>
+    public static void Log(this Window _window, string _logStr)
+    {
+        MainWindowGlobal.MainWindow.Log(_logStr);
     }
 
     private static Window currCloseWindow = null;
@@ -74,4 +85,5 @@ public static class WindowExtensions
         eventArg.Source = sender;
         _grid.RaiseEvent(eventArg);
     }
+
 }

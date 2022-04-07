@@ -13,5 +13,8 @@ namespace CoreDBModels
         public int Id { get; set; }
 
         public int MaxLogCount { get; set; }
+
+        [MaxLength(500)]
+        public string PluginsUpdateBaseUrl { get; set; }//插件更新的基础路径
     }
 }

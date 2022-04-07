@@ -33,6 +33,8 @@
                             Foreground="#EAEAEA"
                             Content="&#xf067;"
                             FontFamily="{StaticResource FontAwesome}"
+                            x:Name="btnAddRole"
+                            Click="btnAddRole_Click"
                             pu:ButtonHelper.HoverBrush="Orange"/>
                     <Button FontSize="16"
                             Width="28"
@@ -42,11 +44,13 @@
                             pu:ButtonHelper.ButtonStyle="Link"
                             Foreground="#EAEAEA"
                             Content="&#xf05d;"
+                            x:Name="btnSelectedAllRoles"
+                            Click="btnSelectedAllRoles_Click"
                             FontFamily="{StaticResource FontAwesome}"
                             pu:ButtonHelper.HoverBrush="Orange"/>
                 </StackPanel>
             </pu:GroupBoxHelper.ExtendControl>
-            <WrapPanel Margin="0,10,0,0">
+            <WrapPanel x:Name="wpRoles" Margin="0,10,0,0">
                 <CheckBox  Height="30"
                            Content="超级管理员"
                            Background="Gray"
@@ -100,11 +104,13 @@
             <pu:GroupBoxHelper.ExtendControl>
                 <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
                     <TextBox  BorderBrush="White"
+                              x:Name="txtSearchText"
                                        Margin="10,2,2,2"
                               MinWidth="200"
                                       BorderThickness="0,0,0,1"
                                       pu:TextBoxHelper.Watermark="在这里,按名称搜索账号"
                               pu:TextBoxHelper.FocusedBorderBrush="White"
+                              KeyDown="txtSearchText_KeyDown"
                               pu:TextBoxHelper.FocusedShadowColor="{x:Null}"
                                       pu:TextBoxHelper.Icon="&#xf002;"/>
                     <Button FontSize="16"
@@ -152,34 +158,16 @@
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="基本信息" Width="*">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid Height="35">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="35"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="pack://application:,,,/Common;component/Images/normal_user_header_m.png" Width="35" Height="35"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <Label Margin="10,0,0,0" Content="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                            <Label Content="&#xf224;" FontFamily="{StaticResource FontAwesome}" />
-                                        </StackPanel>
-                                    </Grid>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="账号" Width="*" Binding="{Binding Name}" />
                         <DataGridTextColumn Header="角色" Width="150" Binding="{Binding RoleName}" />
-                        <!--<DataGridTextColumn Header="账号" Width="*" Binding="{Binding Name}" />-->
-                        <!--<DataGridTextColumn Header="绑定员工" Width="200" Binding="{Binding StaffName}" />-->
-                        <DataGridTemplateColumn Header="登录权限" Width="100">
+                        <DataGridTemplateColumn Header="登录权限" Width="100" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding CanLogin}" Tag="{Binding Id}"  pu:CheckBoxHelper.CheckBoxStyle="Switch2" Background="Red" pu:CheckBoxHelper.CheckedBackground="Green"/>
+                                    <CheckBox IsChecked="{Binding CanLogin}" Click="cbCanLogin_Click" Tag="{Binding Id}"  pu:CheckBoxHelper.CheckBoxStyle="Switch2" Background="Red" pu:CheckBoxHelper.CheckedBackground="Green" x:Name="cbCanLogin" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="页面权限数量" Width="150" Binding="{Binding PagePluginsCount}" />
+                        <DataGridTextColumn Header="页面权限数量" Width="150" Binding="{Binding PageCount}" />
                         <DataGridTemplateColumn Header="注册时间" Width="180">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -189,7 +177,7 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <Border Grid.Row="0"  Background="Green" CornerRadius="5" VerticalAlignment="Center">
-                                            <Label Content="2022" Foreground="White"/>
+                                            <Label Content="{Binding CreateYear}" Foreground="White"/>
                                         </Border>
                                         <Grid Grid.Column="1" >
                                             <Label Content="{Binding CreateTime}"/>
@@ -221,14 +209,10 @@
                         </Grid.ColumnDefinitions>
                         <Grid>
                             <ComboBox  Height="30" Width="80" Foreground="Gray" BorderBrush="White" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
-                                <ComboBoxItem Content="50 条/页" IsSelected="True"/>
-                                <ComboBoxItem Content="100条/页"/>
-                                <ComboBoxItem Content="150条/页"/>
-                                <ComboBoxItem Content="200条/页"/>
+                                <ComboBoxItem Content="20 条/页" IsSelected="True"/>
                             </ComboBox>
                         </Grid>
-                        <StackPanel Orientation="Horizontal" Grid.Column="2">
-
+                        <!--<StackPanel Orientation="Horizontal" Grid.Column="2">
                             <Button  Content="首页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
                             <Button  Content="上一页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
                             <TextBox  BorderBrush="White"
@@ -241,7 +225,7 @@
                             <Label Content="/ 500" Foreground="Gray" VerticalAlignment="Center"/>
                             <Button  Content="下一页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
                             <Button  Content="末页" Cursor="Hand" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
-                        </StackPanel>
+                        </StackPanel>-->
                         <pu:Pagination x:Name="gPager" Grid.Column="3" Height="30" pu:PaginationStyle="Simple" Spacing="0" VerticalAlignment="Center" CurrentIndexChanged="gPager_CurrentIndexChanged"  CurrentIndex="1" TotalIndex="1"/>
                     </Grid>
                 </Border>
@@ -249,8 +233,8 @@
                     <Border Background="White" x:Name="bNoData" Margin="-5,35,0,-5">
                         <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
-                    <pu:Loading x:Name="gLoading"  Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
                 </Grid>
+                <pu:Loading x:Name="gLoading" Visibility="Collapsed"  Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
             </Grid>
         </GroupBox>
     </Grid>

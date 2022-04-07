@@ -26,48 +26,60 @@ namespace CorePlugin.Windows
     {
         public bool Succeed = false;
         public User Model = new User();
-        public bool isEdit = false;
-        int userId = 0;
+        bool IsEdit
+        {
+            get { return editId > 0; }
+        }
+        int editId = 0;
 
         public AddUser(int _userId = 0)
         {
             InitializeComponent();
             this.UseCloseAnimation();
 
-            userId = _userId;
-            if (_userId == 0)
+            editId = _userId;
+        }
+
+        /// <summary>
+        /// 编辑时初始化用户信息
+        /// </summary>
+        private void InitUserInfo()
+        {
+            User userModel = null;
+            using (CoreDBContext context = new CoreDBContext())
             {
-                isEdit = false;
-                lblRole.Content = "当前未选择角色";
-                lblRole.Tag = 0;
-                new RoleTreeViewCommon(tvRole).Init(false);
+                userModel = context.User.First(c => c.Id == editId);
             }
-            else
-            {
-                isEdit = true;
-
-                using (CoreDBContext context = new CoreDBContext())
-                {
-                    Model = context.User.First(c => c.Id == _userId);
-                    var role = context.SysDic.First(c => c.Id == Model.RoleId);
-
-                    lblRole.Content = role.Name;
-                    lblRole.Tag = role.Id;
-
-                    txtAdminName.Text = Model.Name;
-                    txtAdminPwd.Password = Model.Pwd;
-                    txtReAdminPwd.Password = Model.Pwd;
-
-                    cbCanLogin.IsChecked = Model.CanLogin;
-
-                    new RoleTreeViewCommon(tvRole).Init(false, false, Model.RoleId);
-                }
-            }
+            cbRoles.SelectedValue = userModel.RoleId;
+            txtAdminName.Text = userModel.Name;
+            txtAdminPwd.Password = userModel.Pwd;
+            txtReAdminPwd.Password = userModel.Pwd;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadRolesComobox();
+            if (IsEdit)
+            {
+                InitUserInfo();
+            }
+        }
 
+        /// <summary>
+        /// 加载角色下拉
+        /// </summary>
+        private void LoadRolesComobox()
+        {
+            List<Role> roles = null;
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                roles = context.Role.Where(c => !c.IsDel).ToList();
+            }
+            cbRoles.ItemsSource = roles;
+            cbRoles.DisplayMemberPath = "Name";
+            cbRoles.SelectedValuePath = "Id";
+
+            cbRoles.SelectedIndex = 0;
         }
 
         #region UI Method
@@ -80,7 +92,7 @@ namespace CorePlugin.Windows
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
-            int roleId = lblRole.Tag.ToString().AsInt();
+            int roleId = 0;// lblRole.Tag.ToString().AsInt();
             if (roleId <= 0)
             {
                 MessageBoxX.Show("请选择角色", "空值提醒");
@@ -115,9 +127,9 @@ namespace CorePlugin.Windows
 
             using (CoreDBContext context = new CoreDBContext())
             {
-                if (isEdit)
+                if (IsEdit)
                 {
-                    if (context.User.Any(c => c.Name == txtAdminName.Text && c.Id != userId))
+                    if (context.User.Any(c => c.Name == txtAdminName.Text && c.Id != editId))
                     {
                         MessageBoxX.Show("账户名已存在", "数据异常");
                         txtAdminName.Focus();
@@ -125,8 +137,7 @@ namespace CorePlugin.Windows
                         return;
                     }
                     //编辑
-                    Model = context.User.Single(c => c.Id == userId);
-                    Model.CanLogin = (bool)cbCanLogin.IsChecked;
+                    Model = context.User.Single(c => c.Id == editId);
                     Model.CreateTime = DateTime.Now;
                     Model.Creator = UserGlobal.CurrUser.Id;
                     Model.Name = txtAdminName.Text;
@@ -146,8 +157,8 @@ namespace CorePlugin.Windows
                     Model.IsDel = false;
                     Model.DelUser = 0;
                     Model.DelTime = DateTime.Now;
-                    Model.StaffId = "";
-                    Model.CanLogin = (bool)cbCanLogin.IsChecked;
+                    //Model.StaffId = "";
+                    Model.CanLogin = true;
                     Model.CreateTime = DateTime.Now;
                     Model.Creator = UserGlobal.CurrUser.Id;
                     Model.Name = txtAdminName.Text;
@@ -155,6 +166,7 @@ namespace CorePlugin.Windows
                     Model.RoleId = roleId;
 
                     Model = context.User.Add(Model);
+
                 }
                 context.SaveChanges();
             }
@@ -163,23 +175,75 @@ namespace CorePlugin.Windows
             Close();
         }
 
-        private void tvRole_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            TreeViewItem selectedItem = tvRole.SelectedItem as TreeViewItem;
-            if (selectedItem != null && selectedItem.Tag != null)
-            {
-                if (selectedItem.Items.Count > 0) return;
+        #endregion
 
-                int id = selectedItem.Tag.ToString().AsInt();
-                if (id > 0)
-                {
-                    lblRole.Content = selectedItem.Header;
-                    lblRole.Tag = id;
-                }
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
             }
         }
 
-        #endregion
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (!txtAdminName.NotEmpty()) return;
+            string name = txtAdminName.Text;
+            if (txtAdminPwd.Password != txtReAdminPwd.Password)
+            {
+                MessageBoxX.Show("两次密码输入不一致", "密码验证错误");
+                return;
+            }
+            string password = txtAdminPwd.Password;
+            int roleId = cbRoles.SelectedValue.ToString().AsInt();//角色Id
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                if (IsEdit)
+                {
+                    #region  编辑状态
+                    if (context.User.Any(c => c.Name == name && c.Id != editId))
+                    {
+                        //存在
+                        MessageBoxX.Show($"存在相同账户名[{name}]", "数据存在");
+                        return;
+                    }
 
+                    Model = context.User.Single(c => c.Id == editId);
+                    Model.Name = name;
+                    Model.Pwd = password;
+                    Model.RoleId = roleId;
+
+                    #endregion 
+                    this.Log("账户编辑成功！");
+                }
+                else
+                {
+                    #region  添加状态
+                    if (context.User.Any(c => c.Name == name))
+                    {
+                        //存在
+                        MessageBoxX.Show($"存在相同账户名[{name}]", "数据存在");
+                        return;
+                    }
+
+                    Model = new User();
+                    Model.CanLogin = true;
+                    Model.CreateTime = DateTime.Now;
+                    Model.Creator = UserGlobal.CurrUser.Id;
+                    Model.DelTime = DateTime.Now;
+                    Model.DelUser = 0;
+                    Model.IsDel = false;
+                    Model.Name = name;
+                    Model.Pwd = password;
+                    Model.RoleId = roleId;
+
+                    Model = context.User.Add(Model);
+                    #endregion
+                    this.Log("账户添加成功！");
+                }
+                context.SaveChanges();
+            }
+            btnClose_Click(null, null);//模拟关闭
+        }
     }
 }

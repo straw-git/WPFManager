@@ -19,6 +19,21 @@
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -91,39 +106,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Animation\3DWave\Particle.cs" />
-    <Compile Include="Animation\Close_WH.cs" />
-    <Compile Include="Animation\WindowAnimation.cs" />
-    <Compile Include="AutoUpdatePlugins.cs" />
-    <Compile Include="CheckPluginsDLL.cs" />
     <Compile Include="CoreDBContext.cs" />
-    <Compile Include="CurrGlobal\MainWindowsGlobal.cs" />
     <Compile Include="CurrGlobal\Global.cs" />
     <Compile Include="InitData.cs" />
-    <Compile Include="Helper\DelayHelper.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MyControls\LeftMenuBox.xaml.cs">
-      <DependentUpon>LeftMenuBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyControls\LoginBox.xaml.cs">
       <DependentUpon>LoginBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControls\LogoBox.xaml.cs">
-      <DependentUpon>LogoBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MyControls\LocalPluginsBox.xaml.cs">
-      <DependentUpon>LocalPluginsBox.xaml</DependentUpon>
+    <Compile Include="MyControls\PluginsBox.xaml.cs">
+      <DependentUpon>PluginsBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyControls\SelectPlugins.xaml.cs">
       <DependentUpon>SelectPlugins.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Setting\General.xaml.cs">
       <DependentUpon>General.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Welcome.xaml.cs">
-      <DependentUpon>Welcome.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
@@ -138,19 +137,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MyControls\LeftMenuBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MyControls\LoginBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControls\LogoBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MyControls\LocalPluginsBox.xaml">
+    <Page Include="MyControls\PluginsBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -159,10 +150,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Setting\General.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Welcome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -246,6 +233,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\opennew.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

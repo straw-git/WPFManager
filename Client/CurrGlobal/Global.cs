@@ -1,5 +1,4 @@
 ﻿
-using Client.Helper;
 using Common.Data.Local;
 using Common.Utils;
 using Panuon.UI.Silver;
@@ -25,8 +24,6 @@ namespace Client.CurrGlobal
     {
         public static void OnClientStart()
         {
-            //初始化插件
-            LocalPlugins.Init();
             //加载所有皮肤
             LocalSkin.Init();
             //加载用户设置

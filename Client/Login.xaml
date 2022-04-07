@@ -28,7 +28,6 @@
                         HorizontalAlignment="Right" Click="btnExit_Click"/>
             </Grid>-->
             <myBox:SelectPlugins x:Name="selectPlugins"/>
-            <myBox:LocalPluginsBox x:Name="localPlugins" Visibility="Collapsed"/>
             <myBox:LoginBox x:Name="login"/>
         </Grid>
     </Border>

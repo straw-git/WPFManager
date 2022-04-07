@@ -67,6 +67,9 @@
     <Reference Include="NPOI.OpenXmlFormats, Version=2.5.5.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.5.5\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="ObjectsComparer, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ObjectsComparer.1.4.1\lib\net45\ObjectsComparer.dll</HintPath>
+    </Reference>
     <Reference Include="Panuon.UI.Silver, Version=1.1.3.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Panuon.UI.Silver.1.1.3.4\lib\net45\Panuon.UI.Silver.dll</HintPath>
     </Reference>
@@ -118,41 +121,55 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AttachmentGlobal.cs" />
-    <Compile Include="BaseMainWindow.cs" />
-    <Compile Include="BasePlugins.cs" />
-    <Compile Include="BaseUIModel.cs" />
+    <Compile Include="Base\BaseMainWindow.cs" />
+    <Compile Include="Base\BaseUIModel.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\PageExtensions.cs" />
-    <Compile Include="ModuleInfo.cs" />
+    <Compile Include="Global\ConnectionData.cs" />
+    <Compile Include="Global\MainWindowGlobal.cs" />
     <Compile Include="MyAttributes\DataSourceBindingAttribute.cs" />
+    <Compile Include="MyControls\AllIcons.xaml.cs">
+      <DependentUpon>AllIcons.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControls\EditMenuItem.xaml.cs">
+      <DependentUpon>EditMenuItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControls\IconComboBox.xaml.cs">
+      <DependentUpon>IconComboBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyControls\InfoBorder.xaml.cs">
       <DependentUpon>InfoBorder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControls\MyPagerDataGrid.xaml.cs">
-      <DependentUpon>MyPagerDataGrid.xaml</DependentUpon>
+    <Compile Include="MyControls\MyButtonColumn.cs" />
+    <Compile Include="MyControls\MyDataGrid.xaml.cs">
+      <DependentUpon>MyDataGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyControls\MyDataGridColumnButton.cs" />
     <Compile Include="MyControls\MyPager_ZHHans.xaml.cs">
       <DependentUpon>MyPager_ZHHans.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PageInfo.cs" />
+    <Compile Include="Global\PluginsDownload.cs" />
+    <Compile Include="MyControls\SelectedListMenuBar.xaml.cs">
+      <DependentUpon>SelectedListMenuBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\ObjectComparerCommon.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
-    <Compile Include="Utils\PagerCommon.cs" />
-    <Compile Include="Data\Local\LocalPlugins.cs" />
+    <Compile Include="Utils\FileUtils.cs" />
+    <Compile Include="Utils\FontAwesomeCommon.cs" />
+    <Compile Include="Utils\PagerUtils.cs" />
     <Compile Include="Data\Local\LocalSettings.cs" />
     <Compile Include="Data\Local\LocalSkin.cs" />
-    <Compile Include="DicData.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TextBoxExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Extensions\WindowXExtensions.cs" />
-    <Compile Include="Global.cs" />
     <Compile Include="Events\Observer\ObserverBase.cs" />
-    <Compile Include="PagerGlobal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Singleton.cs" />
-    <Compile Include="UserGlobal.cs" />
-    <Compile Include="UIGlobal.cs" />
+    <Compile Include="Global\Singleton.cs" />
+    <Compile Include="Global\UserGlobal.cs" />
+    <Compile Include="Global\UIGlobal.cs" />
     <Compile Include="Utils\ColorHelper.cs" />
     <Compile Include="Utils\IdCardCommon.cs" />
     <Compile Include="Utils\ImageCommon.cs" />
@@ -163,7 +180,10 @@
     <Compile Include="Utils\PromotionCodeCommon.cs" />
     <Compile Include="Utils\QRCodeCommon.cs" />
     <Compile Include="Utils\StyleHelper.cs" />
-    <Compile Include="WindowsThumbnailProvider.cs" />
+    <Compile Include="Global\WindowsThumbnailProvider.cs" />
+    <Compile Include="Windows\IconSelectorDialog.xaml.cs">
+      <DependentUpon>IconSelectorDialog.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -187,15 +207,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="MyControls\AllIcons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControls\EditMenuItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControls\IconComboBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MyControls\InfoBorder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControls\MyPagerDataGrid.xaml">
+    <Page Include="MyControls\MyDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyControls\MyPager_ZHHans.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControls\SelectedListMenuBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -206,6 +242,10 @@
     <Page Include="Resources\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\IconSelectorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

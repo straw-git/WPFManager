@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
              xmlns:local="clr-namespace:Common.MyControls"
+             Loaded="UserControl_Loaded"
              Height="40" Background="White">
     <Border Height="40" VerticalAlignment="Top">
         <Grid>
@@ -13,28 +14,29 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid>
-                <ComboBox  Height="30" Width="80" Foreground="Gray" BorderBrush="White" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
-                    <ComboBoxItem Content="50 条/页" IsSelected="True"/>
-                    <ComboBoxItem Content="100条/页"/>
-                    <ComboBoxItem Content="150条/页"/>
-                    <ComboBoxItem Content="200条/页"/>
+                <ComboBox x:Name="cbPageSize" SelectionChanged="cbPageSize_SelectionChanged" Height="30" Width="80" Foreground="Gray" BorderBrush="White" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                    <ComboBoxItem Content="50 条/页" Tag="50" IsSelected="True"/>
+                    <ComboBoxItem Content="100条/页" Tag="100" />
+                    <ComboBoxItem Content="150条/页" Tag="150" />
+                    <ComboBoxItem Content="200条/页" Tag="200" />
                 </ComboBox>
             </Grid>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <Button  Content="首页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
-                <Button  Content="上一页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
-                <TextBox  BorderBrush="White"
+                <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                    <pu:Pagination x:Name="pager" PaginationStyle="Simple" CurrentIndexChanged="Pagination_CurrentIndexChanged" HoverBrush="{DynamicResource PagerHoverColor}" CurrentIndex="1" TotalIndex="1" HorizontalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel x:Name="spZHHansSkin" Orientation="Horizontal" Margin="10,0,10,0">
+                    <TextBox  x:Name="txtZHHansCurrIndex" BorderBrush="White"
                                        Margin="10,2,2,2"
                                       BorderThickness="0,0,0,1"
                                      pu:TextBoxHelper.FocusedBorderBrush="White"
                                     pu:TextBoxHelper.FocusedShadowColor="{x:Null}"
                                       pu:TextBoxHelper.Watermark="页码"
                                       pu:TextBoxHelper.Icon="&#xf0a4;"/>
-                <Label Content="/" Foreground="Gray" VerticalAlignment="Center"/>
-                <Label  Content="500" Foreground="Gray" VerticalAlignment="Center"/>
-                <Button  Content="下一页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
-                <Button  Content="尾页" Cursor="Hand" Margin="10,0,10,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
-                <Button  Content="尾页" Cursor="Hand" Margin="10,0,10,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
+                    <Label Content="/" Foreground="Gray" VerticalAlignment="Center"/>
+                    <Label x:Name="lblPageCount" Content="500" Foreground="Gray" VerticalAlignment="Center"/>
+                    <Button  Content="跳转" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue" x:Name="btn2Page" Click="btn2Page_Click"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </Border>

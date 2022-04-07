@@ -155,5 +155,110 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style x:Key="OtherWindowXStyle"
+           TargetType="{x:Type pu:WindowX}"
+           BasedOn="{StaticResource {x:Type pu:WindowX}}">
+        <Setter Property="FontSize"
+                Value="14" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="pu:WindowXCaption.Height"
+                Value="50" />
+        <Setter Property="pu:WindowXCaption.Background"
+                Value="{DynamicResource SkinColor}" />
+        <Setter Property="pu:WindowXCaption.MinimizeButtonStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type Button}"
+                       BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="pu:ButtonHelper.ButtonStyle"
+                            Value="Link" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=(pu:ButtonHelper.ButtonStyle),RelativeSource={RelativeSource Self}, Mode=OneWay}"
+                                     Value="Link">
+                            <Setter Property="Content"
+                                    Value="&#xe65a;" />
+                            <Setter Property="FontFamily"
+                                    Value="/Resources/#iconfont" />
+                            <Setter Property="Width"
+                                    Value="28" />
+                            <Setter Property="Height"
+                                    Value="28" />
+                            <Setter Property="FontSize"
+                                    Value="16" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                            <Setter Property="Foreground"
+                                    Value="Gray" />
+                            <Setter Property="pu:ButtonHelper.HoverBrush"
+                                    Value="Black" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="pu:WindowXCaption.MaximizeButtonStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type Button}"
+                       BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="pu:ButtonHelper.ButtonStyle"
+                            Value="Link" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=(pu:ButtonHelper.ButtonStyle),RelativeSource={RelativeSource Self}, Mode=OneWay}"
+                                     Value="Link">
+                            <Setter Property="Content"
+                                    Value="&#xe65d;" />
+                            <Setter Property="Width"
+                                    Value="28" />
+                            <Setter Property="Height"
+                                    Value="28" />
+                            <Setter Property="FontSize"
+                                    Value="16" />
+                            <Setter Property="FontFamily"
+                                    Value="/Resources/#iconfont" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                            <Setter Property="Foreground"
+                                    Value="Gray" />
+                            <Setter Property="pu:ButtonHelper.HoverBrush"
+                                    Value="Black" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="pu:WindowXCaption.CloseButtonStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type Button}"
+                       BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="pu:ButtonHelper.ButtonStyle"
+                            Value="Link" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=(pu:ButtonHelper.ButtonStyle),RelativeSource={RelativeSource Self}, Mode=OneWay}"
+                                     Value="Link">
+                            <Setter Property="Content"
+                                    Value="&#xe621;" />
+                            <Setter Property="FontFamily"
+                                    Value="/Resources/#iconfont" />
+                            <Setter Property="Width"
+                                    Value="28" />
+                            <Setter Property="Height"
+                                    Value="28" />
+                            <Setter Property="FontSize"
+                                    Value="16" />
+                            <Setter Property="Margin"
+                                    Value="0,0,5,0" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                            <Setter Property="Foreground"
+                                    Value="Gray" />
+                            <Setter Property="pu:ButtonHelper.HoverBrush"
+                                    Value="Black" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

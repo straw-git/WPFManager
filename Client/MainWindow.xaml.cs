@@ -1,4 +1,4 @@
-﻿using Client.Helper;
+﻿
 using Client.Pages;
 using Client.Windows;
 using Common;
@@ -24,6 +24,8 @@ using System.Windows.Shapes;
 using Common.Data.Local;
 using Client.CurrGlobal;
 using static Common.UserGlobal;
+using CoreDBModels;
+using Common.Utils;
 
 namespace Client
 {
@@ -32,71 +34,45 @@ namespace Client
     /// </summary>
     public partial class MainWindow : BaseMainWindow
     {
-        public MainWindow(string _currWindowName)
+        public MainWindow()
         {
             InitializeComponent();
-            CurrWindowName = _currWindowName;
-
             Closing += WindowX_Closing;
-        }
 
-        /// <summary>
-        /// 当前窗体名称（用于MainWindowsGlobal.cs 控制窗体）
-        /// </summary>
-        public string CurrWindowName = "";
+            hideSecondMenusAnimation.Completed += HideSecondMenusAnimation_Completed;
+            showSecondMenusAnimation.Completed += ShowSecondMenusAnimation_Completed;
+        }
 
         #region override BaseMainWindow
 
-        public override void ShowLeftMenu(bool _show)
+        public override void Log(string _logStr)
         {
-            if (_show)
-            {
-                bSecondMenu.Width = 200;
-            }
-            else
-            {
-                bSecondMenu.Width = 0;
-            }
+            lblInfo.Content = _logStr;
         }
 
-        public override void ShowTopMenu(bool _show)
+        public override void ReLoadMenu()
         {
-            //if (_show)
-            //{
-            //    gMainMenu.Height = 55;
-            //}
-            //else
-            //{
-            //    gMainMenu.Height = 0;
-            //}
-        }
+            //_tabItem_GotFocus(tabMenu.SelectedItem, null);
 
-        public override void ReLoadCurrTopMenu()
-        {
-            _tabItem_GotFocus(tabMenu.SelectedItem, null);
-        }
-
-        public override void SetFrameSource(string _s)
-        {
-            mainFrame.Source = new Uri(_s, UriKind.RelativeOrAbsolute);
-        }
-
-        public override void UpdateMenus()
-        {
             tabMenu.Items.Clear();
 
             int currIndex = 0;
-            foreach (var plugin in CurrWindowPlugins)
+            List<Plugins> plugins = MainWindowGlobal.CurrPlugins.OrderBy(c => c.Order).ToList();//插件排序
+
+            foreach (var pluginsInfo in plugins)
             {
-                foreach (var modules in plugin.Modules)
+                List<PluginsModule> pluginsModules = MainWindowGlobal.CurrPluginsModules.Where(c => c.PluginsId == pluginsInfo.Id).OrderBy(c => c.Order).ToList(); //模块排序
+                foreach (var moduleInfo in pluginsModules)
                 {
+                    moduleInfo.DLLName = pluginsInfo.DLLName;
                     TabItem _tabItem = new TabItem();
-                    _tabItem.Tag = plugin.Pages[modules.Title];
-                    _tabItem.Header = modules.Title;
+                    _tabItem.Tag = moduleInfo;
+                    _tabItem.Header = moduleInfo.ModuleName;
                     _tabItem.GotFocus += _tabItem_GotFocus;
-                    TabControlHelper.SetItemIcon(_tabItem, modules.Icon);
+                    TabControlHelper.SetItemIcon(_tabItem, FontAwesomeCommon.GetUnicode(moduleInfo.Icon));
 
                     tabMenu.Items.Add(_tabItem);
+
                     if (currIndex == 0)
                     {
                         currIndex = 1;
@@ -105,63 +81,59 @@ namespace Client
                 }
             }
 
-            if (CurrWindowPlugins.Count == 1 && CurrWindowPlugins[0].Modules.Count == 1)
-            {
-                //如果只有一个模块 隐藏上部导航
-                ShowTopMenu(false);
-            }
-            else
-            {
-                ShowTopMenu(true);
-            }
-
             tabMenu.SelectedIndex = 0;
         }
 
         private void _tabItem_GotFocus(object sender, RoutedEventArgs e)
         {
-            TabItem currTab = sender as TabItem;
+            PluginsModule moduleInfo = (sender as TabItem).Tag as PluginsModule;
+            List<ModulePage> _pages = MainWindowGlobal.CurrModulePages.Where(c => c.ModuleId == moduleInfo.Id).OrderBy(c => c.Order).ToList();//页面排序
 
-            List<PageInfo> _pages = currTab.Tag as List<PageInfo>;
             tvMenu.Items.Clear();
-            _pages = _pages.OrderBy(c => c.Order).ToList();//页面排序
+            tvMenu_Simple.Items.Clear();
 
             int currIndex = 0;
             foreach (var page in _pages)
             {
+                page.FullPath = $"pack://application:,,,/{moduleInfo.DLLName};component/{page.PagePath}";
                 TreeViewItem _treeViewItem = new TreeViewItem();
-                _treeViewItem.Header = page.Title;
+                _treeViewItem.Header = page.PageName;
                 _treeViewItem.Margin = new Thickness(0, 2, 0, 2);
                 _treeViewItem.Padding = new Thickness(10, 0, 0, 0);
                 _treeViewItem.Background = Brushes.Transparent;
                 _treeViewItem.Tag = page;
                 _treeViewItem.IsSelected = currIndex == 0;
-                TreeViewHelper.SetItemIcon(_treeViewItem, page.Icon);
+                TreeViewHelper.SetItemIcon(_treeViewItem, FontAwesomeCommon.GetUnicode(page.Icon));
+
+                TreeViewItem _treeViewItemSimple = new TreeViewItem();
+                _treeViewItemSimple.Margin = new Thickness(0, 2, 0, 2);
+                _treeViewItemSimple.Padding = new Thickness(10, 0, 0, 0);
+                _treeViewItemSimple.Background = Brushes.Transparent;
+                _treeViewItemSimple.Tag = page;
+                _treeViewItemSimple.ToolTip = page.PageName;
+                TreeViewHelper.SetItemIcon(_treeViewItemSimple, FontAwesomeCommon.GetUnicode(page.Icon));
 
                 tvMenu.Items.Add(_treeViewItem);
+                tvMenu_Simple.Items.Add(_treeViewItemSimple);
 
-                if (currIndex == 0)
-                {
-                    currIndex = 1;
-                    mainFrame.Source = new Uri(page.FullPath, UriKind.RelativeOrAbsolute);
-                }
             }
         }
 
-        #endregion 
+        public override void SetFrameSource(string _s)
+        {
+            mainFrame.Source = new Uri(_s, UriKind.RelativeOrAbsolute);
+        }
+
+        #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateTitle();
-            UpdateMenus();
-
-            //更改Grid的宽度
-            //xx.Width = new GridLength(50) ;
         }
 
         public void UpdateTitle()
         {
-            lblTitle.Text = Title = LocalSettings.settings.MainWindowTitle;
+            simpleLogo.ToolTip = lblTitle.Text = Title = LocalSettings.settings.MainWindowTitle;
             lblV.Content = $"{LocalSettings.settings.CompanyName}-{LocalSettings.settings.Versions}";
         }
 
@@ -169,15 +141,13 @@ namespace Client
 
         private void btnSelectedPlugins_Click(object sender, RoutedEventArgs e)
         {
-            //SelectPlugins selectPlugins = new SelectPlugins();
-            //selectPlugins.ShowPluginsAsync(CurrWindowName);
-            //selectPlugins.Show();
+
         }
 
         private void btnChangePwd_Click(object sender, RoutedEventArgs e)
         {
             IsMaskVisible = true;
-            Windows.UpdatePassword updatePassword = new Windows.UpdatePassword();
+            UpdatePassword updatePassword = new UpdatePassword();
             updatePassword.ShowDialog();
             IsMaskVisible = false;
         }
@@ -185,7 +155,7 @@ namespace Client
         private void btnSkin_Click(object sender, RoutedEventArgs e)
         {
             IsMaskVisible = true;
-            Windows.SkinWindow skinWindow = new Windows.SkinWindow();
+            SkinWindow skinWindow = new SkinWindow();
             skinWindow.ShowDialog();
             IsMaskVisible = false;
         }
@@ -193,20 +163,9 @@ namespace Client
         private void btnSetting_Click(object sender, RoutedEventArgs e)
         {
             IsMaskVisible = true;
-            Windows.SettingWindow settingWindow = new Windows.SettingWindow();
+            SettingWindow settingWindow = new SettingWindow();
             settingWindow.ShowDialog();
             IsMaskVisible = false;
-        }
-
-        private void WindowX_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            e.Cancel = true;
-            var result = MessageBoxX.Show("是否退出当前账套", "账套关闭提醒", this, MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                Closing -= WindowX_Closing;
-                CloseWindow();
-            }
         }
 
         private void TreeView_PreviewMouseUp(object sender, MouseButtonEventArgs e)
@@ -214,7 +173,8 @@ namespace Client
             if (tvMenu.SelectedItem != null)
             {
                 TreeViewItem targetItem = tvMenu.SelectedItem as TreeViewItem;
-                PageInfo page = targetItem.Tag as PageInfo;
+                ModulePage page = targetItem.Tag as ModulePage;
+                if (page == null) return;
                 mainFrame.Source = new Uri(page.FullPath, UriKind.RelativeOrAbsolute);
             }
         }
@@ -222,6 +182,17 @@ namespace Client
         #endregion
 
         #region 完全关闭窗体
+
+        private void WindowX_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            var result = MessageBoxX.Show("是否退出？", "退出提醒", this, MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                Closing -= WindowX_Closing;
+                CloseWindow();
+            }
+        }
 
         private void CloseWindow()
         {
@@ -242,13 +213,105 @@ namespace Client
 
         private void AnimationCompleted(object sender, EventArgs e)
         {
-            MainWindowsGlobal.MainWindowsDic.Remove(CurrWindowName);//将自己移除
-            if (MainWindowsGlobal.MainWindowsDic.Keys.Count > 0)
-                Close();
-            else Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         #endregion
 
+        #region 二级导航动画
+
+        DoubleAnimation hideSecondMenusAnimation = new DoubleAnimation(200, 55, new Duration(TimeSpan.FromSeconds(0.5)));
+        DoubleAnimation showSecondMenusAnimation = new DoubleAnimation(55, 200, new Duration(TimeSpan.FromSeconds(0.5)));
+
+        /// <summary>
+        /// 显示/隐藏导航
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnShowSecondMenus_Click(object sender, RoutedEventArgs e)
+        {
+            if (bSecondMenu.Width == 55 || bSecondMenu.Width == 200)
+            {
+                if (bSecondMenu.Width == 200)
+                {
+                    bSecondMenu.BeginAnimation(WidthProperty, hideSecondMenusAnimation);
+                    gHeader.BeginAnimation(WidthProperty, hideSecondMenusAnimation);
+                }
+                else if (bSecondMenu.Width == 55)
+                {
+                    bSecondMenu.BeginAnimation(WidthProperty, showSecondMenusAnimation);
+                    gHeader.BeginAnimation(WidthProperty, showSecondMenusAnimation);
+                }
+            }
+        }
+
+        private void ShowSecondMenusAnimation_Completed(object sender, EventArgs e)
+        {
+            bHeader.Visibility = Visibility.Collapsed;
+            sHeader.Visibility = Visibility.Visible;
+            tvMenu_Simple.Visibility = Visibility.Collapsed;
+            tvMenu.Visibility = Visibility.Visible;
+        }
+
+        private void HideSecondMenusAnimation_Completed(object sender, EventArgs e)
+        {
+            bHeader.Visibility = Visibility.Visible;
+            sHeader.Visibility = Visibility.Collapsed;
+            tvMenu_Simple.Visibility = Visibility.Visible;
+            tvMenu.Visibility = Visibility.Collapsed;
+        }
+
+        #endregion
+
+        #region 导航关联
+
+        /// <summary>
+        /// 简约导航切换事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tvMenu_Simple_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (tvMenu_Simple.SelectedItem == null) return;
+            string pageName = (tvMenu_Simple.SelectedItem as TreeViewItem).ToolTip.ToString();//获取简约页面名
+            foreach (TreeViewItem item in tvMenu.Items)
+            {
+                string currPageName = item.Header.ToString();//当前页面名
+                if (currPageName == pageName)
+                {
+                    item.IsSelected = true;//更新大导航
+                }
+                else
+                {
+                    item.IsSelected = false;
+                }
+            }
+            TreeView_PreviewMouseUp(null, null);//模拟大导航点击
+        }
+
+        /// <summary>
+        /// 主导航切换事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tvMenu_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (tvMenu.SelectedItem == null) return;
+            string pageName = (tvMenu.SelectedItem as TreeViewItem).Header.ToString();//获取页面名
+            foreach (TreeViewItem item in tvMenu_Simple.Items)
+            {
+                string currPageName = item.ToolTip.ToString();//当前页面名
+                if (currPageName == pageName)
+                {
+                    item.IsSelected = true;//更新大导航
+                }
+                else
+                {
+                    item.IsSelected = false;
+                }
+            }
+        }
+
+        #endregion
     }
 }

@@ -55,9 +55,6 @@
                             </EventTrigger>
                         </TextBlock.Triggers>
                     </TextBlock>
-                    <StackPanel Orientation="Horizontal" Width="60" VerticalAlignment="Bottom">
-                        <Label Content="插件中心" Cursor="Hand" FontSize="12" Foreground="CadetBlue" VerticalContentAlignment="Center" x:Name="btnPlugins" MouseDown="btnPlugins_Click"/>
-                    </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
                     <TextBox  Height="40"
@@ -100,7 +97,7 @@
                         x:Name="btnLogin" Click="btnLogin_Click" />
                 
             </StackPanel>
-            <Button x:Name="btnClose"  ToolTip="关闭"
+            <Button x:Name="btnClose"  ToolTip="关闭" Click="btnClose_Click"
                         pu:ButtonHelper.Icon="&#xf00d;"
                         FontFamily="/Resources/#iconfont" 
                         Width="50" Height="50" FontSize="25" 

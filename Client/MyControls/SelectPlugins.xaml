@@ -36,40 +36,44 @@
                         <Label Content="&#xf260;" FontFamily="{StaticResource FontAwesome}" FontSize="16" VerticalAlignment="Center" Foreground="White" Margin="5,0,0,0"/>
                         <Label Content="选择插件" FontSize="16" VerticalAlignment="Center" Foreground="White"/>
                     </StackPanel>
-                    <Button  ToolTip="返回登录页面" Margin="0,0,5,0"
+                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right"  Margin="0,0,5,0">
+                        <Button  ToolTip="全选/反选"
+                                    pu:ButtonHelper.Icon="&#xf05d;"
+                                    FontFamily="{StaticResource FontAwesome}"
+                                    FontSize="20" 
+                                    Foreground="White" 
+                                    pu:ButtonHelper.HoverBrush="{DynamicResource SkinColor}"  
+                                    pu:ButtonHelper.ButtonStyle="Link"
+                                 x:Name="btnCheckAll" Click="BtnCheckAll_Click"/>
+                        <Button  ToolTip="返回登录页面"
+                                 Margin="20,0,0,0"
                                     pu:ButtonHelper.Icon="&#xf060;"
-                                    FontFamily="/Resources/#iconfont"
+                                    FontFamily="{StaticResource FontAwesome}"
                                       Click="btnBackLogin_Click"
                                     FontSize="16" 
                                     Foreground="White" 
-                                    pu:ButtonHelper.HoverBrush="Green"  
-                                    pu:ButtonHelper.ButtonStyle="Link" 
-                                    HorizontalAlignment="Right"/>
+                                    pu:ButtonHelper.HoverBrush="{DynamicResource SkinColor}"  
+                                    pu:ButtonHelper.ButtonStyle="Link"  />
+                    </StackPanel>
                 </Grid>
                 <Border Grid.Row="1">
                     <Border.Effect>
-                        <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
+                        <DropShadowEffect Color="White" BlurRadius="5" ShadowDepth="0" Opacity="1" />
                     </Border.Effect>
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="10,5,10,5">
                         <UniformGrid x:Name="gPlugins"  Columns="3" VerticalAlignment="Top"/>
                     </ScrollViewer>
                 </Border>
                 <Border Grid.Row="2" Height="40" Background="Black" >
-                    <StackPanel x:Name="bMenus" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button  ToolTip="加入当前窗口" 
-                                    pu:ButtonHelper.Icon="&#xf2d0;"
-                                    FontFamily="/Resources/#iconfont"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button  ToolTip="进入主窗体"  Margin="20,0,5,0"  
+                                    pu:ButtonHelper.Icon="&#xf061;"
+                                    FontFamily="{StaticResource FontAwesome}"
                                     FontSize="16" 
-                                    Foreground="White"  x:Name="btnAddCurrWindow" Click="btnAddCurrWindow_Click"
-                                    pu:ButtonHelper.HoverBrush="Green"  
-                                    pu:ButtonHelper.ButtonStyle="Link" 
-                                    HorizontalAlignment="Right"/>
-                        <Button  ToolTip="新窗口"  Margin="20,0,20,0"  
-                                    pu:ButtonHelper.Icon="&#xf2d2;"
-                                    FontFamily="/Resources/#iconfont"
-                                    FontSize="16" 
-                                    Foreground="White"   x:Name="btnNewWindow" Click="btnNewWindow_Click"
-                                    pu:ButtonHelper.HoverBrush="Green"  
+                                    Foreground="White"   
+                                 x:Name="btnAdd2MainWindow" 
+                                 Click="btnAdd2MainWindow_Click"
+                                    pu:ButtonHelper.HoverBrush="{DynamicResource SkinColor}"  
                                     pu:ButtonHelper.ButtonStyle="Link" 
                                     HorizontalAlignment="Right"/>
                     </StackPanel>

@@ -8,7 +8,7 @@ using System.Windows.Media.Animation;
 
 public static class PageExtensions
 {
-    static PageExtensions() 
+    static PageExtensions()
     {
 
     }
@@ -32,28 +32,19 @@ public static class PageExtensions
         sb.Children.Add(margin);
         sb.Children.Add(opacity);
         sb.Begin();
-
     }
 
     public static void MaskVisible(this Page _page, bool _v)
     {
-        var parentWindow = _page.GetParentWindow();
+        var parentWindow = MainWindowGlobal.MainWindow;
         if (parentWindow != null)
         {
             parentWindow.MaskVisible(_v);
         }
     }
 
-    public static BaseMainWindow GetParentWindow(this Page _page)
+    public static void Log(this Page _page, string _logStr)
     {
-        try
-        {
-            BaseMainWindow parentWindow = (BaseMainWindow)_page.Tag;
-            return parentWindow;
-        }
-        catch
-        {
-            return null;
-        }
+        MainWindowGlobal.MainWindow.Log(_logStr);
     }
 }

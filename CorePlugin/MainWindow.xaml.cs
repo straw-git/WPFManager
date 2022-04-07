@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.Data.Local;
 using Common.Utils;
+using CoreDBModels;
 using CorePlugin.Pages;
 using Panuon.UI.Silver;
 using System;
@@ -32,9 +33,8 @@ namespace CorePlugin
         public MainWindow()
         {
             InitializeComponent();
+            Closing += WindowX_Closing;
 
-            //初始化插件
-            LocalPlugins.Init();
             //加载所有皮肤
             LocalSkin.Init();
             //加载用户设置
@@ -42,44 +42,19 @@ namespace CorePlugin
             //初始化样式
             StyleHelper.Init();
 
-            using (CoreDBContext context = new CoreDBContext())
-            {
-                UserGlobal.CurrUser = context.User.First(c => c.Name == "admin");
-            }
-
-            //AddPluginModels(new List<PluginsModel>() { GetPluginsModel(0) });
+            MainWindowGlobal.MainWindow = this;
         }
-
 
         #region override BaseMainWindow
 
-        public override void ShowLeftMenu(bool _show)
+        public override void Log(string _logStr)
         {
-            if (_show)
-            {
-                bSecondMenu.Width = 200;
-            }
-            else
-            {
-                bSecondMenu.Width = 0;
-            }
+            lblInfo.Content = _logStr;
         }
 
-        public override void ShowTopMenu(bool _show)
+        public override void ReLoadMenu()
         {
-            if (_show)
-            {
-                gMainMenu.Height = 55;
-            }
-            else
-            {
-                gMainMenu.Height = 0;
-            }
-        }
-
-        public override void ReLoadCurrTopMenu()
-        {
-            _tabItem_GotFocus(tabMenu.SelectedItem, null);
+            throw new NotImplementedException();
         }
 
         public override void SetFrameSource(string _s)
@@ -87,144 +62,40 @@ namespace CorePlugin
             mainFrame.Source = new Uri(_s, UriKind.RelativeOrAbsolute);
         }
 
-        public override void UpdateMenus()
-        {
-            //tabMenu.Items.Clear();
-
-            //int currIndex = 0;
-            //foreach (var plugin in CurrWindowPlugins)
-            //{
-            //    foreach (var modules in plugin.Modules)
-            //    {
-            //        TabItem _tabItem = new TabItem();
-            //        _tabItem.Tag = modules;
-            //        _tabItem.Header = modules.Name;
-            //        _tabItem.GotFocus += _tabItem_GotFocus;
-
-            //        tabMenu.Items.Add(_tabItem);
-            //        if (currIndex == 0)
-            //        {
-            //            currIndex = 1;
-            //            _tabItem_GotFocus(_tabItem, null);
-            //        }
-            //    }
-            //}
-
-            //if (CurrWindowPlugins.Count == 1 && CurrWindowPlugins[0].Modules.Count == 1)
-            //{
-            //    //如果只有一个模块 隐藏上部导航
-            //    ShowTopMenu(false);
-            //}
-            //else
-            //{
-            //    ShowTopMenu(true);
-            //}
-
-            //tabMenu.SelectedIndex = 0;
-        }
-
-        private void _tabItem_GotFocus(object sender, RoutedEventArgs e)
-        {
-            //TabItem currTab = sender as TabItem;
-
-            //ModuleModel selectedMenu = currTab.Tag as ModuleModel;
-            //tvMenu.Items.Clear();
-            //var _pages = selectedMenu.Pages.OrderBy(c => c.Order).ToList();//页面排序
-
-            //int currIndex = 0;
-            //foreach (var page in _pages)
-            //{
-            //    TreeViewItem _treeViewItem = new TreeViewItem();
-            //    _treeViewItem.Header = page.Code;
-            //    _treeViewItem.Margin = new Thickness(0, 2, 0, 2);
-            //    _treeViewItem.Padding = new Thickness(10, 0, 0, 0);
-            //    _treeViewItem.Background = Brushes.Transparent;
-            //    _treeViewItem.Tag = page;
-            //    _treeViewItem.IsSelected = currIndex == 0;
-
-            //    tvMenu.Items.Add(_treeViewItem);
-
-            //    if (currIndex == 0)
-            //    {
-            //        currIndex = 1;
-            //        mainFrame.Source = new Uri(page.Url, UriKind.RelativeOrAbsolute);
-            //    }
-            //}
-        }
-
-        #endregion 
+        #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateTitle();
-
-            lblCurrUser.Text = UserGlobal.CurrUser.Name;
+            using (CoreDBContext context = new CoreDBContext()) 
+            {
+                SetCurrUser(context.User.First(c=>c.Name=="admin"),context.CoreSetting.First());
+            }
         }
 
         #region UI Method
-
-        private void btnChangePwd_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnReLogin_Click(object sender, RoutedEventArgs e)
-        {
-            var result = MessageBoxX.Show("是否注销本次登录", "注销提醒", null, MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                Process.Start(Assembly.GetExecutingAssembly().GetName().CodeBase);
-                CloseWindow();
-            }
-        }
-
-        private void btnSkin_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnSetting_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnSignout_Click(object sender, RoutedEventArgs e)
-        {
-            var result = MessageBoxX.Show("是否退出应用", "退出提醒", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                Process.Start(Assembly.GetExecutingAssembly().GetName().CodeBase);
-                CloseWindow();
-            }
-        }
-
-        private void WindowX_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            e.Cancel = true;
-            var result = MessageBoxX.Show("是否退出应用", "退出提醒", System.Windows.Application.Current.MainWindow, MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                CloseWindow();
-            }
-        }
 
         private void TreeView_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (tvMenu.SelectedItem != null)
             {
                 TreeViewItem targetItem = tvMenu.SelectedItem as TreeViewItem;
-                //PageModel page = targetItem.Tag as PageModel;
-                //mainFrame.Source = new Uri(page.Url, UriKind.RelativeOrAbsolute);
+                mainFrame.Source = new Uri(targetItem.Tag.ToString(), UriKind.RelativeOrAbsolute);
             }
         }
 
         #endregion
 
+        #region 完全关闭窗体
 
-        public void UpdateTitle()
+        private void WindowX_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Title = lblTitle.Text = $"{LocalSettings.settings.MainWindowTitle}(V{LocalSettings.settings.Versions})";
-            lblV.Content = $"by 1020    V{LocalSettings.settings.Versions}";
+            e.Cancel = true;
+            var result = MessageBoxX.Show("是否退出？", "退出提醒", this, MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                Closing -= WindowX_Closing;
+                CloseWindow();
+            }
         }
 
         private void CloseWindow()
@@ -248,5 +119,7 @@ namespace CorePlugin
         {
             Application.Current.Shutdown();
         }
+
+        #endregion
     }
 }

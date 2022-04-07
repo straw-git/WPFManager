@@ -11,36 +11,53 @@
         Title="账号管理"
         Background="Transparent"
             ResizeMode="NoResize"
-        Height="400"
-        Width="530" Loaded="Window_Loaded"
+        Height="260"
+        Width="400" Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
-    <Grid Background="White">
+    <Border MouseDown="Border_MouseDown" BorderThickness="1" BorderBrush="LightGray">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <Border BorderThickness="0,0,1,0" BorderBrush="{DynamicResource SkinColor}"/>
-                <TreeView pu:TreeViewHelper.TreeViewStyle="Chain"
-                                      x:Name="tvRole"
-                                      MouseDoubleClick="tvRole_MouseDoubleClick"
-                                  pu:TreeViewHelper.ExpandMode="SingleClick"
-                                  pu:TreeViewHelper.ExpandBehaviour="OnlyOne"
-                                  pu:TreeViewHelper.ItemPadding="3,0,0,0"
-                                  Background="Transparent" >
-                </TreeView>
-            </Grid>
-            <Grid Grid.Column="1">
-                <StackPanel HorizontalAlignment="Left" Margin="10,20,0,0">
-                    <CheckBox IsChecked="True"  x:Name="cbCanLogin" Content="允许登录"  pu:CheckBoxHelper.CheckBoxStyle="Switch2"  Background="{DynamicResource CheckBoxBgColor}" pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"/>
-                    <StackPanel Orientation="Horizontal" Background="AliceBlue"  Margin="0,20,0,0">
-                        <Label Content="角色：" Width="80"/>
-                        <Label x:Name="lblRole" Content="当前未选择角色" Tag=""/>
+            <GroupBox  Header="账号"
+                   pu:GroupBoxHelper.Icon="&#xf007;"
+                           BorderThickness="0"
+                   pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                   pu:GroupBoxHelper.IsSplitLineVisible="True">
+                <pu:GroupBoxHelper.ExtendControl>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                        <Button FontSize="16"
+                                     Margin="10,0,0,0"
+                                    Width="28"
+                                    Height="28"
+                                    ToolTip="保存"
+                                    pu:ButtonHelper.ButtonStyle="Link"
+                                    Foreground="Black"
+                                    Content="&#xf00c;"
+                                x:Name="btnEdit"
+                                Click="btnEdit_Click"
+                                    FontFamily="{StaticResource FontAwesome}"
+                                    pu:ButtonHelper.HoverBrush="Orange"/>
+                        <!--关闭按钮-->
+                        <Button FontSize="16"
+                                     Margin="10,0,0,0"
+                                    Width="28"
+                                    Height="28"
+                                    ToolTip="关闭"
+                                    pu:ButtonHelper.ButtonStyle="Link"
+                                    Foreground="Black"
+                                    Content="&#xf00d;"
+                                    FontFamily="{StaticResource FontAwesome}"
+                                    pu:ButtonHelper.HoverBrush="Orange"
+                                    x:Name="btnClose" Click="btnClose_Click"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal"  Margin="0,20,0,0">
-                        <Label Content="账户名：" Width="80"/>
-                        <TextBox  Height="30"
+                </pu:GroupBoxHelper.ExtendControl>
+                <Grid VerticalAlignment="Top" HorizontalAlignment="Center">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                            <Label Content="角色：" Width="80"/>
+                            <ComboBox x:Name="cbRoles"  Width="260" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                            <Label Content="账户名：" Width="80"/>
+                            <TextBox  Height="30"
                                               Width="260"
                                               x:Name="txtAdminName"
                                               pu:TextBoxHelper.Watermark="账户名"
@@ -48,10 +65,10 @@
                                               pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
                                               pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                               pu:TextBoxHelper.IsClearButtonVisible="True" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                        <Label Content="密码：" Width="80"/>
-                        <PasswordBox  Height="30"
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Label Content="密码：" Width="80"/>
+                            <PasswordBox  Height="30"
                                           Width="260"
                                           Password="123456"
                                                   x:Name="txtAdminPwd"
@@ -61,10 +78,10 @@
                                           pu:PasswordBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
                                           pu:PasswordBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                           pu:PasswordBoxHelper.IsShowPwdButtonVisible="True" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal"  Margin="0,20,0,0">
-                        <Label Content="确认密码：" Width="80"/>
-                        <PasswordBox  Height="30"
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                            <Label Content="确认密码：" Width="80"/>
+                            <PasswordBox  Height="30"
                                           Width="260"
                                           Password="123456"
                                                   x:Name="txtReAdminPwd"
@@ -74,25 +91,10 @@
                                           pu:PasswordBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
                                           pu:PasswordBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                           pu:PasswordBoxHelper.IsShowPwdButtonVisible="True" />
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </Grid>
+                </Grid>
+            </GroupBox>
         </Grid>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,0">
-            <Button  Content="取 消"
-                     x:Name="btnClose"
-                     Click="btnClose_Click"
-                     Width="100" Height="30"
-                     Margin="10"
-                     Background="{DynamicResource ButtonBgColor}"
-                     pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
-            <Button  Content="确 定"
-                     x:Name="btnSubmit"
-                     Click="btnSubmit_Click"
-                     Width="100" Height="30"
-                     Margin="10"
-                     Background="{DynamicResource ButtonBgColor}"
-                     pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
-        </StackPanel>
-    </Grid>
+    </Border>
 </Window>

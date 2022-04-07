@@ -1,4 +1,5 @@
-﻿using CorePlugin.Pages;
+﻿using CoreDBModels;
+using CorePlugin.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,193 +36,67 @@ namespace CorePlugin.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            using (CoreDBContext context = new CoreDBContext())
-            {
-                var user = context.User.Single(c => c.Id == userId);
-                //if (user.Menus.NotEmpty())
-                //    UserMenus = user.Menus.Split('|').ToList();
-            }
-            LoadMenu();
+            atPages.LoadPagesInfoByUserIdAsync(userId);
         }
 
-        #region UI Method
+        private void edit_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void btnClear_Click(object sender, RoutedEventArgs e)
+        private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            Succeed = false;
-            UserMenus.Clear();
-            LoadMenu();
-        }
-
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
-        {
-            Succeed = true;
-            UpdateMenus();
-            Close();
-        }
-
-        #endregion
-
-        #region Private Method
-
-        private void LoadMenu()
-        {
-            //tabMenus.Items.Clear();
-
-            //foreach (var plugin in MenuManager.PluginList)
-            //{
-            //    var mainMenus = plugin.Value.Keys.OrderBy(c => c.SelfOrder).ToList();
-            //    for (int i = 0; i < mainMenus.Count; i++)
-            //    {
-            //        var _menu = mainMenus[i];
-
-            //        TabItem tabItem = new TabItem();
-            //        tabItem.Header = _menu.Name;
-
-            //        Grid grid = new Grid();
-
-            //        ListBox listBox = new ListBox();
-            //        listBox.MouseDoubleClick += MenuListBox_MouseDoubleClick;
-
-            //        var childrens = plugin.Value[_menu];
-            //        for (int j = 0; j < childrens.Count; j++)
-            //        {
-            //            var _childrenItem = childrens[j];
-
-            //            StackPanel stackPanel = new StackPanel();
-            //            stackPanel.Orientation = Orientation.Horizontal;
-
-            //            CheckBox checkBox = new CheckBox();
-            //            checkBox.Tag = _childrenItem;
-            //            string code = $"{plugin.Key}-{_childrenItem.ParentCode}-{_childrenItem.Code}";
-            //            checkBox.IsChecked = UserMenus.Any(c => c == code);
-            //            checkBox.Loaded += SecondMenuCheckBox_Loaded;
-            //            checkBox.Unloaded += SecondMenuCheckBox_Unloaded;
-
-            //            Label label = new Label();
-            //            label.Content = _childrenItem.Name;
-
-            //            stackPanel.Children.Add(checkBox);
-            //            stackPanel.Children.Add(label);
-            //            listBox.Items.Add(stackPanel);
-            //        }
-
-            //        grid.Children.Add(listBox);
-            //        tabItem.Content = grid;
-            //        tabMenus.Items.Add(tabItem);
-            //    }
-            //}
-            
-        }
-
-        private void MenuListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            var listBox = sender as ListBox;
-            if (listBox.SelectedItem == null) return;
-
-            StackPanel panel = listBox.SelectedItem as StackPanel;
-            CheckBox checkBox = panel.Children[0] as CheckBox;
-
-            checkBox.IsChecked = !checkBox.IsChecked;
-        }
-
-
-        private void SecondMenuCheckBox_Unloaded(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            checkBox.Checked -= SecondMenuCheckBox_Checked;
-            checkBox.Unchecked -= SecondMenuCheckBox_Unchecked;
-        }
-
-        private void SecondMenuCheckBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            checkBox.Checked += SecondMenuCheckBox_Checked;
-            checkBox.Unchecked += SecondMenuCheckBox_Unchecked;
-        }
-
-        private void SecondMenuCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            //CheckBox checkBox = sender as CheckBox;
-            //Grid parentGrid = ((checkBox.Parent as StackPanel).Parent as ListBox).Parent as Grid;
-            //MenuItemModel itemModel = checkBox.Tag as MenuItemModel;
-
-            //if (parentGrid.Children.Count == 2)
-            //{
-            //    WrapPanel wrapPanel = parentGrid.Children[0] as WrapPanel;
-            //    foreach (var item in wrapPanel.Children)
-            //    {
-            //        CheckBox button = item as CheckBox;
-            //        button.IsChecked = false;
-            //    }
-            //}
-
-            //string code = $"{itemModel.PluginCode}-{itemModel.ParentCode}-{itemModel.Code}";
-            //if (UserMenus.Contains(code))
-            //{
-            //    UserMenus.Remove(code);
-            //}
-        }
-
-        private void SecondMenuCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            //CheckBox checkBox = sender as CheckBox;
-            //MenuItemModel itemModel = checkBox.Tag as MenuItemModel;
-            //string code = $"{itemModel.PluginCode}-{itemModel.ParentCode}-{itemModel.Code}";
-            //if (!UserMenus.Contains(code))
-            //{
-            //    UserMenus.Add(code);
-            //}
-        }
-
-        private void MenuButtonCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            string code = checkBox.Tag.ToString();
-
-            if (UserMenus.Contains(code))
-            {
-                UserMenus.Remove(code);
-            }
-        }
-
-        private void MenuButtonCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            string code = checkBox.Tag.ToString();
-
-            if (!UserMenus.Contains(code))
-            {
-                UserMenus.Add(code);
-            }
-        }
-
-        private void UpdateMenus()
-        {
-            string menus = "";
-            if (UserMenus.Count > 0)
-            {
-                foreach (var item in UserMenus)
-                {
-                    menus += $"{item}|";
-                }
-                menus = menus.Substring(0, menus.Length - 1);
-            }
+            List<string> result = atPages.GetResult();//获取选中的页面Id集合
 
             using (CoreDBContext context = new CoreDBContext())
             {
-                var user = context.User.Single(c => c.Id == userId);
-                //user.Menus = menus;
+                #region 在角色权限中查找 如果角色中有但结果中没有 加入减量 如果角色中没有 但结果中有 加入增量
 
-                context.SaveChanges();
+                var user = context.User.First(c => c.Id == userId);//获取当前 用户
+                RolePlugins rolePlugins = context.RolePlugins.First(c => c.RoleId == user.RoleId);//查找当前用户的角色权限 这里因为添加角色的时候已经加入 所以肯定有值的 
+                List<string> rolePages = rolePlugins.Pages.Split(',').ToList();//所有角色权限
+                List<string> _res1 = rolePages.Where(a => !result.Exists(t => a.Contains(t))).ToList();//查找角色中存在 但结果中不存在的数据 此为减少的数据
+                List<string> _res2 = result.Where(a => !rolePages.Exists(t => a.Contains(t))).ToList();//查找结果中存在 但角色中不存在的数据 此为添加的数据
+
+                #endregion
+
+                string increasePages = string.Join(",", _res2);//增量
+                string decrementPages = string.Join(",", _res1);//减量
+
+                if (increasePages.NotEmpty() || decrementPages.NotEmpty())
+                {
+                    if (context.UserPlugins.Any(c => c.UserId == userId))
+                    {
+                        //之前存在数据 修改
+                        var userPluginsDB = context.UserPlugins.Single(c => c.UserId == userId);
+                        userPluginsDB.IncreasePages = increasePages;
+                        userPluginsDB.DecrementPages = decrementPages;
+                        userPluginsDB.UpdateTime = DateTime.Now;
+                    }
+                    else
+                    {
+                        //之前不存在数据 新增
+                        UserPlugins userPluginsDB = new UserPlugins();
+                        userPluginsDB.DecrementPages = decrementPages;
+                        userPluginsDB.IncreasePages = increasePages;
+                        userPluginsDB.UpdateTime = DateTime.Now;
+                        userPluginsDB.UserId = userId;
+                        context.UserPlugins.Add(userPluginsDB);
+                    }
+                    context.SaveChanges();//执行
+
+                    this.Log("用户授权成功！");
+                }
             }
+            btnClose_Click(null, null);//模拟点击关闭
         }
-
-        #endregion
     }
 }

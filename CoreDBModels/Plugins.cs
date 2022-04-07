@@ -12,20 +12,15 @@ namespace CoreDBModels
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [MaxLength(50)]
-        public string Title { get; set; }//插件显示的标题
+        public string Name { get; set; }
         [MaxLength(100)]
-        public string DLLName { get; set; }//插件的DLL名称
-        [MaxLength(300)]
-        public string ModuleTitles { get; set; }//模块名称 以，分隔
-        [MaxLength(500)]
-        public string ModuleFolderPaths { get; set; }//模块对应的文件夹 以，分隔 
-        [MaxLength(300)]
-        public string ModuleIcon { get; set; }//模块对应的Icon图标或图片 以，分隔
+        public string DLLName { get; set; }
         [MaxLength(200)]
-        public string UpdateUrl { get; set; }//插件更新路径
-        [MaxLength(500)]
-        public string DBModelUrl { get; set; }//对应的数据实体dll文件 以，分隔
+        public string LogoImage { get; set; }//Logo图的名称 图片在项目中
+        public bool WebDownload { get; set; }//是否从网络下载
         public int Order { get; set; }//排序
+        public string ConnectionName { get; set; }//连接字符串名称
+        public string ConnectionString { get; set; }//连接字符串
 
         public DateTime UpdateTime { get; set; }//最后更新时间
     }

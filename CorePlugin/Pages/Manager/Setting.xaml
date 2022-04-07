@@ -21,7 +21,7 @@
                 <StackPanel Margin="10">
                 </StackPanel>
             </GroupBox>
-            <GroupBox  Header="历史记录设置"
+            <GroupBox  Header="日志设置"
                            Margin="10"
                            pu:GroupBoxHelper.Icon="&#xf11c;"
                            pu:GroupBoxHelper.CornerRadius="10"
@@ -34,7 +34,7 @@
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="最多保存数量：" Grid.Column="0"/>
+                        <Label Content="记录上限：" Grid.Column="0"/>
                         <TextBox  Height="30" Grid.Column="1"
                                   Background="{DynamicResource TextBoxBgColor}"
                                     pu:TextBoxHelper.Watermark="最多保存历史记录的条数"

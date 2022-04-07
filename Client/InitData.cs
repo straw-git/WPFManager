@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml;
 
 namespace Client
 {
@@ -49,7 +50,6 @@ namespace Client
                             Pwd = "123456",
                             CanLogin = true,
                             RoleId = role.Id,
-                            StaffId = "",
                             CreateTime = DateTime.Now,
                             Creator = 0,
                             DelTime = DateTime.Now,
@@ -65,155 +65,82 @@ namespace Client
 
                     #endregion
 
-                    //#region 插件
+                    #region 基础设置
 
-                    //if (!context.Plugins.Any())
-                    //{
-                    //    //获取项目根目录
-                    //    string basePath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.IndexOf("Client"));
-                    //    context.Plugins.Add(new Plugins()
-                    //    {
-                    //        DBModelUrl = $@"{basePath}CoreDBModels\bin\Debug\CoreDBModels.dll",
-                    //        DLLName = "CorePlugin",
-                    //        ModuleFolderPaths = "Pages",
-                    //        ModuleIcon = "\xf260",
-                    //        ModuleTitles = "管理中心",
-                    //        Order = 0,
-                    //        Title = "核心功能",
-                    //        UpdateTime = DateTime.Now,
-                    //        UpdateUrl = $@"{basePath}CorePlugin\bin\Debug\CorePlugin.dll"
-                    //    });
-                    //}
-
-                    //if (!context.RolePlugins.Any())
-                    //{
-                    //    context.RolePlugins.Add(new RolePlugins()
-                    //    {
-                    //        RoleId = role.Id,
-                    //        UpdateTime = DateTime.Now,
-                    //        Pages = ""
-                    //    });
-                    //}
-
-                    //#endregion
-
-                    //如果没有dic 添加dic数据
-
-                    #region 数据字典
-
-                    if (!context.SysDic.Any())
+                    if (!context.CoreSetting.Any())
                     {
-                        context.SysDic.Add(new SysDic()
+                        context.CoreSetting.Add(new CoreSetting()
                         {
-                            Content = "角色",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "角色",
-                            ParentCode = "",
-                            QuickCode = DicData.Role
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "组织架构",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "组织架构",
-                            ParentCode = "",
-                            QuickCode = DicData.JobPost
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "支付方式",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "支付方式",
-                            ParentCode = "",
-                            QuickCode = DicData.PayModel
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "现金",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "现金",
-                            ParentCode = DicData.PayModel,
-                            QuickCode = DicData.PayModel + "-" + "现金".Convert2Pinyin()
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "微信",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "微信",
-                            ParentCode = DicData.PayModel,
-                            QuickCode = DicData.PayModel + "-" + "微信".Convert2Pinyin()
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "支付宝",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "支付宝",
-                            ParentCode = DicData.PayModel,
-                            QuickCode = DicData.PayModel + "-" + "支付宝".Convert2Pinyin()
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "供应商类型",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "供应商类型",
-                            ParentCode = "",
-                            QuickCode = DicData.SupplierType
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "物品类型",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "物品类型",
-                            ParentCode = "",
-                            QuickCode = DicData.GoodsType
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "物品单位",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "物品单位",
-                            ParentCode = "",
-                            QuickCode = DicData.GoodsUnit
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "仓库",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "仓库",
-                            ParentCode = "",
-                            QuickCode = DicData.Store
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "固定资产状态",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "固定资产状态",
-                            ParentCode = "",
-                            QuickCode = DicData.FixedAssetsState
-                        });
-                        context.SysDic.Add(new SysDic()
-                        {
-                            Content = "固定资产位置",
-                            Creater = 0,
-                            CreateTime = DateTime.Now,
-                            Name = "固定资产位置",
-                            ParentCode = "",
-                            QuickCode = DicData.FixedAssetsLocation
+                            MaxLogCount = 500,
+                            PluginsUpdateBaseUrl = "http://127.0.0.1:8088/"
                         });
                     }
 
-                    #endregion
+                    #endregion 
+
+                    #region 基础插件
+
+                    if (!context.Plugins.Any())
+                    {
+                        Plugins plugins = context.Plugins.Add(new Plugins()
+                        {
+                            DLLName = "CorePlugin",
+                            LogoImage = "logo.jpg",
+                            Name = "基础管理",
+                            Order = 0,
+                            UpdateTime = DateTime.Now,
+                            WebDownload = true,
+                            ConnectionName = "CoreConnectionStr",
+                            ConnectionString = @"Data Source=PC-20201105CMZQ\SQLEXPRESS;Initial Catalog=ZDB;User ID=sa;Password=123456;"
+                        });
+                        context.SaveChanges();
+                        PluginsModule pluginsModule = context.PluginsModule.Add(new PluginsModule()
+                        {
+                            ModuleName = "管理中心",
+                            PluginsId = plugins.Id,
+                            Icon = "fa-user-md",
+                            Order = 1
+                        });
+                        context.SaveChanges();
+                        context.ModulePage.Add(new ModulePage()
+                        {
+                            ModuleId = pluginsModule.Id,
+                            Order = 0,
+                            PageName = "首页",
+                            PagePath = "Pages/Manager/Index.xaml",
+                            PluginsId = plugins.Id,
+                            Icon = "fa-home"
+                        });
+                        context.ModulePage.Add(new ModulePage()
+                        {
+                            ModuleId = pluginsModule.Id,
+                            Order = 0,
+                            PageName = "系统账号",
+                            PagePath = "Pages/Manager/User.xaml",
+                            PluginsId = plugins.Id,
+                            Icon = "fa-address-card-o"
+                        });
+                        context.ModulePage.Add(new ModulePage()
+                        {
+                            ModuleId = pluginsModule.Id,
+                            Order = 0,
+                            PageName = "角色授权",
+                            PagePath = "Pages/Manager/RoleAuthorization.xaml",
+                            PluginsId = plugins.Id,
+                            Icon = "fa-key"
+                        });
+                        context.ModulePage.Add(new ModulePage()
+                        {
+                            ModuleId = pluginsModule.Id,
+                            Order = 0,
+                            PageName = "插件管理",
+                            PagePath = "Pages/Manager/PluginsMsg.xaml",
+                            PluginsId = plugins.Id,
+                            Icon = "fa-paperclip"
+                        });
+                    }
+
+                    #endregion 
 
                     context.SaveChanges();
                 }

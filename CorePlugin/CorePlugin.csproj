@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{30827CDD-354D-4E5D-A0FA-62FFCE2B4329}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>CorePlugin</RootNamespace>
     <AssemblyName>CorePlugin</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -77,19 +77,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreDBContext.cs" />
-    <Compile Include="Migrations\202202250349233_update_coredb.cs" />
-    <Compile Include="Migrations\202202250349233_update_coredb.designer.cs">
-      <DependentUpon>202202250349233_update_coredb.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="MyControls\AuthorizationItems.xaml.cs">
+      <DependentUpon>AuthorizationItems.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Manager\PluginsMsg.xaml.cs">
       <DependentUpon>PluginsMsg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Manager\RoleAuthorization.xaml.cs">
+      <DependentUpon>RoleAuthorization.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Manager\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PluginsInfo.cs" />
-    <Compile Include="RoleTreeViewCommon.cs" />
+    <Compile Include="Windows\EditRole.xaml.cs">
+      <DependentUpon>EditRole.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditPlugins.xaml.cs">
+      <DependentUpon>EditPlugins.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\AddUser.xaml.cs">
       <DependentUpon>AddUser.xaml</DependentUpon>
     </Compile>
@@ -99,25 +105,16 @@
     <Compile Include="Windows\BasePageVisibilititySetting.xaml.cs">
       <DependentUpon>BasePageVisibilititySetting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\EditDic.xaml.cs">
-      <DependentUpon>EditDic.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\EditJobPost.xaml.cs">
-      <DependentUpon>EditJobPost.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\SelectedUser.xaml.cs">
       <DependentUpon>SelectedUser.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\UpdatePassword.xaml.cs">
       <DependentUpon>UpdatePassword.xaml</DependentUpon>
     </Compile>
-    <Page Include="App.xaml">
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="Pages\Manager\Dic.xaml.cs">
-      <DependentUpon>Dic.xaml</DependentUpon>
-    </Compile>
+    </ApplicationDefinition>
     <Compile Include="Pages\Manager\Index.xaml.cs">
       <DependentUpon>Index.xaml</DependentUpon>
     </Compile>
@@ -136,15 +133,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Pages\Manager\Dic.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="MyControls\AuthorizationItems.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Manager\Index.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Manager\PluginsMsg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Manager\RoleAuthorization.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -156,6 +157,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Windows\EditRole.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditPlugins.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\AddUser.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -165,14 +174,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\BasePageVisibilititySetting.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\EditDic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\EditJobPost.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -199,9 +200,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\202202250349233_update_coredb.resx">
-      <DependentUpon>202202250349233_update_coredb.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
