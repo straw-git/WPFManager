@@ -44,7 +44,9 @@ namespace Common
         }
 
 
-        //是否已登录
+        /// <summary>
+        /// 是否已经登录
+        /// </summary>
         public static bool IsLogin = false;
     }
 }

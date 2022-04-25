@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Utils;
+using System;
 using System.Net;
 using System.Windows;
 
@@ -9,12 +10,6 @@ namespace Common
     /// </summary>
     public static class PluginsDownload
     {
-        static WebClient webClient;
-        static PluginsDownload()
-        {
-            webClient = new WebClient();
-        }
-
         /// <summary>
         /// 下载至Debug文件夹
         /// </summary>
@@ -27,8 +22,11 @@ namespace Common
             if (_baseUrl.EndsWith("/")) _baseUrl = _baseUrl.Substring(0, _baseUrl.Length - 1);//如果带斜杠结尾的话 将斜杠去掉
             try
             {
-                //将文件下载至目标文件夹
-                webClient.DownloadFile($"{_baseUrl}/{_dllName}.dll", $"{AppDomain.CurrentDomain.BaseDirectory}{_dllName}.dll");
+                string dllUrl = $"{AppDomain.CurrentDomain.BaseDirectory}{_dllName}.dll";
+                if (!FileUtils.IsFileIsUsed(dllUrl))//判断文件是否被占用
+                    using (WebClient webClient = new WebClient())
+                        //将文件下载至目标文件夹
+                        webClient.DownloadFile($"{_baseUrl}/{_dllName}.dll", dllUrl);
             }
             catch (Exception ex)
             {

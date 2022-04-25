@@ -53,17 +53,15 @@
   <ItemGroup>
     <Compile Include="CoreSetting.cs" />
     <Compile Include="ModulePage.cs" />
+    <Compile Include="Notice.cs" />
     <Compile Include="Plugins.cs" />
     <Compile Include="PluginsModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="RolePlugins.cs" />
-    <Compile Include="Log.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="Email.cs" />
     <Compile Include="UserPlugins.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

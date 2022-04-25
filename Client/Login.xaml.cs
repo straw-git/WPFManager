@@ -41,7 +41,7 @@ namespace Client
 
             #region 事件监听
 
-            login.OnLoginFinished += OnLoginFinished;
+            login.OnLoginSucceed += OnLoginSucceed;
 
             selectPlugins.OnBackLoginClick += SelectPlugins2Login;
             selectPlugins.OnGoMainWindowClick += OnGoMainWindowClick;
@@ -68,10 +68,16 @@ namespace Client
             login.ShowLogin();
         }
 
-        private void OnLoginFinished()
+        /// <summary>
+        /// 登录成功
+        /// </summary>
+        private void OnLoginSucceed()
         {
+            //更改页面
             login.HideLogin();
             selectPlugins.ShowPlugins();
+
+            GlobalEvent.StartReadMessage();
         }
 
         private async void CheckNullData()

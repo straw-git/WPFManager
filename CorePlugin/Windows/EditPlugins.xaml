@@ -196,7 +196,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="图标" Width="50" Binding="{Binding Icon}" FontFamily="{StaticResource FontAwesome}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="名称" Width="*" Binding="{Binding PageName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="路径" Width="*" Binding="{Binding PagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <DataGridTextColumn  Header="路径" Width="3*" Binding="{Binding PagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <DataGridTemplateColumn Header="操作" Width="60" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

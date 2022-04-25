@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{30827CDD-354D-4E5D-A0FA-62FFCE2B4329}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>CorePlugin</RootNamespace>
     <AssemblyName>CorePlugin</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -77,7 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreDBContext.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyControls\AuthorizationItems.xaml.cs">
       <DependentUpon>AuthorizationItems.xaml</DependentUpon>
     </Compile>
@@ -111,10 +110,10 @@
     <Compile Include="Windows\UpdatePassword.xaml.cs">
       <DependentUpon>UpdatePassword.xaml</DependentUpon>
     </Compile>
-    <ApplicationDefinition Include="App.xaml">
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    </Page>
     <Compile Include="Pages\Manager\Index.xaml.cs">
       <DependentUpon>Index.xaml</DependentUpon>
     </Compile>

@@ -14,7 +14,6 @@ namespace CorePlugin
         }
 
         public DbSet<User> User { get; set; }//系统账户
-        public DbSet<Log> Log { get; set; }//日志
         public DbSet<CoreSetting> CoreSetting { get; set; }//设置
         public DbSet<Role> Role { get; set; }//系统账户角色
 

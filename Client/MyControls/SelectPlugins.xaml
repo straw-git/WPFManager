@@ -22,9 +22,9 @@
     </UserControl.Resources>
     <Grid>
         <Border BorderThickness="1" BorderBrush="LightGray" Background="White" x:Name="bPlugins">
-            <Border.Effect>
+            <!--<Border.Effect>
                 <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
-            </Border.Effect>
+            </Border.Effect>-->
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>

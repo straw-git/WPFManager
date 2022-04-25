@@ -39,7 +39,10 @@ namespace Client.MyControls
             };
         }
 
-        public Action OnLoginFinished;
+        /// <summary>
+        /// 登录成功时触发
+        /// </summary>
+        public Action OnLoginSucceed;
 
         public void HideLogin()
         {
@@ -80,7 +83,7 @@ namespace Client.MyControls
             if (UserGlobal.IsLogin && UserGlobal.CurrUser.Name == userName)
             {
                 //如果已经登录并且名字一样
-                OnLoginFinished?.Invoke();
+                OnLoginSucceed?.Invoke();
             }
             else
             {
@@ -104,7 +107,7 @@ namespace Client.MyControls
                             userModel = context.User.First(c => c.Name == userName && c.Pwd == userPwd && c.CanLogin);
                             if (userModel == null || userModel.Id <= 0)
                             {
-                                Notice.Show($"未知错误！", "登录失败", 5, Panuon.UI.Silver.MessageBoxIcon.Error);
+                                Panuon.UI.Silver.Notice.Show($"未知错误！", "登录失败", 5, Panuon.UI.Silver.MessageBoxIcon.Error);
                                 handler.Close();
                                 return;
                             }
@@ -112,6 +115,7 @@ namespace Client.MyControls
                             {
                                 //继续装载数据
                                 handler.UpdateMessage("登录成功,正在装载用户数据...");
+
                                 //清空数据
                                 UserGlobal.Plugins.Clear();
                                 UserGlobal.PluginsModules.Clear();
@@ -189,20 +193,20 @@ namespace Client.MyControls
                                 handler.UpdateMessage("数据装载成功！");
                                 await Task.Delay(300);
                                 handler.Close();
-                                OnLoginFinished?.Invoke();
-                                Notice.Show($"{UserGlobal.CurrUser.Name}登录", "欢迎", 3, MessageBoxIcon.Success);
+                                OnLoginSucceed?.Invoke();
+                                Panuon.UI.Silver.Notice.Show($"{UserGlobal.CurrUser.Name}登录", "欢迎", 3, MessageBoxIcon.Success);
                             }
                         }
                         else
                         {
-                            Notice.Show($"密码错误！", "登录失败", 5, Panuon.UI.Silver.MessageBoxIcon.Error);
+                            Panuon.UI.Silver.Notice.Show($"密码错误！", "登录失败", 5, Panuon.UI.Silver.MessageBoxIcon.Error);
                             handler.Close();
                             return;
                         }
                     }
                     else
                     {
-                        Notice.Show($"账户不存在！", "登录失败", 5, Panuon.UI.Silver.MessageBoxIcon.Error);
+                        Panuon.UI.Silver.Notice.Show($"账户不存在！", "登录失败", 5, Panuon.UI.Silver.MessageBoxIcon.Error);
                         handler.Close();
                         return;
                     }

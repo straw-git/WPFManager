@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-public class UIGlobal
+public partial class UIGlobal
 {
     /// <summary>
     /// 运行UI线程
@@ -15,5 +15,4 @@ public class UIGlobal
     {
         Application.Current.Dispatcher.Invoke(action);
     }
-
 }

@@ -22,6 +22,6 @@ namespace Common
 
         public abstract void SetFrameSource(string _s);//设置Frame内页
         public abstract void ReLoadMenu();//刷新导航
-        public abstract void Log(string _logStr);//输出
+        public abstract void WriteInfoOnBottom(string _info, string _color = "#000000");//在底部显示
     }
 }

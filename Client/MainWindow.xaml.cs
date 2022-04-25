@@ -45,15 +45,22 @@ namespace Client
 
         #region override BaseMainWindow
 
-        public override void Log(string _logStr)
+        /// <summary>
+        /// 在窗体底部显示文字
+        /// </summary>
+        /// <param name="_info"></param>
+        /// <param name="_color"></param>
+        public override void WriteInfoOnBottom(string _info, string _color="#000000")
         {
-            lblInfo.Content = _logStr;
+            lblInfo.Content = _info;
+            lblInfo.Foreground = ColorHelper.ConvertToSolidColorBrush(_color);
         }
 
+        /// <summary>
+        /// 加载主导航
+        /// </summary>
         public override void ReLoadMenu()
         {
-            //_tabItem_GotFocus(tabMenu.SelectedItem, null);
-
             tabMenu.Items.Clear();
 
             int currIndex = 0;
@@ -84,6 +91,11 @@ namespace Client
             tabMenu.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// 主导航切换
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _tabItem_GotFocus(object sender, RoutedEventArgs e)
         {
             PluginsModule moduleInfo = (sender as TabItem).Tag as PluginsModule;
@@ -119,6 +131,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// 设置页面
+        /// </summary>
+        /// <param name="_s"></param>
         public override void SetFrameSource(string _s)
         {
             mainFrame.Source = new Uri(_s, UriKind.RelativeOrAbsolute);

@@ -21,9 +21,9 @@
     </UserControl.Resources>
 
     <Border Background="White" BorderThickness="1" BorderBrush="LightGray" x:Name="bLogin" Width="340" >
-        <Border.Effect>
-            <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
-        </Border.Effect>
+        <!--<Border.Effect>
+            <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="10" Opacity="1" />
+        </Border.Effect>-->
         <Grid >
             <StackPanel  VerticalAlignment="Top" Margin="0,40,0,0" Width="280">
                 <StackPanel Orientation="Horizontal" Width="260">

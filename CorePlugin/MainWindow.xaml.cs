@@ -47,9 +47,10 @@ namespace CorePlugin
 
         #region override BaseMainWindow
 
-        public override void Log(string _logStr)
+        public override void WriteInfoOnBottom(string _logStr, string _color = "#000000")
         {
             lblInfo.Content = _logStr;
+            lblInfo.Foreground = ColorHelper.ConvertToSolidColorBrush(_color);
         }
 
         public override void ReLoadMenu()

@@ -22,7 +22,7 @@ namespace Client
         private void App_Startup(object sender, StartupEventArgs e)
         {
             GlobalEvent.OnClientStart();
-            SoftInfo.SoftStartTime = DateTime.Now;
+            Global.SoftStartTime = DateTime.Now;
         }
     }
 }
