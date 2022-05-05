@@ -19,6 +19,8 @@ namespace Common.Data.Local
             public string SkinName { get; set; }
             //Main
             public string SkinColor { get; set; }
+            //主题反差色
+            public string SkinOppositeColor { get; set; }
             //Pages
             public string LoginBgColor { get; set; }
             //Button
@@ -64,7 +66,7 @@ namespace Common.Data.Local
         public static List<SkinModel> skins = new List<SkinModel>();
         static LocalFileHelper _helper = new LocalFileHelper(LocalFileHelper.LocalFileDicType.LocalData, "LocalSetting");
 
-        public static void Init() 
+        public static void Init()
         {
             ReadJson();
         }
@@ -87,6 +89,7 @@ namespace Common.Data.Local
 
                 //Main
                 skin.SkinColor = "#C62F2F";
+                skin.SkinOppositeColor = "#ffffff";
                 //Pages
                 skin.LoginBgColor = "LightCyan";
                 //Button

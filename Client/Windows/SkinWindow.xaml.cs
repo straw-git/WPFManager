@@ -95,6 +95,14 @@ namespace Client.Windows
             useSkin.SkinColor = cpSkinColor.Text;
         }
 
+
+        private void cpSkinOppositeColor_SelectedBrushChanged(object sender, Panuon.UI.Silver.Core.SelectedBrushChangedEventArgs e)
+        {
+            this.Resources.Remove("_SkinOppositeColor");
+            this.Resources.Add("_SkinOppositeColor", cpSkinOppositeColor.SelectedBrush);
+            useSkin.SkinOppositeColor = cpSkinOppositeColor.Text;
+        }
+
         #endregion 
 
         #region TextBox
@@ -325,6 +333,7 @@ namespace Client.Windows
         {
             useSkin.SkinName = txtSkinName.Text;
             useSkin.SkinColor = cpSkinColor.Text;
+            useSkin.SkinOppositeColor = cpSkinOppositeColor.Text;
             useSkin.LoginBgColor = cpLoginBgColor.Text;
 
             //button
@@ -381,6 +390,7 @@ namespace Client.Windows
             {
                 txtSkinName.Text = useSkin.SkinName;
                 cpSkinColor.SelectedBrush = StyleHelper.ConvertToSolidColorBrush(useSkin.SkinColor);
+                cpSkinOppositeColor.SelectedBrush = StyleHelper.ConvertToSolidColorBrush(useSkin.SkinOppositeColor);
                 cpLoginBgColor.SelectedBrush = StyleHelper.ConvertToSolidColorBrush(useSkin.LoginBgColor);
 
                 //button

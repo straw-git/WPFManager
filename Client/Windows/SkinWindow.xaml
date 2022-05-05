@@ -17,6 +17,8 @@
 
         <!--Main-->
         <SolidColorBrush x:Key="_SkinColor" Color="#C62F2F" />
+        <!--主题反差色-->
+        <SolidColorBrush x:Key="_SkinOppositeColor" Color="#ffffff" />
 
         <!--Pages-->
         <SolidColorBrush x:Key="_LoginBgColor" Color="LightCyan" />
@@ -139,6 +141,17 @@
                                             IsDefaultColorPanelVisible="True"
                                              x:Name="cpSkinColor"
                                              pu:ColorPicker.SelectedBrushChanged="CpSkinColor_SelectedBrushChanged"
+                                             />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                            <Label Content="主题反色:" VerticalAlignment="Center" Width="120"/>
+                            <pu:ColorPicker  Width="200"
+                                            Height="30"
+                                            IsOpacityEnabled="True"
+                                            IsMeasuredValueVisible="True"
+                                            IsDefaultColorPanelVisible="True"
+                                             x:Name="cpSkinOppositeColor"
+                                             pu:ColorPicker.SelectedBrushChanged="cpSkinOppositeColor_SelectedBrushChanged"
                                              />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">

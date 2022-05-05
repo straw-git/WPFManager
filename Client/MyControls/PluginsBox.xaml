@@ -45,7 +45,7 @@
                     </ContainerUIElement3D>
                 </Viewport3D.Children>
             </Viewport3D>
-            <Border x:Name="bBoxMenus" Grid.Row="1" Background="Gray">
+            <Border x:Name="bBoxMenus" Grid.Row="1" Background="{DynamicResource SkinColor}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <CheckBox  Height="30"
                                IsEnabled="False"
@@ -55,7 +55,7 @@
                                pu:CheckBoxHelper.BoxWidth="40"
                                Background="{DynamicResource CheckBoxBgColor}"
                                pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"/>
-                    <TextBlock x:Name="lblLogoName" Text="{Binding Path=LogoContent,ElementName=MyLogo}" FontSize="16" Foreground="White" FontFamily="微软雅黑" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <TextBlock x:Name="lblLogoName" Text="{Binding Path=LogoContent,ElementName=MyLogo}" FontSize="16" Foreground="{DynamicResource SkinOppositeColor}" FontFamily="微软雅黑" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </StackPanel>
             </Border>
         </Grid>

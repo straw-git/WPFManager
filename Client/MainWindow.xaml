@@ -23,7 +23,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Grid x:Name="gHeader" Grid.Row="0" Grid.Column="0"  Background="Black">
+            <Grid x:Name="gHeader" Grid.Row="0" Grid.Column="0"  Background="{DynamicResource SkinColor}">
                 <StackPanel x:Name="sHeader" Width="200" Grid.Row="0" Orientation="Horizontal">
                     <Image Margin="20,0,10,0" VerticalAlignment="Center" Width="28" Height="28" Source="pack://application:,,,/Common;component/Images/main_header.png" />
                     <TextBlock FontSize="20" 
@@ -141,7 +141,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!--二级导航-->
-            <Grid Grid.Row="1" Width="200" Grid.Column="0" x:Name="bSecondMenu"  Background="Black">
+            <Grid Grid.Row="1" Width="200" Grid.Column="0" x:Name="bSecondMenu"  Background="{DynamicResource SkinColor}">
                 <TreeView  x:Name="tvMenu"
                            Margin="0,20,0,0"
                             Width="200"
@@ -149,10 +149,10 @@
                         pu:TreeViewHelper.ExpandMode="SingleClick"
                            Foreground="White"
                         pu:TreeViewHelper.ExpandBehaviour="OnlyOne"
-                         pu:TreeViewHelper.SelectedBackground="Gray"
-                           pu:TreeViewHelper.SelectedForeground="White"
+                         pu:TreeViewHelper.SelectedBackground="{DynamicResource TreeViewSelectedBgColor}"
+                           pu:TreeViewHelper.SelectedForeground="Black"
                         pu:TreeViewHelper.ItemPadding="3,10,10,10"
-                            Background="Black"
+                            Background="{DynamicResource SkinColor}"
                          BorderBrush="{DynamicResource TreeViewSelectedHeaderColor}"
                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                            SelectedItemChanged="tvMenu_SelectedItemChanged"
@@ -166,9 +166,9 @@
                         pu:TreeViewHelper.ExpandMode="SingleClick"
                            Foreground="White"
                         pu:TreeViewHelper.ExpandBehaviour="OnlyOne"
-                         pu:TreeViewHelper.SelectedBackground="Gray"
-                           pu:TreeViewHelper.SelectedForeground="White"
-                            Background="Black"
+                         pu:TreeViewHelper.SelectedBackground="LightGray"
+                           pu:TreeViewHelper.SelectedForeground="Black"
+                            Background="{DynamicResource SkinColor}"
                            FontSize="18"
                          BorderBrush="{DynamicResource TreeViewSelectedHeaderColor}"
                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"

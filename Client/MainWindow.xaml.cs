@@ -26,6 +26,7 @@ using Client.CurrGlobal;
 using static Common.UserGlobal;
 using CoreDBModels;
 using Common.Utils;
+using System.Threading;
 
 namespace Client
 {
@@ -34,6 +35,7 @@ namespace Client
     /// </summary>
     public partial class MainWindow : BaseMainWindow
     {
+
         public MainWindow()
         {
             InitializeComponent();
@@ -50,7 +52,7 @@ namespace Client
         /// </summary>
         /// <param name="_info"></param>
         /// <param name="_color"></param>
-        public override void WriteInfoOnBottom(string _info, string _color="#000000")
+        public override void WriteInfoOnBottom(string _info, string _color = "#000000")
         {
             lblInfo.Content = _info;
             lblInfo.Foreground = ColorHelper.ConvertToSolidColorBrush(_color);
@@ -145,13 +147,52 @@ namespace Client
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateTitle();
+            StartTimer();
         }
 
+        #region Timer
+
+        /// <summary>
+        /// 消息定时器
+        /// </summary>
+        Timer messageTimer;
+
+        /// <summary>
+        /// 开启计时器
+        /// </summary>
+        private void StartTimer()
+        {
+            messageTimer = new Timer(OnTimer, null, 0, (int)TimeSpan.FromMinutes(5).TotalMilliseconds);
+        }
+
+        /// <summary>
+        /// 时间到了
+        /// </summary>
+        /// <param name="_state"></param>
+        private void OnTimer(object _state)
+        {
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                //阅读通知
+
+                //阅读短信
+            }
+        }
+
+        #endregion
+
+        #region Private 
+
+        /// <summary>
+        /// 更新Title
+        /// </summary>
         public void UpdateTitle()
         {
             simpleLogo.ToolTip = lblTitle.Text = Title = LocalSettings.settings.MainWindowTitle;
             lblV.Content = $"{LocalSettings.settings.CompanyName}-{LocalSettings.settings.Versions}";
         }
+
+        #endregion
 
         #region UI Method
 

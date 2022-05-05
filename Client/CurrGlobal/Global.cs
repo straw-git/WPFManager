@@ -1,7 +1,6 @@
 ﻿
 using Common.Data.Local;
 using Common.Utils;
-using Hangfire;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
@@ -38,7 +37,6 @@ namespace Client.CurrGlobal
     /// </summary>
     public partial class GlobalEvent
     {
-
         /// <summary>
         /// 客户端开始
         /// </summary>
@@ -51,16 +49,6 @@ namespace Client.CurrGlobal
             //初始化样式
             StyleHelper.Init();
         }
-
-        /// <summary>
-        /// 开始定期读取信息
-        /// </summary>
-        public static void StartReadMessage()
-        {
-        //    RecurringJob.AddOrUpdate(() => OnReadMessageDaily(),TimeSpan.FromMinutes(10));
-        //https://github.com/HangfireIO/Hangfire
-        }
-
     }
 
     /// <summary>

@@ -101,6 +101,7 @@ namespace Client.MyControls
 
         private void vpLogo_MouseEnter(object sender, MouseEventArgs e)
         {
+            if ((bool)cbOpen.IsChecked) return;
             var s = vpLogo.Camera as PerspectiveCamera;
             s.Position = new Point3D(0, 0, 1000);
         }
@@ -121,13 +122,11 @@ namespace Client.MyControls
             {
                 cbOpen.IsChecked = true;
                 bLogo.BorderThickness = new Thickness(0, 2, 0, 0);
-                bBoxMenus.Background = new SolidColorBrush(Colors.Black);
             }
             else
             {
                 bLogo.BorderThickness = new Thickness(0);
                 cbOpen.IsChecked = false;
-                bBoxMenus.Background = new SolidColorBrush(Colors.Gray);
             }
             //触发事件
             CheckChanged?.Invoke(this, (bool)cbOpen.IsChecked);

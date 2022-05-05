@@ -1,4 +1,5 @@
-﻿using Client.CurrGlobal;
+﻿using Client.Animations._3DWave;
+using Client.CurrGlobal;
 using Client.Pages;
 using Client.Windows;
 using Common;
@@ -28,20 +29,60 @@ namespace Client
     /// </summary>
     public partial class Login : Window
     {
+        Storyboard stdStart;
+        private readonly ParticleSystem _ps;
+        private DispatcherTimer _frameTimer;
+
         public Login()
         {
             InitializeComponent();
             this.UseCloseAnimation();
+
+            #region 动画
+
+            stdStart = (Storyboard)this.Resources["start"];
+            stdStart.Completed += (a, b) =>
+            {
+                this.root.Clip = null;
+            };
+            this.Loaded += Window_Loaded;
+            this.Closed += Login_Closed;
+
+            _frameTimer = new DispatcherTimer();
+            _frameTimer.Tick += OnFrame;
+            _frameTimer.Interval = TimeSpan.FromSeconds(1.0 / 60.0);
+            _frameTimer.Start();
+
+            _ps = new ParticleSystem(50, 50, Colors.White, 30);
+
+            WorldModels.Children.Add(_ps.ParticleModel);
+
+            _ps.SpawnParticle(30);
+
+            #endregion 
+        }
+
+        private void Login_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void OnFrame(object sender, EventArgs e)
+        {
+            _ps.Update();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            stdStart.Begin();//启动动画
+
             login.Visibility = Visibility.Visible;
             selectPlugins.Visibility = Visibility.Collapsed;
 
             #region 事件监听
 
             login.OnLoginSucceed += OnLoginSucceed;
+            login.OnLoginClosed += OnLoginClosed;
 
             selectPlugins.OnBackLoginClick += SelectPlugins2Login;
             selectPlugins.OnGoMainWindowClick += OnGoMainWindowClick;
@@ -49,6 +90,11 @@ namespace Client
             #endregion 
 
             CheckNullData();
+        }
+
+        private void OnLoginClosed()
+        {
+            Close();
         }
 
         private void OnGoMainWindowClick()
@@ -77,7 +123,7 @@ namespace Client
             login.HideLogin();
             selectPlugins.ShowPlugins();
 
-            GlobalEvent.StartReadMessage();
+            //GlobalEvent.StartTimer(5);
         }
 
         private async void CheckNullData()

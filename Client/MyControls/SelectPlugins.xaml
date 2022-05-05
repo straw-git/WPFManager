@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client.MyControls"
              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-             Height="360"
+             Height="450"
              Loaded="UserControl_Loaded"
-             Width="600" >
+             Width="800" >
     <UserControl.Resources>
         <Storyboard x:Key="hiddlePlugins">
             <DoubleAnimation Storyboard.TargetName="bPlugins" Storyboard.TargetProperty="Width"
@@ -16,22 +16,19 @@
         </Storyboard>
         <Storyboard x:Key="showPlugins">
             <DoubleAnimation Storyboard.TargetName="bPlugins" Storyboard.TargetProperty="Width" From="0"
-                                     To="600" Duration="0:0:0.25">
+                                     To="800" Duration="0:0:0.25">
             </DoubleAnimation>
         </Storyboard>
     </UserControl.Resources>
     <Grid>
-        <Border BorderThickness="1" BorderBrush="LightGray" Background="White" x:Name="bPlugins">
-            <!--<Border.Effect>
-                <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="0" Opacity="1" />
-            </Border.Effect>-->
+        <Border Background="{DynamicResource SkinOppositeColor}" x:Name="bPlugins">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
                     <RowDefinition/>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="Black">
+                <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="{DynamicResource SkinColor}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Label Content="&#xf260;" FontFamily="{StaticResource FontAwesome}" FontSize="16" VerticalAlignment="Center" Foreground="White" Margin="5,0,0,0"/>
                         <Label Content="选择插件" FontSize="16" VerticalAlignment="Center" Foreground="White"/>
@@ -42,7 +39,8 @@
                                     FontFamily="{StaticResource FontAwesome}"
                                     FontSize="20" 
                                     Foreground="White" 
-                                    pu:ButtonHelper.HoverBrush="{DynamicResource SkinColor}"  
+                                    pu:IconHelper.Foreground="{DynamicResource SkinOppositeColor}"
+                                 pu:ButtonHelper.HoverBrush="{DynamicResource SkinOppositeColor}"
                                     pu:ButtonHelper.ButtonStyle="Link"
                                  x:Name="btnCheckAll" Click="BtnCheckAll_Click"/>
                         <Button  ToolTip="返回登录页面"
@@ -52,28 +50,26 @@
                                       Click="btnBackLogin_Click"
                                     FontSize="16" 
                                     Foreground="White" 
-                                    pu:ButtonHelper.HoverBrush="{DynamicResource SkinColor}"  
+                                    pu:IconHelper.Foreground="{DynamicResource SkinOppositeColor}"
+                                 pu:ButtonHelper.HoverBrush="{DynamicResource SkinOppositeColor}"
                                     pu:ButtonHelper.ButtonStyle="Link"  />
                     </StackPanel>
                 </Grid>
                 <Border Grid.Row="1">
-                    <Border.Effect>
-                        <DropShadowEffect Color="White" BlurRadius="5" ShadowDepth="0" Opacity="1" />
-                    </Border.Effect>
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="10,5,10,5">
                         <UniformGrid x:Name="gPlugins"  Columns="3" VerticalAlignment="Top"/>
                     </ScrollViewer>
                 </Border>
-                <Border Grid.Row="2" Height="40" Background="Black" >
+                <Border Grid.Row="2" Height="40" Background="{DynamicResource SkinColor}" >
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button  ToolTip="进入主窗体"  Margin="20,0,5,0"  
                                     pu:ButtonHelper.Icon="&#xf061;"
                                     FontFamily="{StaticResource FontAwesome}"
                                     FontSize="16" 
-                                    Foreground="White"   
                                  x:Name="btnAdd2MainWindow" 
                                  Click="btnAdd2MainWindow_Click"
-                                    pu:ButtonHelper.HoverBrush="{DynamicResource SkinColor}"  
+                                 pu:IconHelper.Foreground="{DynamicResource SkinOppositeColor}"
+                                 pu:ButtonHelper.HoverBrush="{DynamicResource SkinOppositeColor}"
                                     pu:ButtonHelper.ButtonStyle="Link" 
                                     HorizontalAlignment="Right"/>
                     </StackPanel>

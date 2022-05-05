@@ -43,6 +43,10 @@ namespace Client.MyControls
         /// 登录成功时触发
         /// </summary>
         public Action OnLoginSucceed;
+        /// <summary>
+        /// 关闭触发
+        /// </summary>
+        public Action OnLoginClosed;
 
         public void HideLogin()
         {
@@ -253,7 +257,7 @@ namespace Client.MyControls
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            OnLoginClosed?.Invoke();
         }
     }
 }

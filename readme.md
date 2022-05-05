@@ -15,7 +15,6 @@ NETFramework472
 Panuon.UI.Silver  
 LiveCharts  
 NPOI.Excel  
-Hangfire  
 NLog  
 Newtonsoft.Json  
 EntityFramework(Code First)  
@@ -24,12 +23,6 @@ EntityFramework(Code First)
 开发环境：  
 VS2019  
 Sqlserver2019  
-
-# 效果    
-
-![image](https://github.com/straw-git/WPFManager/blob/master/效果图/登录.jpg)  
-![image](https://github.com/straw-git/WPFManager/blob/master/效果图/选择插件.jpg)  
-![image](https://github.com/straw-git/WPFManager/blob/master/效果图/账号管理.jpg)  
 
 
 # 正在进行中（闲时开发中，尚不完善）
