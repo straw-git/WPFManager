@@ -45,7 +45,7 @@
                         </Grid>
                         <Grid Grid.Row="1">
                             <Label FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="&#xf2bc;" Foreground="Blue" FontSize="40" Opacity="0.2"/>
-                            <Label Content="0" VerticalAlignment="Center" Foreground="Blue" FontSize="25" Margin="10,0,0,0"/>
+                            <Label x:Name="lblUserCount" Content="0" VerticalAlignment="Center" Foreground="Blue" FontSize="25" Margin="10,0,0,0"/>
                         </Grid>
                     </Grid>
                 </Border>
@@ -72,7 +72,7 @@
                         </Grid>
                         <Grid Grid.Row="1">
                             <Label FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="&#xf0c0;" Foreground="Purple" FontSize="40" Opacity="0.2"/>
-                            <Label Content="0" VerticalAlignment="Center" Foreground="Purple" FontSize="25" Margin="10,0,0,0"/>
+                            <Label x:Name="lblRoleCount" Content="0" VerticalAlignment="Center" Foreground="Purple" FontSize="25" Margin="10,0,0,0"/>
                         </Grid>
                     </Grid>
                 </Border>
@@ -99,7 +99,7 @@
                         </Grid>
                         <Grid Grid.Row="1">
                             <Label FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="&#xf02d;" Foreground="Green" FontSize="40" Opacity="0.2"/>
-                            <Label Content="0" VerticalAlignment="Center" Foreground="Green" FontSize="25" Margin="10,0,0,0"/>
+                            <Label Content="未启用" VerticalAlignment="Center" Foreground="Green" FontSize="25" Margin="10,0,0,0"/>
                         </Grid>
                     </Grid>
                 </Border>
@@ -126,7 +126,7 @@
                         </Grid>
                         <Grid Grid.Row="1">
                             <Label FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="&#xf1b3;" Foreground="Orange" FontSize="40" Opacity="0.2"/>
-                            <Label Content="0" VerticalAlignment="Center" Foreground="Orange" FontSize="25" Margin="10,0,0,0"/>
+                            <Label x:Name="lblPluginsCount" Content="0" VerticalAlignment="Center" Foreground="Orange" FontSize="25" Margin="10,0,0,0"/>
                         </Grid>
                     </Grid>
                 </Border>

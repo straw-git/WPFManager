@@ -18,6 +18,9 @@ namespace Client
         public DbSet<CoreSetting> CoreSetting { get; set; }//设置
         public DbSet<Role> Role { get; set; }//系统账户角色
 
+
+        public DbSet<Log> Logs { get; set; }//日志
+
         #endregion
 
         #region  权限相关
@@ -36,5 +39,6 @@ namespace Client
         public DbSet<Notice> Notice { get; set; }//通知
 
         #endregion 
+
     }
 }

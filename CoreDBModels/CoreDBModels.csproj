@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreSetting.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="ModulePage.cs" />
     <Compile Include="Notice.cs" />
     <Compile Include="Plugins.cs" />

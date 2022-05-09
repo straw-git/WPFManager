@@ -118,6 +118,10 @@
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205090735311_addlog.cs" />
+    <Compile Include="Migrations\202205090735311_addlog.designer.cs">
+      <DependentUpon>202205090735311_addlog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyControls\LoginBox.xaml.cs">
       <DependentUpon>LoginBox.xaml</DependentUpon>
@@ -199,6 +203,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\202205090735311_addlog.resx">
+      <DependentUpon>202205090735311_addlog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

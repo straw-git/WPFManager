@@ -31,7 +31,7 @@ public static class WindowExtensions
     /// <param name="_logStr"></param>
     public static void Log(this Window _window, string _logStr)
     {
-        MainWindowGlobal.MainWindow.Log(_logStr);
+        MainWindowGlobal.MainWindow.WriteInfoOnBottom(_logStr);
     }
 
     private static Window currCloseWindow = null;

@@ -125,11 +125,15 @@
     </Compile>
     <Compile Include="Base\BaseMainWindow.cs" />
     <Compile Include="Base\BaseUIModel.cs" />
+    <Compile Include="CoreDBContext.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\PageExtensions.cs" />
     <Compile Include="Global\ConnectionData.cs" />
+    <Compile Include="Global\LogInfo.cs" />
+    <Compile Include="Global\LogType.cs" />
     <Compile Include="Global\MainWindowGlobal.cs" />
+    <Compile Include="LogManager.cs" />
     <Compile Include="MyAttributes\DataSourceBindingAttribute.cs" />
     <Compile Include="MyControls\AllIcons.xaml.cs">
       <DependentUpon>AllIcons.xaml</DependentUpon>

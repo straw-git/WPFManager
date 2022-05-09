@@ -52,7 +52,20 @@ namespace CorePlugin.Pages.Manager
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            UpdateDataCount();
         }
 
+        /// <summary>
+        /// 更新数量
+        /// </summary>
+        private void UpdateDataCount()
+        {
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                lblUserCount.Content = context.User.Any() ? context.User.Where(c => !c.IsDel).Count() : 0;
+                lblRoleCount.Content = context.Role.Any()? context.Role.Count():0;
+                lblPluginsCount.Content = context.Plugins.Count();
+            }
+        }
     }
 }
