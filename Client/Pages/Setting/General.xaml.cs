@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Panuon.UI.Silver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,36 @@ namespace Client.Pages.Setting
         public General()
         {
             InitializeComponent();
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            string pluginUpdateUrl = txtPluginUpdateUrl.Text;
+            if (pluginUpdateUrl.IsNullOrEmpty())
+            {
+                MessageBoxX.Show("请输入插件更新路径", "空值提醒");
+                txtPluginUpdateUrl.Focus();
+                return;
+            }
+
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                var setting = context.CoreSetting.Single();
+                setting.PluginsUpdateBaseUrl = pluginUpdateUrl;
+
+                context.SaveChanges();
+            }
+
+            Notice.Show("设置更新完成！", "成功");
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            using (CoreDBContext context = new CoreDBContext()) 
+            {
+                var info = context.CoreSetting.First();
+                txtPluginUpdateUrl.Text = info.PluginsUpdateBaseUrl;
+            }
         }
     }
 }
