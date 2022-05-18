@@ -113,6 +113,10 @@
     <Compile Include="Animations\3DWave\Particle.cs" />
     <Compile Include="CoreDBContext.cs" />
     <Compile Include="Events\NoticeNotReadChangedEventObserver.cs" />
+    <Compile Include="Migrations\202205180743310_init.cs" />
+    <Compile Include="Migrations\202205180743310_init.designer.cs">
+      <DependentUpon>202205180743310_init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Timers\BaseTimer.cs" />
     <Compile Include="Timers\EmailTimer.cs" />
     <Compile Include="CurrGlobal\Global.cs" />
@@ -121,10 +125,6 @@
     <Compile Include="ClientLog.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202205120614419_init.cs" />
-    <Compile Include="Migrations\202205120614419_init.designer.cs">
-      <DependentUpon>202205120614419_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyControls\LoginBox.xaml.cs">
@@ -222,8 +222,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\202205120614419_init.resx">
-      <DependentUpon>202205120614419_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202205180743310_init.resx">
+      <DependentUpon>202205180743310_init.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

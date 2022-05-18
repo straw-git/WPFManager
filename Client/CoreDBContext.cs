@@ -12,12 +12,11 @@ namespace Client
             Database.SetInitializer(new CreateDatabaseIfNotExists<CoreDBContext>());
         }
 
-        #region 基础
+        #region 用户、系统角色、日志
 
         public DbSet<User> User { get; set; }//系统账户
         public DbSet<CoreSetting> CoreSetting { get; set; }//设置
         public DbSet<Role> Role { get; set; }//系统账户角色
-
 
         public DbSet<Log> Logs { get; set; }//日志
 
@@ -32,6 +31,13 @@ namespace Client
         public DbSet<UserPlugins> UserPlugins { get; set; }//用户的插件
 
         #endregion
+
+        #region 部门 职位
+
+        public DbSet<Department> Department { get; set; }//部门
+        public DbSet<DepartmentPosition> DepartmentPosition { get; set; }//职位
+
+        #endregion 
 
         #region 消息 通知
 

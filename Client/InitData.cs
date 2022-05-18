@@ -54,8 +54,16 @@ namespace Client
                             Creator = 0,
                             DelTime = DateTime.Now,
                             DelUser = 0,
-                            IsDel = false
-                        });
+                            IsDel = false,
+                            DeparmentId = 0,
+                            DepartmentPositionId = 0,
+                            IdCard = "",
+                            NewPositionId = 0,
+                            NewPositionStartTime = DateTime.Now,
+                            PositionEndTime = DateTime.Now,
+                            PositionType = 0,
+                            RealName="超级管理员"
+                        }) ;
                         context.SaveChanges();
                     }
                     else
