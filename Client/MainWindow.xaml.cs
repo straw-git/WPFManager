@@ -27,6 +27,9 @@ using static Common.UserGlobal;
 using CoreDBModels;
 using Common.Utils;
 using System.Threading;
+using Client.Events;
+using Common.Events;
+using Client.Timers;
 
 namespace Client
 {
@@ -43,6 +46,8 @@ namespace Client
 
             hideSecondMenusAnimation.Completed += HideSecondMenusAnimation_Completed;
             showSecondMenusAnimation.Completed += ShowSecondMenusAnimation_Completed;
+
+            emails.OnClosing += OnEmailClosing;
         }
 
         #region override BaseMainWindow
@@ -147,36 +152,54 @@ namespace Client
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateTitle();
-            StartTimer();
+
+            #region 监听事件
+
+            EmailNotReadChangedEventObserver.Instance.AddEventListener(Codes.EmailNotReadChanged, OnEmailTimer);
+            NoticeNotReadChangedEventObserver.Instance.AddEventListener(Codes.NoticeNotReadCountChanged, OnNotReadNoticeChanged);
+
+            #endregion 
+
+            new EmailTimer().Start();//开始定时读取邮件
+            new NoticeTimer().Start();//开始定时查找未读通知
         }
 
         #region Timer
 
-        /// <summary>
-        /// 消息定时器
-        /// </summary>
-        Timer messageTimer;
-
-        /// <summary>
-        /// 开启计时器
-        /// </summary>
-        private void StartTimer()
+        private void OnNotReadNoticeChanged(NoticeChangedMessage p)
         {
-            messageTimer = new Timer(OnTimer, null, 0, (int)TimeSpan.FromMinutes(5).TotalMilliseconds);
+            UIGlobal.RunUIAction(() =>
+            {
+                if (p.NotReadCount > 0)
+                {
+                    bdNotReadNoticeCount.Text = p.NotReadCount.ToString();
+                    bdNotReadNoticeCount.Visibility = Visibility.Visible;
+                    bdNotReadNoticeCount.IsWaving = true;
+                }
+                else
+                {
+                    bdNotReadNoticeCount.Text = "";
+                    bdNotReadNoticeCount.Visibility = Visibility.Collapsed;
+                    bdNotReadNoticeCount.IsWaving = false;
+                }
+            });
         }
 
-        /// <summary>
-        /// 时间到了
-        /// </summary>
-        /// <param name="_state"></param>
-        private void OnTimer(object _state)
+        private void OnEmailTimer(EmailChangedMessage p)
         {
-            using (CoreDBContext context = new CoreDBContext())
+            UIGlobal.RunUIAction(() =>
             {
-                //阅读通知
-
-                //阅读短信
-            }
+                if (p.HasNotReadEmail)
+                {
+                    bdNotReadEmailCount.Visibility = Visibility.Visible;//是否显示原点
+                    bdNotReadEmailCount.IsWaving = true;//原点是否闪烁
+                }
+                else
+                {
+                    bdNotReadEmailCount.Visibility = Visibility.Collapsed;//是否显示原点
+                    bdNotReadEmailCount.IsWaving = false;//原点是否闪烁
+                }
+            });
         }
 
         #endregion
@@ -367,6 +390,51 @@ namespace Client
                     item.IsSelected = false;
                 }
             }
+        }
+
+        #endregion
+
+        #region  通知和邮件
+
+        private void btnNotice_Click(object sender, RoutedEventArgs e)
+        {
+            //DoubleAnimation widthAni = new DoubleAnimation();
+            //widthAni.From = 0;
+            //widthAni.To = 300;
+            //widthAni.Duration = new Duration(TimeSpan.FromMilliseconds(500));
+            //widthAni.EasingFunction = new BackEase() { EasingMode = EasingMode.EaseIn };
+
+            //gNoticeOrEmails.BeginAnimation(WidthProperty, widthAni);
+        }
+
+        /// <summary>
+        /// 通知和邮件关闭
+        /// </summary>
+        private void OnEmailClosing()
+        {
+            DoubleAnimation widthAni = new DoubleAnimation();
+            widthAni.From = 300;
+            widthAni.To = 0;
+            widthAni.Duration = new Duration(TimeSpan.FromMilliseconds(500));
+
+            emails.BeginAnimation(WidthProperty, widthAni);
+        }
+
+        private void btnEmail_Click(object sender, RoutedEventArgs e)
+        {
+            if (emails.Width > 100)
+            {
+                OnEmailClosing();
+                return;
+            }
+            DoubleAnimation widthAni = new DoubleAnimation();
+            widthAni.From = 0;
+            widthAni.To = 300;
+            widthAni.Duration = new Duration(TimeSpan.FromMilliseconds(500));
+            widthAni.EasingFunction = new BackEase() { EasingMode = EasingMode.EaseIn };
+
+            emails.BeginAnimation(WidthProperty, widthAni);
+            emails.UpdateEmail();
         }
 
         #endregion

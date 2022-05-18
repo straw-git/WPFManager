@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="Common.MyControls.UserSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+             xmlns:local="clr-namespace:Common.MyControls"
+             mc:Ignorable="d" Background="White"
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBox pu:TextBoxHelper.Watermark="全部用户"   
+                     VerticalAlignment="Center"
+                     Height="40"
+                 Margin="0,10,0,20"
+                     FontSize="23"
+                 HorizontalContentAlignment="Center"
+                     Background="{DynamicResource TextBoxBgColor}" 
+                     pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"                    
+                     pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"                    
+                     pu:TextBoxHelper.IsClearButtonVisible="True"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <TreeView  x:Name="tvDepartment" 
+                       pu:TreeViewHelper.TreeViewStyle="Modern"
+                       pu:TreeViewHelper.SelectMode="ChildOnly"
+                       pu:TreeViewHelper.ItemHeight="30"
+                       pu:TreeViewHelper.SelectedForeground="#FFB5B5B5" >
+                    <TreeViewItem Header="部门1"/>
+                    <TreeViewItem Header="部门2"/>
+                    <TreeViewItem Header="部门3"/>
+                </TreeView>
+            </Grid>
+            <Grid Grid.Column="1">
+                <TreeView  x:Name="tvJobs" 
+                       BorderBrush="{DynamicResource SkinColor}"
+                       pu:TreeViewHelper.TreeViewStyle="Modern"
+                       pu:TreeViewHelper.SelectMode="ChildOnly"
+                       pu:TreeViewHelper.ItemHeight="30"
+                       pu:TreeViewHelper.SelectedForeground="#FFB5B5B5" >
+                    <TreeViewItem Header="职位1"/>
+                    <TreeViewItem Header="职位2"/>
+                    <TreeViewItem Header="职位3"/>
+                </TreeView>
+            </Grid>
+            <Grid Grid.Column="2">
+                <WrapPanel x:Name="wpUsers"  Grid.Row="1">
+                    <CheckBox  Height="30"
+                           Content="用户1"
+                           Background="Gray"
+                           Foreground="White"
+                           Margin="5"
+                           pu:CheckBoxHelper.CheckBoxStyle="Button"
+                           pu:CheckBoxHelper.CheckedBackground="Black"
+                           pu:CheckBoxHelper.CornerRadius="5" />
+                    <CheckBox  Height="30"
+                           Content="用户2"
+                           Background="Gray"
+                           Foreground="White"
+                           Margin="5"
+                           pu:CheckBoxHelper.CheckBoxStyle="Button"
+                           pu:CheckBoxHelper.CheckedBackground="Black"
+                           pu:CheckBoxHelper.CornerRadius="5" />
+                    <CheckBox  Height="30"
+                           Content="用户3"
+                           Background="Gray"
+                           Foreground="White"
+                           Margin="5"
+                           pu:CheckBoxHelper.CheckBoxStyle="Button"
+                           pu:CheckBoxHelper.CheckedBackground="Black"
+                           pu:CheckBoxHelper.CornerRadius="5" />
+                    <CheckBox  Height="30"
+                           Content="用户4"
+                           Background="Gray"
+                           Foreground="White"
+                           Margin="5"
+                           pu:CheckBoxHelper.CheckBoxStyle="Button"
+                           pu:CheckBoxHelper.CheckedBackground="Black"
+                           pu:CheckBoxHelper.CornerRadius="5" />
+                    <CheckBox  Height="30"
+                           Content="用户5"
+                           Background="Gray"
+                           Foreground="White"
+                           Margin="5"
+                           pu:CheckBoxHelper.CheckBoxStyle="Button"
+                           pu:CheckBoxHelper.CheckedBackground="Black"
+                           pu:CheckBoxHelper.CornerRadius="5" />
+                </WrapPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

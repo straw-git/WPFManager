@@ -12,10 +12,13 @@ namespace CoreDBModels
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int NoticeType { get; set; }//通知类型 0：全员 1：单独用户  2：单独角色
         public string Content { get; set; }//内容
 
-        public DateTime StartTime { get; set; }//开始时间
+        public string DepartmentName { get; set; }//发表部门
+        public string UserName { get; set; }//发表人名称
+
+        public DateTime CreateTime { get; set; }//创建时间
         public DateTime EndTime { get; set; }//结束时间
+        public int Creator { get; set; }//创建人
     }
 }

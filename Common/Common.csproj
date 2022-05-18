@@ -126,8 +126,10 @@
     <Compile Include="Base\BaseMainWindow.cs" />
     <Compile Include="Base\BaseUIModel.cs" />
     <Compile Include="CoreDBContext.cs" />
+    <Compile Include="Events\Codes.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
+    <Compile Include="Extensions\UserControlExtensions.cs" />
     <Compile Include="Extensions\PageExtensions.cs" />
     <Compile Include="Global\ConnectionData.cs" />
     <Compile Include="Global\LogInfo.cs" />
@@ -158,6 +160,12 @@
     <Compile Include="Global\PluginsDownload.cs" />
     <Compile Include="MyControls\SelectedListMenuBar.xaml.cs">
       <DependentUpon>SelectedListMenuBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControls\SuperRichTextBox.xaml.cs">
+      <DependentUpon>SuperRichTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControls\UserSelector.xaml.cs">
+      <DependentUpon>UserSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\ObjectComparerCommon.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
@@ -240,6 +248,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MyControls\SuperRichTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControls\UserSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Skin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -253,9 +269,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\Code\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CoreDBModels\CoreDBModels.csproj">
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>

@@ -5,7 +5,7 @@
              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              Width="340"
-             Height="400"
+             Height="390"
              xmlns:local="clr-namespace:Client.MyControls">
     <UserControl.Resources>
         <Storyboard x:Key="hiddleLogin">

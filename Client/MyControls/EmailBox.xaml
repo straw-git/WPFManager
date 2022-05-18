@@ -1,0 +1,131 @@
+﻿<UserControl x:Class="Client.MyControls.EmailBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Client.MyControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="300">
+    <Grid>
+        <GroupBox x:Name="gbInfo" Header="邮件"
+                   Grid.Column="0"
+                       BorderThickness="0,1,0,0"
+                            pu:GroupBoxHelper.HeaderPadding="10,10,0,10"
+                            pu:GroupBoxHelper.IsSplitLineVisible="True"
+                            pu:GroupBoxHelper.ShadowColor="LightGray" >
+            <pu:GroupBoxHelper.ExtendControl>
+                <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                    <Button FontSize="16"
+                            Width="28"
+                            Height="28"
+                            Margin="10,0,0,0"
+                            ToolTip="添加"
+                            pu:ButtonHelper.ButtonStyle="Link"
+                            Foreground="#EAEAEA"
+                            Content="&#xf067;"
+                            x:Name="btnAdd"
+                            Click="btnAdd_Click"
+                            FontFamily="{StaticResource FontAwesome}"
+                            pu:ButtonHelper.HoverBrush="Orange"/>
+                    <Button FontSize="16"
+                            Width="28"
+                            Height="28"
+                            Margin="10,0,0,0"
+                            ToolTip="全部标为已读"
+                            pu:ButtonHelper.ButtonStyle="Link"
+                            Foreground="#EAEAEA"
+                            Content="&#xf05d;"
+                            x:Name="btnReadAll"
+                            FontFamily="{StaticResource FontAwesome}"
+                            pu:ButtonHelper.HoverBrush="Orange"/>
+                    <Button FontSize="16"
+                            Width="28"
+                            Height="28"
+                            Margin="10,0,0,0"
+                            ToolTip="关闭"
+                            x:Name="btnClose"
+                            Click="btnClose_Click"
+                            pu:ButtonHelper.ButtonStyle="Link"
+                            Foreground="#EAEAEA"
+                            Content="&#xf00d;"
+                            FontFamily="{StaticResource FontAwesome}"
+                            pu:ButtonHelper.HoverBrush="Orange"/>
+                </StackPanel>
+            </pu:GroupBoxHelper.ExtendControl>
+            <ListBox BorderThickness="0">
+                <ListBoxItem Background="AliceBlue">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="&#xf2b7;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
+                        <Label Content="请王工审阅相关文件..." Width="160"/>
+                        <Label Content="22.02.23 15:23" Width="120" Foreground="LightGray"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="&#xf0e0;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
+                        <Label Content="请王工审阅相关文件..." Width="160"/>
+                        <Label Content="22.02.23 15:23" Width="120" Foreground="Black"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem Background="AliceBlue">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="&#xf2b7;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
+                        <Label Content="请王工审阅相关文件..." Width="160"/>
+                        <Label Content="22.02.23 15:23" Width="120" Foreground="LightGray"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem Background="AliceBlue">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="&#xf2b7;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
+                        <Label Content="请王工审阅相关文件..." Width="160"/>
+                        <Label Content="22.02.23 15:23" Width="120" Foreground="LightGray"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem Background="AliceBlue">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="&#xf2b7;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
+                        <Label Content="请王工审阅相关文件..." Width="160"/>
+                        <Label Content="22.02.23 15:23" Width="120" Foreground="LightGray"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem Background="AliceBlue">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="&#xf2b7;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
+                        <Label Content="请王工审阅相关文件..." Width="160"/>
+                        <Label Content="22.02.23 15:23" Width="120" Foreground="LightGray"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem Background="AliceBlue">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="&#xf2b7;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
+                        <Label Content="请王工审阅相关文件..." Width="160"/>
+                        <Label Content="22.02.23 15:23" Width="120" Foreground="LightGray"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem Background="AliceBlue">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="&#xf2b7;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
+                        <Label Content="请王工审阅相关文件..." Width="160"/>
+                        <Label Content="22.02.23 15:23" Width="120" Foreground="LightGray"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem Background="AliceBlue">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="&#xf2b7;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
+                        <Label Content="请王工审阅相关文件..." Width="160"/>
+                        <Label Content="22.02.23 15:23" Width="120" Foreground="LightGray"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem Background="AliceBlue">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="&#xf2b7;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
+                        <Label Content="请王工审阅相关文件..." Width="160"/>
+                        <Label Content="22.02.23 15:23" Width="120" Foreground="LightGray"/>
+                    </StackPanel>
+                </ListBoxItem>
+            </ListBox>
+        </GroupBox>
+    </Grid>
+</UserControl>
+

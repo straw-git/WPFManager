@@ -62,6 +62,7 @@
     <Compile Include="RolePlugins.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Email.cs" />
+    <Compile Include="UserNotice.cs" />
     <Compile Include="UserPlugins.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

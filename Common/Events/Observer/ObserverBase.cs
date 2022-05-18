@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public class ObserverBase<T, P, X, Z> : IDisposable
+public class ObserverBase<T, P, X> : IDisposable
     where T : new()
     where P : class
-    where Z : class
 {
     #region 单例
     private static T instance;
@@ -30,7 +29,7 @@ public class ObserverBase<T, P, X, Z> : IDisposable
     #endregion
 
     //按钮点击事件委托原型
-    public delegate void OnActionHandler(P p, Z z);
+    public delegate void OnActionHandler(P p);
     public Dictionary<X, List<OnActionHandler>> dic = new Dictionary<X, List<OnActionHandler>>();
 
     #region AddEventListener 添加监听
@@ -80,7 +79,7 @@ public class ObserverBase<T, P, X, Z> : IDisposable
     /// </summary>
     /// <param name="key"></param>
     /// <param name="p"></param>
-    public void Dispatch(X key, P p, Z z)
+    public void Dispatch(X key, P p)
     {
         if (dic.ContainsKey(key))
         {
@@ -89,15 +88,11 @@ public class ObserverBase<T, P, X, Z> : IDisposable
             {
                 for (int i = 0; i < lstHandler.Count; i++)
                 {
-                    lstHandler[i]?.Invoke(p, z);
+                    lstHandler[i]?.Invoke(p);
                 }
             }
         }
     }
 
-    public void Dispatch(X key)
-    {
-        Dispatch(key, null, null);
-    }
     #endregion
 }

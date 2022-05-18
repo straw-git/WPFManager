@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
+                  xmlns:my="clr-namespace:Client.MyControls"
             xmlns:p="clr-namespace:Common;assembly=Common"  
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
     mc:Ignorable="d"
@@ -15,6 +16,7 @@
             Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
 
+    <!--Header-->
     <pu:WindowXCaption.Header>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -23,6 +25,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+
             <Grid x:Name="gHeader" Grid.Row="0" Grid.Column="0"  Background="{DynamicResource SkinColor}">
                 <StackPanel x:Name="sHeader" Width="200" Grid.Row="0" Orientation="Horizontal">
                     <Image Margin="20,0,10,0" VerticalAlignment="Center" Width="28" Height="28" Source="pack://application:,,,/Common;component/Images/main_header.png" />
@@ -82,23 +85,26 @@
                             pu:ButtonHelper.ButtonStyle="Link"
                             Foreground="Gray"
                              Content="&#xf003;"
+                                 x:Name="btnEmail"
+                                 Click="btnEmail_Click"
                              FontFamily="{StaticResource FontAwesome}"
                              pu:ButtonHelper.HoverBrush="Black"
                         VerticalAlignment="Center"/>
-                        <pu:Badge HorizontalAlignment="Right" VerticalAlignment="Top"  IsWaving="False" FontSize="8" Width="15" Height="15" Background="Red" />
+                        <pu:Badge x:Name="bdNotReadEmailCount" Width="15" Height="15" HorizontalAlignment="Right" VerticalAlignment="Top" MouseLeftButtonDown="btnEmail_Click"  IsWaving="False" Visibility="Collapsed"  Background="Red" />
                     </Grid>
                     <Grid  Margin="15,0,0,0"  VerticalAlignment="Center">
                         <Button FontSize="20"
                             Width="35"
                             Height="30"
-                        ToolTip="消息"
+                        ToolTip="系统通知"
                         pu:ButtonHelper.ButtonStyle="Link"
+                                Click="btnNotice_Click"
                         Foreground="Orange"
                         Content="&#xf0a2;"
                         FontFamily="{StaticResource FontAwesome}"
                         pu:ButtonHelper.HoverBrush="Black"
                         VerticalAlignment="Center"/>
-                        <pu:Badge Text="1" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="10"  IsWaving="True" Foreground="White"  Background="Orange" />
+                        <pu:Badge x:Name="bdNotReadNoticeCount"  Text="" MouseLeftButtonDown="btnNotice_Click" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="10" Opacity="0.9"  IsWaving="False" Visibility="Collapsed" Foreground="White"  Background="Orange" />
                     </Grid>
                     <Button x:Name="btnSkin" 
                         Click="btnSkin_Click"
@@ -132,16 +138,12 @@
     </pu:WindowXCaption.Header>
     <Grid>
         <Grid Background="White">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!--二级导航-->
-            <Grid Grid.Row="1" Width="200" Grid.Column="0" x:Name="bSecondMenu"  Background="{DynamicResource SkinColor}">
+            <Grid Width="200" Grid.Column="0" x:Name="bSecondMenu"  Background="{DynamicResource SkinColor}">
                 <TreeView  x:Name="tvMenu"
                            Margin="0,20,0,0"
                             Width="200"
@@ -176,16 +178,30 @@
                 </TreeView>
             </Grid>
             <!--内页-->
-            <Border  Grid.Row="1" Grid.Column="1">
-                <Grid Background="#FFF8F5F5">
-                    <GridSplitter Width="1" />
-                    <Frame x:Name="mainFrame" Margin="0,0,0,40"  NavigationUIVisibility="Hidden"/>
-                    <Grid VerticalAlignment="Bottom" Background="White" Height="30">
-                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                            <Label Width="28" Height="28" FontSize="16" Foreground="Gray" Margin="10,0,0,0" FontFamily="{StaticResource FontAwesome}" Content="&#xf027;"/>
-                            <Label Foreground="Gray" Margin="5,0,0,0" x:Name="lblInfo" Content="等待操作..."/>
-                        </StackPanel>
-                        <Label x:Name="lblV" Foreground="Gray" Content="zyue-1.0" VerticalAlignment="Center" Margin="0,0,10,0" HorizontalAlignment="Right"/>
+            <Border Grid.Column="1">
+                <Grid>
+                    <Grid Background="#FFF8F5F5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <GridSplitter Width="1" />
+                        <Frame Grid.Column="0" x:Name="mainFrame" Margin="0,0,0,40"  NavigationUIVisibility="Hidden"/>
+                        <Grid Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Background="White" Height="30">
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                <Label Width="28" Height="28" FontSize="16" Foreground="Gray" Margin="10,0,0,0" FontFamily="{StaticResource FontAwesome}" Content="&#xf027;"/>
+                                <Label Foreground="Gray" Margin="5,0,0,0" x:Name="lblInfo" Content="等待操作..."/>
+                            </StackPanel>
+                            <Label x:Name="lblV" Foreground="Gray" Content="zyue-1.0" VerticalAlignment="Center" Margin="0,0,10,0" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <!--通知和邮件-->
+                        <Grid x:Name="gNoticeOrEmails" Grid.Column="1" Background="AliceBlue" Margin="0,10,0,40">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <my:EmailBox x:Name="emails" Width="0"/>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Border>

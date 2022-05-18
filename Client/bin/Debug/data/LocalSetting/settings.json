@@ -1,1 +1,7 @@
-{"SkinId":1,"MainWindowTitle":"","CompanyName":"","Versions":"1.0","SuffixNumber":3}
+{
+  "SkinId": 1,
+  "MainWindowTitle": "后台管理系统",
+  "CompanyName": "xxxx",
+  "Versions": "1.0",
+  "SuffixNumber": 3
+}

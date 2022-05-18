@@ -37,8 +37,8 @@ namespace Client
 
         public DbSet<Email> Email { get; set; }//邮件
         public DbSet<Notice> Notice { get; set; }//通知
+        public DbSet<UserNotice> UserNotice { get; set; }//用户通知
 
         #endregion 
-
     }
 }
