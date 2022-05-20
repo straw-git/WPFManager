@@ -126,6 +126,9 @@
     <Compile Include="Base\BaseMainWindow.cs" />
     <Compile Include="Base\BaseUIModel.cs" />
     <Compile Include="CoreDBContext.cs" />
+    <Compile Include="Dialogs\DeleteVRemarkDialog.xaml.cs">
+      <DependentUpon>DeleteVRemarkDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Events\Codes.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
@@ -217,6 +220,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\DeleteVRemarkDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

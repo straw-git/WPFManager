@@ -1,0 +1,56 @@
+﻿<Window x:Class="Common.Dialogs.DeleteVRemarkDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+        xmlns:local="clr-namespace:Common.Dialogs"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        Background="Transparent" Width="400" Height="250"
+        Title="是否确认删除？">
+    <Border MouseDown="Border_MouseDown" BorderThickness="1" BorderBrush="LightGray">
+        <Grid>
+            <GroupBox  Header="是否确认删除？"
+                       x:Name="gbDelete"
+                   pu:GroupBoxHelper.Icon="&#xf014;"
+                           BorderThickness="0"
+                   pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
+                   pu:GroupBoxHelper.IsSplitLineVisible="True">
+                <pu:GroupBoxHelper.ExtendControl>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                        <Button FontSize="16"
+                                     Margin="10,0,0,0"
+                                    Width="28"
+                                    Height="28"
+                                    ToolTip="确认删除"
+                                    pu:ButtonHelper.ButtonStyle="Link"
+                                    Foreground="Black"
+                                    Content="&#xf00c;"
+                                x:Name="btnSubmit"
+                                Click="btnSubmit_Click"
+                                    FontFamily="{StaticResource FontAwesome}"
+                                    pu:ButtonHelper.HoverBrush="Orange"/>
+                        <!--关闭按钮-->
+                        <Button FontSize="16"
+                                     Margin="10,0,0,0"
+                                    Width="28"
+                                    Height="28"
+                                    ToolTip="取消删除"
+                                    pu:ButtonHelper.ButtonStyle="Link"
+                                    Foreground="Black"
+                                    Content="&#xf00d;"
+                                    FontFamily="{StaticResource FontAwesome}"
+                                    pu:ButtonHelper.HoverBrush="Orange"
+                                    x:Name="btnClose" Click="btnClose_Click"/>
+                    </StackPanel>
+                </pu:GroupBoxHelper.ExtendControl>
+                <Grid>
+                    <TextBox x:Name="txtDeleteRemark" VerticalContentAlignment="Top" Margin="-5,-5,0,-5" pu:TextBoxHelper.Watermark="请输入删除理由（非必填） 默认“无”"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Border>
+</Window>
+

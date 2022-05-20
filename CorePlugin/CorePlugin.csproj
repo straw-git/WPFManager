@@ -80,6 +80,9 @@
     <Compile Include="MyControls\AuthorizationItems.xaml.cs">
       <DependentUpon>AuthorizationItems.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Manager\DepartmentPositionMsg.xaml.cs">
+      <DependentUpon>DepartmentPositionMsg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Manager\PluginsMsg.xaml.cs">
       <DependentUpon>PluginsMsg.xaml</DependentUpon>
     </Compile>
@@ -88,6 +91,12 @@
     </Compile>
     <Compile Include="Pages\Manager\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditDeaprtmentPosition.xaml.cs">
+      <DependentUpon>EditDeaprtmentPosition.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditDepartment.xaml.cs">
+      <DependentUpon>EditDepartment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\EditRole.xaml.cs">
       <DependentUpon>EditRole.xaml</DependentUpon>
@@ -136,6 +145,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Manager\DepartmentPositionMsg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Manager\Index.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -155,6 +168,14 @@
     <Page Include="Pages\Manager\User.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\EditDeaprtmentPosition.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditDepartment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\EditRole.xaml">
       <SubType>Designer</SubType>

@@ -146,6 +146,15 @@ namespace Client
                             PluginsId = plugins.Id,
                             Icon = "fa-paperclip"
                         });
+                        context.ModulePage.Add(new ModulePage()
+                        {
+                            ModuleId = pluginsModule.Id,
+                            Order = 0,
+                            PageName = "职位管理",
+                            PagePath = "Pages/Manager/DepartmentPositionMsg.xaml",
+                            PluginsId = plugins.Id,
+                            Icon = "fa-address-card-o"
+                        });
                     }
 
                     #endregion 

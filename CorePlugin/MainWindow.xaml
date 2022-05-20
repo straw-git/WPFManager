@@ -166,6 +166,9 @@
                     <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
                                   Tag="pack://application:,,,/CorePlugin;component/Pages/Manager/PluginsMsg.xaml"
                               Header="插件管理"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf260;"
+                                  Tag="pack://application:,,,/CorePlugin;component/Pages/Manager/DepartmentPositionMsg.xaml"
+                              Header="职位管理"/>
                 </TreeView>
             </Grid>
             <!--内页-->

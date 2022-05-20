@@ -26,6 +26,13 @@ namespace CorePlugin
         public DbSet<UserPlugins> UserPlugins { get; set; }
 
         #endregion
+
+        #region 部门职位
+
+        public DbSet<Department> Department { get; set; }
+        public DbSet<DepartmentPosition> DepartmentPosition { get; set; }
+
+        #endregion
     }
 
 }
