@@ -11,12 +11,12 @@
         Title="账号管理"
         Background="Transparent"
             ResizeMode="NoResize"
-        Height="260"
+        Height="460"
         Width="400" Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
     <Border MouseDown="Border_MouseDown" BorderThickness="1" BorderBrush="LightGray">
         <Grid>
-            <GroupBox  Header="账号"
+            <GroupBox  Header="人员"
                    pu:GroupBoxHelper.Icon="&#xf007;"
                            BorderThickness="0"
                    pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
@@ -49,15 +49,22 @@
                                     x:Name="btnClose" Click="btnClose_Click"/>
                     </StackPanel>
                 </pu:GroupBoxHelper.ExtendControl>
-                <Grid VerticalAlignment="Top" HorizontalAlignment="Center">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
-                            <Label Content="角色：" Width="80"/>
-                            <ComboBox x:Name="cbRoles"  Width="260" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
-                            <Label Content="账户名：" Width="80"/>
-                            <TextBox  Height="30"
+                <Grid>
+                    <TabControl  Margin="-5,0,0,0"
+                                 x:Name="tab"
+                        pu:TabControlHelper.ItemHeight="32"
+                        pu:TabControlHelper.ItemPadding="20,0"
+                        pu:TabControlHelper.SelectedForeground="{DynamicResource SkinColor}"
+                        pu:TabControlHelper.ItemsAlignment="Center">
+                        <TabItem Header="系统账号">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0">
+                                <StackPanel Orientation="Horizontal" >
+                                    <Label Content="角色：" Width="80"/>
+                                    <ComboBox x:Name="cbRoles"  Width="260" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                                    <Label Content="账户名：" Width="80"/>
+                                    <TextBox  Height="30"
                                               Width="260"
                                               x:Name="txtAdminName"
                                               pu:TextBoxHelper.Watermark="账户名"
@@ -65,10 +72,10 @@
                                               pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
                                               pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                               pu:TextBoxHelper.IsClearButtonVisible="True" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                            <Label Content="密码：" Width="80"/>
-                            <PasswordBox  Height="30"
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Label Content="密码：" Width="80"/>
+                                    <PasswordBox  Height="30"
                                           Width="260"
                                           Password="123456"
                                                   x:Name="txtAdminPwd"
@@ -78,10 +85,10 @@
                                           pu:PasswordBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
                                           pu:PasswordBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                           pu:PasswordBoxHelper.IsShowPwdButtonVisible="True" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
-                            <Label Content="确认密码：" Width="80"/>
-                            <PasswordBox  Height="30"
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                                    <Label Content="确认密码：" Width="80"/>
+                                    <PasswordBox  Height="30"
                                           Width="260"
                                           Password="123456"
                                                   x:Name="txtReAdminPwd"
@@ -91,8 +98,82 @@
                                           pu:PasswordBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
                                           pu:PasswordBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
                                           pu:PasswordBoxHelper.IsShowPwdButtonVisible="True" />
-                        </StackPanel>
-                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="人员信息">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Label Content="真实姓名：" Width="80"/>
+                                    <TextBox  Height="30"
+                                              Width="260"
+                                              x:Name="txtRealName"
+                                              pu:TextBoxHelper.Watermark="真实姓名"
+                                              Background="{DynamicResource TextBoxBgColor}"
+                                              pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                              pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                              pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                                    <Label Content="身份证号：" Width="80"/>
+                                    <TextBox  Height="30"
+                                              Width="260"
+                                              x:Name="txtIdCard"
+                                              pu:TextBoxHelper.Watermark="身份证号"
+                                              Background="{DynamicResource TextBoxBgColor}"
+                                              pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                              pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                              pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="职位信息">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                                    <Label Content="部门：" Width="80"/>
+                                    <ComboBox x:Name="cbDepartment"  Width="260" SelectionChanged="cbDepartment_SelectionChanged" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                                    <Label Content="职位：" Width="80"/>
+                                    <ComboBox x:Name="cbPosition"  Width="260" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                                    <Label Content="到期时间：" Width="80"/>
+                                    <CheckBox  Height="30"
+                                               x:Name="cbUsePositionEndTime"
+                                               Checked="cbUsePositionEndTime_Checked"
+                                               Unchecked="cbUsePositionEndTime_Unchecked"
+                                                pu:CheckBoxHelper.CheckBoxStyle="Switch"
+                                                pu:CheckBoxHelper.BoxHeight="20"
+                                                pu:CheckBoxHelper.BoxWidth="30"
+                                               Background="{DynamicResource CheckBoxBgColor}"
+                                                pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"/>
+                                    <pu:DateTimePicker x:Name="dtpUsePositionEndTime" IsEnabled="False" Width="225" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                                    <Label Content="到期后：" Width="80"/>
+                                    <ComboBox x:Name="cbNewPosition"  Width="260" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                                    <Label Content="职位依据：" Width="80"/>
+                                    <ComboBox x:Name="cbPositionType"  Width="260" >
+                                        <ComboBoxItem IsSelected="True" Content="合同"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                                    <Label Content="备注：" Width="80"/>
+                                    <TextBox  Height="150"
+                                              VerticalContentAlignment="Top"
+                                              Width="260"
+                                              pu:TextBoxHelper.Watermark="职位备注"
+                                              Background="{DynamicResource TextBoxBgColor}"
+                                              pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                              pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                              pu:TextBoxHelper.IsClearButtonVisible="True" />
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </GroupBox>
         </Grid>

@@ -5,6 +5,7 @@ using CoreDBModels;
 using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,16 +55,109 @@ namespace CorePlugin.Windows
             txtAdminName.Text = userModel.Name;
             txtAdminPwd.Password = userModel.Pwd;
             txtReAdminPwd.Password = userModel.Pwd;
+
+            cbDepartment.SelectedItem = DepartmentData.First(c => c.Id == userModel.DeparmentId);
+            cbPosition.SelectedItem = PositionData.First(c => c.Id == userModel.DepartmentPositionId);
+            txtIdCard.Text = userModel.IdCard;
+            txtRealName.Text = userModel.RealName;
+            cbNewPosition.SelectedItem = NewPositionData.First(c => c.Id == userModel.NewPositionId);
+
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadRolesComobox();
+
+            //绑定数据源
+            cbDepartment.ItemsSource = DepartmentData;
+            cbDepartment.DisplayMemberPath = "Name";
+            cbDepartment.SelectedValuePath = "Id";
+
+            cbPosition.ItemsSource = PositionData;
+            cbPosition.DisplayMemberPath = "Name";
+            cbPosition.SelectedValuePath = "Id";
+
+            cbNewPosition.ItemsSource = NewPositionData;
+            cbNewPosition.DisplayMemberPath = "Name";
+            cbNewPosition.SelectedValuePath = "Id";
+
+            LoadDepartmentComobox();
             if (IsEdit)
             {
                 InitUserInfo();
             }
         }
+
+        #region 部门职位
+
+        ObservableCollection<Department> DepartmentData = new ObservableCollection<Department>();
+        ObservableCollection<DepartmentPosition> PositionData = new ObservableCollection<DepartmentPosition>();
+        ObservableCollection<DepartmentPosition> NewPositionData = new ObservableCollection<DepartmentPosition>();
+
+        /// <summary>
+        /// 加载部门下拉
+        /// </summary>
+        private void LoadDepartmentComobox()
+        {
+            DepartmentData.Clear();
+
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                var departments = context.Department.Where(c => !c.IsDel).ToList();
+                foreach (var item in departments)
+                {
+                    DepartmentData.Add(item);
+                }
+            }
+            if (DepartmentData.Count == 0)
+            {
+                DepartmentData.Add(new Department()
+                {
+                    Id = 0,
+                    Name = "请添加部门"
+                });
+            }
+
+            cbDepartment.SelectedIndex = 0;
+        }
+
+        private void cbDepartment_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbDepartment.SelectedItem == null) return;
+
+            PositionData.Clear();
+            NewPositionData.Clear();
+
+            Department selectedModel = cbDepartment.SelectedItem as Department;
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                var departmentPositions = context.DepartmentPosition.Where(c => !c.IsDel).ToList();
+                foreach (var item in departmentPositions)
+                {
+                    PositionData.Add(item);
+                    NewPositionData.Add(item);
+                }
+            }
+
+            if (PositionData.Count == 0)
+            {
+                PositionData.Add(new DepartmentPosition()
+                {
+                    Id = 0,
+                    Name = "请添加职位"
+                });
+                NewPositionData.Add(new DepartmentPosition()
+                {
+                    Id = 0,
+                    Name = "无"
+                });
+            }
+
+            cbPosition.SelectedIndex = 0;
+            cbNewPosition.SelectedIndex = 0;
+        }
+
+        #endregion
 
         /// <summary>
         /// 加载角色下拉
@@ -187,7 +281,22 @@ namespace CorePlugin.Windows
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (!txtAdminName.NotEmpty()) return;
+            if (!txtAdminName.NotEmpty())
+            {
+                tab.SelectedIndex = 0;
+                return;
+            }
+            if (!txtRealName.NotEmpty()) 
+            {
+                tab.SelectedIndex = 1;
+                return;
+            }
+            if (!txtIdCard.NotEmpty()) 
+            {
+                tab.SelectedIndex = 1;
+                return;
+            }
+
             string name = txtAdminName.Text;
             if (txtAdminPwd.Password != txtReAdminPwd.Password)
             {
@@ -196,11 +305,30 @@ namespace CorePlugin.Windows
             }
             string password = txtAdminPwd.Password;
             int roleId = cbRoles.SelectedValue.ToString().AsInt();//角色Id
+
+            string realName = txtRealName.Text;
+            string idCard = txtIdCard.Text;
+
+            int departmentId = (int)cbDepartment.SelectedValue;
+            int positionId = (int)cbPosition.SelectedValue;
+
+            if (departmentId == 0) 
+            {
+                MessageBoxX.Show("请先添加部门后再继续操作","部门不存在");
+                return;
+            }
+            if (positionId == 0) 
+            {
+                MessageBoxX.Show("请先添加职位后再继续操作", "职位不存在");
+                return;
+            }
+
             using (CoreDBContext context = new CoreDBContext())
             {
                 if (IsEdit)
                 {
                     #region  编辑状态
+
                     if (context.User.Any(c => c.Name == name && c.Id != editId))
                     {
                         //存在
@@ -212,6 +340,16 @@ namespace CorePlugin.Windows
                     Model.Name = name;
                     Model.Pwd = password;
                     Model.RoleId = roleId;
+                    Model.DeparmentId = departmentId;
+                    Model.DepartmentPositionId = positionId;
+                    Model.RealName = realName;
+                    Model.IdCard = idCard;
+                    Model.PositionEndTime = (bool)cbUsePositionEndTime.IsChecked
+                        ? dtpUsePositionEndTime.SelectedDateTime
+                        : DateTime.Now.AddYears(20);
+                    Model.NewPositionId = (int)cbNewPosition.SelectedValue;
+                    Model.NewPositionStartTime = Model.PositionEndTime;
+                    Model.PositionType = cbPositionType.SelectedIndex;
 
                     #endregion 
                     this.Log("账户编辑成功！");
@@ -236,6 +374,16 @@ namespace CorePlugin.Windows
                     Model.Name = name;
                     Model.Pwd = password;
                     Model.RoleId = roleId;
+                    Model.DeparmentId = departmentId;
+                    Model.DepartmentPositionId = positionId;
+                    Model.RealName = realName;
+                    Model.IdCard = idCard;
+                    Model.PositionEndTime = (bool)cbUsePositionEndTime.IsChecked 
+                        ? dtpUsePositionEndTime.SelectedDateTime 
+                        : DateTime.Now.AddYears(20);
+                    Model.NewPositionId = (int)cbNewPosition.SelectedValue;
+                    Model.NewPositionStartTime = Model.PositionEndTime;
+                    Model.PositionType = cbPositionType.SelectedIndex;
 
                     Model = context.User.Add(Model);
                     #endregion
@@ -244,6 +392,16 @@ namespace CorePlugin.Windows
                 context.SaveChanges();
             }
             btnClose_Click(null, null);//模拟关闭
+        }
+
+        private void cbUsePositionEndTime_Checked(object sender, RoutedEventArgs e)
+        {
+            dtpUsePositionEndTime.IsEnabled = true;
+        }
+
+        private void cbUsePositionEndTime_Unchecked(object sender, RoutedEventArgs e)
+        {
+            dtpUsePositionEndTime.IsEnabled = false;
         }
     }
 }

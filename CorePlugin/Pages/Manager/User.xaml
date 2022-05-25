@@ -11,7 +11,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="180"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <GroupBox  Header="角色"
@@ -93,7 +93,7 @@
                            pu:CheckBoxHelper.CornerRadius="5" />
             </WrapPanel>
         </GroupBox>
-        <GroupBox  Header="系统账号"
+        <GroupBox  Header="人员管理"
                    Grid.Column="1"
                            Margin="10,10,10,0"
                        BorderThickness="0,1,0,0"
@@ -103,6 +103,29 @@
                             pu:GroupBoxHelper.ShadowColor="LightGray" >
             <pu:GroupBoxHelper.ExtendControl>
                 <StackPanel Margin="0,0,20,0" Orientation="Horizontal">
+                    <ComboBox  Height="30"
+                               x:Name="cbDepartment"
+                               Width="150"
+                               BorderThickness="0,0,0,1"
+                               SelectionChanged="cbDepartment_SelectionChanged"
+                               Background="{DynamicResource ComboBoxBgColor}"
+                               pu:ComboBoxHelper.SearchTextBoxWatermark="搜索部门"
+                               pu:ComboBoxHelper.SearchTextChanged="cbDepartment_SearchTextChanged"
+                               pu:ComboBoxHelper.HoverBackground="{DynamicResource ComboBoxHoverColor}"
+                               pu:ComboBoxHelper.SelectedBackground="{DynamicResource ComboBoxSelectedColor}"
+                               pu:ComboBoxHelper.IsSearchTextBoxVisible="True"/>
+                    <ComboBox  Height="30"
+                               x:Name="cbPosition"
+                               Width="100"
+                               BorderThickness="0,0,0,1"
+                               Margin="10,0,0,0"
+                               SelectionChanged="cbPosition_SelectionChanged"
+                               Background="{DynamicResource ComboBoxBgColor}"
+                               pu:ComboBoxHelper.SearchTextBoxWatermark="搜索职位"
+                               pu:ComboBoxHelper.SearchTextChanged="cbPosition_SearchTextChanged"
+                               pu:ComboBoxHelper.HoverBackground="{DynamicResource ComboBoxHoverColor}"
+                               pu:ComboBoxHelper.SelectedBackground="{DynamicResource ComboBoxSelectedColor}"
+                               pu:ComboBoxHelper.IsSearchTextBoxVisible="True"/>
                     <TextBox  BorderBrush="White"
                               x:Name="txtSearchText"
                                        Margin="10,2,2,2"
@@ -158,8 +181,25 @@
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="账号" Width="*" Binding="{Binding Name}" />
-                        <DataGridTextColumn Header="角色" Width="150" Binding="{Binding RoleName}" />
+                        <DataGridTextColumn Header="真实姓名" Width="100" Binding="{Binding RealName}" />
+                        <DataGridTextColumn Header="账号" Width="120" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="角色" Width="100" Binding="{Binding RoleName}" />
+                        <DataGridTemplateColumn Header="部门职位" Width="220">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid ToolTip="{Binding PositionName}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="120"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Content="{Binding DepartmentName}" VerticalAlignment="Center" Background="Green" HorizontalContentAlignment="Center" Foreground="White"/>
+                                        <Viewbox Grid.Column="2" Height="30">
+                                            <Label Content="{Binding PositionName}"/>
+                                        </Viewbox>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="登录权限" Width="100" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -167,8 +207,8 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="页面权限数量" Width="150" Binding="{Binding PageCount}" />
-                        <DataGridTemplateColumn Header="注册时间" Width="180">
+                        <DataGridTextColumn Header="页面权限数量" Width="100" Binding="{Binding PageCount}" />
+                        <DataGridTemplateColumn Header="注册时间" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -212,20 +252,6 @@
                                 <ComboBoxItem Content="20 条/页" IsSelected="True"/>
                             </ComboBox>
                         </Grid>
-                        <!--<StackPanel Orientation="Horizontal" Grid.Column="2">
-                            <Button  Content="首页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
-                            <Button  Content="上一页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
-                            <TextBox  BorderBrush="White"
-                                       Margin="10,2,2,2"
-                                      BorderThickness="0,0,0,1"
-                                     pu:TextBoxHelper.FocusedBorderBrush="White"
-                                    pu:TextBoxHelper.FocusedShadowColor="{x:Null}"
-                                      pu:TextBoxHelper.Watermark="页码"
-                                      pu:TextBoxHelper.Icon="&#xf0a4;"/>
-                            <Label Content="/ 500" Foreground="Gray" VerticalAlignment="Center"/>
-                            <Button  Content="下一页" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Cursor="Hand"  Foreground="Blue"/>
-                            <Button  Content="末页" Cursor="Hand" Margin="10,0,0,0" pu:ButtonHelper.ButtonStyle="Link" Foreground="Blue"/>
-                        </StackPanel>-->
                         <pu:Pagination x:Name="gPager" Grid.Column="3" Height="30" pu:PaginationStyle="Simple" Spacing="0" VerticalAlignment="Center" CurrentIndexChanged="gPager_CurrentIndexChanged"  CurrentIndex="1" TotalIndex="1"/>
                     </Grid>
                 </Border>

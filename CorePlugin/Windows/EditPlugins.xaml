@@ -70,7 +70,7 @@
                                 <Label VerticalAlignment="Center"  Margin="50,0,0,0"  Width="80"  Content="连接标题："/>
                                 <TextBox x:Name="txtConnectionName" Width="200" ToolTip="connection string name in app.config"/>
                                 <Label VerticalAlignment="Center" Width="80"  Margin="50,0,0,0" Content="强制下载："/>
-                                <CheckBox  x:Name="cbWebDownload" IsChecked="True" pu:CheckBoxHelper.CheckedBackground="{DynamicResource SkinColor}"  pu:CheckBoxHelper.CheckBoxStyle="Switch2"/>
+                                <CheckBox  x:Name="cbWebDownload" IsChecked="True" Background="{DynamicResource CheckBoxBgColor}" pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"  pu:CheckBoxHelper.CheckBoxStyle="Switch2"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
                                 <Label VerticalAlignment="Center"  Width="80"  Content="字符串："/>
@@ -90,9 +90,9 @@
                     <ListBox pu:ListBoxHelper.ItemHeight="40" 
                              x:Name="listModules"
                              ItemsSource="{Binding}"
+                             Background="{DynamicResource SkinColor}"
                              pu:ListBoxHelper.HoverBackground="Gray" 
-                             pu:ListBoxHelper.SelectedBackground="{DynamicResource SkinColor}"
-                             Background="Black" 
+                             pu:ListBoxHelper.SelectedBackground="Gray"
                              SelectionChanged="listModules_SelectionChanged"
                              Grid.Column="0">
                         <ListBox.ItemTemplate>
@@ -108,10 +108,10 @@
                                         Width="28"
                                         Height="28"
                                         pu:ButtonHelper.ButtonStyle="Link"
-                                        Foreground="White"
+                                        Foreground="{DynamicResource SkinOppositeColor}"
                                         Content="{Binding IconStr}"
                                         FontFamily="{StaticResource FontAwesome}"/>
-                                    <Label Grid.Column="1" Content="{Binding ModuleName}"  Foreground="White"/>
+                                    <Label Grid.Column="1" Content="{Binding ModuleName}" Foreground="{DynamicResource SkinOppositeColor}"/>
                                     <pu:DropDown Grid.Column="2" Width="28">
                                         <Button FontSize="16"
                                             Width="28"

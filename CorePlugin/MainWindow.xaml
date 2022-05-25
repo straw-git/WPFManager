@@ -159,7 +159,7 @@
                               Header="首页"/>
                     <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf2bc;"
                                   Tag="pack://application:,,,/CorePlugin;component/Pages/Manager/User.xaml"
-                              Header="系统账号"/>
+                              Header="人员管理"/>
                     <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf084;"
                                   Tag="pack://application:,,,/CorePlugin;component/Pages/Manager/RoleAuthorization.xaml"
                               Header="角色授权"/>

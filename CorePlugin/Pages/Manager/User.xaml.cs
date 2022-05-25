@@ -51,6 +51,16 @@ namespace CorePlugin.Pages.Manager
                     NotifyPropertyChanged("Name");
                 }
             }
+            private string realName = "";
+            public string RealName
+            {
+                get => realName;
+                set
+                {
+                    realName = value;
+                    NotifyPropertyChanged("RealName");
+                }
+            }
             public int RoleId { get; set; }
             private string roleName = "";
             public string RoleName //角色名称
@@ -60,6 +70,28 @@ namespace CorePlugin.Pages.Manager
                 {
                     roleName = value;
                     NotifyPropertyChanged("RoleName");
+                }
+            }
+
+            private string departmentName = "";
+            public string DepartmentName
+            {
+                get => departmentName;
+                set
+                {
+                    departmentName = value;
+                    NotifyPropertyChanged("DepartmentName");
+                }
+            }
+
+            private string positionName = "";
+            public string PositionName
+            {
+                get => positionName;
+                set
+                {
+                    positionName = value;
+                    NotifyPropertyChanged("PositionName");
                 }
             }
 
@@ -96,6 +128,16 @@ namespace CorePlugin.Pages.Manager
         {
             UpdateRoles();//加载角色
             list.ItemsSource = Data;//绑定数据源
+            cbDepartment.ItemsSource = DepartmentData;
+            cbDepartment.DisplayMemberPath = "Name";
+            cbDepartment.SelectedValuePath = "Id";
+            cbPosition.ItemsSource = PositionData;
+            cbPosition.DisplayMemberPath = "Name";
+            cbPosition.SelectedValuePath = "Id";
+
+            updateList = false;
+            UpdateDepartment();
+            updateList = true;
         }
 
         #region 左侧角色列表
@@ -153,17 +195,23 @@ namespace CorePlugin.Pages.Manager
         {
             if (allChecking) return;//全选或反选操作中不做任何动作
             //CheckBox currRoleCheckBox = sender as CheckBox;
+            if (btnSelectedAllRoles.Content.ToString() == "\xf058")
+            {
+                btnSelectedAllRoles.Content = "\xf05d";
+                btnSelectedAllRoles.Foreground = ColorHelper.ConvertToSolidColorBrush("#EAEAEA");
+            }
             //暂时简便直接刷新
-            btnRef_Click(null, null);
+            UpdateGridAsync();
+
         }
 
         //角色选中
         private void RoleItem_Checked(object sender, RoutedEventArgs e)
         {
             if (allChecking) return;//全选或反选操作中不做任何动作
-            //CheckBox currRoleCheckBox = sender as CheckBox;
-            //暂时简便直接刷新
-            btnRef_Click(null, null);
+                                    //CheckBox currRoleCheckBox = sender as CheckBox;
+                                    //暂时简便直接刷新
+            UpdateGridAsync();
         }
 
         //添加角色
@@ -211,7 +259,7 @@ namespace CorePlugin.Pages.Manager
             }
 
             allChecking = false;
-            btnRef_Click(null, null);
+            UpdateGridAsync();
         }
 
         private void cbCanLogin_Click(object sender, RoutedEventArgs e)
@@ -253,43 +301,61 @@ namespace CorePlugin.Pages.Manager
 
         #endregion
 
-        //加载分页 总页数
-        private void LoadPager()
-        {
-            var selectedRoleIds = GetSelectedRoleIds();
-            string searchText = txtSearchText.Text;
-            using (var context = new CoreDBContext())
-            {
-                dataCount = searchText.IsNullOrEmpty()
-                    ? context.User.Count(c => !c.IsDel && selectedRoleIds.Contains(c.Id))
-                    : context.User.Count(c => !c.IsDel && selectedRoleIds.Contains(c.Id) && c.Name.Contains(searchText));
-            }
-            pagerCount = PagerUtils.GetPagerCount(dataCount, pageSize);
-
-            if (currPage > pagerCount) currPage = pagerCount;
-            gPager.CurrentIndex = currPage;
-            gPager.TotalIndex = pagerCount;
-        }
-
-        //加载分页数据
+        /// <summary>
+        /// 加载分页数据
+        /// </summary>
         private async void UpdateGridAsync()
         {
-            var selectedRoleIds = GetSelectedRoleIds();
-            ShowLoadingPanel();
+            var selectedRoleIds = GetSelectedRoleIds();//选择的角色
+            int departmentId = cbDepartment.SelectedItem == null ? 0 : (cbDepartment.SelectedItem as Department).Id;//选择的部门
+            int positionId = cbPosition.SelectedItem == null ? 0 : (cbPosition.SelectedItem as DepartmentPosition).Id;//选择的职位
+            string searchText = txtSearchText.Text;//按名称搜索
+
+            ShowLoadingPanel();//显示Loading
             if (running) return;
             running = true;
-            Data.Clear();
 
+            Data.Clear();
             List<CoreDBModels.User> models = new List<CoreDBModels.User>();
-            string searchText = txtSearchText.Text;
 
             await Task.Run(() =>
             {
                 using (var context = new CoreDBContext())
                 {
-                    IQueryable<CoreDBModels.User> users = searchText.IsNullOrEmpty()
-                    ? context.User.Where(c => !c.IsDel && selectedRoleIds.Contains(c.RoleId))
-                    : context.User.Where(c => !c.IsDel && selectedRoleIds.Contains(c.RoleId) && c.Name.Contains(searchText));
+                    IQueryable<CoreDBModels.User> users = context.User.Where(c => !c.IsDel);
+                    if (selectedRoleIds.Count > 0)
+                        users = users.Where(c => selectedRoleIds.Contains(c.RoleId));
+                    if (departmentId > 0)
+                    {
+                        //选择了部门
+                        if (positionId > 0)
+                        {
+                            //选择了职位
+                            users = users.Where(c => c.DepartmentPositionId == positionId);
+                        }
+                        else
+                        {
+                            //没有选择职位
+                            users = users.Where(c => c.DeparmentId == departmentId);
+                        }
+                    }
+                    if (searchText.NotEmpty())
+                        users = users.Where(c => c.Name.Contains(searchText) || c.RealName.Contains(searchText));
+
+                    dataCount = users.Count();
+                    //
+                    //页码
+                    //
+                    pagerCount = PagerUtils.GetPagerCount(dataCount, pageSize);
+                    if (currPage > pagerCount) currPage = pagerCount;
+                    //更新页码
+                    UIGlobal.RunUIAction(() =>
+                    {
+                        gPager.CurrentIndex = currPage;
+                        gPager.TotalIndex = pagerCount;
+                    });
+
+                    //生成分页数据
                     models = users.OrderByDescending(c => c.CreateTime).Skip(pageSize * (currPage - 1)).Take(pageSize).ToList();
                 }
             });
@@ -308,8 +374,10 @@ namespace CorePlugin.Pages.Manager
                         Name = item.Name,
                         RoleId = item.RoleId,
                         RoleName = context.Role.First(c => c.Id == item.RoleId).Name,
-                        //StaffName = item.StaffId,
-                        CanLogin = item.CanLogin
+                        CanLogin = item.CanLogin,
+                        DepartmentName = context.Department.Any(c => c.Id == item.DeparmentId) ? context.Department.First(c => c.Id == item.DeparmentId).Name : "无部门",
+                        PositionName = context.DepartmentPosition.Any(c => c.Id == item.DepartmentPositionId) ? context.DepartmentPosition.First(c => c.Id == item.DepartmentPositionId).Name : "无职位",
+                        RealName = item.RealName
                     };
 
                     Data.Add(_model);
@@ -326,7 +394,7 @@ namespace CorePlugin.Pages.Manager
         {
             if (e.Key == Key.Enter)
             {
-                btnRef_Click(null, null);
+                UpdateGridAsync();
             }
         }
 
@@ -432,13 +500,12 @@ namespace CorePlugin.Pages.Manager
         private void gPager_CurrentIndexChanged(object sender, Panuon.UI.Silver.Core.CurrentIndexChangedEventArgs e)
         {
             currPage = gPager.CurrentIndex;
-            btnRef_Click(null, null);
+            UpdateGridAsync();
         }
 
         //刷新
         private void btnRef_Click(object sender, RoutedEventArgs e)
         {
-            LoadPager();
             UpdateGridAsync();
         }
 
@@ -483,6 +550,94 @@ namespace CorePlugin.Pages.Manager
         #endregion
 
         #endregion
+
+        #endregion
+
+        #region 部门、职位
+
+        ObservableCollection<Department> DepartmentData = new ObservableCollection<Department>();
+        ObservableCollection<DepartmentPosition> PositionData = new ObservableCollection<DepartmentPosition>();
+        bool updateList = false;//是否更新数据
+
+        /// <summary>
+        /// 更新部门
+        /// </summary>
+        private void UpdateDepartment()
+        {
+            DepartmentData.Clear();
+
+            DepartmentData.Add(new Department()
+            {
+                Id = 0,
+                Name = "全部部门"
+            });
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                var list = context.Department.Where(c => !c.IsDel).ToList();
+                if (list != null)
+                    foreach (var item in list)
+                    {
+                        DepartmentData.Add(item);
+                    }
+            }
+            cbDepartment.SelectedIndex = 0;
+        }
+
+        private void cbDepartment_SearchTextChanged(object sender, Panuon.UI.Silver.Core.SearchTextChangedEventArgs e)
+        {
+
+        }
+
+        private void cbPosition_SearchTextChanged(object sender, Panuon.UI.Silver.Core.SearchTextChangedEventArgs e)
+        {
+
+        }
+
+        private void cbDepartment_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbDepartment.SelectedItem != null)
+            {
+                var selectedModel = cbDepartment.SelectedItem as Department;
+
+                PositionData.Clear();
+
+                PositionData.Add(new DepartmentPosition()
+                {
+                    Id = 0,
+                    Name = "全部职位"
+                });
+
+                if (selectedModel.Id > 0)
+                {
+                    using (CoreDBContext context = new CoreDBContext())
+                    {
+                        var list = context.DepartmentPosition.Where(c => !c.IsDel).ToList();
+                        if (list != null)
+                            foreach (var item in list)
+                            {
+                                PositionData.Add(item);
+                            }
+                    }
+                }
+                cbPosition.SelectedIndex = 0;
+
+                if (updateList)
+                    UpdateGridAsync();
+            }
+        }
+
+        private void cbPosition_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbPosition.SelectedItem != null)
+            {
+                var selectedModel = cbPosition.SelectedItem as DepartmentPosition;
+                if (selectedModel.Id > 0)
+                {
+                    if (updateList)
+                        UpdateGridAsync();
+                }
+            }
+        }
 
         #endregion
 

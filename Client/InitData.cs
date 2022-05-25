@@ -123,7 +123,7 @@ namespace Client
                         {
                             ModuleId = pluginsModule.Id,
                             Order = 0,
-                            PageName = "系统账号",
+                            PageName = "人员管理",
                             PagePath = "Pages/Manager/User.xaml",
                             PluginsId = plugins.Id,
                             Icon = "fa-address-card-o"
