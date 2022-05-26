@@ -153,7 +153,14 @@ namespace Client.MyControls
 
         private void BtnCheckAll_Click(object sender, RoutedEventArgs e)
         {
-
+            if (gPlugins.Children.Count > 0)
+            {
+                foreach (var item in gPlugins.Children)
+                {
+                    PluginsBox pluginsBox = item as PluginsBox;
+                    pluginsBox.Check();//模拟选中
+                }
+            }
         }
     }
 }

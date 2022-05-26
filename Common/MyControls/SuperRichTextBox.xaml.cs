@@ -73,7 +73,12 @@ namespace Common.MyControls
 		}
 		private void cmbFontSize_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			rtbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, cmbFontSize.Text);
+			double size = 0;
+			if (!double.TryParse(cmbFontSize.Text, out size)) 
+			{
+				return;
+			}
+			rtbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, size);
 		}
 
 		#endregion

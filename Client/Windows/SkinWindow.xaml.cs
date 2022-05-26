@@ -334,7 +334,7 @@ namespace Client.Windows
             useSkin.SkinName = txtSkinName.Text;
             useSkin.SkinColor = cpSkinColor.Text;
             useSkin.SkinOppositeColor = cpSkinOppositeColor.Text;
-            useSkin.LoginBgColor = cpLoginBgColor.Text;
+            useSkin.PageBgColor = cpLoginBgColor.Text;
 
             //button
             useSkin.ButtonBgColor = buttonBgColor.Text;
@@ -391,7 +391,7 @@ namespace Client.Windows
                 txtSkinName.Text = useSkin.SkinName;
                 cpSkinColor.SelectedBrush = StyleHelper.ConvertToSolidColorBrush(useSkin.SkinColor);
                 cpSkinOppositeColor.SelectedBrush = StyleHelper.ConvertToSolidColorBrush(useSkin.SkinOppositeColor);
-                cpLoginBgColor.SelectedBrush = StyleHelper.ConvertToSolidColorBrush(useSkin.LoginBgColor);
+                cpLoginBgColor.SelectedBrush = StyleHelper.ConvertToSolidColorBrush(useSkin.PageBgColor);
 
                 //button
                 buttonBgColor.SelectedBrush = StyleHelper.ConvertToSolidColorBrush(useSkin.ButtonBgColor);

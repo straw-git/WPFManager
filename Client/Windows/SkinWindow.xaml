@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Client.Windows"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         mc:Ignorable="d"        
-        Style="{StaticResource MainWindowStyle}" 
+        Style="{StaticResource OtherWindowXStyle}" 
         Title="皮肤"
             Height="600"
             Width="400"
@@ -21,7 +21,7 @@
         <SolidColorBrush x:Key="_SkinOppositeColor" Color="#ffffff" />
 
         <!--Pages-->
-        <SolidColorBrush x:Key="_LoginBgColor" Color="LightCyan" />
+        <SolidColorBrush x:Key="_PageBgColor" Color="LightCyan" />
 
         <!--Button-->
         <SolidColorBrush x:Key="_ButtonBgColor" Color="Black" />

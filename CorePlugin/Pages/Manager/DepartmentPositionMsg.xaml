@@ -12,7 +12,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <GroupBox  Header="部门"
@@ -57,11 +57,19 @@
                        ItemsSource="{Binding}" 
                        pu:TreeViewHelper.ItemHeight="30"
                        pu:TreeViewHelper.SelectedForeground="#FFB5B5B5" SelectedItemChanged="tvDepartment_SelectedItemChanged" >
+                <TreeView.ContextMenu>
+                    <ContextMenu pu:IconHelper.Width="45" pu:ContextMenuHelper.CornerRadius="5" Padding="0,5" Width="150" FontSize="12">
+                        <MenuItem Header="编辑" x:Name="btnEditDepartment" Click="btnEditDepartment_Click" Icon="&#xf044;"/>
+                        <MenuItem Header="删除" x:Name="btnDeleteDepartment" Click="btnDeleteDepartment_Click" ToolTip="如部门内存在其它数据 则无法删除" Icon="&#xf1f8;" pu:IconHelper.Foreground="Orange" Foreground="Orange"/>
+                        <MenuItem Header="强制删除" x:Name="btnDeleteDepartmentM" Click="btnDeleteDepartmentM_Click" Foreground="Red"  Icon="&#xf1f8;" pu:IconHelper.Foreground="Red" ToolTip="将强制删除部门及部门内部所有职位和其它信息"/>
+                        <!--<Separator />-->
+                    </ContextMenu>
+                </TreeView.ContextMenu>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0" HorizontalAlignment="Left">

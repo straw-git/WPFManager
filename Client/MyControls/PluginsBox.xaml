@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
              xmlns:local="clr-namespace:Client.MyControls" x:Name="MyLogo" Loaded="MyLogo_Loaded" Unloaded="MyLogo_Unloaded">
-    <Border x:Name="bLogo" Background="LightGray" Height="150" Cursor="Hand" MouseDown="bLogo_MouseDown" BorderBrush="{DynamicResource SkinColor}">
+    <Border x:Name="bLogo" Background="{DynamicResource PageBgColor}" Height="150" Cursor="Hand" MouseDown="bLogo_MouseDown" BorderBrush="{DynamicResource SkinColor}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />

@@ -138,6 +138,19 @@ namespace CorePlugin.Pages.Manager
             this.MaskVisible(false);
         }
 
+        private void btnEditDepartment_Click(object sender, RoutedEventArgs e)
+        {
+            if (tvDepartment.SelectedItem == null) return;
+            var selectedModel = tvDepartment.SelectedItem as DepartmentUIModel;//选中的部门
+            this.MaskVisible(true);
+            EditDepartment editDepartment = new EditDepartment(selectedModel.Id);
+            if (editDepartment.ShowDialog() == true)
+            {
+                ReLoadDepartment();
+            }
+            this.MaskVisible(false);
+        }
+
         private void btnRef_Click(object sender, RoutedEventArgs e)
         {
             ReLoadDepartment();
@@ -246,6 +259,16 @@ namespace CorePlugin.Pages.Manager
             else bNoData.Visibility = Visibility.Collapsed;
 
             gLoading.Visibility = Visibility.Collapsed;
+        }
+
+        private void btnDeleteDepartment_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("功能未实现");
+        }
+
+        private void btnDeleteDepartmentM_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("功能未实现");
         }
     }
 }

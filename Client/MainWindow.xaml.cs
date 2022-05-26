@@ -38,6 +38,13 @@ namespace Client
     /// </summary>
     public partial class MainWindow : BaseMainWindow
     {
+        /// <summary>
+        /// 窗体是否加载完成
+        /// </summary>
+        bool windowLoaded = false;
+
+        double windowWidth = 0;//窗体宽度
+        double windowHeight = 0;//窗体高度
 
         public MainWindow()
         {
@@ -48,6 +55,13 @@ namespace Client
             showSecondMenusAnimation.Completed += ShowSecondMenusAnimation_Completed;
 
             emails.OnClosing += OnEmailClosing;
+
+            windowWidth = LocalSettings.settings.WindowWidth;
+            windowHeight = LocalSettings.settings.WindowHeight;
+
+            //设置窗体宽高
+            Width = windowWidth;
+            Height = windowHeight;
         }
 
         #region override BaseMainWindow
@@ -162,6 +176,8 @@ namespace Client
 
             new EmailTimer().Start();//开始定时读取邮件
             new NoticeTimer().Start();//开始定时查找未读通知
+
+            windowLoaded = true;
         }
 
         #region Timer
@@ -269,6 +285,8 @@ namespace Client
             var result = MessageBoxX.Show("是否退出？", "退出提醒", this, MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
+                windowLoaded = false;//为防止触发ReSize方法
+
                 Closing -= WindowX_Closing;
                 CloseWindow();
             }
@@ -438,5 +456,54 @@ namespace Client
         }
 
         #endregion
+
+        #region 窗体改变事件
+
+        double newWindowWidth = 0;
+        double newWindowHeight = 0;
+
+        /// <summary>
+        /// 窗体大小更改事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BaseMainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (windowLoaded)
+            {
+                if (reSizeGrid.Visibility == Visibility.Collapsed) reSizeGrid.Visibility = Visibility.Visible;//如果隐藏 显示出来
+                lblNewSizeInfo.Content = $"当前界面宽高：{e.NewSize.Width} * {e.NewSize.Height}";
+
+                newWindowWidth = e.NewSize.Width;
+                newWindowHeight = e.NewSize.Height;
+            }
+        }
+
+        private void btnSaveSize_Click(object sender, RoutedEventArgs e)
+        {
+            reSizeGrid.Visibility = Visibility.Collapsed;//隐藏
+            LocalSettings.UpdateSize(newWindowWidth, newWindowHeight);//更新本地数据
+            windowWidth = newWindowWidth;
+            windowHeight = newWindowHeight;
+        }
+
+        private void btnOmit_Click(object sender, RoutedEventArgs e)
+        {
+            reSizeGrid.Visibility = Visibility.Collapsed;//隐藏
+        }
+
+        /// <summary>
+        /// 恢复设置的大小
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnReSize_Click(object sender, RoutedEventArgs e)
+        {
+            Width = windowWidth;
+            Height = windowHeight;
+        }
+
+        #endregion
+
     }
 }

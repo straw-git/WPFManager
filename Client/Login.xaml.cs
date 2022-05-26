@@ -1,5 +1,4 @@
-﻿using Client.Animations._3DWave;
-using Client.CurrGlobal;
+﻿using Client.CurrGlobal;
 using Client.Pages;
 using Client.Windows;
 using Common;
@@ -30,8 +29,6 @@ namespace Client
     public partial class Login : Window
     {
         Storyboard stdStart;
-        private readonly ParticleSystem _ps;
-        private DispatcherTimer _frameTimer;
 
         public Login()
         {
@@ -48,28 +45,12 @@ namespace Client
             this.Loaded += Window_Loaded;
             this.Closed += Login_Closed;
 
-            _frameTimer = new DispatcherTimer();
-            _frameTimer.Tick += OnFrame;
-            _frameTimer.Interval = TimeSpan.FromSeconds(1.0 / 60.0);
-            _frameTimer.Start();
-
-            _ps = new ParticleSystem(50, 50, Colors.White, 30);
-
-            WorldModels.Children.Add(_ps.ParticleModel);
-
-            _ps.SpawnParticle(30);
-
             #endregion 
         }
 
         private void Login_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
-        }
-
-        private void OnFrame(object sender, EventArgs e)
-        {
-            _ps.Update();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

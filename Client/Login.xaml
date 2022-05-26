@@ -23,28 +23,15 @@
             </GeometryGroup>
         </Border.Clip>
         <Grid x:Name="root">
-            <!--背景波浪动画-->
-            <Viewport3D Name="World">
-                <Viewport3D.Camera>
-                    <PerspectiveCamera Position="0,50,1000" LookDirection="0,2,-1" UpDirection="0,-1,-1" FieldOfView="10000" NearPlaneDistance="10" FarPlaneDistance="8000"/>
-                </Viewport3D.Camera>
-                <Viewport3D.Children>
-                    <ModelVisual3D>
-                        <ModelVisual3D.Content>
-                            <Model3DGroup x:Name="WorldModels">
-                                <AmbientLight Color="#FFFFFFFF" />
-                            </Model3DGroup>
-                        </ModelVisual3D.Content>
-                    </ModelVisual3D>
-                </Viewport3D.Children>
-            </Viewport3D>
+            <Image Source="login_bg.png" Stretch="Fill" Opacity="0.5"/>
+            <myBox:BgStar />
             <myBox:SelectPlugins x:Name="selectPlugins" Opacity="0.85"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <myBox:LoginBox x:Name="login" Opacity="0.85" Grid.Column="1"/>
+                <myBox:LoginBox x:Name="login" Grid.Column="1"/>
             </Grid>
         </Grid>
     </Border>

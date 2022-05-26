@@ -6,7 +6,7 @@
     <SolidColorBrush x:Key="SkinColor" Color="#C62F2F" />
     <SolidColorBrush x:Key="SkinOppositeColor" Color="#FFFFFF" />
     <!--Pages-->
-    <SolidColorBrush x:Key="LoginBgColor" Color="LightCyan" />
+    <SolidColorBrush x:Key="PageBgColor" Color="LightCyan" />
 
     <!--Button-->
     <SolidColorBrush x:Key="ButtonBgColor" Color="Black" />

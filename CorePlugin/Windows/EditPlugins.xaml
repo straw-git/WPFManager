@@ -40,6 +40,18 @@
                                     Click="btnAddModule_Click"
                                     FontFamily="{StaticResource FontAwesome}"
                                     pu:ButtonHelper.HoverBrush="Orange"/>
+                            <Button FontSize="16"
+                                     Margin="10,0,0,0"
+                                    Width="28"
+                                    Height="28"
+                                    ToolTip="保存"
+                                    pu:ButtonHelper.ButtonStyle="Link"
+                                    Foreground="Black"
+                                    Content="&#xf00c;"
+                                x:Name="btnSave"
+                                Click="btnSave_Click"
+                                    FontFamily="{StaticResource FontAwesome}"
+                                    pu:ButtonHelper.HoverBrush="Orange"/>
                             <!--关闭按钮-->
                             <Button FontSize="16"
                                      Margin="10,0,0,0"

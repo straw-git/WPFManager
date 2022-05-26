@@ -110,12 +110,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Animations\3DWave\Particle.cs" />
     <Compile Include="CoreDBContext.cs" />
     <Compile Include="Events\NoticeNotReadChangedEventObserver.cs" />
     <Compile Include="Migrations\202205180743310_init.cs" />
     <Compile Include="Migrations\202205180743310_init.designer.cs">
       <DependentUpon>202205180743310_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205260536597_email.cs" />
+    <Compile Include="Migrations\202205260536597_email.designer.cs">
+      <DependentUpon>202205260536597_email.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyControls\BgStar.xaml.cs">
+      <DependentUpon>BgStar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Timers\BaseTimer.cs" />
     <Compile Include="Timers\EmailTimer.cs" />
@@ -158,6 +164,10 @@
     <Page Include="Login.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MyControls\BgStar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyControls\LoginBox.xaml">
       <SubType>Designer</SubType>
@@ -225,10 +235,14 @@
     <EmbeddedResource Include="Migrations\202205180743310_init.resx">
       <DependentUpon>202205180743310_init.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205260536597_email.resx">
+      <DependentUpon>202205260536597_email.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="login_bg.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -266,9 +280,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\warning-solid.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="logo.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\opennew.png" />

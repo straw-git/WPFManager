@@ -189,9 +189,9 @@
                             <Setter Property="VerticalAlignment"
                                     Value="Center" />
                             <Setter Property="Foreground"
-                                    Value="Gray" />
+                                    Value="{DynamicResource SkinOppositeColor}" />
                             <Setter Property="pu:ButtonHelper.HoverBrush"
-                                    Value="Black" />
+                                    Value="{DynamicResource SkinOppositeColor}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -219,9 +219,9 @@
                             <Setter Property="VerticalAlignment"
                                     Value="Center" />
                             <Setter Property="Foreground"
-                                    Value="Gray" />
+                                    Value="{DynamicResource SkinOppositeColor}" />
                             <Setter Property="pu:ButtonHelper.HoverBrush"
-                                    Value="Black" />
+                                    Value="{DynamicResource SkinOppositeColor}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -251,9 +251,9 @@
                             <Setter Property="VerticalAlignment"
                                     Value="Center" />
                             <Setter Property="Foreground"
-                                    Value="Gray" />
+                                    Value="{DynamicResource SkinOppositeColor}" />
                             <Setter Property="pu:ButtonHelper.HoverBrush"
-                                    Value="Black" />
+                                    Value="{DynamicResource SkinOppositeColor}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

@@ -174,6 +174,15 @@ namespace CorePlugin.Windows
 
         }
 
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (!CheckPluginUpdate())
+            {
+                UpdatePlugins();//更新插件信息
+                this.Log("插件信息保存成功！");
+            }
+        }
+
         #endregion
 
         #region 关闭
@@ -278,6 +287,7 @@ namespace CorePlugin.Windows
         private bool UpdatePlugins()
         {
             this.Log("正在保存插件信息...");
+
             #region 赋值
 
             string pluginName = txtPluginsName.Text;
@@ -314,7 +324,7 @@ namespace CorePlugin.Windows
                         Order = pluginOrder,
                         ConnectionName = txtConnectionName.Text.Trim(),
                         ConnectionString = txtConnectionStr.Text.Trim()
-                    }) ;
+                    });
                     context.SaveChanges();
                 }
             }

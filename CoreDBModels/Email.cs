@@ -15,7 +15,7 @@ namespace CoreDBModels
         public int FromId { get; set; }//发送用户Id
 
         public int NoticeType { get; set; }//通知类型 0：按用户 1：按角色  2：全部
-        public string TargetId { get; set; }//目标Id
+        public int TargetId { get; set; }//目标Id
         public string Content { get; set; }//内容
         public bool IsRead { get; set; }//是否已阅读
 

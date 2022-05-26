@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client.Windows"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver" 
-        Style="{StaticResource MainWindowStyle}" 
+        Style="{StaticResource OtherWindowXStyle}" 
         Title="设置"
         Height="600"
         Width="600"

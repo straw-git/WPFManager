@@ -1,20 +1,23 @@
 ﻿<p:BaseMainWindow x:Class="Client.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Client"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:local="clr-namespace:Client"
                   xmlns:my="clr-namespace:Client.MyControls"
-            xmlns:p="clr-namespace:Common;assembly=Common"  
-        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-    mc:Ignorable="d"
-        d:DesignHeight="900" d:DesignWidth="1600"
-        Style="{StaticResource MainWindowStyle}"  
-        WindowStyle="None"
-        Background="Transparent"
-         AllowsTransparency="True" 
-            Loaded="Window_Loaded"
-        WindowStartupLocation="CenterScreen">
+                  xmlns:p="clr-namespace:Common;assembly=Common" 
+                  xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+                  mc:Ignorable="d"
+                  d:DesignHeight="900" d:DesignWidth="1600"
+                  Style="{StaticResource MainWindowStyle}"  
+                  WindowStyle="None"
+                  Background="Transparent"
+                  AllowsTransparency="True"
+                  BorderThickness="1,1,1,1"
+                  BorderBrush="#2A000000"
+                  SizeChanged="BaseMainWindow_SizeChanged"
+                  Loaded="Window_Loaded"
+                  WindowStartupLocation="CenterScreen">
 
     <!--Header-->
     <pu:WindowXCaption.Header>
@@ -25,7 +28,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-
+            
             <Grid x:Name="gHeader" Grid.Row="0" Grid.Column="0"  Background="{DynamicResource SkinColor}">
                 <StackPanel x:Name="sHeader" Width="200" Grid.Row="0" Orientation="Horizontal">
                     <Image Margin="20,0,10,0" VerticalAlignment="Center" Width="28" Height="28" Source="pack://application:,,,/Common;component/Images/main_header.png" />
@@ -180,7 +183,7 @@
             <!--内页-->
             <Border Grid.Column="1">
                 <Grid>
-                    <Grid Background="#FFF8F5F5">
+                    <Grid Background="{DynamicResource PageBgColor}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="Auto"/>
@@ -205,6 +208,19 @@
                     </Grid>
                 </Grid>
             </Border>
+        </Grid>
+        <!--更改窗体大小时的提示-->
+        <Grid x:Name="reSizeGrid" Visibility="Collapsed" Background="LightGray">
+            <Grid Background="{DynamicResource SkinColor}" VerticalAlignment="Center">
+                <StackPanel>
+                    <Label x:Name="lblNewSizeInfo" Content="当前窗体大小：500*600" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalContentAlignment="Center" Foreground="{DynamicResource SkinOppositeColor}" FontSize="20"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="忽略" x:Name="btnOmit" Click="btnOmit_Click" Height="30" Width="100" Margin="10" Background="{DynamicResource ButtonBgColor}" BorderBrush="{DynamicResource ButtonBorderColor}" pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                        <Button Content="恢复" x:Name="btnReSize" Click="btnReSize_Click" Height="30" Width="100" Margin="0,10,10,10" Background="{DynamicResource ButtonBgColor}" BorderBrush="{DynamicResource ButtonBorderColor}" pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                        <Button Content="保存更改" x:Name="btnSaveSize" Click="btnSaveSize_Click" Height="30" Width="100" Margin="0,10,0,10" Background="{DynamicResource ButtonBgColor}" BorderBrush="{DynamicResource ButtonBorderColor}" pu:ButtonHelper.HoverBrush="{DynamicResource ButtonHoverColor}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </p:BaseMainWindow>

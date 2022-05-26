@@ -84,7 +84,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
-                            <Label Content="数据字典项" VerticalAlignment="Center" Foreground="Gray" Margin="5,0,0,0"/>
+                            <Label Content="职位数量" VerticalAlignment="Center" Foreground="Gray" Margin="5,0,0,0"/>
                             <Button FontSize="16"
                                         Width="28"
                                         Height="28"
@@ -99,7 +99,7 @@
                         </Grid>
                         <Grid Grid.Row="1">
                             <Label FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="&#xf02d;" Foreground="Green" FontSize="40" Opacity="0.2"/>
-                            <Label Content="未启用" VerticalAlignment="Center" Foreground="Green" FontSize="25" Margin="10,0,0,0"/>
+                            <Label x:Name="lblPositionCount" Content="0" VerticalAlignment="Center" Foreground="Green" FontSize="25" Margin="10,0,0,0"/>
                         </Grid>
                     </Grid>
                 </Border>

@@ -17,20 +17,30 @@ namespace Common.Data.Local
             /// 使用中的皮肤Id
             /// </summary>
             public int SkinId { get; set; }
-
             /// <summary>
             /// 主窗体标题
             /// </summary>
             public string MainWindowTitle { get; set; }
-
+            /// <summary>
+            /// 公司名称
+            /// </summary>
             public string CompanyName { get; set; }
-
+            /// <summary>
+            /// 版本号
+            /// </summary>
             public string Versions { get; set; }
-
             /// <summary>
             /// 小数点位数
             /// </summary>
             public int SuffixNumber { get; set; }
+            /// <summary>
+            /// 窗体宽度
+            /// </summary>
+            public double WindowWidth { get; set; }
+            /// <summary>
+            /// 窗体高度
+            /// </summary>
+            public double WindowHeight { get; set; }
         }
 
         static string fileName = "settings.json";
@@ -61,6 +71,8 @@ namespace Common.Data.Local
                 settings.CompanyName = "";
                 settings.Versions = "1.0";
                 settings.SuffixNumber = 3;
+                settings.WindowWidth = 1190;
+                settings.WindowHeight = 730;
 
                 Save();
             }
@@ -86,11 +98,19 @@ namespace Common.Data.Local
             Save();
         }
 
-        public static void UpdateCompanyName(string _companyName) 
+        public static void UpdateCompanyName(string _companyName)
         {
             if (settings.CompanyName == _companyName) return;
 
             settings.CompanyName = _companyName;
+
+            Save();
+        }
+
+        public static void UpdateSize(double _width,double _height) 
+        {
+            settings.WindowWidth = _width;
+            settings.WindowHeight = _height;
 
             Save();
         }

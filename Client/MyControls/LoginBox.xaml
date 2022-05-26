@@ -20,14 +20,13 @@
         </Storyboard>
     </UserControl.Resources>
 
-    <Border Background="White" BorderThickness="1" BorderBrush="LightGray" x:Name="bLogin" Width="340" >
-        <!--<Border.Effect>
-            <DropShadowEffect Color="White" BlurRadius="16" ShadowDepth="10" Opacity="1" />
-        </Border.Effect>-->
+    <Border  BorderThickness="1" BorderBrush="LightGray" x:Name="bLogin" Width="340" >
+
         <Grid >
+            <Grid Background="White" Opacity="0.65"/>
             <StackPanel  VerticalAlignment="Top" Margin="0,40,0,0" Width="280">
                 <StackPanel Orientation="Horizontal" Width="260">
-                    <TextBlock Text="LOGIN" Width="200" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.75">
+                    <TextBlock Text="LOGIN" Width="200" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Foreground>
                             <LinearGradientBrush SpreadMethod="Repeat">
                                 <LinearGradientBrush.Transform>
@@ -62,7 +61,7 @@
                                       Width="260"
                                       x:Name="txtUserName"
                                       Text="admin"
-                                      Background="White"
+                                      Background="Transparent"
                                       pu:TextBoxHelper.Watermark="账户"
                                       pu:TextBoxHelper.Icon="&#xf007;"
                               BorderThickness="0,0,0,1"
@@ -75,7 +74,7 @@
                                           Width="260"
                                           Password="123456"
                                           x:Name="txtPassword"
-                                          Background="White"
+                                          Background="Transparent"
                                           pu:PasswordBoxHelper.Watermark="密码"
                                           pu:PasswordBoxHelper.Icon="&#xf023;"
                                    BorderThickness="0,0,0,1"

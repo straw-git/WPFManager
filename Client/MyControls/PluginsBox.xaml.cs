@@ -137,5 +137,19 @@ namespace Client.MyControls
             CheckChanged = null;
         }
 
+        /// <summary>
+        ///  选中
+        /// </summary>
+        public void Check() 
+        {
+            if (!(bool)cbOpen.IsChecked)
+            {
+                cbOpen.IsChecked = true;
+                bLogo.BorderThickness = new Thickness(0, 2, 0, 0);
+
+                //触发事件
+                CheckChanged?.Invoke(this, true);
+            }
+        }
     }
 }

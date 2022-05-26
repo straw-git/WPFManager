@@ -22,7 +22,7 @@ namespace Common.Data.Local
             //主题反差色
             public string SkinOppositeColor { get; set; }
             //Pages
-            public string LoginBgColor { get; set; }
+            public string PageBgColor { get; set; }
             //Button
             public string ButtonBgColor { get; set; }
             public string ButtonHoverColor { get; set; }
@@ -91,7 +91,7 @@ namespace Common.Data.Local
                 skin.SkinColor = "#C62F2F";
                 skin.SkinOppositeColor = "#ffffff";
                 //Pages
-                skin.LoginBgColor = "LightCyan";
+                skin.PageBgColor = "LightCyan";
                 //Button
                 skin.ButtonBgColor = "Black";
                 skin.ButtonHoverColor = "#C62F2F";

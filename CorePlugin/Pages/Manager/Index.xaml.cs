@@ -63,8 +63,9 @@ namespace CorePlugin.Pages.Manager
             using (CoreDBContext context = new CoreDBContext())
             {
                 lblUserCount.Content = context.User.Any() ? context.User.Where(c => !c.IsDel).Count() : 0;
-                lblRoleCount.Content = context.Role.Any()? context.Role.Count():0;
+                lblRoleCount.Content = context.Role.Any() ? context.Role.Count() : 0;
                 lblPluginsCount.Content = context.Plugins.Count();
+                lblPositionCount.Content = context.DepartmentPosition.Any(c => !c.IsDel) ? context.DepartmentPosition.Count(c => !c.IsDel) : 0;
             }
         }
     }

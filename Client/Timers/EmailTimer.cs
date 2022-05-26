@@ -21,9 +21,9 @@ namespace Client.Timers
                 int userId = UserGlobal.CurrUser.Id;
                 //阅读短信
                 var _hasNotReadEmail = context.Email
-                    .Any(c => c.NoticeType == 0 && c.TargetId == userId.ToString() && !c.IsRead
-                    || c.NoticeType == 2 && c.TargetId == userId.ToString() && !c.IsRead
-                    || c.NoticeType == 1 && c.TargetId == UserGlobal.CurrUser.RoleId.ToString() && !c.IsRead);
+                    .Any(c => c.NoticeType == 0 && c.TargetId == userId&& !c.IsRead
+                    || c.NoticeType == 2 && c.TargetId == userId && !c.IsRead
+                    || c.NoticeType == 1 && c.TargetId == UserGlobal.CurrUser.RoleId&& !c.IsRead);
 
                 if (timerCount == 0) 
                 {

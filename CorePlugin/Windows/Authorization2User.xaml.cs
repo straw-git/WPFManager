@@ -63,8 +63,8 @@ namespace CorePlugin.Windows
                 var user = context.User.First(c => c.Id == userId);//获取当前 用户
                 RolePlugins rolePlugins = context.RolePlugins.First(c => c.RoleId == user.RoleId);//查找当前用户的角色权限 这里因为添加角色的时候已经加入 所以肯定有值的 
                 List<string> rolePages = rolePlugins.Pages.Split(',').ToList();//所有角色权限
-                List<string> _res1 = rolePages.Where(a => !result.Exists(t => a.Contains(t))).ToList();//查找角色中存在 但结果中不存在的数据 此为减少的数据
-                List<string> _res2 = result.Where(a => !rolePages.Exists(t => a.Contains(t))).ToList();//查找结果中存在 但角色中不存在的数据 此为添加的数据
+                List<string> _res1 = rolePages.Where(a => !result.Exists(t => t == a)).ToList();//查找角色中存在 但结果中不存在的数据 此为减少的数据
+                List<string> _res2 = result.Where(a => !rolePages.Exists(t => t == a)).ToList();//查找结果中存在 但角色中不存在的数据 此为添加的数据
 
                 #endregion
 
