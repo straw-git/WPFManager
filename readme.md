@@ -26,8 +26,17 @@ Sqlserver2019
 # 功能截图
 
 登录  
-![image](https://github.com/straw-git/WPFManager/blob/master/%E6%95%88%E6%9E%9C%E5%9B%BE/%E7%99%BB%E5%BD%95.jpg)  
-
+![image](https://raw.githubusercontent.com/straw-git/WPFManager/master/%E6%95%88%E6%9E%9C%E5%9B%BE/%E7%99%BB%E5%BD%95.jpg)  
+选择插件  
+![image]( https://github.com/straw-git/WPFManager/blob/master/%E6%95%88%E6%9E%9C%E5%9B%BE/选择插件.jpg)  
+主页  
+![image]( https://github.com/straw-git/WPFManager/blob/master/%E6%95%88%E6%9E%9C%E5%9B%BE/主页.jpg)  
+人员管理  
+![image]( https://github.com/straw-git/WPFManager/blob/master/%E6%95%88%E6%9E%9C%E5%9B%BE/人员管理.jpg)  
+插件管理  
+![image]( https://github.com/straw-git/WPFManager/blob/master/%E6%95%88%E6%9E%9C%E5%9B%BE/插件管理.jpg)  
+邮件  
+![image]( https://github.com/straw-git/WPFManager/blob/master/%E6%95%88%E6%9E%9C%E5%9B%BE/邮件.jpg)  
 
 # 更新日志
 
