@@ -50,11 +50,19 @@ namespace Client.Windows
                     //将当前编辑为已读
                     var sendModel = context.EmailSendTo.Single(c => c.Id == emailSendToMeModel.EmailId);
                     if (sendModel.UserId == 0 && sendModel.RoleId == 0)
-                        LocalReadEmail.ReadAllUserEmail(editId);
+                    {
+                        var _readed = LocalReadEmail.GetAllUserEmail();//获取本地已阅读的邮件
+                        if (!_readed.Contains(editId.ToString()))//如果不在已阅读的列表中 添加
+                            LocalReadEmail.ReadAllUserEmail(editId);
+                    }
                     if (sendModel.RoleId > 0)
+                    {
+                        var _readed = LocalReadEmail.GetRoleEmail();//获取本地已阅读的邮件
+                        if (!_readed.Contains(editId.ToString()))//如果不在已阅读的列表中 添加
                         LocalReadEmail.ReadRoleEmail(editId);
+                    }
                     //修改数据库
-                    if (sendModel.UserId > 0) 
+                    if (sendModel.UserId > 0)
                     {
                         sendModel.IsRead = true;
                         sendModel.UserReadTime = DateTime.Now.ToString();
