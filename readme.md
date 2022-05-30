@@ -26,7 +26,7 @@ Sqlserver2019
 # 功能截图
 
 登录  
-![image]( https://github.com/straw-git/WPFManager/blob/master/%E6%95%88%E6%9E%9C%E5%9B%BE/登录.jpg)  
+![image](https://github.com/straw-git/WPFManager/blob/master/%E6%95%88%E6%9E%9C%E5%9B%BE/%E7%99%BB%E5%BD%95.jpg)  
 
 
 # 更新日志
