@@ -59,14 +59,14 @@
                         Margin="10,0,10,0" x:Name="btnShowSecondMenus" Click="btnShowSecondMenus_Click" />
                     <Button  Margin="0,0,10,0"                       
                              FontSize="16"
-                             ToolTip="添加插件"
+                             ToolTip="选择插件"
                         Width="28"
                         Height="28"
                          pu:ButtonHelper.ButtonStyle="Link"  
                          FontFamily="{StaticResource FontAwesome}" 
                          pu:ButtonHelper.Icon="&#xf067;" 
                          Foreground="Gray"
-                        pu:ButtonHelper.HoverBrush="Black"/>
+                        pu:ButtonHelper.HoverBrush="Black" x:Name="btnSelectPlugins" Click="btnSelectPlugins_Click"/>
                 </StackPanel>
             </Border>
             <Grid Grid.Column="2">

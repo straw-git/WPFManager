@@ -43,6 +43,7 @@ namespace Client
                 this.root.Clip = null;
             };
             this.Loaded += Window_Loaded;
+            this.Unloaded += Window_Unloaded;
             this.Closed += Login_Closed;
 
             #endregion 
@@ -72,6 +73,23 @@ namespace Client
 
             CheckNullData();
 
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            #region 解除事件监听
+
+            Loaded -= Window_Loaded;
+            Unloaded -= Window_Unloaded;
+            Closed -= Login_Closed;
+
+            login.OnLoginSucceed -= OnLoginSucceed;
+            login.OnLoginClosed -= OnLoginClosed;
+
+            selectPlugins.OnBackLoginClick -= SelectPlugins2Login;
+            selectPlugins.OnGoMainWindowClick -= OnGoMainWindowClick;
+
+            #endregion
         }
 
         private void OnLoginClosed()

@@ -43,8 +43,8 @@ namespace Client
         /// </summary>
         bool windowLoaded = false;
 
-        double windowWidth = 0;//窗体宽度
-        double windowHeight = 0;//窗体高度
+        double windowWidth = 0;//窗体宽度 用于窗体大小发生改变
+        double windowHeight = 0;//窗体高度  用于窗体大小发生改变
 
         public MainWindow()
         {
@@ -56,12 +56,16 @@ namespace Client
 
             emails.OnClosing += OnEmailClosing;
 
+            #region 初始化窗体宽高
+
             windowWidth = LocalSettings.settings.WindowWidth;
             windowHeight = LocalSettings.settings.WindowHeight;
 
             //设置窗体宽高
             Width = windowWidth;
             Height = windowHeight;
+
+            #endregion 
         }
 
         #region override BaseMainWindow
@@ -231,11 +235,16 @@ namespace Client
 
         #region UI Method
 
-        private void btnSelectedPlugins_Click(object sender, RoutedEventArgs e)
+        //选择插件
+        private void btnSelectPlugins_Click(object sender, RoutedEventArgs e)
         {
-
+            this.MaskVisible(true);
+            ChangePlugins changePlugins = new ChangePlugins();
+            changePlugins.ShowDialog();
+            this.MaskVisible(false);
         }
 
+        //更改密码
         private void btnChangePwd_Click(object sender, RoutedEventArgs e)
         {
             IsMaskVisible = true;
@@ -244,6 +253,7 @@ namespace Client
             IsMaskVisible = false;
         }
 
+        //皮肤
         private void btnSkin_Click(object sender, RoutedEventArgs e)
         {
             IsMaskVisible = true;
@@ -252,6 +262,7 @@ namespace Client
             IsMaskVisible = false;
         }
 
+        //设置
         private void btnSetting_Click(object sender, RoutedEventArgs e)
         {
             IsMaskVisible = true;
@@ -260,6 +271,7 @@ namespace Client
             IsMaskVisible = false;
         }
 
+        //切换二级导航
         private void TreeView_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (tvMenu.SelectedItem != null)
@@ -489,6 +501,5 @@ namespace Client
         }
 
         #endregion
-
     }
 }

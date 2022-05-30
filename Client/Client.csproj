@@ -147,6 +147,9 @@
     <Compile Include="Pages\Setting\General.xaml.cs">
       <DependentUpon>General.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ChangePlugins.xaml.cs">
+      <DependentUpon>ChangePlugins.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\EditEmail.xaml.cs">
       <DependentUpon>EditEmail.xaml</DependentUpon>
     </Compile>
@@ -199,6 +202,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\ChangePlugins.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\EditEmail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

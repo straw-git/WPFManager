@@ -34,6 +34,8 @@ namespace Client.MyControls
         {
             InitializeComponent();
 
+            #region 动画
+
             hideSb = (Storyboard)this.Resources["hiddlePlugins"];
             hideSb.Completed += (a, b) =>
             {
@@ -41,24 +43,35 @@ namespace Client.MyControls
                 gPlugins.Children.Clear();
             };
             showSb = (Storyboard)this.Resources["showPlugins"];
+
+            #endregion
+
+            //动画结束
             showSb.Completed += (a, b) =>
             {
                 UpdatePluginsAsync();
             };
         }
 
+        /// <summary>
+        /// 进入主窗体点击事件
+        /// </summary>
         public Action OnGoMainWindowClick;
+        /// <summary>
+        /// 返回登录页点击事件
+        /// </summary>
         public Action OnBackLoginClick;
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            btnAdd2MainWindow.Visibility = Visibility.Collapsed;
+            
         }
 
         private void btnBackLogin_Click(object sender, RoutedEventArgs e)
         {
             OnBackLoginClick?.Invoke();
         }
+
         public void HidePlugins()
         {
             hideSb.Begin();
@@ -83,12 +96,11 @@ namespace Client.MyControls
 
             //查找所有插件
             List<Plugins> plugins = UserGlobal.Plugins.OrderBy(c => c.Order).ToList();
-            string baseUrl = UserGlobal.CoreSetting.PluginsUpdateBaseUrl;
+            string baseUrl = UserGlobal.CoreSetting.PluginsUpdateBaseUrl;//插件的下载更新地址
 
             for (int i = 0; i < plugins.Count; i++)
             {
                 Plugins p = plugins[i];
-
                 if (p.WebDownload)
                 {
                     //从网上下载
@@ -113,6 +125,8 @@ namespace Client.MyControls
                 {
                     //这个插件当前已经存在并且被使用的话
                     pluginsLogo.Check();
+                    //有选择的启用底部导航
+                    btnAdd2MainWindow.Visibility = Visibility.Visible;
                 }
 
                 pluginsLogo.CheckChanged += OnPluginCheckChanged;
