@@ -403,7 +403,7 @@ namespace CorePlugin.Pages.Manager
         private void list_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             UIModel userModel = e.Row.Item as UIModel;
-            if (userModel.RoleName == "超级管理员")
+            if (userModel.Name == "admin")//只有系统最初的这个admin用户 信息不可修改
             {
                 e.Row.IsEnabled = false;
                 e.Row.Background = new SolidColorBrush(Colors.LightBlue);//显示成灰色

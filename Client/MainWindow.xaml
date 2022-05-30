@@ -95,20 +95,6 @@
                         VerticalAlignment="Center"/>
                         <pu:Badge x:Name="bdNotReadEmailCount" Width="15" Height="15" HorizontalAlignment="Right" VerticalAlignment="Top" MouseLeftButtonDown="btnEmail_Click"  IsWaving="False" Visibility="Collapsed"  Background="Red" />
                     </Grid>
-                    <Grid  Margin="15,0,0,0"  VerticalAlignment="Center">
-                        <Button FontSize="20"
-                            Width="35"
-                            Height="30"
-                        ToolTip="系统通知"
-                        pu:ButtonHelper.ButtonStyle="Link"
-                                Click="btnNotice_Click"
-                        Foreground="Orange"
-                        Content="&#xf0a2;"
-                        FontFamily="{StaticResource FontAwesome}"
-                        pu:ButtonHelper.HoverBrush="Black"
-                        VerticalAlignment="Center"/>
-                        <pu:Badge x:Name="bdNotReadNoticeCount"  Text="" MouseLeftButtonDown="btnNotice_Click" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="10" Opacity="0.9"  IsWaving="False" Visibility="Collapsed" Foreground="White"  Background="Orange" />
-                    </Grid>
                     <Button x:Name="btnSkin" 
                         Click="btnSkin_Click"
                             Margin="15,0,0,0"

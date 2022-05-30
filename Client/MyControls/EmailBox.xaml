@@ -54,34 +54,18 @@
                             pu:ButtonHelper.HoverBrush="Orange"/>
                 </StackPanel>
             </pu:GroupBoxHelper.ExtendControl>
-            <ListBox x:Name="list" ItemsSource="{Binding}" BorderThickness="0">
+            <ListBox x:Name="list" ItemsSource="{Binding}" BorderThickness="0" MouseDoubleClick="list_MouseDoubleClick">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <ListBoxItem Background="AliceBlue">
+                        <Grid Background="{Binding Background}">
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="{Binding Icon}" Width="25" FontFamily="{StaticResource FontAwesome}"/>
-                                <Label Content="{Binding Title}" Width="160"/>
+                                <Label Content="{Binding Title}" Width="150"/>
                                 <Label Content="{Binding Time}" Width="120" Foreground="LightGray"/>
                             </StackPanel>
-                        </ListBoxItem>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-
-                <!--<ListBoxItem>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="&#xf0e0;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
-                        <Label Content="请王工审阅相关文件..." Width="160"/>
-                        <Label Content="22.02.23 15:23" Width="120" Foreground="Black"/>
-                    </StackPanel>
-                </ListBoxItem>
-                <ListBoxItem Background="AliceBlue">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="&#xf2b7;" Width="25" FontFamily="{StaticResource FontAwesome}"/>
-                        <Label Content="请王工审阅相关文件..." Width="160"/>
-                        <Label Content="22.02.23 15:23" Width="120" Foreground="LightGray"/>
-                    </StackPanel>
-                </ListBoxItem>-->
-              
             </ListBox>
         </GroupBox>
     </Grid>

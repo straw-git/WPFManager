@@ -23,7 +23,7 @@ namespace Client.Timers
         {
             if (IsStarted) return;
             IsStarted = true;//已成功运行
-            timer = new System.Threading.Timer(OnTimer,null,_milliseconds,0);
+            timer = new System.Threading.Timer(OnTimer,null,0, _milliseconds);
         }
 
         public abstract void OnTimer(object state);

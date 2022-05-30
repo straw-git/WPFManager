@@ -126,6 +126,7 @@
     <Compile Include="Base\BaseMainWindow.cs" />
     <Compile Include="Base\BaseUIModel.cs" />
     <Compile Include="CoreDBContext.cs" />
+    <Compile Include="Data\Local\LocalReadEmail.cs" />
     <Compile Include="Dialogs\DeleteVRemarkDialog.xaml.cs">
       <DependentUpon>DeleteVRemarkDialog.xaml</DependentUpon>
     </Compile>

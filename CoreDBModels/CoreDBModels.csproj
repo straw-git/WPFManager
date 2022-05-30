@@ -54,9 +54,9 @@
     <Compile Include="CoreSetting.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="DepartmentPosition.cs" />
+    <Compile Include="EmailSendTo.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="ModulePage.cs" />
-    <Compile Include="Notice.cs" />
     <Compile Include="Plugins.cs" />
     <Compile Include="PluginsModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,7 +64,6 @@
     <Compile Include="RolePlugins.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Email.cs" />
-    <Compile Include="UserNotice.cs" />
     <Compile Include="UserPlugins.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

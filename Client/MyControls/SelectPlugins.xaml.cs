@@ -87,7 +87,7 @@ namespace Client.MyControls
 
             for (int i = 0; i < plugins.Count; i++)
             {
-                var p = plugins[i];
+                Plugins p = plugins[i];
 
                 if (p.WebDownload)
                 {
@@ -108,6 +108,13 @@ namespace Client.MyControls
                 pluginsLogo.LogoContent = p.Name;
                 pluginsLogo.ImageBack = new BitmapImage(new Uri($"pack://application:,,,/{p.DLLName};component/{p.LogoImage}"));
                 pluginsLogo.PluginsData = p;
+
+                if (MainWindowGlobal.CurrPlugins.Any(c => c.Id == p.Id))
+                {
+                    //这个插件当前已经存在并且被使用的话
+                    pluginsLogo.Check();
+                }
+
                 pluginsLogo.CheckChanged += OnPluginCheckChanged;
                 gPlugins.Children.Add(pluginsLogo);
             }

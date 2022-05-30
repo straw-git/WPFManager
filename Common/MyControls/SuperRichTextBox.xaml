@@ -23,7 +23,9 @@
             <ComboBox  Height="30" Margin="5,0,0,0"  Name="cmbFontFamily" Width="150" SelectionChanged="cmbFontFamily_SelectionChanged" />
             <ComboBox Height="30" Margin="5,0,0,0"  Name="cmbFontSize" Width="50" IsEditable="True" TextBoxBase.TextChanged="cmbFontSize_TextChanged" />
         </StackPanel>
-
-        <RichTextBox Grid.Row="1" Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged" Margin="-5,0,0,0" />
+        <Grid Grid.Row="1" Margin="-5,0,0,0" >
+            <RichTextBox Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged" />
+            <Label x:Name="lblCurrTime" Height="30" Content="2022.05.28 13:05" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-30,10,0" Foreground="{DynamicResource SkinColor}"/>
+        </Grid>
     </DockPanel>
 </UserControl>

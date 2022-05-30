@@ -71,6 +71,7 @@ namespace Client
             #endregion 
 
             CheckNullData();
+
         }
 
         private void OnLoginClosed()

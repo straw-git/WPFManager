@@ -176,6 +176,31 @@ namespace CorePlugin.Windows
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            #region 更新本地数据
+
+            if (pluginsDB == null) pluginsDB = new Plugins();
+
+            int order = 0;
+            if (txtPluginsOrder.Text.IsNullOrEmpty()) txtPluginsOrder.Text = "0";
+            if (!int.TryParse(txtPluginsOrder.Text, out order))
+            {
+                MessageBoxX.Show("排序格式不正确", "只能输入数字");
+                txtPluginsOrder.Focus();
+                txtPluginsOrder.SelectAll();
+                return;
+            }
+
+            pluginsDB.ConnectionString = txtConnectionStr.Text;
+            pluginsDB.ConnectionName = txtConnectionName.Text;
+            pluginsDB.Name = txtPluginsName.Text;
+            pluginsDB.DLLName = txtPluginsDLLName.Text;
+            pluginsDB.Order = order;
+            pluginsDB.LogoImage = txtPluginsLogoImgName.Text;
+            pluginsDB.ConnectionName = txtConnectionName.Text;
+            pluginsDB.WebDownload = (bool)cbWebDownload.IsChecked;
+
+            #endregion 
+
             if (!CheckPluginUpdate())
             {
                 UpdatePlugins();//更新插件信息

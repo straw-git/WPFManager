@@ -37,6 +37,7 @@ namespace Client.MyControls
             {
                 Visibility = Visibility.Collapsed;
             };
+
         }
 
         /// <summary>
@@ -55,6 +56,12 @@ namespace Client.MyControls
 
         public void ShowLogin()
         {
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                string loginTitle = context.CoreSetting.First().LoginTitle;
+                txtLogin.Text = loginTitle.IsNullOrEmpty() ? "LOGIN" : loginTitle;
+            }
+
             bLogin.Width = 5;
             Visibility = Visibility.Visible;
 

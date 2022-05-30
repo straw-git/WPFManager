@@ -12,7 +12,9 @@ xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         Title="账号管理"
         Background="Transparent"
             ResizeMode="NoResize"
-        Height="500"
+        Loaded="Window_Loaded"
+        Unloaded="Window_Unloaded"
+        Height="600"
         Width="800" 
         WindowStartupLocation="CenterScreen">
     <Border MouseDown="Border_MouseDown" BorderThickness="1" BorderBrush="LightGray">
@@ -51,14 +53,46 @@ xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
                             Click="btnClose_Click"/>
                     </StackPanel>
                 </pu:GroupBoxHelper.ExtendControl>
-                <Grid>
+                <Grid x:Name="gEmail">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
+                    <!--发送设置-->
+                    <StackPanel Grid.Row="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                            <RadioButton Content="选择发送人" 
+                                         x:Name="rbSend2User"
+                                         Checked="rbSend2User_Checked"
+                                         pu:RadioButtonHelper.RadioButtonStyle="Standard"
+                                         pu:RadioButtonHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}" />
+                            <RadioButton Content="发送给所有人"  Margin="10,0,0,0"
+                                         x:Name="rbSend2AllUser"
+                                         Checked="rbSend2AllUser_Checked"
+                                         pu:RadioButtonHelper.RadioButtonStyle="Standard"
+                                         pu:RadioButtonHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}" />
+                            <RadioButton Content="按角色发送"  Margin="10,0,0,0"
+                                         x:Name="rbSend2Role"
+                                         Checked="rbSend2Role_Checked"
+                                         pu:RadioButtonHelper.RadioButtonStyle="Standard"
+                                         pu:RadioButtonHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}" />
+                        </StackPanel>
+                        <Grid x:Name="gSelectRoles" Visibility="Collapsed" Margin="0,10,0,0">
+                            <ComboBox  Height="30"
+                                       x:Name="cbRoles"
+                                       Width="200"
+                                       pu:ComboBoxHelper.Icon="&#xf0c0;"
+                                       SelectionChanged="cbRoles_SelectionChanged"
+                                       Background="{DynamicResource ComboBoxBgColor}"
+                                       pu:ComboBoxHelper.HoverBackground="{DynamicResource ComboBoxHoverColor}"
+                                       pu:ComboBoxHelper.SelectedBackground="{DynamicResource ComboBoxSelectedColor}">
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
                     <!--邮件标题-->
-                    <Grid Grid.Row="0" Margin="10">
+                    <Grid Grid.Row="1" Margin="10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
@@ -74,10 +108,10 @@ xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
                               pu:TextBoxHelper.IsClearButtonVisible="True" />
                     </Grid>
                     <!--邮件内容-->
-                    <my:SuperRichTextBox x:Name="rtbEditor" Grid.Row="1"/>
-                    <my:UserSelector x:Name="myUserSelector" Grid.Row="0" Grid.RowSpan="2" Margin="-5,0,0,0" Visibility="Collapsed"/>
+                    <my:SuperRichTextBox x:Name="rtbEditor" Grid.Row="2"/>
+                    <my:UserSelector x:Name="myUserSelector" Grid.Row="0" Grid.RowSpan="3" Margin="-5,0,0,0" Visibility="Collapsed"/>
                     <!--发送人-->
-                    <Grid Grid.Row="2" Height="30">
+                    <Grid Grid.Row="3" Height="30">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="Auto"/>
@@ -97,8 +131,7 @@ xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
                             pu:ButtonHelper.HoverBrush="Orange"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Label Content="已选择："/>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Label Content="张三"/>
+                            <StackPanel x:Name="spSelectedUsers" Orientation="Horizontal" VerticalAlignment="Center">
                             </StackPanel>
                         </StackPanel>
                     </Grid>

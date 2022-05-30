@@ -125,7 +125,16 @@ namespace Client
             tvMenu.Items.Clear();
             tvMenu_Simple.Items.Clear();
 
+            if (_pages == null || _pages.Count == 0) 
+            {
+                MessageBoxX.Show("当前模块下没有任何页面","空值提醒");
+                return;
+            }
+
             int currIndex = 0;
+
+            #region 填充二级导航
+
             foreach (var page in _pages)
             {
                 page.FullPath = $"pack://application:,,,/{moduleInfo.DLLName};component/{page.PagePath}";
@@ -136,6 +145,7 @@ namespace Client
                 _treeViewItem.Background = Brushes.Transparent;
                 _treeViewItem.Tag = page;
                 _treeViewItem.IsSelected = currIndex == 0;
+                currIndex += 1;
                 TreeViewHelper.SetItemIcon(_treeViewItem, FontAwesomeCommon.GetUnicode(page.Icon));
 
                 TreeViewItem _treeViewItemSimple = new TreeViewItem();
@@ -148,7 +158,19 @@ namespace Client
 
                 tvMenu.Items.Add(_treeViewItem);
                 tvMenu_Simple.Items.Add(_treeViewItemSimple);
+            }
 
+            #endregion
+
+            if (_pages.Count == 1)
+            {
+                //如果仅有一个导航
+                bSecondMenu.Visibility = Visibility.Collapsed;
+            }
+            else if (_pages.Count > 1)
+            {
+                //如果存在多个导航
+                bSecondMenu.Visibility = Visibility.Visible;
             }
         }
 
@@ -167,39 +189,13 @@ namespace Client
         {
             UpdateTitle();
 
-            #region 监听事件
-
-            EmailNotReadChangedEventObserver.Instance.AddEventListener(Codes.EmailNotReadChanged, OnEmailTimer);
-            NoticeNotReadChangedEventObserver.Instance.AddEventListener(Codes.NoticeNotReadCountChanged, OnNotReadNoticeChanged);
-
-            #endregion 
-
-            new EmailTimer().Start();//开始定时读取邮件
-            new NoticeTimer().Start();//开始定时查找未读通知
+            EmailNotReadChangedEventObserver.Instance.AddEventListener(Codes.EmailNotReadChanged, OnEmailTimer);//监听邮件事件
+            new EmailTimer().Start(5000);//开始定时读取邮件
 
             windowLoaded = true;
         }
 
         #region Timer
-
-        private void OnNotReadNoticeChanged(NoticeChangedMessage p)
-        {
-            UIGlobal.RunUIAction(() =>
-            {
-                if (p.NotReadCount > 0)
-                {
-                    bdNotReadNoticeCount.Text = p.NotReadCount.ToString();
-                    bdNotReadNoticeCount.Visibility = Visibility.Visible;
-                    bdNotReadNoticeCount.IsWaving = true;
-                }
-                else
-                {
-                    bdNotReadNoticeCount.Text = "";
-                    bdNotReadNoticeCount.Visibility = Visibility.Collapsed;
-                    bdNotReadNoticeCount.IsWaving = false;
-                }
-            });
-        }
 
         private void OnEmailTimer(EmailChangedMessage p)
         {
@@ -412,18 +408,7 @@ namespace Client
 
         #endregion
 
-        #region  通知和邮件
-
-        private void btnNotice_Click(object sender, RoutedEventArgs e)
-        {
-            //DoubleAnimation widthAni = new DoubleAnimation();
-            //widthAni.From = 0;
-            //widthAni.To = 300;
-            //widthAni.Duration = new Duration(TimeSpan.FromMilliseconds(500));
-            //widthAni.EasingFunction = new BackEase() { EasingMode = EasingMode.EaseIn };
-
-            //gNoticeOrEmails.BeginAnimation(WidthProperty, widthAni);
-        }
+        #region  邮件
 
         /// <summary>
         /// 通知和邮件关闭

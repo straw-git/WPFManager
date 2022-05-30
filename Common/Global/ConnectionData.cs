@@ -26,6 +26,6 @@ public class DBConnections
     public static string Get(string _key)
     {
         if (Strs.ContainsKey(_key)) return Strs[_key];
-        return @"Data Source=PC-20201105CMZQ\SQLEXPRESS;Initial Catalog=ZDB;User ID=sa;Password=123456;";
+        return @"Data Source=.;Initial Catalog=ZDB;User ID=sa;Password=123456;";
     }
 }

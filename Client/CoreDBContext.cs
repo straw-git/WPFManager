@@ -39,11 +39,10 @@ namespace Client
 
         #endregion 
 
-        #region 消息 通知
+        #region 邮件
 
         public DbSet<Email> Email { get; set; }//邮件
-        public DbSet<Notice> Notice { get; set; }//通知
-        public DbSet<UserNotice> UserNotice { get; set; }//用户通知
+        public DbSet<EmailSendTo> EmailSendTo { get; set; }//邮件发送信息
 
         #endregion 
     }

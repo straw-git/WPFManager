@@ -29,6 +29,8 @@ namespace Client.Pages.Setting
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             string pluginUpdateUrl = txtPluginUpdateUrl.Text;
+            string loginTitle = txtLoginTitle.Text;
+
             if (pluginUpdateUrl.IsNullOrEmpty())
             {
                 MessageBoxX.Show("请输入插件更新路径", "空值提醒");
@@ -36,10 +38,16 @@ namespace Client.Pages.Setting
                 return;
             }
 
+            if (loginTitle.IsNullOrEmpty()) 
+            {
+                txtLoginTitle.Text = "LOGIN";
+            }
+
             using (CoreDBContext context = new CoreDBContext())
             {
                 var setting = context.CoreSetting.Single();
                 setting.PluginsUpdateBaseUrl = pluginUpdateUrl;
+                setting.LoginTitle = txtLoginTitle.Text;
 
                 context.SaveChanges();
             }
@@ -53,6 +61,7 @@ namespace Client.Pages.Setting
             {
                 var info = context.CoreSetting.First();
                 txtPluginUpdateUrl.Text = info.PluginsUpdateBaseUrl;
+                txtLoginTitle.Text = info.LoginTitle;
             }
         }
     }

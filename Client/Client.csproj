@@ -111,14 +111,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CoreDBContext.cs" />
-    <Compile Include="Events\NoticeNotReadChangedEventObserver.cs" />
-    <Compile Include="Migrations\202205180743310_init.cs" />
-    <Compile Include="Migrations\202205180743310_init.designer.cs">
-      <DependentUpon>202205180743310_init.cs</DependentUpon>
+    <Compile Include="Migrations\202205280456246_init.cs" />
+    <Compile Include="Migrations\202205280456246_init.designer.cs">
+      <DependentUpon>202205280456246_init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202205260536597_email.cs" />
-    <Compile Include="Migrations\202205260536597_email.designer.cs">
-      <DependentUpon>202205260536597_email.cs</DependentUpon>
+    <Compile Include="Migrations\202205280805186_emailtitle.cs" />
+    <Compile Include="Migrations\202205280805186_emailtitle.designer.cs">
+      <DependentUpon>202205280805186_emailtitle.cs</DependentUpon>
     </Compile>
     <Compile Include="MyControls\BgStar.xaml.cs">
       <DependentUpon>BgStar.xaml</DependentUpon>
@@ -148,7 +147,6 @@
     <Compile Include="Pages\Setting\General.xaml.cs">
       <DependentUpon>General.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Timers\NoticeTimer.cs" />
     <Compile Include="Windows\EditEmail.xaml.cs">
       <DependentUpon>EditEmail.xaml</DependentUpon>
     </Compile>
@@ -232,11 +230,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\202205180743310_init.resx">
-      <DependentUpon>202205180743310_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202205280456246_init.resx">
+      <DependentUpon>202205280456246_init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205260536597_email.resx">
-      <DependentUpon>202205260536597_email.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202205280805186_emailtitle.resx">
+      <DependentUpon>202205280805186_emailtitle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

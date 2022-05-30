@@ -72,7 +72,7 @@
                             pu:GroupBoxHelper.ShadowColor="LightGray" >
                 <pu:GroupBoxHelper.ExtendControl>
                     <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
-                        <Button FontSize="16"
+                        <!--<Button FontSize="16"
                                      Margin="10,0,0,0"
                                     Width="28"
                                     Height="28"
@@ -91,7 +91,7 @@
                                     Foreground="#EAEAEA"
                                     Content="&#xf0ea;"
                                     FontFamily="{StaticResource FontAwesome}"
-                                    pu:ButtonHelper.HoverBrush="Orange"/>
+                                    pu:ButtonHelper.HoverBrush="Orange"/>-->
                         <Button FontSize="16"
                                     Margin="10,0,0,0"
                                     Width="28"
