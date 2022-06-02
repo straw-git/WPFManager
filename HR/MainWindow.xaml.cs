@@ -22,7 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static Common.UserGlobal;
 
-namespace NewPlugins
+namespace HR
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑

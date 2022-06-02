@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Data.Entity;
 
-namespace NewPlugins
+namespace HR
 {
     public class CoreDBContext : DbContext
     {
