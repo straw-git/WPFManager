@@ -105,6 +105,7 @@ namespace Client.MyControls
                 {
                     //从网上下载
                     PluginsDownload.ToPluginsFolder(baseUrl, p.DLLName); //强制更新插件 无论dll是否存在 都下载过来
+                    PluginsDownload.ToPluginsFolder(baseUrl, $"{p.DLLName}DBModels");//约定 插件DBModels 名称规范
                 }
                 else
                 {

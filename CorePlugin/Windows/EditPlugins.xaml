@@ -72,7 +72,7 @@
                                 <Label VerticalAlignment="Center" Width="80"  Content="插件名称："/>
                                 <TextBox  x:Name="txtPluginsName"  Width="200"  pu:TextBoxHelper.Watermark="插件名称"/>
                                 <Label VerticalAlignment="Center" Width="80"  Margin="50,0,0,0" Content="DLL："/>
-                                <TextBox  x:Name="txtPluginsDLLName" MinWidth="200" pu:TextBoxHelper.Watermark="DLL名称"/>
+                                <TextBox  x:Name="txtPluginsDLLName" MinWidth="200" pu:TextBoxHelper.Watermark="DLL名称" ToolTip="下载DLL的同时会检查 DLL名称+DBModels 的DLL文件"/>
                                 <Label VerticalAlignment="Center" Width="80"  Margin="50,0,0,0" Content="排序："/>
                                 <TextBox  x:Name="txtPluginsOrder" MinWidth="80" Text="0"/>
                             </StackPanel>
