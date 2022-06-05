@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreDBModels", "CoreDBModel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warehouse", "Warehouse\Warehouse.csproj", "{44287BD7-8471-4504-89AC-A5112FFFEE93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseDBModels", "WarehouseDBModels\WarehouseDBModels.csproj", "{1E5F6D34-EE17-4EB6-AE59-CBFC163DBF62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{44287BD7-8471-4504-89AC-A5112FFFEE93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44287BD7-8471-4504-89AC-A5112FFFEE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44287BD7-8471-4504-89AC-A5112FFFEE93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E5F6D34-EE17-4EB6-AE59-CBFC163DBF62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E5F6D34-EE17-4EB6-AE59-CBFC163DBF62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E5F6D34-EE17-4EB6-AE59-CBFC163DBF62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E5F6D34-EE17-4EB6-AE59-CBFC163DBF62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

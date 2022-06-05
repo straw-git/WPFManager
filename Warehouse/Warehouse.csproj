@@ -77,6 +77,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MyControls\StoreItem.xaml.cs">
+      <DependentUpon>StoreItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WarehouseDBContext.cs" />
+    <Compile Include="Windows\EditSupplier.xaml.cs">
+      <DependentUpon>EditSupplier.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -90,14 +97,71 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MyControls\StoreItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\GoodsMsg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\GoodsTypeMsg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Index.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Inventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StoreIn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StoreOut.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Supplier.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Wareroom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditSupplier.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\GoodsMsg.xaml.cs">
+      <DependentUpon>GoodsMsg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GoodsTypeMsg.xaml.cs">
+      <DependentUpon>GoodsTypeMsg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Index.xaml.cs">
       <DependentUpon>Index.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Inventory.xaml.cs">
+      <DependentUpon>Inventory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\StoreIn.xaml.cs">
+      <DependentUpon>StoreIn.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\StoreOut.xaml.cs">
+      <DependentUpon>StoreOut.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Supplier.xaml.cs">
+      <DependentUpon>Supplier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Wareroom.xaml.cs">
+      <DependentUpon>Wareroom.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -135,10 +199,12 @@
       <Project>{814bdbf1-5dce-4406-91a4-7377d1c5e6a7}</Project>
       <Name>CoreDBModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WarehouseDBModels\WarehouseDBModels.csproj">
+      <Project>{1e5f6d34-ee17-4eb6-ae59-cbfc163dbf62}</Project>
+      <Name>WarehouseDBModels</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DBModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

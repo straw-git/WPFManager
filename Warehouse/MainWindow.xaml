@@ -70,13 +70,14 @@
                             Background="Black"
                          BorderBrush="{DynamicResource TreeViewSelectedHeaderColor}"
                           PreviewMouseUp="TreeView_PreviewMouseUp">
-                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/Index.xaml" Header="首页"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/Index.xaml" Header="首页"/>                    
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/Supplier.xaml" Header="供应商"/>
                     <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/Wareroom.xaml" Header="仓库"/>
-                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/GoodsTypeMsg.xaml" Header="物品类型"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/GoodsTypeMsg.xaml" Header="规格类型"/>
                     <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/GoodsMsg.xaml" Header="物品列表"/>
                     <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/StoreIn.xaml" Header="入库"/>
                     <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/StoreOut.xaml" Header="出库"/>
-                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/StoreOut.xaml" Header="盘点"/>
+                    <TreeViewItem pu:TreeViewHelper.ItemIcon="&#xf015;" Tag="Pages/Inventory.xaml" Header="库存盘点"/>
                 </TreeView>
             </Grid>
             <!--内页-->
