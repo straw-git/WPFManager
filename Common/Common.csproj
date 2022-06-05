@@ -131,6 +131,7 @@
       <DependentUpon>DeleteVRemarkDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Events\Codes.cs" />
+    <Compile Include="Extensions\DbContextExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="Extensions\UserControlExtensions.cs" />
