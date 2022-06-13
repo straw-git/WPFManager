@@ -51,7 +51,6 @@ CoreDBModels：基础数据模型（人员、职位、邮件、权限、日志�
 
 单独模块：  
 NewPlugins：新模块示例  
-HR：人事管理模块  
-Warehouse：仓库管理模块
+
 
 
