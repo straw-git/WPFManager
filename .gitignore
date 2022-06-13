@@ -18,6 +18,7 @@ mono_crash.*
 
 # Build results
 
+仓库管理.sln
 Warehouse/
 WarehouseDBModels/
 [Dd]ebugPublic/
