@@ -18,6 +18,9 @@ mono_crash.*
 
 # Build results
 
+人事管理.sln
+HR/
+HRDBModels/
 仓库管理.sln
 Warehouse/
 WarehouseDBModels/
