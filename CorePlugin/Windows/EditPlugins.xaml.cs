@@ -198,6 +198,7 @@ namespace CorePlugin.Windows
             pluginsDB.LogoImage = txtPluginsLogoImgName.Text;
             pluginsDB.ConnectionName = txtConnectionName.Text;
             pluginsDB.WebDownload = (bool)cbWebDownload.IsChecked;
+            pluginsDB.DLLs = txtDLLs.Text;
 
             #endregion 
 
@@ -320,6 +321,7 @@ namespace CorePlugin.Windows
             string pluginLogoName = txtPluginsLogoImgName.Text;
             int pluginOrder = 0;
             bool pluginWebDownload = (bool)cbWebDownload.IsChecked;
+            string dlls = txtDLLs.Text.Trim();
 
             #endregion
 
@@ -348,7 +350,8 @@ namespace CorePlugin.Windows
                         WebDownload = pluginWebDownload,
                         Order = pluginOrder,
                         ConnectionName = txtConnectionName.Text.Trim(),
-                        ConnectionString = txtConnectionStr.Text.Trim()
+                        ConnectionString = txtConnectionStr.Text.Trim(),
+                        DLLs = dlls
                     });
                     context.SaveChanges();
                 }
@@ -367,6 +370,7 @@ namespace CorePlugin.Windows
                     _plugins.Order = pluginOrder;
                     _plugins.ConnectionName = txtConnectionName.Text.Trim();
                     _plugins.ConnectionString = txtConnectionStr.Text.Trim();
+                    _plugins.DLLs = txtDLLs.Text.Trim();
 
                     //更新实体
                     pluginsDB.DLLName = _plugins.DLLName;
@@ -377,6 +381,7 @@ namespace CorePlugin.Windows
                     pluginsDB.Order = _plugins.Order;
                     pluginsDB.ConnectionName = _plugins.ConnectionName;
                     pluginsDB.ConnectionString = _plugins.ConnectionString;
+                    pluginsDB.DLLs = _plugins.DLLs;
                     context.SaveChanges();
                 }
             }

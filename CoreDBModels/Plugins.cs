@@ -14,7 +14,9 @@ namespace CoreDBModels
         [MaxLength(50)]
         public string Name { get; set; }
         [MaxLength(100)]
-        public string DLLName { get; set; }
+        public string DLLName { get; set; }//插件入口程序
+        [MaxLength(1000)]
+        public string DLLs { get; set; }//插件关联的DLL以|分隔
         [MaxLength(200)]
         public string LogoImage { get; set; }//Logo图的名称 图片在项目中
         public bool WebDownload { get; set; }//是否从网络下载

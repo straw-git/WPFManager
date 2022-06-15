@@ -3,6 +3,7 @@ using Common;
 using Common.Data.Local;
 using Common.Utils;
 using CoreDBModels;
+using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -64,7 +65,7 @@ namespace Client.MyControls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void btnBackLogin_Click(object sender, RoutedEventArgs e)
@@ -105,7 +106,20 @@ namespace Client.MyControls
                 {
                     //从网上下载
                     PluginsDownload.ToPluginsFolder(baseUrl, p.DLLName); //强制更新插件 无论dll是否存在 都下载过来
-                    PluginsDownload.ToPluginsFolder(baseUrl, $"{p.DLLName}DBModels");//约定 插件DBModels 名称规范
+
+                    if (!string.IsNullOrEmpty(p.DLLs))
+                    {
+                        //将依赖的dll加载过来
+                        var dllsArr = p.DLLs.Split('|');
+                        foreach (var d in dllsArr)
+                        {
+                            if (d.IsNullOrEmpty()) continue;
+                            string dllName = d;
+                            //默认的格式是dll
+                            if (d.IndexOf(".dll") == -1) dllName = $"{d}.dll";
+                            PluginsDownload.ToPluginsFolder(baseUrl, dllName);
+                        }
+                    }
                 }
                 else
                 {
@@ -113,6 +127,25 @@ namespace Client.MyControls
                     if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{p.DLLName}.dll"))
                     {
                         continue;//不存在文件 不加载
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(p.DLLs))
+                        {
+                            //将依赖的dll加载过来
+                            var dllsArr = p.DLLs.Split('|');
+                            foreach (var d in dllsArr)
+                            {
+                                if (d.IsNullOrEmpty()) continue;
+                                string dllName = d;
+                                //默认的格式是dll
+                                if (d.IndexOf(".dll") == -1) dllName = $"{d}.dll";
+                                if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{dllName}"))
+                                {
+                                    Notice.Show($"{p.Name}插件加载失败,未找到[{dllName}]该模块功能可能会引起功能出错！", "插件加载失败", 5, MessageBoxIcon.Error);
+                                }
+                            }
+                        }
                     }
                 }
 

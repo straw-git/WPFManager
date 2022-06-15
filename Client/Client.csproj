@@ -119,6 +119,10 @@
     <Compile Include="Migrations\202205280805186_emailtitle.designer.cs">
       <DependentUpon>202205280805186_emailtitle.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202206150615077_plugindlls.cs" />
+    <Compile Include="Migrations\202206150615077_plugindlls.designer.cs">
+      <DependentUpon>202206150615077_plugindlls.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyControls\BgStar.xaml.cs">
       <DependentUpon>BgStar.xaml</DependentUpon>
     </Compile>
@@ -242,6 +246,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202205280805186_emailtitle.resx">
       <DependentUpon>202205280805186_emailtitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206150615077_plugindlls.resx">
+      <DependentUpon>202206150615077_plugindlls.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
