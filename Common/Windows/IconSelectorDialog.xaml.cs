@@ -38,8 +38,14 @@ namespace Common.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            SearchICON();
+        }
+
+        private void SearchICON() 
+        {
             uicons.Children.Clear();
-            foreach (var key in FontAwesomeCommon.TypeDict.Keys)
+            List<string> keys = FontAwesomeCommon.TypeDict.Keys.Where(c => c.Contains(txtKey.Text)).ToList();
+            foreach (var key in keys)
             {
                 var _val = FontAwesomeCommon.TypeDict[key];
                 string iconStr = FontAwesomeCommon.GetUnicode(_val);
@@ -80,6 +86,14 @@ namespace Common.Windows
         {
             SelectorModel = (sender as Border).Tag as IconSelectorModel;
             DialogResult = true;
+        }
+
+        private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SearchICON();
+            }
         }
     }
 }

@@ -19,7 +19,14 @@
         </Style>
     </pu:WindowX.Resources>
     <Grid>
-        <ScrollViewer x:Name="icons" HorizontalScrollBarVisibility="Disabled" Background="White" Margin="0,0,10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <TextBox x:Name="txtKey" Height="30" Margin="5,5,25,5" HorizontalContentAlignment="Center" pu:TextBoxHelper.Watermark="账户名"  PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        </Grid>
+        <ScrollViewer Grid.Row="1" x:Name="icons" HorizontalScrollBarVisibility="Disabled" Background="White" Margin="0,0,10,0">
             <UniformGrid x:Name="uicons" Columns="5" >
                 <Border BorderThickness="1" BorderBrush="LightGray" Margin="5">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
