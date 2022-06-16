@@ -31,17 +31,6 @@
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <Label Content="系统账号数量" VerticalAlignment="Center" Foreground="Gray" Margin="5,0,0,0"/>
-                            <Button FontSize="16"
-                                        Width="28"
-                                        Height="28"
-                                        ToolTip="查看详情"
-                                        pu:ButtonHelper.ButtonStyle="Link"
-                                        Foreground="#EAEAEA"
-                                        Content="&#xf064;"
-                                        FontFamily="{StaticResource FontAwesome}"
-                                        pu:ButtonHelper.HoverBrush="Blue"
-                                        Margin="0,0,5,0"
-                                        VerticalAlignment="Top" HorizontalAlignment="Right" />
                         </Grid>
                         <Grid Grid.Row="1">
                             <Label FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="&#xf2bc;" Foreground="Blue" FontSize="40" Opacity="0.2"/>
@@ -58,17 +47,6 @@
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <Label Content="角色数量" VerticalAlignment="Center" Foreground="Gray" Margin="5,0,0,0"/>
-                            <Button FontSize="16"
-                                        Width="28"
-                                        Height="28"
-                                        ToolTip="查看详情"
-                                        pu:ButtonHelper.ButtonStyle="Link"
-                                        Foreground="#EAEAEA"
-                                        Content="&#xf064;"
-                                        FontFamily="{StaticResource FontAwesome}"
-                                        pu:ButtonHelper.HoverBrush="Purple"
-                                        Margin="0,0,5,0"
-                                        VerticalAlignment="Top" HorizontalAlignment="Right" />
                         </Grid>
                         <Grid Grid.Row="1">
                             <Label FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="&#xf0c0;" Foreground="Purple" FontSize="40" Opacity="0.2"/>
@@ -85,17 +63,6 @@
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <Label Content="职位数量" VerticalAlignment="Center" Foreground="Gray" Margin="5,0,0,0"/>
-                            <Button FontSize="16"
-                                        Width="28"
-                                        Height="28"
-                                        ToolTip="查看详情"
-                                        pu:ButtonHelper.ButtonStyle="Link"
-                                        Foreground="#EAEAEA"
-                                        Content="&#xf064;"
-                                        FontFamily="{StaticResource FontAwesome}"
-                                        pu:ButtonHelper.HoverBrush="Green"
-                                        Margin="0,0,5,0"
-                                        VerticalAlignment="Top" HorizontalAlignment="Right" />
                         </Grid>
                         <Grid Grid.Row="1">
                             <Label FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="&#xf02d;" Foreground="Green" FontSize="40" Opacity="0.2"/>
@@ -112,17 +79,6 @@
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <Label Content="已注册插件" VerticalAlignment="Center" Foreground="Gray" Margin="5,0,0,0"/>
-                            <Button FontSize="16"
-                                        Width="28"
-                                        Height="28"
-                                        ToolTip="查看详情"
-                                        pu:ButtonHelper.ButtonStyle="Link"
-                                        Foreground="#EAEAEA"
-                                        Content="&#xf064;"
-                                        FontFamily="{StaticResource FontAwesome}"
-                                        pu:ButtonHelper.HoverBrush="Orange"
-                                        Margin="0,0,5,0"
-                                        VerticalAlignment="Top" HorizontalAlignment="Right" />
                         </Grid>
                         <Grid Grid.Row="1">
                             <Label FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="&#xf1b3;" Foreground="Orange" FontSize="40" Opacity="0.2"/>
