@@ -51,6 +51,6 @@ CoreDBModels：基础数据模型（人员、职位、邮件、权限、日志�
 
 单独模块：  
 NewPlugins：新模块示例  
-
+WebPlugins：插件更新模块（用于管理线上插件依赖文件）  
 
 

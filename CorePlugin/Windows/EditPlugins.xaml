@@ -90,7 +90,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
                                 <Label VerticalAlignment="Center"  Width="80"  Content="关联DLL："/>
-                                <TextBox x:Name="txtDLLs"  Width="740" ToolTip="名称无需后缀,以'|'分隔"/>
+                                <TextBox x:Name="txtDLLs" IsReadOnly="True" Width="740" ToolTip="名称无需后缀,以'|'分隔"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
