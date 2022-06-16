@@ -19,14 +19,13 @@ namespace Common
         {
             if (_baseUrl.IsNullOrEmpty() || _dllName.IsNullOrEmpty()) return;
             _baseUrl = _baseUrl.Trim();//去除空格
-            if (_baseUrl.EndsWith("/")) _baseUrl = _baseUrl.Substring(0, _baseUrl.Length - 1);//如果带斜杠结尾的话 将斜杠去掉
             try
             {
-                string dllUrl = $"{AppDomain.CurrentDomain.BaseDirectory}{_dllName}.dll";
+                string dllUrl = $"{AppDomain.CurrentDomain.BaseDirectory}{_dllName}";
                 if (!FileUtils.IsFileIsUsed(dllUrl))//判断文件是否被占用
                     using (WebClient webClient = new WebClient())
                         //将文件下载至目标文件夹
-                        webClient.DownloadFile($"{_baseUrl}/{_dllName}.dll", dllUrl);
+                        webClient.DownloadFile($"{_baseUrl}{_dllName}", dllUrl);
             }
             catch (Exception ex)
             {

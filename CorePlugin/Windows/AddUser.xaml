@@ -164,6 +164,8 @@
                                     <Label Content="备注：" Width="80"/>
                                     <TextBox  Height="150"
                                               VerticalContentAlignment="Top"
+                                               TextWrapping="Wrap" 
+                                               AcceptsReturn="True" 
                                               Width="260"
                                               pu:TextBoxHelper.Watermark="职位备注"
                                               Background="{DynamicResource TextBoxBgColor}"

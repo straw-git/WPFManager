@@ -98,14 +98,16 @@ namespace Client.MyControls
             //查找所有插件
             List<Plugins> plugins = UserGlobal.Plugins.OrderBy(c => c.Order).ToList();
             string baseUrl = UserGlobal.CoreSetting.PluginsUpdateBaseUrl;//插件的下载更新地址
+            if (baseUrl.EndsWith("/")) baseUrl = baseUrl.Substring(0, baseUrl.Length - 1);
 
             for (int i = 0; i < plugins.Count; i++)
             {
                 Plugins p = plugins[i];
+                string downLoadUrl = $"{baseUrl}/dlls/{p.Id}/";
                 if (p.WebDownload)
                 {
                     //从网上下载
-                    PluginsDownload.ToPluginsFolder(baseUrl, p.DLLName); //强制更新插件 无论dll是否存在 都下载过来
+                    PluginsDownload.ToPluginsFolder(downLoadUrl, $"{p.DLLName}.dll"); //强制更新插件 无论dll是否存在 都下载过来
 
                     if (!string.IsNullOrEmpty(p.DLLs))
                     {
@@ -115,9 +117,7 @@ namespace Client.MyControls
                         {
                             if (d.IsNullOrEmpty()) continue;
                             string dllName = d;
-                            //默认的格式是dll
-                            if (d.IndexOf(".dll") == -1) dllName = $"{d}.dll";
-                            PluginsDownload.ToPluginsFolder(baseUrl, dllName);
+                            PluginsDownload.ToPluginsFolder(downLoadUrl, dllName);
                         }
                     }
                 }
@@ -152,7 +152,23 @@ namespace Client.MyControls
                 PluginsBox pluginsLogo = new PluginsBox();
                 pluginsLogo.Margin = new Thickness(5);
                 pluginsLogo.LogoContent = p.Name;
-                pluginsLogo.ImageBack = new BitmapImage(new Uri($"pack://application:,,,/{p.DLLName};component/{p.LogoImage}"));
+                Uri uri = null;
+
+                #region 插件信息加载异常
+
+                try
+                {
+                    uri = new Uri($"pack://application:,,,/{p.DLLName};component/{p.LogoImage}");
+                }
+                catch 
+                {
+                    Notice.Show($"{p.Name}插件加载失败,未找到插件必须程序,已略过！", "插件加载失败", 5, MessageBoxIcon.Error);
+                    continue;
+                }
+
+                #endregion
+
+                pluginsLogo.ImageBack = new BitmapImage(uri);
                 pluginsLogo.PluginsData = p;
 
                 if (MainWindowGlobal.CurrPlugins.Any(c => c.Id == p.Id))

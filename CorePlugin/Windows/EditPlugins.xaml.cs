@@ -169,6 +169,7 @@ namespace CorePlugin.Windows
             cbWebDownload.IsChecked = pluginsDB.WebDownload;
             txtConnectionName.Text = pluginsDB.ConnectionName;
             txtConnectionStr.Text = pluginsDB.ConnectionString;
+            txtDLLs.Text = pluginsDB.DLLs;
 
             #endregion
 

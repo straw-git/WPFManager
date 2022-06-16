@@ -149,18 +149,18 @@ namespace WebPlugins.Controllers
         /// 下载插件
         /// </summary>
         /// <param name="pluginId"></param>
+        /// <param name="fileName"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult DownPlugins(int pluginId)
+        public IActionResult DownloadPlugins(int pluginId,string fileName)
         {
-            string sFileName = $@"qmhuangtext{DateTime.Now.ToString("yyyyMMddHHmmss")}.txt";
+            string sFileName = _webHostEnvironment.WebRootPath + $@"\dlls\{pluginId}\{fileName}";
             FileStream fs = new FileStream(sFileName, FileMode.OpenOrCreate);
             StreamWriter sw = new StreamWriter(fs);
-            sw.WriteLine("Hello world");
             sw.Flush();
             sw.Close();
             fs.Close();
-            return File(new FileStream(sFileName, FileMode.Open), "application/octet-stream", $"导出测试{DateTime.Now.ToString("yyyyMMddHHmmss")}.txt");
+            return File(new FileStream(sFileName, FileMode.Open), "application/octet-stream", fileName);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
