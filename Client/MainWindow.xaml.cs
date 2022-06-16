@@ -66,6 +66,8 @@ namespace Client
             Height = windowHeight;
 
             #endregion 
+
+            lblCurrUser.Text = UserGlobal.CurrUser.RealName;
         }
 
         #region override BaseMainWindow
@@ -129,9 +131,9 @@ namespace Client
             tvMenu.Items.Clear();
             tvMenu_Simple.Items.Clear();
 
-            if (_pages == null || _pages.Count == 0) 
+            if (_pages == null || _pages.Count == 0)
             {
-                MessageBoxX.Show("当前模块下没有任何页面","空值提醒");
+                MessageBoxX.Show("当前模块下没有任何页面", "空值提醒");
                 return;
             }
 
@@ -501,5 +503,15 @@ namespace Client
         }
 
         #endregion
+
+        #region 注销
+
+        private void btnReLogin_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.Application.Restart();
+            Application.Current.Shutdown();
+        }
+
+        #endregion 
     }
 }

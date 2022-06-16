@@ -134,7 +134,7 @@ namespace Client.MyControls
 
                                 #region 加载权限
 
-                                if (userModel.RoleId == context.Role.First(c => c.Name == "超级管理员").Id)
+                                if (userModel.Name == "admin")
                                 {
                                     #region 超级管理员
 
@@ -149,7 +149,7 @@ namespace Client.MyControls
                                     //获取角色权限
                                     string rolePluginsStr = context.RolePlugins.Any(c => c.RoleId == userModel.RoleId) ? context.RolePlugins.First(c => c.RoleId == userModel.RoleId).Pages : "";
                                     //获取用户自定义权限
-                                    UserPlugins userPlugins = context.UserPlugins.FirstOrDefault(c => c.Id == userModel.Id);
+                                    UserPlugins userPlugins = context.UserPlugins.FirstOrDefault(c => c.UserId == userModel.Id);
                                     if (userPlugins != null && userPlugins.Id > 0)
                                     {
                                         if (userPlugins.IncreasePages.NotEmpty())

@@ -121,6 +121,18 @@
                             Foreground="Gray"
                         pu:ButtonHelper.HoverBrush="Black"
                         VerticalAlignment="Center" />
+                    <pu:DropDown Margin="20,0,0,0">
+                        <TextBlock Text="Admin"
+                                   x:Name="lblCurrUser"
+                                   FontWeight="Light"
+                                   VerticalAlignment="Center"
+                                   Foreground="Black"/>
+                        <pu:DropDown.Child>
+                            <StackPanel HorizontalAlignment="Center">
+                                <Button  Content="注销" Margin="20"  pu:ButtonHelper.ButtonStyle="Link" x:Name="btnReLogin" Click="btnReLogin_Click" />
+                            </StackPanel>
+                        </pu:DropDown.Child>
+                    </pu:DropDown>
                 </StackPanel>
             </Grid>
         </Grid>
