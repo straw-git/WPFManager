@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>@ViewBag.PluginsName</h1>
+<table>
+    @foreach (var item in ViewBag.Details)
+    {
+    <tr>
+        <td>@item.Name</td>
+    </tr>
+    }
+</table>
+
+<input type="file" id="fileUpload" name="fileUpload" multiple />
+<input id="upload" type="button" value="ajax 提交" />
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var id =@ViewBag.PluginsId;
+        $("#upload").click(function (evt) {
+            ///取选择的文件加入FormData中
+            var fileUpload = $("#fileUpload").get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                data.append(files[i].name, files[i]);
+            }
+            // data.append("Name", $('input[name="Name"]').val())
+            $.ajax({
+                type: "POST",
+                url: "/home/UploadDlls?id=" + id,
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (message) {
+                    location.reload();
+                },
+                error: function () {
+                    alert("上传文件出现错误！");
+                }
+            });
+        });
+    });
+</script>

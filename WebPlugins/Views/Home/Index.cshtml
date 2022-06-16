@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <table>
+    @foreach (var item in ViewBag.Plugins)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.FileCount</td>
+            <td><a href="/Home/Edit?id=@item.Id">详情</a></td>
+        </tr>
+    }
+</table>
+</div>
