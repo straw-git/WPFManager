@@ -145,6 +145,34 @@ namespace WebPlugins.Controllers
             DBHelper.ExecuteSql(sql);//更改数据库
         }
 
+        [HttpPost]
+        public string PostFile([FromForm] IFormCollection formCollection)
+        {
+            string result = "Fail";
+            string fileName = Guid.NewGuid().ToString();
+            FormFileCollection fileCollection = (FormFileCollection)formCollection.Files;
+            foreach (IFormFile file in fileCollection)
+            {
+                StreamReader reader = new StreamReader(file.OpenReadStream());
+                string content = reader.ReadToEnd();
+                string suffix = file.FileName.Substring(file.FileName.LastIndexOf('.'));
+                string filename = _webHostEnvironment.WebRootPath + $@"\imgs\{fileName}{suffix}";
+                if (System.IO.File.Exists(filename))
+                {
+                    System.IO.File.Delete(filename);
+                }
+                using (FileStream fs = System.IO.File.Create(filename))
+                {
+                    // 复制文件
+                    file.CopyTo(fs);
+                    // 清空缓冲区数据
+                    fs.Flush();
+                }
+                result = $"{fileName}{suffix}";
+            }
+            return result;
+        }
+
         /// <summary>
         /// 下载插件
         /// </summary>
@@ -152,7 +180,7 @@ namespace WebPlugins.Controllers
         /// <param name="fileName"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult DownloadPlugins(int pluginId,string fileName)
+        public IActionResult DownloadPlugins(int pluginId, string fileName)
         {
             string sFileName = _webHostEnvironment.WebRootPath + $@"\dlls\{pluginId}\{fileName}";
             FileStream fs = new FileStream(sFileName, FileMode.OpenOrCreate);

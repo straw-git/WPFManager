@@ -15,7 +15,7 @@ namespace CoreDBModels
         public int MaxLogCount { get; set; }
 
         [MaxLength(500)]
-        public string PluginsUpdateBaseUrl { get; set; }//插件更新的基础路径
+        public string APIUrl { get; set; }//插件更新的基础路径
         [MaxLength(20)]
         public string LoginTitle { get; set; }//登录页标题
     }

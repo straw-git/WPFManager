@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Common.MyControls.UploadImageBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Common.MyControls"
+             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="200">
+    <Grid>
+        <Grid  x:Name="realImg" MouseEnter="realImg_MouseEnter" MouseLeave="realImg_MouseLeave">
+            <Image x:Name="img"  Source="/Images/normal_user_header_m.png" Stretch="Fill"/>
+            <Border x:Name="op" Visibility="Collapsed" Background="Black" Opacity="0.4"/>
+            <Button x:Name="btnUpdate" Visibility="Collapsed" Content="&#xf044;" Click="btnUpdate_Click" pu:ButtonHelper.ButtonStyle="Link" FontSize="20" Foreground="White" pu:ButtonHelper.HoverBrush="White" FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button x:Name="btnDelete" Visibility="Collapsed" Content="&#xf00d;" Click="btnDelete_Click" pu:ButtonHelper.ButtonStyle="Link" FontSize="20" Foreground="Red" pu:ButtonHelper.HoverBrush="Red" FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10"/>
+        </Grid>
+        <Button x:Name="btnNew" Visibility="Collapsed" Click="btnNew_Click" Content="&#xf00e;"  FontFamily="{StaticResource FontAwesome}" Background="LightGray" Foreground="White" FontSize="20" />
+    </Grid>
+</UserControl>

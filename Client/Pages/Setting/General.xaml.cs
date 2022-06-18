@@ -46,7 +46,7 @@ namespace Client.Pages.Setting
             using (CoreDBContext context = new CoreDBContext())
             {
                 var setting = context.CoreSetting.Single();
-                setting.PluginsUpdateBaseUrl = pluginUpdateUrl;
+                setting.APIUrl = pluginUpdateUrl;
                 setting.LoginTitle = txtLoginTitle.Text;
 
                 context.SaveChanges();
@@ -60,7 +60,7 @@ namespace Client.Pages.Setting
             using (CoreDBContext context = new CoreDBContext()) 
             {
                 var info = context.CoreSetting.First();
-                txtPluginUpdateUrl.Text = info.PluginsUpdateBaseUrl;
+                txtPluginUpdateUrl.Text = info.APIUrl;
                 txtLoginTitle.Text = info.LoginTitle;
             }
         }

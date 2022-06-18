@@ -97,7 +97,7 @@ namespace Client.MyControls
 
             //查找所有插件
             List<Plugins> plugins = UserGlobal.Plugins.OrderBy(c => c.Order).ToList();
-            string baseUrl = UserGlobal.CoreSetting.PluginsUpdateBaseUrl;//插件的下载更新地址
+            string baseUrl = UserGlobal.CoreSetting.APIUrl;//插件的下载更新地址
             if (baseUrl.EndsWith("/")) baseUrl = baseUrl.Substring(0, baseUrl.Length - 1);
 
             for (int i = 0; i < plugins.Count; i++)
