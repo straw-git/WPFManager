@@ -59,6 +59,7 @@ namespace Client
             stdStart.Begin();//启动动画
 
             login.Visibility = Visibility.Visible;
+            login.ShowLogin();
             selectPlugins.Visibility = Visibility.Collapsed;
 
             #region 事件监听

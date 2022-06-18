@@ -31,6 +31,11 @@ namespace Client.Pages.Setting
             string pluginUpdateUrl = txtPluginUpdateUrl.Text;
             string loginTitle = txtLoginTitle.Text;
 
+            if (!pluginUpdateUrl.EndsWith("/")) 
+            {
+                pluginUpdateUrl = pluginUpdateUrl + "/";
+            }
+
             if (pluginUpdateUrl.IsNullOrEmpty())
             {
                 MessageBoxX.Show("请输入插件更新路径", "空值提醒");

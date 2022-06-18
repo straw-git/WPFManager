@@ -169,9 +169,6 @@
     <Compile Include="MyControls\SuperRichTextBox.xaml.cs">
       <DependentUpon>SuperRichTextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControls\UploadImageBox.xaml.cs">
-      <DependentUpon>UploadImageBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MyControls\UserSelector.xaml.cs">
       <DependentUpon>UserSelector.xaml</DependentUpon>
     </Compile>
@@ -261,10 +258,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyControls\SuperRichTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MyControls\UploadImageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
