@@ -18,6 +18,9 @@ mono_crash.*
 
 # Build results
 
+客户管理.sln
+CustomerDBModels/
+Customer/
 人事管理.sln
 HR/
 HRDBModels/
@@ -36,6 +39,7 @@ x86/
 [Aa][Rr][Mm]64/
 bld/
 
+[Dd]ebug/
 [Oo]bj/
 [Oo]ut/
 [Ll]og/
