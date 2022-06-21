@@ -127,6 +127,8 @@ namespace Client.MyControls
                                 //继续装载数据
                                 handler.UpdateMessage("登录成功,正在装载用户数据...");
 
+                                LogManager.Debug($"{userName}登录成功！");
+
                                 //清空数据
                                 UserGlobal.Plugins.Clear();
                                 UserGlobal.PluginsModules.Clear();

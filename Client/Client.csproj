@@ -135,7 +135,6 @@
     <Compile Include="CurrGlobal\Global.cs" />
     <Compile Include="Events\EmailNotReadChangedEventObserver.cs" />
     <Compile Include="InitData.cs" />
-    <Compile Include="ClientLog.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -262,12 +261,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="login_bg.png" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
