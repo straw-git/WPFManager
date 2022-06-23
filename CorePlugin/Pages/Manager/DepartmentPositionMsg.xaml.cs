@@ -28,6 +28,7 @@ namespace CorePlugin.Pages.Manager
         public DepartmentPositionMsg()
         {
             InitializeComponent();
+            this.StartPageInAnimation();
         }
 
         #region UI Models

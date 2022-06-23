@@ -143,12 +143,12 @@
                                                x:Name="cbUsePositionEndTime"
                                                Checked="cbUsePositionEndTime_Checked"
                                                Unchecked="cbUsePositionEndTime_Unchecked"
-                                                pu:CheckBoxHelper.CheckBoxStyle="Switch"
-                                                pu:CheckBoxHelper.BoxHeight="20"
-                                                pu:CheckBoxHelper.BoxWidth="30"
+                                                pu:CheckBoxHelper.CheckBoxStyle="Switch2"
+                                                pu:CheckBoxHelper.BoxHeight="28"
+                                                pu:CheckBoxHelper.BoxWidth="55"
                                                Background="{DynamicResource CheckBoxBgColor}"
                                                 pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"/>
-                                    <pu:DateTimePicker x:Name="dtpUsePositionEndTime" IsEnabled="False" Width="225" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
+                                    <pu:DateTimePicker x:Name="dtpUsePositionEndTime" IsEnabled="False" Width="200" Height="30" ThemeBrush="{DynamicResource SkinColor}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
                                     <Label Content="到期后：" Width="80"/>

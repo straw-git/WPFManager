@@ -159,9 +159,7 @@ namespace CorePlugin.Windows
 
         #endregion
 
-        /// <summary>
-        /// 加载角色下拉
-        /// </summary>
+        //加载角色下拉
         private void LoadRolesComobox()
         {
             List<Role> roles = null;
@@ -271,6 +269,8 @@ namespace CorePlugin.Windows
 
         #endregion
 
+        #region 拖动窗体
+
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -279,19 +279,24 @@ namespace CorePlugin.Windows
             }
         }
 
+        #endregion 
+
+        //编辑
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            #region 验证
+
             if (!txtAdminName.NotEmpty())
             {
                 tab.SelectedIndex = 0;
                 return;
             }
-            if (!txtRealName.NotEmpty()) 
+            if (!txtRealName.NotEmpty())
             {
                 tab.SelectedIndex = 1;
                 return;
             }
-            if (!txtIdCard.NotEmpty()) 
+            if (!txtIdCard.NotEmpty())
             {
                 tab.SelectedIndex = 1;
                 return;
@@ -312,22 +317,24 @@ namespace CorePlugin.Windows
             int departmentId = (int)cbDepartment.SelectedValue;
             int positionId = (int)cbPosition.SelectedValue;
 
-            if (departmentId == 0) 
+            if (departmentId == 0)
             {
-                MessageBoxX.Show("请先添加部门后再继续操作","部门不存在");
+                MessageBoxX.Show("请先添加部门后再继续操作", "部门不存在");
                 return;
             }
-            if (positionId == 0) 
+            if (positionId == 0)
             {
                 MessageBoxX.Show("请先添加职位后再继续操作", "职位不存在");
                 return;
             }
 
+            #endregion 
+
             using (CoreDBContext context = new CoreDBContext())
             {
                 if (IsEdit)
                 {
-                    #region  编辑状态
+                    #region 验证
 
                     if (context.User.Any(c => c.Name == name && c.Id != editId))
                     {
@@ -335,6 +342,10 @@ namespace CorePlugin.Windows
                         MessageBoxX.Show($"存在相同账户名[{name}]", "数据存在");
                         return;
                     }
+
+                    #endregion 
+
+                    #region  编辑状态
 
                     Model = context.User.Single(c => c.Id == editId);
                     Model.Name = name;
@@ -352,17 +363,34 @@ namespace CorePlugin.Windows
                     Model.PositionType = cbPositionType.SelectedIndex;
 
                     #endregion 
+
                     this.Log("账户编辑成功！");
                 }
                 else
                 {
-                    #region  添加状态
+                    #region 验证
+
                     if (context.User.Any(c => c.Name == name))
                     {
                         //存在
                         MessageBoxX.Show($"存在相同账户名[{name}]", "数据存在");
                         return;
                     }
+
+                    //获取职位信息
+                    var position = context.DepartmentPosition.First(c => c.Id == positionId);
+                    int positionUserCount = context.User.Any(c => c.DepartmentPositionId == positionId)
+                        ? context.User.Count(c => c.DepartmentPositionId == positionId)
+                        : 0;
+                    if (position.MaxUserCount <= positionUserCount)
+                    {
+                        MessageBoxX.Show($"当前职位的定员数已满，不能继续添加", "超过最大数");
+                        return;
+                    }
+
+                    #endregion 
+
+                    #region  添加状态
 
                     Model = new User();
                     Model.CanLogin = true;
@@ -378,21 +406,26 @@ namespace CorePlugin.Windows
                     Model.DepartmentPositionId = positionId;
                     Model.RealName = realName;
                     Model.IdCard = idCard;
-                    Model.PositionEndTime = (bool)cbUsePositionEndTime.IsChecked 
-                        ? dtpUsePositionEndTime.SelectedDateTime 
+                    Model.PositionEndTime = (bool)cbUsePositionEndTime.IsChecked
+                        ? dtpUsePositionEndTime.SelectedDateTime
                         : DateTime.Now.AddYears(20);
                     Model.NewPositionId = (int)cbNewPosition.SelectedValue;
                     Model.NewPositionStartTime = Model.PositionEndTime;
                     Model.PositionType = cbPositionType.SelectedIndex;
 
                     Model = context.User.Add(Model);
+
                     #endregion
+
                     this.Log("账户添加成功！");
                 }
                 context.SaveChanges();
             }
+
             btnClose_Click(null, null);//模拟关闭
         }
+
+        #region 到期时间
 
         private void cbUsePositionEndTime_Checked(object sender, RoutedEventArgs e)
         {
@@ -403,5 +436,7 @@ namespace CorePlugin.Windows
         {
             dtpUsePositionEndTime.IsEnabled = false;
         }
+
+        #endregion
     }
 }
