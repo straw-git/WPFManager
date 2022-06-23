@@ -15,189 +15,143 @@
         WindowStartupLocation="CenterScreen">
     <Border BorderThickness="1" BorderBrush="LightGray">
         <Grid Background="#FFF8F5F5" x:Name="edit" MouseDown="edit_MouseDown">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
             <!--插件信息-->
-            <Grid Grid.Row="0">
-                <GroupBox  Header="插件信息"
+            <GroupBox  Header="插件信息"
                    pu:GroupBoxHelper.Icon="&#xf0c6;"
                            BorderThickness="0"
                    pu:GroupBoxHelper.HeaderPadding="0,10,0,10"
                    pu:GroupBoxHelper.IsSplitLineVisible="True">
-                    <pu:GroupBoxHelper.ExtendControl>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
-                            <Button FontSize="16"
+                <pu:GroupBoxHelper.ExtendControl>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                        <Button FontSize="16"
                                     Margin="10,0,0,0"
                                     Width="28"
                                     Height="28"
                                     ToolTip="添加模块"
                                     pu:ButtonHelper.ButtonStyle="Link"
-                                    Foreground="Black"
+                                    Foreground="{DynamicResource SkinColor}"
                                     Content="&#xf067;"
                                     x:Name="btnAddModule"
                                     Click="btnAddModule_Click"
                                     FontFamily="{StaticResource FontAwesome}"
-                                    pu:ButtonHelper.HoverBrush="Orange"/>
-                            <Button FontSize="16"
-                                     Margin="10,0,0,0"
-                                    Width="28"
-                                    Height="28"
-                                    ToolTip="保存"
-                                    pu:ButtonHelper.ButtonStyle="Link"
-                                    Foreground="Black"
-                                    Content="&#xf00c;"
-                                x:Name="btnSave"
-                                Click="btnSave_Click"
-                                    FontFamily="{StaticResource FontAwesome}"
-                                    pu:ButtonHelper.HoverBrush="Orange"/>
-                            <!--关闭按钮-->
-                            <Button FontSize="16"
-                                     Margin="10,0,0,0"
+                                    pu:ButtonHelper.HoverBrush="{DynamicResource SkinColor}"/>
+                        <!--关闭按钮-->
+                        <Button FontSize="16"
+                                     Margin="10,0,10,0"
                                     Width="28"
                                     Height="28"
                                     ToolTip="关闭"
                                     pu:ButtonHelper.ButtonStyle="Link"
-                                    Foreground="Black"
+                                    Foreground="Red"
                                     Content="&#xf00d;"
                                     FontFamily="{StaticResource FontAwesome}"
-                                    pu:ButtonHelper.HoverBrush="Orange"
+                                    pu:ButtonHelper.HoverBrush="Red"
                                     x:Name="btnClose" Click="btnClose_Click"/>
-                        </StackPanel>
-                    </pu:GroupBoxHelper.ExtendControl>
-                    <Grid>
-                        <StackPanel HorizontalAlignment="Center" Margin="20,20,20,5">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Label VerticalAlignment="Center" Width="80"  Content="插件名称："/>
-                                <TextBox  x:Name="txtPluginsName"  Width="200"  pu:TextBoxHelper.Watermark="插件名称"/>
-                                <Label VerticalAlignment="Center" Width="80"  Margin="50,0,0,0" Content="主程序DLL："/>
-                                <TextBox  x:Name="txtPluginsDLLName" MinWidth="200" pu:TextBoxHelper.Watermark="DLL名称" ToolTip="下载DLL的同时会检查 DLL名称+DBModels 的DLL文件"/>
-                                <Label VerticalAlignment="Center" Width="80"  Margin="50,0,0,0" Content="排序："/>
-                                <TextBox  x:Name="txtPluginsOrder" MinWidth="80" Text="0"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
-                                <Label VerticalAlignment="Center" Width="80" Content="缩略图："/>
-                                <TextBox   x:Name="txtPluginsLogoImgName" Text="logo.jpg" Width="200" pu:TextBoxHelper.Watermark="缩略图名称"/>
-                                <Label VerticalAlignment="Center"  Margin="50,0,0,0"  Width="80"  Content="连接标题："/>
-                                <TextBox x:Name="txtConnectionName" Width="200" ToolTip="connection string name in app.config"/>
-                                <Label VerticalAlignment="Center" Width="80"  Margin="50,0,0,0" Content="强制下载："/>
-                                <CheckBox  x:Name="cbWebDownload" IsChecked="True" Background="{DynamicResource CheckBoxBgColor}" pu:CheckBoxHelper.CheckedBackground="{DynamicResource CheckBoxSelectedColor}"  pu:CheckBoxHelper.CheckBoxStyle="Switch2"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
-                                <Label VerticalAlignment="Center"  Width="80"  Content="字符串："/>
-                                <TextBox x:Name="txtConnectionStr"  Width="740" ToolTip="connection string name in app.config"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
-                                <Label VerticalAlignment="Center"  Width="80"  Content="关联DLL："/>
-                                <TextBox x:Name="txtDLLs" IsEnabled="False" Width="740" Height="80" AcceptsReturn="True" TextWrapping="Wrap"  VerticalContentAlignment="Top" />
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                </GroupBox>
-            </Grid>
-            <!--插件详情-->
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="180"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0">
-                    <ListBox pu:ListBoxHelper.ItemHeight="40" 
+                    </StackPanel>
+                </pu:GroupBoxHelper.ExtendControl>
+                <!--插件详情-->
+                <Grid Margin="-5,-5,0,-5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <!--Background="{DynamicResource SkinColor}"-->
+                        <ListBox pu:ListBoxHelper.ItemHeight="40" 
                              x:Name="listModules"
+                                 BorderThickness="0,0,1,0"
+                                 BorderBrush="LightGray"
                              ItemsSource="{Binding}"
-                             Background="{DynamicResource SkinColor}"
-                             pu:ListBoxHelper.HoverBackground="Gray" 
-                             pu:ListBoxHelper.SelectedBackground="Gray"
+                             pu:ListBoxHelper.HoverBackground="{DynamicResource TreeViewSelectedBgColor}" 
+                             pu:ListBoxHelper.SelectedBackground="{DynamicResource TreeViewSelectedBgColor}"
                              SelectionChanged="listModules_SelectionChanged"
                              Grid.Column="0">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Width="170">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="28"/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="28"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label FontSize="16"
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="170">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="28"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="28"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label FontSize="16"
                                         Grid.Column="0"
                                         Width="28"
                                         Height="28"
                                         pu:ButtonHelper.ButtonStyle="Link"
-                                        Foreground="{DynamicResource SkinOppositeColor}"
                                         Content="{Binding IconStr}"
                                         FontFamily="{StaticResource FontAwesome}"/>
-                                    <Label Grid.Column="1" Content="{Binding ModuleName}" Foreground="{DynamicResource SkinOppositeColor}"/>
-                                    <pu:DropDown Grid.Column="2" Width="28">
-                                        <Button FontSize="16"
+                                        <Label Grid.Column="1" Content="{Binding ModuleName}"/>
+                                        <pu:DropDown Grid.Column="2" Width="28">
+                                            <Button FontSize="16"
                                             Width="28"
                                             Height="28"
                                             ToolTip="刷新"
                                             pu:ButtonHelper.ButtonStyle="Link"
-                                            Foreground="Black"
+                                            Foreground="Orange"
                                             Content="&#xf044;"
                                             FontFamily="{StaticResource FontAwesome}"
                                             pu:ButtonHelper.HoverBrush="Orange" />
-                                        <pu:DropDown.Child>
-                                            <StackPanel Width="300" Margin="20" HorizontalAlignment="Center">
-                                                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                                                    <Label VerticalAlignment="Center" Width="80" Margin="10,0,0,0" Content="模块名称："/>
-                                                    <TextBox   Width="200" Text="{Binding ModuleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            <pu:DropDown.Child>
+                                                <StackPanel Width="300" Margin="20" HorizontalAlignment="Center">
+                                                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                                                        <Label VerticalAlignment="Center" Width="80" Margin="10,0,0,0" Content="模块名称："/>
+                                                        <TextBox   Width="200" Text="{Binding ModuleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Margin="0,2,2,2"
                                                           pu:TextBoxHelper.FocusedBorderBrush="White"/>
-                                                </StackPanel>
-                                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                                    <Label VerticalAlignment="Center" Width="80" Margin="10,0,0,0" Content="ICON："/>
-                                                    <TextBox   Width="200" Text="{Binding IconText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                                        <Label VerticalAlignment="Center" Width="80" Margin="10,0,0,0" Content="ICON："/>
+                                                        <TextBox   Width="200" Text="{Binding IconText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                pu:TextBoxHelper.Icon="{Binding IconStr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Margin="0,2,2,2"
                                                                Tag="{Binding TempId}"
                                                                TextChanged="txtModuleIcon_TextChanged"
                                                           pu:TextBoxHelper.FocusedBorderBrush="White"/>
-                                                </StackPanel>
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                                                    <Button FontSize="20"
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                                                        <Button FontSize="20"
                                                             ToolTip="添加页面"
                                                             pu:ButtonHelper.ButtonStyle="Link"
-                                                            Foreground="Black"
+                                                            Foreground="{DynamicResource SkinColor}"
                                                             Content="&#xf067;"
                                                             Tag="{Binding TempId}"
                                                             Click="btnAddPage_Click"
                                                             FontFamily="{StaticResource FontAwesome}"
-                                                            pu:ButtonHelper.HoverBrush="Orange"/>
-                                                    <Button FontSize="20"
+                                                            pu:ButtonHelper.HoverBrush="{DynamicResource SkinColor}"/>
+                                                        <Button FontSize="20"
                                                             ToolTip="编辑"
                                                             Margin="20,0,0,0"
                                                             pu:ButtonHelper.ButtonStyle="Link"
-                                                            Foreground="Black"
+                                                            Foreground="Orange"
                                                             Content="&#xf044;"
                                                             Tag="{Binding ModuleId}"
                                                             Click="btnEditModule_Click"
                                                             FontFamily="{StaticResource FontAwesome}"
                                                             pu:ButtonHelper.HoverBrush="Orange"/>
-                                                    <Button FontSize="20"
+                                                        <Button FontSize="20"
                                                             Margin="20,0,10,0"
                                                             ToolTip="删除"
                                                             pu:ButtonHelper.ButtonStyle="Link"
-                                                            Foreground="Black"
+                                                            Foreground="Red"
                                                             Content="&#xf014;"
                                                             Tag="{Binding ModuleId}"
                                                             Click="btnDeleteModule_Click"
                                                             FontFamily="{StaticResource FontAwesome}"
-                                                            pu:ButtonHelper.HoverBrush="Orange"/>
+                                                            pu:ButtonHelper.HoverBrush="Red"/>
+                                                    </StackPanel>
                                                 </StackPanel>
-                                            </StackPanel>
-                                        </pu:DropDown.Child>
-                                    </pu:DropDown>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-                <Grid Grid.Column="1">
-                    <DataGrid x:Name="listPages"
+                                            </pu:DropDown.Child>
+                                        </pu:DropDown>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <DataGrid x:Name="listPages"
                               ItemsSource="{Binding}"
-                              BorderThickness="0,1,0,0"
+                              BorderThickness="0"
                               CanUserSortColumns="False"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
@@ -209,24 +163,25 @@
                               RowEditEnding="listPages_RowEditEnding"
                               pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
                               pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="图标" Width="50" Binding="{Binding Icon}" FontFamily="{StaticResource FontAwesome}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="名称" Width="*" Binding="{Binding PageName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn  Header="路径" Width="3*" Binding="{Binding PagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTemplateColumn Header="操作" Width="60" >
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button  Content="&#xf002;"  ToolTip="选图标"  FontFamily="{StaticResource FontAwesome}" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding TempId}" Foreground="Gray" pu:ButtonHelper.HoverBrush="Green" x:Name="btnFindIcon" Click="btnFindIcon_Click"/>
-                                            <Button  Content="&#xf014;" Margin="10,0,0,0"  ToolTip="删除"  FontFamily="{StaticResource FontAwesome}" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding TempId}" Foreground="Gray" pu:ButtonHelper.HoverBrush="Red" x:Name="btnDeleteModulePage" Click="btnDeleteModulePage_Click"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="图标" Width="50" Binding="{Binding Icon}" FontFamily="{StaticResource FontAwesome}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="名称" Width="*" Binding="{Binding PageName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <DataGridTextColumn  Header="路径" Width="3*" Binding="{Binding PagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <DataGridTemplateColumn Header="操作" Width="100" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button FontSize="18"  Content="&#xf002;"  ToolTip="选图标"  FontFamily="{StaticResource FontAwesome}" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding TempId}" Foreground="Green" pu:ButtonHelper.HoverBrush="Green" x:Name="btnFindIcon" Click="btnFindIcon_Click"/>
+                                                <Button FontSize="18" Content="&#xf014;" Margin="20,0,0,0"  ToolTip="删除"  FontFamily="{StaticResource FontAwesome}" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding TempId}" Foreground="Red" pu:ButtonHelper.HoverBrush="Red" x:Name="btnDeleteModulePage" Click="btnDeleteModulePage_Click"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </GroupBox>
         </Grid>
     </Border>
 </Window>

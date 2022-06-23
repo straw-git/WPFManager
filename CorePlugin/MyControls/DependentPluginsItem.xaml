@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="CorePlugin.MyControls.DependentPluginsItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CorePlugin.MyControls"
+             Margin="5"
+             Loaded="UserControl_Loaded">
+    <Grid Background="{DynamicResource SkinColor}" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" ToolTip="移除依赖插件">
+        <Label x:Name="lblName" Content="插件" Margin="5" Foreground="{DynamicResource SkinOppositeColor}"/>
+        <Border Visibility="Collapsed" x:Name="b" Background="White" Opacity="0.5" />
+        <Button Visibility="Collapsed"  x:Name="btnDelete" Click="btnDelete_Click" Content="&#xf00d;" pu:ButtonHelper.ButtonStyle="Link" Foreground="Red" pu:ButtonHelper.HoverBrush="Red" FontFamily="{StaticResource FontAwesome}"/>
+    </Grid>
+</UserControl>

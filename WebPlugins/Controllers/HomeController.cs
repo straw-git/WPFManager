@@ -149,26 +149,42 @@ namespace WebPlugins.Controllers
         public string PostFile([FromForm] IFormCollection formCollection)
         {
             string result = "Fail";
-            string fileName = Guid.NewGuid().ToString();
             FormFileCollection fileCollection = (FormFileCollection)formCollection.Files;
             foreach (IFormFile file in fileCollection)
             {
                 StreamReader reader = new StreamReader(file.OpenReadStream());
                 string content = reader.ReadToEnd();
                 string suffix = file.FileName.Substring(file.FileName.LastIndexOf('.'));
-                string filename = _webHostEnvironment.WebRootPath + $@"\imgs\{fileName}{suffix}";
-                if (System.IO.File.Exists(filename))
+
+                string fileName = "";
+                string filePath = "";
+                if (suffix == ".jpg" || suffix == ".png" || suffix == ".jpeg" || suffix == ".bmp" || suffix == ".gif")
                 {
-                    System.IO.File.Delete(filename);
+                    fileName = $"{Guid.NewGuid().ToString()}{suffix}";
+                    filePath = _webHostEnvironment.WebRootPath + $@"\imgs\{fileName}";
                 }
-                using (FileStream fs = System.IO.File.Create(filename))
+                else 
                 {
-                    // 复制文件
-                    file.CopyTo(fs);
-                    // 清空缓冲区数据
-                    fs.Flush();
+                    fileName = file.FileName;
+                    filePath = _webHostEnvironment.WebRootPath + $@"\dlls\{fileName}";
                 }
-                result = $"{fileName}{suffix}";
+
+               
+                if (!System.IO.File.Exists(filePath))
+                {
+                    //存在文件 直接返回 防止文件重复
+                    //System.IO.File.Delete(filePath);
+                    //不存在 复制文件
+                    using (FileStream fs = System.IO.File.Create(filePath))
+                    {
+                        // 复制文件
+                        file.CopyTo(fs);
+                        // 清空缓冲区数据
+                        fs.Flush();
+                    }
+                }
+
+                result = $"{fileName}";
             }
             return result;
         }

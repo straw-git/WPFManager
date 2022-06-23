@@ -99,8 +99,11 @@ namespace Client
                             UpdateTime = DateTime.Now,
                             WebDownload = true,
                             ConnectionName = "CoreConnectionStr",
-                            ConnectionString = @"Data Source=.;Initial Catalog=ZDB;User ID=sa;Password=123456;"
-                        });
+                            ConnectionString = @"Data Source=.;Initial Catalog=ZDB;User ID=sa;Password=123456;",
+                            DependentIds = "",
+                            DLLs = "",
+                            IsEnable = true
+                        }) ;
                         context.SaveChanges();
                         PluginsModule pluginsModule = context.PluginsModule.Add(new PluginsModule()
                         {

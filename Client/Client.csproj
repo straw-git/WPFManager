@@ -127,6 +127,10 @@
     <Compile Include="Migrations\202206180640423_webapi.designer.cs">
       <DependentUpon>202206180640423_webapi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202206220151292_updateplugins.cs" />
+    <Compile Include="Migrations\202206220151292_updateplugins.designer.cs">
+      <DependentUpon>202206220151292_updateplugins.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyControls\BgStar.xaml.cs">
       <DependentUpon>BgStar.xaml</DependentUpon>
     </Compile>
@@ -255,6 +259,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202206180640423_webapi.resx">
       <DependentUpon>202206180640423_webapi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206220151292_updateplugins.resx">
+      <DependentUpon>202206220151292_updateplugins.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -4,13 +4,25 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CorePlugin.Pages.Manager"
-      xmlns:my="clr-namespace:Common.MyControls;assembly=Common"
+      xmlns:my="clr-namespace:CorePlugin.MyControls"
       xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-      mc:Ignorable="d" Loaded="Page_Loaded"
-      d:DesignHeight="450" d:DesignWidth="800"
+      mc:Ignorable="d" Loaded="Page_Loaded" Unloaded="Page_Unloaded"
+      d:DesignHeight="750" d:DesignWidth="1190"
       Title="插件管理">
-
-        <!--列表和选择器-->
+    <Page.Resources>
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border Background="Transparent">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <!--列表和选择器-->
     <Grid>
         <GroupBox  Header="插件列表"
                    BorderThickness="0,1,0,0"
@@ -59,80 +71,30 @@
                 </Grid>
             </pu:GroupBoxHelper.ExtendControl>
             <Grid>
-                <DataGrid x:Name="list"
-                              ItemsSource="{Binding}"
-                              BorderThickness="0,1,0,0"
-                              Margin="-5,-6,0,0"
-                              CanUserAddRows="False"
-                              CanUserSortColumns="False"
-                              AutoGenerateColumns="False"
-                          IsReadOnly="True"
-                              pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
-                              pu:DataGridHelper.HeaderPadding="5,0"
-                              pu:DataGridHelper.HeaderMinHeight="40"
-                              pu:DataGridHelper.RowMinHeight="30"
-                              pu:DataGridHelper.CellPadding="5,0"
-                              pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
-                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
-                    <DataGrid.Columns>
-                        <DataGridTemplateColumn x:Name="sb" Width="60">
-                            <DataGridTemplateColumn.HeaderTemplate>
-                                <DataTemplate>
-                                    <CheckBox pu:CheckBoxHelper.CheckBoxStyle="Standard" pu:CheckBoxHelper.CheckedBackground="{DynamicResource SkinColor}"  ToolTip="[当前页数据] 全选/取消选择" x:Name="cbSelectListAll" Click="cbSelectListAll_Click" ></CheckBox>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.HeaderTemplate>
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox   pu:CheckBoxHelper.CheckBoxStyle="Standard" pu:CheckBoxHelper.CheckedBackground="Orange"  IsChecked="{Binding IsChecked}" x:Name="cbFocusItem" Click="cbFocusItem_Click"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="插件名称" Width="*" Binding="{Binding Name}" />
-                        <DataGridTextColumn Header="DLL" Width="150" Binding="{Binding DLLName}" />
-                        <DataGridTextColumn Header="模块数量" Width="100" Binding="{Binding ModuleCount}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="包含模块" Width="200" Binding="{Binding ModuleNames}"  IsReadOnly="True"/>
-                        <DataGridTemplateColumn Header="最后更新时间" Width="180">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <Border Grid.Row="0"  Background="Green" CornerRadius="5" VerticalAlignment="Center">
-                                            <Label Content="{Binding UpdateTimeYear}" Foreground="White"/>
-                                        </Border>
-                                        <Grid Grid.Column="1" >
-                                            <Label Content="{Binding UpdateTime}"/>
-                                        </Grid>
-                                    </Grid>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="操作" Width="180" >
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button  Content="&#xf044;" ToolTip="配置"   FontFamily="{StaticResource FontAwesome}" Margin="20,0,0,0"  pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}" FontSize="20"  Foreground="Gray" pu:ButtonHelper.HoverBrush="Orange" x:Name="btnEdit" Click="btnEdit_Click"/>
-                                        <Button  Content="&#xf014;"  ToolTip="删除"  FontFamily="{StaticResource FontAwesome}" Margin="20,0,20,0" pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}" FontSize="20"  Foreground="Gray" pu:ButtonHelper.HoverBrush="Red"  x:Name="btnDelete" Click="btnDelete_Click"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-
-                <!--<Grid Height="40" VerticalAlignment="Bottom" Background="White">
-                    <my:MyPager_ZHHans x:Name="pager" OnPageChange="pager_OnPageChange"></my:MyPager_ZHHans>
-                </Grid>-->
-                <Grid Visibility="Collapsed">
-                    <Border Background="White" x:Name="bNoData" Margin="{Binding ElementName=MyDataGridControl,Path=NoDataBorderMargin}">
+                <ListView x:Name="lvPlugins" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.Template>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <WrapPanel Orientation="Horizontal" IsItemsHost="True" ScrollViewer.CanContentScroll="True"/>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ListView.Template>
+                </ListView>
+                <Border Background="White" x:Name="bNoData" Visibility="Collapsed" Margin="-4,36,0,0">
+                    <Grid>
                         <Image Source="pack://application:,,,/Common;component/Images/data_empty.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    </Border>
-                    <pu:Loading x:Name="gLoading"  Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
-                </Grid>
+                        <Viewbox  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,120">
+                            <Label Foreground="LightGray" Content="并没有搜索到任何物品信息" Margin="200,0,200,0"/>
+                        </Viewbox>
+                    </Grid>
+                </Border>
+                <pu:Loading x:Name="gLoading" Visibility="Collapsed" Height="50" Width="50" LoadingStyle="Ring2" IsRunning="True"/>
             </Grid>
         </GroupBox>
-        <my:SelectedListMenuBar x:Name="selectedMenus" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="110,10"/>
     </Grid>
 </Page>

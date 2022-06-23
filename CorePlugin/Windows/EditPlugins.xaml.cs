@@ -159,55 +159,6 @@ namespace CorePlugin.Windows
                     modulePagesDB.AddRange(_pages);//添加数据进列表
                 }
             }
-
-            #region 填充插件数据
-
-            txtPluginsName.Text = pluginsDB.Name;
-            txtPluginsDLLName.Text = pluginsDB.DLLName;
-            txtPluginsOrder.Text = pluginsDB.Order.ToString();
-            txtPluginsLogoImgName.Text = pluginsDB.LogoImage;
-            cbWebDownload.IsChecked = pluginsDB.WebDownload;
-            txtConnectionName.Text = pluginsDB.ConnectionName;
-            txtConnectionStr.Text = pluginsDB.ConnectionString;
-            txtDLLs.Text = pluginsDB.DLLs;
-
-            #endregion
-
-        }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            #region 更新本地数据
-
-            if (pluginsDB == null) pluginsDB = new Plugins();
-
-            int order = 0;
-            if (txtPluginsOrder.Text.IsNullOrEmpty()) txtPluginsOrder.Text = "0";
-            if (!int.TryParse(txtPluginsOrder.Text, out order))
-            {
-                MessageBoxX.Show("排序格式不正确", "只能输入数字");
-                txtPluginsOrder.Focus();
-                txtPluginsOrder.SelectAll();
-                return;
-            }
-
-            pluginsDB.ConnectionString = txtConnectionStr.Text;
-            pluginsDB.ConnectionName = txtConnectionName.Text;
-            pluginsDB.Name = txtPluginsName.Text;
-            pluginsDB.DLLName = txtPluginsDLLName.Text;
-            pluginsDB.Order = order;
-            pluginsDB.LogoImage = txtPluginsLogoImgName.Text;
-            pluginsDB.ConnectionName = txtConnectionName.Text;
-            pluginsDB.WebDownload = (bool)cbWebDownload.IsChecked;
-            pluginsDB.DLLs = txtDLLs.Text;
-
-            #endregion 
-
-            if (!CheckPluginUpdate())
-            {
-                UpdatePlugins();//更新插件信息
-                this.Log("插件信息保存成功！");
-            }
         }
 
         #endregion
@@ -281,11 +232,6 @@ namespace CorePlugin.Windows
         //添加模块
         private void btnAddModule_Click(object sender, RoutedEventArgs e)
         {
-            if (!CheckPluginUpdate())
-            {
-                UpdatePlugins();//更新插件信息
-            }
-
             var first = FontAwesomeCommon.TypeDict.First();
             PluginsModule moduleDB = null;
 
@@ -296,7 +242,6 @@ namespace CorePlugin.Windows
                 int order = context.PluginsModule.Any(c => c.PluginsId == editId) ? context.PluginsModule.Where(c => c.PluginsId == editId).Max(c => c.Order) + 1 : 0;
                 moduleDB = context.PluginsModule.Add(new PluginsModule()
                 {
-                    DLLName = txtPluginsDLLName.Text,
                     Icon = first.Key,
                     ModuleName = "新模块",
                     Order = order,
@@ -308,89 +253,6 @@ namespace CorePlugin.Windows
             #endregion
 
             AddModuleUIItem(moduleDB);//添加模块UI
-        }
-
-        //更新插件信息
-        private bool UpdatePlugins()
-        {
-            this.Log("正在保存插件信息...");
-
-            #region 赋值
-
-            string pluginName = txtPluginsName.Text;
-            string pluginDLLName = txtPluginsDLLName.Text;
-            string pluginLogoName = txtPluginsLogoImgName.Text;
-            int pluginOrder = 0;
-            bool pluginWebDownload = (bool)cbWebDownload.IsChecked;
-            string dlls = txtDLLs.Text.Trim();
-
-            #endregion
-
-            #region 验证
-
-            if (!txtPluginsName.NotEmpty()) return false;
-            if (!txtPluginsDLLName.NotEmpty()) return false;
-            if (!txtPluginsLogoImgName.NotEmpty()) return false;
-            if (!int.TryParse(txtPluginsOrder.Text, out pluginOrder)) txtPluginsOrder.Clear();
-            if (!txtPluginsOrder.NotEmpty()) return false;
-
-            #endregion
-
-            #region 之前没有信息直接添加 有信息更新
-
-            if (pluginsDB == null)
-            {
-                using (CoreDBContext context = new CoreDBContext())
-                {
-                    pluginsDB = context.Plugins.Add(new Plugins()
-                    {
-                        DLLName = pluginDLLName,
-                        LogoImage = pluginLogoName,
-                        Name = pluginName,
-                        UpdateTime = DateTime.Now,
-                        WebDownload = pluginWebDownload,
-                        Order = pluginOrder,
-                        ConnectionName = txtConnectionName.Text.Trim(),
-                        ConnectionString = txtConnectionStr.Text.Trim(),
-                        DLLs = dlls
-                    });
-                    context.SaveChanges();
-                }
-            }
-            else
-            {
-                using (CoreDBContext context = new CoreDBContext())
-                {
-                    //更新数据
-                    var _plugins = context.Plugins.Single(c => c.Id == pluginsDB.Id);
-                    _plugins.DLLName = pluginDLLName;
-                    _plugins.LogoImage = pluginLogoName;
-                    _plugins.Name = pluginName;
-                    _plugins.UpdateTime = DateTime.Now;
-                    _plugins.WebDownload = pluginWebDownload;
-                    _plugins.Order = pluginOrder;
-                    _plugins.ConnectionName = txtConnectionName.Text.Trim();
-                    _plugins.ConnectionString = txtConnectionStr.Text.Trim();
-                    _plugins.DLLs = txtDLLs.Text.Trim();
-
-                    //更新实体
-                    pluginsDB.DLLName = _plugins.DLLName;
-                    pluginsDB.LogoImage = _plugins.LogoImage;
-                    pluginsDB.Name = _plugins.Name;
-                    pluginsDB.UpdateTime = _plugins.UpdateTime;
-                    pluginsDB.WebDownload = _plugins.WebDownload;
-                    pluginsDB.Order = _plugins.Order;
-                    pluginsDB.ConnectionName = _plugins.ConnectionName;
-                    pluginsDB.ConnectionString = _plugins.ConnectionString;
-                    pluginsDB.DLLs = _plugins.DLLs;
-                    context.SaveChanges();
-                }
-            }
-
-            #endregion
-
-            this.Log("插件保存完成...");
-            return true;
         }
 
         //添加模块UI
@@ -433,20 +295,6 @@ namespace CorePlugin.Windows
             if (PageData.Count > 0) PageData.OrderByInt(c => c.Order);
         }
 
-        //检查插件信息是否需要修改
-        private bool CheckPluginUpdate()
-        {
-            if (pluginsDB == null) return false;
-
-            Plugins _plugins;
-            using (CoreDBContext context = new CoreDBContext())
-            {
-                _plugins = context.Plugins.First(c => c.Id == pluginsDB.Id);//数据库中的值
-            }
-            //比对与数据库中的是否相同
-            return new ObjectComparerCommon<Plugins>().Compare(pluginsDB, _plugins);
-        }
-
         //编辑模块图标
         private void txtModuleIcon_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -463,6 +311,7 @@ namespace CorePlugin.Windows
         private void listModules_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PageData.Clear();//清空列表
+            if (listModules.SelectedItem == null) return;
             ModuleUIModel selectedModule = listModules.SelectedItem as ModuleUIModel;//选中的模块
             var _pages = modulePagesDB.Where(c => c.ModuleId == selectedModule.ModuleId).ToList();
             RefPages(_pages, selectedModule.TempId);
@@ -504,6 +353,7 @@ namespace CorePlugin.Windows
                 PagePath = pageDB.PagePath
             });
 
+            modulePagesDB.Add(pageDB);
             PageData.OrderByInt(c => c.Order);
 
             this.Log("页面添加成功！");
@@ -534,6 +384,7 @@ namespace CorePlugin.Windows
                 _pageDB.Icon = selectedPage.IconText;
                 _pageDB.PageName = selectedPage.PageName;
                 _pageDB.PagePath = selectedPage.PagePath;
+
                 this.Log("页面编辑成功！");
                 if (context.SaveChanges() == 0)
                 {
@@ -549,6 +400,14 @@ namespace CorePlugin.Windows
                     #endregion
 
                     this.Log("页面编辑失败！");
+                }
+                else
+                {
+                    //数据库更新完成后 更新UI
+                    var _pageUI = modulePagesDB.Single(c => c.Id == selectedPage.PageId);
+                    _pageUI.Icon = selectedPage.IconText;
+                    _pageUI.PageName = selectedPage.PageName;
+                    _pageUI.PagePath = selectedPage.PagePath;
                 }
             }
         }
@@ -571,6 +430,5 @@ namespace CorePlugin.Windows
         }
 
         #endregion
-
     }
 }

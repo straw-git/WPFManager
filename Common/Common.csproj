@@ -166,9 +166,6 @@
       <DependentUpon>MyPager_ZHHans.xaml</DependentUpon>
     </Compile>
     <Compile Include="Global\PluginsDownload.cs" />
-    <Compile Include="MyControls\SelectedListMenuBar.xaml.cs">
-      <DependentUpon>SelectedListMenuBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MyControls\SuperRichTextBox.xaml.cs">
       <DependentUpon>SuperRichTextBox.xaml</DependentUpon>
     </Compile>
@@ -259,10 +256,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyControls\MyPager_ZHHans.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MyControls\SelectedListMenuBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

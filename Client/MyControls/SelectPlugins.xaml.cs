@@ -103,7 +103,7 @@ namespace Client.MyControls
             for (int i = 0; i < plugins.Count; i++)
             {
                 Plugins p = plugins[i];
-                string downLoadUrl = $"{baseUrl}/dlls/{p.Id}/";
+                string downLoadUrl = $"{baseUrl}/dlls/";
                 if (p.WebDownload)
                 {
                     //从网上下载
@@ -152,23 +152,11 @@ namespace Client.MyControls
                 PluginsBox pluginsLogo = new PluginsBox();
                 pluginsLogo.Margin = new Thickness(5);
                 pluginsLogo.LogoContent = p.Name;
-                Uri uri = null;
 
-                #region 插件信息加载异常
-
-                try
-                {
-                    uri = new Uri($"pack://application:,,,/{p.DLLName};component/{p.LogoImage}");
-                }
-                catch 
-                {
-                    Notice.Show($"{p.Name}插件加载失败,未找到插件必须程序,已略过！", "插件加载失败", 5, MessageBoxIcon.Error);
-                    continue;
-                }
-
-                #endregion
-
-                pluginsLogo.ImageBack = new BitmapImage(uri);
+                if (p.LogoImage.IsNullOrEmpty())
+                    pluginsLogo.ImageBack = new BitmapImage(new Uri($"pack://application:,,,/Common;component/Images/data_empty.png", UriKind.RelativeOrAbsolute));
+                else
+                    pluginsLogo.ImageBack = new BitmapImage(new Uri($"{UserGlobal.CoreSetting.APIUrl}imgs/{p.LogoImage}", UriKind.RelativeOrAbsolute));
                 pluginsLogo.PluginsData = p;
 
                 if (MainWindowGlobal.CurrPlugins.Any(c => c.Id == p.Id))

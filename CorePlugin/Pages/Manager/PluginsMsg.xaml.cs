@@ -2,6 +2,8 @@
 using Common.MyAttributes;
 using Common.MyControls;
 using CoreDBModels;
+using CorePlugin.Events;
+using CorePlugin.MyControls;
 using CorePlugin.Windows;
 using Panuon.UI.Silver;
 using System;
@@ -29,6 +31,8 @@ namespace CorePlugin.Pages.Manager
     /// </summary>
     public partial class PluginsMsg : Page
     {
+        #region UI Models
+
         public class UIModel : BaseUIModel
         {
             public int Id { get; set; }
@@ -42,6 +46,8 @@ namespace CorePlugin.Pages.Manager
             public string ImgSource { get; set; }
         }
 
+        #endregion 
+
         public PluginsMsg()
         {
             InitializeComponent();
@@ -49,95 +55,62 @@ namespace CorePlugin.Pages.Manager
         }
 
         //数据
-        ObservableCollection<UIModel> Data = new ObservableCollection<UIModel>();
+        ObservableCollection<PluginsItem> PluginsData = new ObservableCollection<PluginsItem>();
+        double itemWidth = 350;
+        double itemHeight = 350;
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            PluginsDeleteEventObserver.Instance.AddEventListener(Codes.PluginsDelete, OnPluginsDelete);
             //绑定数据
-            list.ItemsSource = Data;
+            lvPlugins.ItemsSource = PluginsData;
             UpdateDataAsync();
+        }
+
+        private void OnPluginsDelete(PluginsDeleteMessage p)
+        {
+            using (CoreDBContext context = new CoreDBContext())
+            {
+                context.Plugins.Remove(context.Plugins.First(c => c.Id == p.Id));
+                if (context.SaveChanges() > 0)//更新数据库
+                {
+                    PluginsData.Remove(PluginsData.First(c => c.model.Id == p.Id));//更新UI 
+                }
+            }
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            PluginsDeleteEventObserver.Instance.RemoveEventListener(Codes.PluginsDelete, OnPluginsDelete);
         }
 
         //添加插件
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            this.MaskVisible(true);
-            EditPlugins editPlugins = new EditPlugins();
-            editPlugins.ShowDialog();
-            this.MaskVisible(false);
-        }
-
-        //删除插件
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            UIModel selectedModel = list.SelectedItem as UIModel;
-            var result = MessageBoxX.Show($"是否确认删除模块[{selectedModel.Name}]？", "删除提醒", MainWindowGlobal.MainWindow, MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
+            using (CoreDBContext context = new CoreDBContext())
             {
-                using (CoreDBContext context = new CoreDBContext()) 
+                var pluginInfo= context.Plugins.Add(new Plugins()
                 {
-                    context.Plugins.Remove(context.Plugins.First(c=>c.Id==selectedModel.Id));
-                    context.PluginsModule.RemoveRange(context.PluginsModule.Where(c=>c.PluginsId==selectedModel.Id));
-                    context.ModulePage.RemoveRange(context.ModulePage.Where(c=>c.PluginsId==selectedModel.Id)) ;
-                    if (context.SaveChanges() > 0) 
-                    {
-                        Data.Remove(selectedModel);
-                        this.Log("模块删除成功！");
-                    }
+                    ConnectionName = "",
+                    ConnectionString = "",
+                    DependentIds = "",
+                    DLLName = "未设置",
+                    DLLs = "",
+                    IsEnable = false,
+                    LogoImage = "",
+                    Name = "新插件",
+                    Order = 0,
+                    UpdateTime = DateTime.Now,
+                    WebDownload = false
+                });
+                if (context.SaveChanges() > 0) 
+                {
+                    var pluginsItem = new PluginsItem(pluginInfo) { Width = itemWidth, Height = itemHeight };
+                    PluginsData.Add(pluginsItem);
+                    pluginsItem.FlickerColor(Colors.Red);
                 }
             }
         }
-
-        //编辑插件
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
-        {
-            UIModel selectedModel = list.SelectedItem as UIModel;
-            this.MaskVisible(true);
-            EditPlugins editPlugins = new EditPlugins(selectedModel.Id);
-            editPlugins.ShowDialog();
-            this.MaskVisible(false);
-        }
-
-        #region Grid Common
-
-        #region 全选
-
-        private void cbSelectListAll_Click(object sender, RoutedEventArgs e)
-        {
-            bool isCheck = (bool)(sender as CheckBox).IsChecked;
-            for (int i = 0; i < Data.Count; i++)
-            {
-                if (Data[i].IsChecked != isCheck)
-                {
-                    if (isCheck)
-                        //没选中变成选中
-                        selectedMenus.IncrementNumber(Data[i]);
-                    else
-                        //选中变成没选中
-                        selectedMenus.DecrementNumber(Data[i]);
-                }
-                Data[i].IsChecked = isCheck;
-            }
-        }
-
-        #endregion
-
-        #region 按钮选中
-
-        private void cbFocusItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (list.SelectedItem != null)
-            {
-                var selectItem = list.SelectedItem as BaseUIModel;
-                selectItem.IsChecked = !selectItem.IsChecked;
-                if (selectItem.IsChecked) selectedMenus.IncrementNumber(selectItem);
-                else selectedMenus.DecrementNumber(selectItem);
-            }
-        }
-
-        #endregion
-
-        #endregion
 
         #region Pager
 
@@ -147,7 +120,7 @@ namespace CorePlugin.Pages.Manager
         private async void UpdateDataAsync()
         {
             btnRef.IsEnabled = false;
-            Data.Clear();
+            PluginsData.Clear();
             await Task.Delay(100);
             List<Plugins> plugins = new List<Plugins>();
             using (CoreDBContext context = new CoreDBContext())
@@ -156,29 +129,13 @@ namespace CorePlugin.Pages.Manager
                 string searchText = txtSearchText.Text.Trim();
                 plugins = searchText.IsNullOrEmpty()
                     ? context.Plugins.ToList()
-                    :context.Plugins.Where(c=>c.Name.Contains(searchText)||c.DLLName.Contains(searchText)).ToList();
+                    : context.Plugins.Where(c => c.Name.Contains(searchText) || c.DLLName.Contains(searchText)).ToList();
 
                 bNoData.Visibility = plugins.Count > 0 ? Visibility.Collapsed : Visibility.Visible;//显示
                 foreach (var pluginInfo in plugins)
                 {
-                    var modules = context.PluginsModule.Where(c => c.PluginsId == pluginInfo.Id).ToList();
-                    string titles = "";
-                    foreach (var m in modules)
-                    {
-                        titles += $"{m.ModuleName} ";
-                    }
-                    UIModel model = new UIModel();
-                    model.Id = pluginInfo.Id;
-                    model.ModuleCount = modules.Count;
-                    model.ModuleNames = titles;
-                    model.Order = pluginInfo.Order;
-                    model.Name = pluginInfo.Name;
-                    model.DLLName = pluginInfo.DLLName;
-                    model.UpdateTimeYear = pluginInfo.UpdateTime.Year.ToString();
-                    model.UpdateTime = pluginInfo.UpdateTime.ToString("MM-dd HH:mm:ss");
-                    model.ImgSource = "";
-
-                    Data.Add(model);
+                    var pluginsItem = new PluginsItem(pluginInfo) { Width = itemWidth, Height = itemHeight };
+                    PluginsData.Add(pluginsItem);
                 }
             }
             btnRef.IsEnabled = true;
@@ -192,13 +149,52 @@ namespace CorePlugin.Pages.Manager
 
         #endregion
 
+        #region Loading
+
+        private void ShowLoadingPanel()
+        {
+            if (gLoading.Visibility != Visibility.Visible)
+            {
+                gLoading.Visibility = Visibility.Visible;
+                lvPlugins.IsEnabled = false;
+                bNoData.IsEnabled = false;
+
+                OnLoadingShowComplate();
+            }
+        }
+
+        private void HideLoadingPanel()
+        {
+            if (gLoading.Visibility != Visibility.Collapsed)
+            {
+                gLoading.Visibility = Visibility.Collapsed;
+                lvPlugins.IsEnabled = true;
+                bNoData.IsEnabled = true;
+
+                OnLoadingHideComplate();
+            }
+        }
+
+        private void OnLoadingHideComplate()
+        {
+
+        }
+
+        private void OnLoadingShowComplate()
+        {
+
+        }
+
+        #endregion
+
         //搜索
         private void txtSearchText_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) 
+            if (e.Key == Key.Enter)
             {
                 UpdateDataAsync();
             }
         }
+
     }
 }
