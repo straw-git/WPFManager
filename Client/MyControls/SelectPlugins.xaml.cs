@@ -109,20 +109,58 @@ namespace Client.MyControls
                     //从网上下载
                     PluginsDownload.ToPluginsFolder(downLoadUrl, $"{p.DLLName}.dll"); //强制更新插件 无论dll是否存在 都下载过来
 
-                    if (!string.IsNullOrEmpty(p.DLLs))
+                    if (p.DLLs.NotEmpty())
                     {
+                        #region 加载关联文件
+
                         //将依赖的dll加载过来
                         var dllsArr = p.DLLs.Split('|');
                         foreach (var d in dllsArr)
                         {
                             if (d.IsNullOrEmpty()) continue;
                             string dllName = d;
-                            PluginsDownload.ToPluginsFolder(downLoadUrl, dllName);
+                            if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{dllName}"))//如果文件存在 就不下载了
+                                PluginsDownload.ToPluginsFolder(downLoadUrl, dllName);
                         }
+                        #endregion 
+                    }
+                    if (p.DependentIds.NotEmpty())
+                    {
+                        #region 下载依赖的插件
+
+                        //将依赖的插件 加载进来
+                        var dllsArr = p.DependentIds.Split('|');
+                        foreach (var d in dllsArr)
+                        {
+                            if (d.IsNullOrEmpty()) continue;
+                            int id = d.AsInt();
+                            //依赖插件
+                            var dependentPlugins = plugins.First(c=>c.Id==id);
+                            if (dependentPlugins.WebDownload)
+                            {
+                                PluginsDownload.ToPluginsFolder(downLoadUrl, $"{dependentPlugins.DLLName}.dll");//下载依赖插件
+                                if (dependentPlugins.DLLs.NotEmpty())
+                                {
+                                    //将依赖的dll加载过来
+                                    var dependentDllsArr = dependentPlugins.DLLs.Split('|');
+                                    foreach (var dda in dependentDllsArr)
+                                    {
+                                        if (dda.IsNullOrEmpty()) continue;
+                                        string dllName = dda;
+                                        if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{dllName}"))//如果文件存在 就不下载了
+                                            PluginsDownload.ToPluginsFolder(downLoadUrl, dllName);
+                                    }
+                                }
+                            }
+                        }
+
+                        #endregion
                     }
                 }
                 else
                 {
+                    #region 不用从网上下载时 检查一下已有的dll
+
                     //不从网上下载 并且目录中不存在目标dll 
                     if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{p.DLLName}.dll"))
                     {
@@ -130,7 +168,7 @@ namespace Client.MyControls
                     }
                     else
                     {
-                        if (!string.IsNullOrEmpty(p.DLLs))
+                        if (p.DLLs.NotEmpty())
                         {
                             //将依赖的dll加载过来
                             var dllsArr = p.DLLs.Split('|');
@@ -147,6 +185,8 @@ namespace Client.MyControls
                             }
                         }
                     }
+
+                    #endregion 
                 }
 
                 PluginsBox pluginsLogo = new PluginsBox();
