@@ -154,6 +154,9 @@
     <Compile Include="MyControls\IconComboBox.xaml.cs">
       <DependentUpon>IconComboBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyControls\ImageEditer.xaml.cs">
+      <DependentUpon>ImageEditer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyControls\InfoBorder.xaml.cs">
       <DependentUpon>InfoBorder.xaml</DependentUpon>
     </Compile>
@@ -244,6 +247,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyControls\IconComboBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControls\ImageEditer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
