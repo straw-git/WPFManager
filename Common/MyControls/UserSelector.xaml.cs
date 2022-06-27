@@ -44,6 +44,13 @@ namespace Common.MyControls
             public string UserName { get; set; }
         }
 
+        public class UserUIModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string PositionName { get; set; }
+        }
+
         #endregion 
 
         /// <summary>
@@ -53,6 +60,7 @@ namespace Common.MyControls
 
         ObservableCollection<DepartmentUIModel> DepartmentData = new ObservableCollection<DepartmentUIModel>();//部门集合
         ObservableCollection<DepartmentPosition> PositionData = new ObservableCollection<DepartmentPosition>();//职位集合
+        ObservableCollection<UserUIModel> UserData = new ObservableCollection<UserUIModel>();
 
         List<CheckedUserUIModel> CheckedUsers = new List<CheckedUserUIModel>();//选中的用户
 
@@ -62,6 +70,9 @@ namespace Common.MyControls
             tvPosition.ItemsSource = PositionData;
             tvPosition.DisplayMemberPath = "Name";
             tvPosition.SelectedValuePath = "Id";
+
+            list.ItemsSource = UserData;
+            ReLoad();
         }
 
         public void ReLoad()
@@ -76,7 +87,7 @@ namespace Common.MyControls
 
         public void RemoveSelctedUser(int _userId)
         {
-            if (CheckedUsers.Any(c => c.UserId == _userId)) 
+            if (CheckedUsers.Any(c => c.UserId == _userId))
             {
                 CheckedUsers.Remove(CheckedUsers.First(c => c.UserId == _userId));
                 OnCheckedChanged?.Invoke(CheckedUsers);
@@ -109,6 +120,13 @@ namespace Common.MyControls
 
                     models.Add(model);
                 }
+
+                if (_parentId == 0)
+                    DepartmentData.Insert(0, new DepartmentUIModel()
+                    {
+                        Id = 0,
+                        Name = "未选择"
+                    });
             }
             return models;
         }
@@ -146,39 +164,32 @@ namespace Common.MyControls
         /// <param name="e"></param>
         private void tvPosition_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            UserData.Clear();
             if (tvPosition.SelectedItem == null) return;
-
-            wpUsers.Children.Clear();
 
             DepartmentPosition selectedModel = tvPosition.SelectedItem as DepartmentPosition;
 
             using (CoreDBContext context = new CoreDBContext())
             {
                 var list = context.User.Where(c => !c.IsDel && c.DepartmentPositionId == selectedModel.Id).ToList();
-
-                var skinInfo = LocalSkin.skins.First(c => c.SkinId == LocalSettings.settings.SkinId);
                 if (list != null)
                 {
                     foreach (var item in list)
                     {
-                        CheckBox checkBox = new CheckBox();
-                        checkBox.Height = 30;
-                        checkBox.Content = item.RealName;
-                        checkBox.Background = ColorHelper.ConvertToSolidColorBrush(skinInfo.SkinColor);
-                        checkBox.Foreground = ColorHelper.ConvertToSolidColorBrush(skinInfo.SkinOppositeColor);
-                        checkBox.Margin = new Thickness(5);
-                        checkBox.Tag = item.Id;
-                        if (CheckedUsers.Any(c => c.UserId == item.Id))
-                        {
-                            checkBox.IsChecked = true;
-                        }
-                        checkBox.Checked += OnUser_Checked;
-                        checkBox.Unchecked += OnUser_Unchecked;
-                        CheckBoxHelper.SetCheckBoxStyle(checkBox, CheckBoxStyle.Button);
-                        CheckBoxHelper.SetCheckedBackground(checkBox, new SolidColorBrush(Colors.Black));
-                        CheckBoxHelper.SetCornerRadius(checkBox, new CornerRadius(5));
+                        string departmentName = context.DepartmentPosition.Any(c => c.Id == item.DepartmentId)
+                            ? context.DepartmentPosition.First(c => c.Id == item.DepartmentPositionId).Name
+                            : "已删除";
 
-                        wpUsers.Children.Add(checkBox);
+                        string positionName = context.DepartmentPosition.Any(c => c.Id == item.DepartmentPositionId)
+                            ? context.DepartmentPosition.First(c => c.Id == item.DepartmentPositionId).Name
+                            : "已删除";
+
+                        UserData.Add(new UserUIModel()
+                        {
+                            Id = item.Id,
+                            Name = item.RealName,
+                            PositionName = positionName
+                        });
                     }
                 }
             }

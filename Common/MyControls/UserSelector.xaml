@@ -51,7 +51,35 @@ pu:TreeViewHelper.SelectedBackground="{DynamicResource TreeViewSelectedBgColor}"
                 </TreeView>
             </Grid>
             <Grid Grid.Column="2">
-                <WrapPanel x:Name="wpUsers"  Grid.Row="1"/>
+                <StackPanel>
+                    <TextBox Height="30" Margin="5"/>
+                    <DataGrid HorizontalAlignment="Center"
+                              x:Name="list"
+                              ItemsSource="{Binding}"
+                              HeadersVisibility ="All"
+                              Margin="5"
+                              BorderThickness="0"
+                              AutoGenerateColumns="False"
+                              pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
+                              pu:DataGridHelper.HeaderPadding="5,0"
+                              pu:DataGridHelper.CellPadding="5,0"
+                              pu:DataGridHelper.HoverBackground="{DynamicResource DataGridHoverColor}" 
+                              pu:DataGridHelper.SelectedBackground="{DynamicResource DataGridSelectedColor}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="名称" Width="100" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="职务" Width="*" Binding="{Binding PositionName}" />
+                            <DataGridTemplateColumn Header="操作" Width="50" >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button  Content="&#xf0a6;" FontFamily="{StaticResource FontAwesome}" Visibility="{Binding EditButtonVisibility}"  pu:ButtonHelper.ButtonStyle="Link" Tag="{Binding Id}" Foreground="Blue" x:Name="btnEdit"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>

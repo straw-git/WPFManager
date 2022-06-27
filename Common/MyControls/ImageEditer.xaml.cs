@@ -22,6 +22,25 @@ namespace Common.MyControls
     /// </summary>
     public partial class ImageEditer : UserControl
     {
+        /// <summary>
+        /// 新文件类型
+        /// </summary>
+        public enum NewTypeEnum
+        {
+            /// <summary>
+            /// 本地文件
+            /// </summary>
+            LocalFile,
+            /// <summary>
+            /// 摄像头
+            /// </summary>
+            Camera,
+            /// <summary>
+            /// 全是
+            /// </summary>
+            Both
+        }
+
         #region Properties
 
         public static readonly DependencyProperty ShowNewProperty = DependencyProperty.Register("ShowNew", typeof(bool), typeof(ImageEditer), new PropertyMetadata(null));
@@ -42,6 +61,12 @@ namespace Common.MyControls
             get { return (bool)GetValue(ShowDeleteProperty); }
             set { SetValue(ShowDeleteProperty, value); }
         }
+        public static readonly DependencyProperty NewTypeProperty = DependencyProperty.Register("NewType", typeof(NewTypeEnum), typeof(ImageEditer), new PropertyMetadata(null));
+        public NewTypeEnum NewType
+        {
+            get { return (NewTypeEnum)GetValue(NewTypeProperty); }
+            set { SetValue(NewTypeProperty, value); }
+        }
 
         public delegate void OnNewHandler(string _url);
         public event OnNewHandler OnNew;
@@ -59,6 +84,21 @@ namespace Common.MyControls
 
         string oldUrl = "";
         string newUrl = "";
+        /// <summary>
+        /// 选中的图片
+        /// </summary>
+        public string Text
+        {
+            get
+            {
+                string s = "";
+
+                if (oldUrl.NotEmpty()) s = oldUrl;
+                if (newUrl.NotEmpty()) s = newUrl;
+
+                return s;
+            }
+        }
 
         public void UpdateImage(string _imgSource = "")
         {
@@ -70,7 +110,7 @@ namespace Common.MyControls
                 //没有图
                 realImg.Visibility = Visibility.Collapsed;
                 if (ShowNew)
-                    btnNew.Visibility = Visibility.Visible;
+                    gNew.Visibility = Visibility.Visible;
             }
             else
             {
@@ -78,7 +118,9 @@ namespace Common.MyControls
                 realImg.Visibility = Visibility.Visible;
                 img.Source = new BitmapImage(new Uri($"{UserGlobal.CoreSetting.APIUrl}imgs/{_imgSource}", UriKind.RelativeOrAbsolute));
                 if (ShowNew)
-                    btnNew.Visibility = Visibility.Collapsed;
+                {
+                    gNew.Visibility = Visibility.Collapsed;
+                }
             }
         }
 
@@ -141,6 +183,11 @@ namespace Common.MyControls
             {
                 OnNew?.Invoke(oldUrl);
             }
+        }
+
+        private void btnCamera_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("功能未实现");
         }
     }
 }

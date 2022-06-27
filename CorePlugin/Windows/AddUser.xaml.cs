@@ -56,7 +56,7 @@ namespace CorePlugin.Windows
             txtAdminPwd.Password = userModel.Pwd;
             txtReAdminPwd.Password = userModel.Pwd;
 
-            cbDepartment.SelectedItem = DepartmentData.First(c => c.Id == userModel.DeparmentId);
+            cbDepartment.SelectedItem = DepartmentData.First(c => c.Id == userModel.DepartmentId);
             cbPosition.SelectedItem = PositionData.First(c => c.Id == userModel.DepartmentPositionId);
             txtIdCard.Text = userModel.IdCard;
             txtRealName.Text = userModel.RealName;
@@ -351,7 +351,7 @@ namespace CorePlugin.Windows
                     Model.Name = name;
                     Model.Pwd = password;
                     Model.RoleId = roleId;
-                    Model.DeparmentId = departmentId;
+                    Model.DepartmentId = departmentId;
                     Model.DepartmentPositionId = positionId;
                     Model.RealName = realName;
                     Model.IdCard = idCard;
@@ -402,7 +402,7 @@ namespace CorePlugin.Windows
                     Model.Name = name;
                     Model.Pwd = password;
                     Model.RoleId = roleId;
-                    Model.DeparmentId = departmentId;
+                    Model.DepartmentId = departmentId;
                     Model.DepartmentPositionId = positionId;
                     Model.RealName = realName;
                     Model.IdCard = idCard;

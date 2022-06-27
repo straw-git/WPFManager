@@ -55,7 +55,7 @@ namespace Client
                             DelTime = DateTime.Now,
                             DelUser = 0,
                             IsDel = false,
-                            DeparmentId = 0,
+                            DepartmentId = 0,
                             DepartmentPositionId = 0,
                             IdCard = "",
                             NewPositionId = 0,

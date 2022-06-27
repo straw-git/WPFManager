@@ -336,7 +336,7 @@ namespace CorePlugin.Pages.Manager
                         else
                         {
                             //没有选择职位
-                            users = users.Where(c => c.DeparmentId == departmentId);
+                            users = users.Where(c => c.DepartmentId == departmentId);
                         }
                     }
                     if (searchText.NotEmpty())
@@ -375,7 +375,7 @@ namespace CorePlugin.Pages.Manager
                         RoleId = item.RoleId,
                         RoleName = context.Role.First(c => c.Id == item.RoleId).Name,
                         CanLogin = item.CanLogin,
-                        DepartmentName = context.Department.Any(c => c.Id == item.DeparmentId) ? context.Department.First(c => c.Id == item.DeparmentId).Name : "无部门",
+                        DepartmentName = context.Department.Any(c => c.Id == item.DepartmentId) ? context.Department.First(c => c.Id == item.DepartmentId).Name : "无部门",
                         PositionName = context.DepartmentPosition.Any(c => c.Id == item.DepartmentPositionId) ? context.DepartmentPosition.First(c => c.Id == item.DepartmentPositionId).Name : "无职位",
                         RealName = item.RealName
                     };

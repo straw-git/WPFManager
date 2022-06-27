@@ -14,6 +14,11 @@
             <Button x:Name="btnUpdate" Visibility="Collapsed" Content="&#xf044;" Click="btnUpdate_Click" pu:ButtonHelper.ButtonStyle="Link" FontSize="20" Foreground="White" pu:ButtonHelper.HoverBrush="White" FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Button x:Name="btnDelete" Visibility="Collapsed" Content="&#xf00d;" Click="btnDelete_Click" pu:ButtonHelper.ButtonStyle="Link" FontSize="20" Foreground="Red" pu:ButtonHelper.HoverBrush="Red" FontFamily="{StaticResource FontAwesome}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10"/>
         </Grid>
-        <Button x:Name="btnNew" Visibility="Collapsed" Click="btnNew_Click" Content="&#xf00e;"  FontFamily="{StaticResource FontAwesome}" Background="LightGray" Foreground="White" FontSize="20" />
+        <Grid x:Name="gNew" Visibility="Collapsed" Background="LightGray">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button Grid.Row="0" x:Name="btnNew" ToolTip="查找本地文件" Click="btnNew_Click" Content="&#xf00e;"  FontFamily="{StaticResource FontAwesome}" Background="Transparent" Foreground="White" FontSize="20" pu:ButtonHelper.HoverBrush="Transparent" />
+                <Button Grid.Row="1" x:Name="btnCamera" ToolTip="调取摄像头拍摄" Click="btnCamera_Click" Margin="20,0,0,0" Content="&#xf030;"  FontFamily="{StaticResource FontAwesome}" Background="Transparent" Foreground="White" FontSize="20" pu:ButtonHelper.HoverBrush="Transparent" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

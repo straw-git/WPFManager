@@ -15,7 +15,7 @@ namespace CoreDBModels
 
         public int RoleId { get; set; }//系统角色
 
-        public int DeparmentId { get; set; }//所属部门
+        public int DepartmentId { get; set; }//所属部门
         public int DepartmentPositionId { get; set; }//部门职位Id
         public DateTime PositionEndTime { get; set; }//职位到期时间
         public int NewPositionId { get; set; }//到期后是否有新的职位
