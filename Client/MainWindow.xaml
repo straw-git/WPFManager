@@ -152,12 +152,12 @@
                             Background="{DynamicResource SkinColor}"
                          BorderBrush="{DynamicResource TreeViewSelectedHeaderColor}"
                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                          PreviewMouseUp="TreeView_PreviewMouseUp">
+                       SelectedItemChanged="tvMenu_SelectedItemChanged">
                 <TreeView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Label FontSize="{Binding FontSize}"  ToolTip="{Binding Header}" HorizontalContentAlignment="Center" Width="50" FontFamily="{StaticResource FontAwesome}" Content="{Binding Icon}"  Foreground="{DynamicResource TreeViewSelectedHeaderColor}"/>
-                            <Label  FontSize="{Binding FontSize}"   Content="{Binding Header}" Foreground="{DynamicResource TreeViewSelectedHeaderColor}"/>
+                            <Label FontSize="{Binding FontSize}"  ToolTip="{Binding Header}" HorizontalContentAlignment="Center" Width="50" FontFamily="{StaticResource FontAwesome}" Content="{Binding Icon}"  Foreground="{Binding HeaderForeground}"/>
+                            <Label  FontSize="15"   Content="{Binding Header}" Foreground="{Binding Foreground}"/>
                         </StackPanel>
                     </DataTemplate>
                 </TreeView.ItemTemplate>

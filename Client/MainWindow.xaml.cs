@@ -38,13 +38,14 @@ namespace Client
     /// </summary>
     public partial class MainWindow : BaseMainWindow
     {
-        /// <summary>
-        /// 窗体是否加载完成
-        /// </summary>
-        bool windowLoaded = false;
+        bool windowLoaded = false;//窗体数据是否加载完成 防止没加载操作报错
 
         double windowWidth = 0;//窗体宽度 用于窗体大小发生改变
         double windowHeight = 0;//窗体高度  用于窗体大小发生改变
+
+        Brush normalMenuColor = null;//正常导航颜色
+        Brush selectedMenuColor = null;//选中导航颜色
+        Brush skinColor = null;//主题颜色
 
         #region UI Models
 
@@ -57,7 +58,7 @@ namespace Client
             public Thickness Margin { get; set; }
             public Thickness Padding { get; set; }
             public ModulePage Tag { get; set; }//数据
-            private int fontSize = 16;
+            private int fontSize = 15;
             public int FontSize //字体大小
             {
                 get => fontSize;
@@ -67,6 +68,27 @@ namespace Client
                     NotifyPropertyChanged("FontSize");
                 }
             }
+
+            private Brush foreground = null;
+            public Brush Foreground //前景色
+            {
+                get => foreground;
+                set
+                {
+                    foreground = value;
+                    NotifyPropertyChanged("Foreground");
+                }
+            }
+            private Brush headerForeground = null;
+            public Brush HeaderForeground //前景色
+            {
+                get => headerForeground;
+                set
+                {
+                    headerForeground = value;
+                    NotifyPropertyChanged("HeaderForeground");
+                }
+            }
         }
 
         #endregion
@@ -74,9 +96,14 @@ namespace Client
         public MainWindow()
         {
             InitializeComponent();
-            Closing += WindowX_Closing;
 
-            emails.OnClosing += OnEmailClosing;
+            #region 准备导航颜色
+
+            normalMenuColor = StyleHelper.ConvertToSolidColorBrush(currSkin.SkinOppositeColor);
+            selectedMenuColor = new SolidColorBrush(Colors.Black);
+            skinColor = StyleHelper.ConvertToSolidColorBrush(currSkin.SkinColor);
+
+            #endregion
 
             #region 初始化窗体宽高
 
@@ -92,7 +119,7 @@ namespace Client
             lblCurrUser.Text = UserGlobal.CurrUser.RealName;
         }
 
-        #region override BaseMainWindow
+        #region override BaseMainWindow Methods
 
         /// <summary>
         /// 在窗体底部显示文字
@@ -169,9 +196,10 @@ namespace Client
                 model.Header = page.PageName;
                 model.LinkUrl = page.FullPath;
                 model.Tag = page;
-                model.FontSize = 16;
+                model.FontSize = 15;
                 model.Id = page.Id;
-
+                model.Foreground = normalMenuColor;
+                model.HeaderForeground = normalMenuColor;
 
                 MenuData.Add(model);
             }
@@ -193,18 +221,25 @@ namespace Client
 
         ObservableCollection<SecondMenuUIModel> MenuData = new ObservableCollection<SecondMenuUIModel>();//二级导航数据源
 
+        #region Window Loaded、Unloaded
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateTitle();
 
+            #region 事件注册
+
+            Closing += WindowX_Closing;
+            emails.OnClosing += OnEmailClosing;
             hideTopMenusAnimation.Completed += SecondMenuAnimationCompleted;//绑定导航动画完成事件
             showTopMenusAnimation.Completed += SecondMenuAnimationCompleted;
+
+            #endregion 
 
             EmailNotReadChangedEventObserver.Instance.AddEventListener(Codes.EmailNotReadChanged, OnEmailTimer);//监听邮件事件
             new EmailTimer().Start(5000);//开始定时读取邮件
 
-            tvMenu.ItemsSource = MenuData;
-
+            tvMenu.ItemsSource = MenuData;//绑定数据源
             windowLoaded = true;
         }
 
@@ -213,8 +248,13 @@ namespace Client
             //移除事件监听
             hideTopMenusAnimation.Completed -= SecondMenuAnimationCompleted;
             showTopMenusAnimation.Completed -= SecondMenuAnimationCompleted;
+            emails.OnClosing -= OnEmailClosing;
             Closing -= WindowX_Closing;
+
+            EmailNotReadChangedEventObserver.Instance.RemoveEventListener(Codes.EmailNotReadChanged, OnEmailTimer);//监听邮件事件
         }
+
+        #endregion 
 
         #region Timer
 
@@ -288,15 +328,49 @@ namespace Client
             IsMaskVisible = false;
         }
 
-        //切换二级导航
-        private void TreeView_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        private void tvMenu_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (tvMenu.SelectedItem != null)
             {
                 SecondMenuUIModel targetItem = tvMenu.SelectedItem as SecondMenuUIModel;
+
+                #region 更新导航字体颜色
+
+                if (bigMenu)
+                {
+                    //大导航模式
+                    if (MenuData.Any(c => c.Foreground == selectedMenuColor))
+                    {
+                        var menuItem = MenuData.Single(c => c.Foreground == selectedMenuColor);
+                        menuItem.Foreground = normalMenuColor;
+                        menuItem.HeaderForeground = normalMenuColor;
+                        menuItem.FontSize = 15;
+                    }
+                    var menuItemSelection = MenuData.Single(c => c.Id == targetItem.Id);
+                    menuItemSelection.Foreground = selectedMenuColor;
+                    menuItemSelection.HeaderForeground = skinColor;
+                    menuItemSelection.FontSize = 20;
+                }
+                else
+                {
+                    //小导航模式
+                    if (MenuData.Any(c => c.Foreground == selectedMenuColor))
+                    {
+                        var menuItem = MenuData.Single(c => c.Foreground == selectedMenuColor);
+                        menuItem.Foreground = normalMenuColor;
+                        menuItem.HeaderForeground = normalMenuColor;
+                    }
+                    var menuItemSelection = MenuData.Single(c => c.Id == targetItem.Id);
+                    menuItemSelection.Foreground = selectedMenuColor;
+                    menuItemSelection.HeaderForeground = skinColor;
+                }
+
+                #endregion 
+
                 ModulePage page = targetItem.Tag as ModulePage;
                 if (page == null) return;
                 mainFrame.Source = new Uri(page.FullPath, UriKind.RelativeOrAbsolute);
+
             }
         }
 
@@ -343,15 +417,18 @@ namespace Client
 
         #region 二级导航动画
 
-        bool bigMenu = true;
-        static Duration duration = new Duration(TimeSpan.FromSeconds(0.2));
-        bool runningAnimation = false;
-        DoubleAnimation hideTopMenusAnimation = new DoubleAnimation(190, 60, duration);
-        DoubleAnimation showTopMenusAnimation = new DoubleAnimation(60, 190, duration);
-        ThicknessAnimation hideSecondMenuAnimation = new ThicknessAnimation(new Thickness(60, 0, 0, 0), duration);
-        ThicknessAnimation showSecondMenuAnimation = new ThicknessAnimation(new Thickness(190, 0, 0, 0), duration);
-        DoubleAnimation hideFontSizeMenuAnimation = new DoubleAnimation(20, duration);
-        DoubleAnimation showFontSizeMenuAnimation = new DoubleAnimation(16, duration);
+        bool bigMenu = true;//默认大导航
+        static Duration duration = new Duration(TimeSpan.FromSeconds(0.2));//执行动画时间
+        bool runningAnimation = false;//动画是否正在执行中
+
+        DoubleAnimation hideTopMenusAnimation = null;//头部隐藏动画
+        DoubleAnimation showTopMenusAnimation = null;//头部显示动画
+        ThicknessAnimation hideSecondMenuAnimation = null;//二级导航隐藏动画
+        ThicknessAnimation showSecondMenuAnimation = null;//二级导航显示动画
+        DoubleAnimation hideFontSizeMenuAnimation = null;//隐藏时字体大小动画
+        DoubleAnimation showFontSizeMenuAnimation = null;//显示时字体大小动画
+
+        bool animationInited = false;//动画是否准备完毕
 
         /// <summary>
         /// 显示/隐藏导航
@@ -362,6 +439,7 @@ namespace Client
         {
             if (runningAnimation) return;//动画进行中
             runningAnimation = true;
+            if (!animationInited) InitAnimation();//参数未初始化则初始化 只有首次会调用
             if (bigMenu)
             {
                 bigMenu = false;
@@ -382,6 +460,21 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// 初始化动画
+        /// </summary>
+        private void InitAnimation()
+        {
+            hideTopMenusAnimation = new DoubleAnimation(190, 60, duration);
+            showTopMenusAnimation = new DoubleAnimation(60, 190, duration);
+            hideSecondMenuAnimation = new ThicknessAnimation(new Thickness(60, 0, 0, 0), duration);
+            showSecondMenuAnimation = new ThicknessAnimation(new Thickness(190, 0, 0, 0), duration);
+            hideFontSizeMenuAnimation = new DoubleAnimation(20, duration);
+            showFontSizeMenuAnimation = new DoubleAnimation(16, duration);
+
+            animationInited = true;
+        }
+
         //动画结束
         private void SecondMenuAnimationCompleted(object sender, EventArgs e)
         {
@@ -400,9 +493,7 @@ namespace Client
             }
         }
 
-
         #endregion
-
 
         #region  邮件
 

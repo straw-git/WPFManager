@@ -56,6 +56,8 @@ public static class WindowXExtensions
 
     private static void AnimationCompleted(object sender, EventArgs e)
     {
+        if (currCloseWindow == null) return;
+
         currCloseWindow.Closing -= Window_Closing;
         currCloseWindow.Close();
 
