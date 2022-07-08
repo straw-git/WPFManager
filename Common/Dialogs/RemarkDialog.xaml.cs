@@ -17,13 +17,13 @@ namespace Common.Dialogs
     /// <summary>
     /// DeleteDepartmentAny.xaml 的交互逻辑
     /// </summary>
-    public partial class DeleteVRemarkDialog : Window
+    public partial class RemarkDialog : Window
     {
         /// <summary>
         /// 确认带有备注的删除模式窗口
         /// </summary>
         /// <param name="_dialogHeader"></param>
-        public DeleteVRemarkDialog(string _dialogHeader)
+        public RemarkDialog(string _dialogHeader)
         {
             InitializeComponent();
 

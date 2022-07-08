@@ -46,13 +46,35 @@ namespace Client
         double windowWidth = 0;//窗体宽度 用于窗体大小发生改变
         double windowHeight = 0;//窗体高度  用于窗体大小发生改变
 
+        #region UI Models
+
+        class SecondMenuUIModel : BaseUIModel
+        {
+            public int Id { get; set; }
+            public string Icon { get; set; }//图标
+            public string Header { get; set; }//标题
+            public string LinkUrl { get; set; }//链接
+            public Thickness Margin { get; set; }
+            public Thickness Padding { get; set; }
+            public ModulePage Tag { get; set; }//数据
+            private int fontSize = 16;
+            public int FontSize //字体大小
+            {
+                get => fontSize;
+                set
+                {
+                    fontSize = value;
+                    NotifyPropertyChanged("FontSize");
+                }
+            }
+        }
+
+        #endregion
+
         public MainWindow()
         {
             InitializeComponent();
             Closing += WindowX_Closing;
-
-            hideSecondMenusAnimation.Completed += HideSecondMenusAnimation_Completed;
-            showSecondMenusAnimation.Completed += ShowSecondMenusAnimation_Completed;
 
             emails.OnClosing += OnEmailClosing;
 
@@ -128,8 +150,7 @@ namespace Client
             PluginsModule moduleInfo = (sender as TabItem).Tag as PluginsModule;
             List<ModulePage> _pages = MainWindowGlobal.CurrModulePages.Where(c => c.ModuleId == moduleInfo.Id).OrderBy(c => c.Order).ToList();//页面排序
 
-            tvMenu.Items.Clear();
-            tvMenu_Simple.Items.Clear();
+            MenuData.Clear();
 
             if (_pages == null || _pages.Count == 0)
             {
@@ -137,47 +158,26 @@ namespace Client
                 return;
             }
 
-            int currIndex = 0;
-
             #region 填充二级导航
 
             foreach (var page in _pages)
             {
                 page.FullPath = $"pack://application:,,,/{moduleInfo.DLLName};component/{page.PagePath}";
-                TreeViewItem _treeViewItem = new TreeViewItem();
-                _treeViewItem.Header = page.PageName;
-                _treeViewItem.Margin = new Thickness(0, 2, 0, 2);
-                _treeViewItem.Padding = new Thickness(10, 0, 0, 0);
-                _treeViewItem.Background = Brushes.Transparent;
-                _treeViewItem.Tag = page;
-                _treeViewItem.IsSelected = currIndex == 0;
-                currIndex += 1;
-                TreeViewHelper.SetItemIcon(_treeViewItem, FontAwesomeCommon.GetUnicode(page.Icon));
 
-                TreeViewItem _treeViewItemSimple = new TreeViewItem();
-                _treeViewItemSimple.Margin = new Thickness(0, 2, 0, 2);
-                _treeViewItemSimple.Padding = new Thickness(10, 0, 0, 0);
-                _treeViewItemSimple.Background = Brushes.Transparent;
-                _treeViewItemSimple.Tag = page;
-                _treeViewItemSimple.ToolTip = page.PageName;
-                TreeViewHelper.SetItemIcon(_treeViewItemSimple, FontAwesomeCommon.GetUnicode(page.Icon));
+                SecondMenuUIModel model = new SecondMenuUIModel();
+                model.Icon = FontAwesomeCommon.GetUnicode(page.Icon);
+                model.Header = page.PageName;
+                model.LinkUrl = page.FullPath;
+                model.Tag = page;
+                model.FontSize = 16;
+                model.Id = page.Id;
 
-                tvMenu.Items.Add(_treeViewItem);
-                tvMenu_Simple.Items.Add(_treeViewItemSimple);
+
+                MenuData.Add(model);
             }
 
             #endregion
 
-            if (_pages.Count == 1)
-            {
-                //如果仅有一个导航
-                bSecondMenu.Visibility = Visibility.Collapsed;
-            }
-            else if (_pages.Count > 1)
-            {
-                //如果存在多个导航
-                bSecondMenu.Visibility = Visibility.Visible;
-            }
         }
 
         /// <summary>
@@ -191,14 +191,29 @@ namespace Client
 
         #endregion
 
+        ObservableCollection<SecondMenuUIModel> MenuData = new ObservableCollection<SecondMenuUIModel>();//二级导航数据源
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateTitle();
 
+            hideTopMenusAnimation.Completed += SecondMenuAnimationCompleted;//绑定导航动画完成事件
+            showTopMenusAnimation.Completed += SecondMenuAnimationCompleted;
+
             EmailNotReadChangedEventObserver.Instance.AddEventListener(Codes.EmailNotReadChanged, OnEmailTimer);//监听邮件事件
             new EmailTimer().Start(5000);//开始定时读取邮件
 
+            tvMenu.ItemsSource = MenuData;
+
             windowLoaded = true;
+        }
+
+        private void BaseMainWindow_Unloaded(object sender, RoutedEventArgs e)
+        {
+            //移除事件监听
+            hideTopMenusAnimation.Completed -= SecondMenuAnimationCompleted;
+            showTopMenusAnimation.Completed -= SecondMenuAnimationCompleted;
+            Closing -= WindowX_Closing;
         }
 
         #region Timer
@@ -229,7 +244,7 @@ namespace Client
         /// </summary>
         public void UpdateTitle()
         {
-            simpleLogo.ToolTip = lblTitle.Text = Title = LocalSettings.settings.MainWindowTitle;
+            headerImge.ToolTip = lblTitle.Text = Title = LocalSettings.settings.MainWindowTitle;
             lblV.Content = $"{LocalSettings.settings.CompanyName}-{LocalSettings.settings.Versions}";
         }
 
@@ -278,7 +293,7 @@ namespace Client
         {
             if (tvMenu.SelectedItem != null)
             {
-                TreeViewItem targetItem = tvMenu.SelectedItem as TreeViewItem;
+                SecondMenuUIModel targetItem = tvMenu.SelectedItem as SecondMenuUIModel;
                 ModulePage page = targetItem.Tag as ModulePage;
                 if (page == null) return;
                 mainFrame.Source = new Uri(page.FullPath, UriKind.RelativeOrAbsolute);
@@ -328,8 +343,15 @@ namespace Client
 
         #region 二级导航动画
 
-        DoubleAnimation hideSecondMenusAnimation = new DoubleAnimation(200, 55, new Duration(TimeSpan.FromSeconds(0.5)));
-        DoubleAnimation showSecondMenusAnimation = new DoubleAnimation(55, 200, new Duration(TimeSpan.FromSeconds(0.5)));
+        bool bigMenu = true;
+        static Duration duration = new Duration(TimeSpan.FromSeconds(0.2));
+        bool runningAnimation = false;
+        DoubleAnimation hideTopMenusAnimation = new DoubleAnimation(190, 60, duration);
+        DoubleAnimation showTopMenusAnimation = new DoubleAnimation(60, 190, duration);
+        ThicknessAnimation hideSecondMenuAnimation = new ThicknessAnimation(new Thickness(60, 0, 0, 0), duration);
+        ThicknessAnimation showSecondMenuAnimation = new ThicknessAnimation(new Thickness(190, 0, 0, 0), duration);
+        DoubleAnimation hideFontSizeMenuAnimation = new DoubleAnimation(20, duration);
+        DoubleAnimation showFontSizeMenuAnimation = new DoubleAnimation(16, duration);
 
         /// <summary>
         /// 显示/隐藏导航
@@ -338,89 +360,49 @@ namespace Client
         /// <param name="e"></param>
         private void btnShowSecondMenus_Click(object sender, RoutedEventArgs e)
         {
-            if (bSecondMenu.Width == 55 || bSecondMenu.Width == 200)
+            if (runningAnimation) return;//动画进行中
+            runningAnimation = true;
+            if (bigMenu)
             {
-                if (bSecondMenu.Width == 200)
+                bigMenu = false;
+                gHeader.BeginAnimation(WidthProperty, hideTopMenusAnimation);
+                gPages.BeginAnimation(MarginProperty, hideSecondMenuAnimation);
+                tvMenu.BeginAnimation(FontSizeProperty, hideFontSizeMenuAnimation);
+            }
+            else
+            {
+                bigMenu = true;
+                for (int i = 0; i < MenuData.Count; i++)
                 {
-                    bSecondMenu.BeginAnimation(WidthProperty, hideSecondMenusAnimation);
-                    gHeader.BeginAnimation(WidthProperty, hideSecondMenusAnimation);
+                    MenuData[i].FontSize = 15;
                 }
-                else if (bSecondMenu.Width == 55)
-                {
-                    bSecondMenu.BeginAnimation(WidthProperty, showSecondMenusAnimation);
-                    gHeader.BeginAnimation(WidthProperty, showSecondMenusAnimation);
-                }
+                gHeader.BeginAnimation(WidthProperty, showTopMenusAnimation);
+                gPages.BeginAnimation(MarginProperty, showSecondMenuAnimation);
+                tvMenu.BeginAnimation(FontSizeProperty, showFontSizeMenuAnimation);
             }
         }
 
-        private void ShowSecondMenusAnimation_Completed(object sender, EventArgs e)
+        //动画结束
+        private void SecondMenuAnimationCompleted(object sender, EventArgs e)
         {
-            bHeader.Visibility = Visibility.Collapsed;
-            sHeader.Visibility = Visibility.Visible;
-            tvMenu_Simple.Visibility = Visibility.Collapsed;
-            tvMenu.Visibility = Visibility.Visible;
+            runningAnimation = false;
+            if (!bigMenu)
+            {
+                //小导航完成
+                for (int i = 0; i < MenuData.Count; i++)
+                {
+                    MenuData[i].FontSize = 20;
+                }
+            }
+            else
+            {
+                //大导航完成
+            }
         }
 
-        private void HideSecondMenusAnimation_Completed(object sender, EventArgs e)
-        {
-            bHeader.Visibility = Visibility.Visible;
-            sHeader.Visibility = Visibility.Collapsed;
-            tvMenu_Simple.Visibility = Visibility.Visible;
-            tvMenu.Visibility = Visibility.Collapsed;
-        }
 
         #endregion
 
-        #region 导航关联
-
-        /// <summary>
-        /// 简约导航切换事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tvMenu_Simple_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            if (tvMenu_Simple.SelectedItem == null) return;
-            string pageName = (tvMenu_Simple.SelectedItem as TreeViewItem).ToolTip.ToString();//获取简约页面名
-            foreach (TreeViewItem item in tvMenu.Items)
-            {
-                string currPageName = item.Header.ToString();//当前页面名
-                if (currPageName == pageName)
-                {
-                    item.IsSelected = true;//更新大导航
-                }
-                else
-                {
-                    item.IsSelected = false;
-                }
-            }
-            TreeView_PreviewMouseUp(null, null);//模拟大导航点击
-        }
-
-        /// <summary>
-        /// 主导航切换事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tvMenu_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            if (tvMenu.SelectedItem == null) return;
-            string pageName = (tvMenu.SelectedItem as TreeViewItem).Header.ToString();//获取页面名
-            foreach (TreeViewItem item in tvMenu_Simple.Items)
-            {
-                string currPageName = item.ToolTip.ToString();//当前页面名
-                if (currPageName == pageName)
-                {
-                    item.IsSelected = true;//更新大导航
-                }
-                else
-                {
-                    item.IsSelected = false;
-                }
-            }
-        }
-
-        #endregion
 
         #region  邮件
 
@@ -512,6 +494,7 @@ namespace Client
             Application.Current.Shutdown();
         }
 
-        #endregion 
+        #endregion
+
     }
 }

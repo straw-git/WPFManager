@@ -17,6 +17,7 @@
                   BorderBrush="#2A000000"
                   SizeChanged="BaseMainWindow_SizeChanged"
                   Loaded="Window_Loaded"
+                  Unloaded="BaseMainWindow_Unloaded"
                   WindowStartupLocation="CenterScreen">
 
     <!--Header-->
@@ -30,18 +31,16 @@
             </Grid.ColumnDefinitions>
             
             <Grid x:Name="gHeader" Grid.Row="0" Grid.Column="0"  Background="{DynamicResource SkinColor}">
-                <StackPanel x:Name="sHeader" Width="200" Grid.Row="0" Orientation="Horizontal">
-                    <Image Margin="20,0,10,0" VerticalAlignment="Center" Width="28" Height="28" Source="pack://application:,,,/Common;component/Images/main_header.png" />
-                    <TextBlock FontSize="20" 
-                       FontWeight="Light"
-                       VerticalAlignment="Center"
-                       Foreground="White"
-                           Text="信息管理系统"
-                       x:Name="lblTitle" />
+                <StackPanel x:Name="sHeader" Width="190" Orientation="Horizontal">
+                    <Image x:Name="headerImge" VerticalAlignment="Center" Width="60" Height="28" Source="pack://application:,,,/Common;component/Images/main_header.png" />
+                    <Viewbox Width="120">
+                        <TextBlock  FontWeight="Light"
+                                    VerticalAlignment="Center"
+                                    Foreground="{DynamicResource SkinOppositeColor}"
+                                    Text="信息管理系统"
+                                    x:Name="lblTitle" />
+                    </Viewbox>
                 </StackPanel>
-                <Border x:Name="bHeader" Width="55" Visibility="Collapsed" BorderThickness="0,0,0,1" BorderBrush="LightGray">
-                    <Image x:Name="simpleLogo" VerticalAlignment="Center" ToolTip="信息管理系统" HorizontalAlignment="Center" Width="26" Height="26" Source="pack://application:,,,/Common;component/Images/main_header.png" />
-                </Border>
             </Grid>
 
             <Border Grid.Column="1">
@@ -137,72 +136,57 @@
             </Grid>
         </Grid>
     </pu:WindowXCaption.Header>
-    <Grid>
-        <Grid Background="White">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <!--二级导航-->
-            <Grid Width="200" Grid.Column="0" x:Name="bSecondMenu"  Background="{DynamicResource SkinColor}">
-                <TreeView  x:Name="tvMenu"
+    <Grid  Background="White">
+        <Grid Width="200" HorizontalAlignment="Left" x:Name="gMenu" Background="{DynamicResource SkinColor}">
+            <TreeView  x:Name="tvMenu"
                            Margin="0,20,0,0"
                             Width="200"
+                       pu:TreeViewHelper.ItemHeight="48"
                         pu:TreeViewHelper.TreeViewStyle="Modern"
                         pu:TreeViewHelper.ExpandMode="SingleClick"
                            Foreground="White"
                         pu:TreeViewHelper.ExpandBehaviour="OnlyOne"
-                         pu:TreeViewHelper.SelectedBackground="{DynamicResource TreeViewSelectedBgColor}"
+                         pu:TreeViewHelper.SelectedBackground="{DynamicResource PageBgColor}"
                            pu:TreeViewHelper.SelectedForeground="Black"
                         pu:TreeViewHelper.ItemPadding="3,10,10,10"
                             Background="{DynamicResource SkinColor}"
                          BorderBrush="{DynamicResource TreeViewSelectedHeaderColor}"
                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                           SelectedItemChanged="tvMenu_SelectedItemChanged"
                           PreviewMouseUp="TreeView_PreviewMouseUp">
-                </TreeView>
-                <TreeView  x:Name="tvMenu_Simple"
-                           Visibility="Collapsed"
-                           Margin="0,20,0,0"
-                            Width="200"
-                        pu:TreeViewHelper.TreeViewStyle="Modern"
-                        pu:TreeViewHelper.ExpandMode="SingleClick"
-                           Foreground="White"
-                        pu:TreeViewHelper.ExpandBehaviour="OnlyOne"
-                         pu:TreeViewHelper.SelectedBackground="LightGray"
-                           pu:TreeViewHelper.SelectedForeground="Black"
-                            Background="{DynamicResource SkinColor}"
-                           FontSize="18"
-                         BorderBrush="{DynamicResource TreeViewSelectedHeaderColor}"
-                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                           SelectedItemChanged="tvMenu_Simple_SelectedItemChanged">
-                </TreeView>
-            </Grid>
+                <TreeView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Label FontSize="{Binding FontSize}"  ToolTip="{Binding Header}" HorizontalContentAlignment="Center" Width="50" FontFamily="{StaticResource FontAwesome}" Content="{Binding Icon}"  Foreground="{DynamicResource TreeViewSelectedHeaderColor}"/>
+                            <Label  FontSize="{Binding FontSize}"   Content="{Binding Header}" Foreground="{DynamicResource TreeViewSelectedHeaderColor}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </Grid>
+        <Grid x:Name="gPages" Margin="190,0,0,0" Background="{DynamicResource PageBgColor}">
             <!--内页-->
-            <Border Grid.Column="1">
+            <Border>
                 <Grid>
-                    <Grid Background="{DynamicResource PageBgColor}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <GridSplitter Width="1" />
+                    <Frame Grid.Column="0" x:Name="mainFrame" Source="Pages/Welcome.xaml" Margin="0,0,0,40"  NavigationUIVisibility="Hidden"/>
+                    <Grid Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Background="White" Height="30">
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                            <Label Width="28" Height="28" FontSize="16" Foreground="Gray" Margin="10,0,0,0" FontFamily="{StaticResource FontAwesome}" Content="&#xf027;"/>
+                            <Label Foreground="Gray" Margin="5,0,0,0" x:Name="lblInfo" Content="等待操作..."/>
+                        </StackPanel>
+                        <Label x:Name="lblV" Foreground="Gray" Content="zyue-1.0" VerticalAlignment="Center" Margin="0,0,10,0" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <!--通知和邮件-->
+                    <Grid x:Name="gNoticeOrEmails" Grid.Column="1" Background="AliceBlue" Margin="0,10,0,40">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <GridSplitter Width="1" />
-                        <Frame Grid.Column="0" x:Name="mainFrame" Margin="0,0,0,40"  NavigationUIVisibility="Hidden"/>
-                        <Grid Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Background="White" Height="30">
-                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                <Label Width="28" Height="28" FontSize="16" Foreground="Gray" Margin="10,0,0,0" FontFamily="{StaticResource FontAwesome}" Content="&#xf027;"/>
-                                <Label Foreground="Gray" Margin="5,0,0,0" x:Name="lblInfo" Content="等待操作..."/>
-                            </StackPanel>
-                            <Label x:Name="lblV" Foreground="Gray" Content="zyue-1.0" VerticalAlignment="Center" Margin="0,0,10,0" HorizontalAlignment="Right"/>
-                        </Grid>
-                        <!--通知和邮件-->
-                        <Grid x:Name="gNoticeOrEmails" Grid.Column="1" Background="AliceBlue" Margin="0,10,0,40">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <my:EmailBox x:Name="emails" Width="0"/>
-                        </Grid>
+                        <my:EmailBox x:Name="emails" Width="0"/>
                     </Grid>
                 </Grid>
             </Border>

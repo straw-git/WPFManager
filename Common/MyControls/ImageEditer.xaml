@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
              xmlns:local="clr-namespace:Common.MyControls"
+             x:Name="MyImageEditer"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="400">
     <Grid>
@@ -20,5 +21,6 @@
                 <Button Grid.Row="1" x:Name="btnCamera" ToolTip="调取摄像头拍摄" Click="btnCamera_Click" Margin="20,0,0,0" Content="&#xf030;"  FontFamily="{StaticResource FontAwesome}" Background="Transparent" Foreground="White" FontSize="20" pu:ButtonHelper.HoverBrush="Transparent" />
             </StackPanel>
         </Grid>
+        <Label x:Name="lblTitle" Content="{Binding ElementName=MyImageEditer,Path=Title}" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="20"/>
     </Grid>
 </UserControl>

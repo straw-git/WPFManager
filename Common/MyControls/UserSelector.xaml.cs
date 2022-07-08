@@ -188,7 +188,7 @@ namespace Common.MyControls
                         {
                             Id = item.Id,
                             Name = item.RealName,
-                            PositionName = positionName
+                            PositionName = $"{departmentName}-{positionName}"
                         });
                     }
                 }

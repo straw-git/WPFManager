@@ -80,7 +80,8 @@ namespace Client
                         context.CoreSetting.Add(new CoreSetting()
                         {
                             MaxLogCount = 500,
-                            APIUrl = "http://127.0.0.1:8088/"
+                            APIUrl = "http://127.0.0.1:8088/",
+                            LoginTitle="登录"
                         });
                     }
 

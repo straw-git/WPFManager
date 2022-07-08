@@ -111,28 +111,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CoreDBContext.cs" />
-    <Compile Include="Migrations\202205280456246_init.cs" />
-    <Compile Include="Migrations\202205280456246_init.designer.cs">
-      <DependentUpon>202205280456246_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202205280805186_emailtitle.cs" />
-    <Compile Include="Migrations\202205280805186_emailtitle.designer.cs">
-      <DependentUpon>202205280805186_emailtitle.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202206150615077_plugindlls.cs" />
-    <Compile Include="Migrations\202206150615077_plugindlls.designer.cs">
-      <DependentUpon>202206150615077_plugindlls.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202206180640423_webapi.cs" />
-    <Compile Include="Migrations\202206180640423_webapi.designer.cs">
-      <DependentUpon>202206180640423_webapi.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202206220151292_updateplugins.cs" />
-    <Compile Include="Migrations\202206220151292_updateplugins.designer.cs">
-      <DependentUpon>202206220151292_updateplugins.cs</DependentUpon>
+    <Compile Include="Migrations\202206270757195_init.cs" />
+    <Compile Include="Migrations\202206270757195_init.designer.cs">
+      <DependentUpon>202206270757195_init.cs</DependentUpon>
     </Compile>
     <Compile Include="MyControls\BgStar.xaml.cs">
       <DependentUpon>BgStar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Welcome.xaml.cs">
+      <DependentUpon>Welcome.xaml</DependentUpon>
     </Compile>
     <Compile Include="Timers\BaseTimer.cs" />
     <Compile Include="Timers\EmailTimer.cs" />
@@ -213,6 +200,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\Welcome.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ChangePlugins.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -248,20 +239,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\202205280456246_init.resx">
-      <DependentUpon>202205280456246_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205280805186_emailtitle.resx">
-      <DependentUpon>202205280805186_emailtitle.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202206150615077_plugindlls.resx">
-      <DependentUpon>202206150615077_plugindlls.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202206180640423_webapi.resx">
-      <DependentUpon>202206180640423_webapi.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202206220151292_updateplugins.resx">
-      <DependentUpon>202206220151292_updateplugins.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206270757195_init.resx">
+      <DependentUpon>202206270757195_init.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

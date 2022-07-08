@@ -13,7 +13,7 @@
                     {
                         Id = c.Int(nullable: false, identity: true),
                         MaxLogCount = c.Int(nullable: false),
-                        PluginsUpdateBaseUrl = c.String(maxLength: 500),
+                        APIUrl = c.String(maxLength: 500),
                         LoginTitle = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id);
@@ -61,6 +61,7 @@
                         FromId = c.Int(nullable: false),
                         EmailType = c.Int(nullable: false),
                         Content = c.String(),
+                        Title = c.String(),
                         SendTime = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
@@ -113,11 +114,14 @@
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(maxLength: 50),
                         DLLName = c.String(maxLength: 100),
+                        DLLs = c.String(maxLength: 1000),
                         LogoImage = c.String(maxLength: 200),
                         WebDownload = c.Boolean(nullable: false),
                         Order = c.Int(nullable: false),
-                        ConnectionName = c.String(),
-                        ConnectionString = c.String(),
+                        ConnectionName = c.String(maxLength: 100),
+                        ConnectionString = c.String(maxLength: 1000),
+                        DependentIds = c.String(maxLength: 500),
+                        IsEnable = c.Boolean(nullable: false),
                         UpdateTime = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
@@ -166,7 +170,7 @@
                         Name = c.String(maxLength: 50),
                         Pwd = c.String(maxLength: 100),
                         RoleId = c.Int(nullable: false),
-                        DeparmentId = c.Int(nullable: false),
+                        DepartmentId = c.Int(nullable: false),
                         DepartmentPositionId = c.Int(nullable: false),
                         PositionEndTime = c.DateTime(nullable: false),
                         NewPositionId = c.Int(nullable: false),

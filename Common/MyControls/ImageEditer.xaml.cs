@@ -67,6 +67,12 @@ namespace Common.MyControls
             get { return (NewTypeEnum)GetValue(NewTypeProperty); }
             set { SetValue(NewTypeProperty, value); }
         }
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ImageEditer), new PropertyMetadata(null));
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
 
         public delegate void OnNewHandler(string _url);
         public event OnNewHandler OnNew;

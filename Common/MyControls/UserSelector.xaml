@@ -52,14 +52,20 @@ pu:TreeViewHelper.SelectedBackground="{DynamicResource TreeViewSelectedBgColor}"
             </Grid>
             <Grid Grid.Column="2">
                 <StackPanel>
-                    <TextBox Height="30" Margin="5"/>
+                    <TextBox  Height="30" Margin="5" 
+                                              pu:TextBoxHelper.Watermark="账户名"
+                                              Background="{DynamicResource TextBoxBgColor}"
+                                              pu:TextBoxHelper.FocusedBorderBrush="{DynamicResource TextBoxFocusColor}"
+                                              pu:TextBoxHelper.FocusedShadowColor="{DynamicResource TextBoxFocusedShadowColor}"
+                                              pu:TextBoxHelper.IsClearButtonVisible="True" />
                     <DataGrid HorizontalAlignment="Center"
                               x:Name="list"
                               ItemsSource="{Binding}"
-                              HeadersVisibility ="All"
+                              HeadersVisibility ="None"
                               Margin="5"
-                              BorderThickness="0"
+                              BorderThickness="1,1,0,0"
                               AutoGenerateColumns="False"
+                              CanUserAddRows="False"
                               pu:DataGridHelper.ColumnHorizontalContentAlignment="Center" 
                               pu:DataGridHelper.HeaderPadding="5,0"
                               pu:DataGridHelper.CellPadding="5,0"

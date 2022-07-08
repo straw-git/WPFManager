@@ -640,6 +640,5 @@ namespace CorePlugin.Pages.Manager
         }
 
         #endregion
-
     }
 }

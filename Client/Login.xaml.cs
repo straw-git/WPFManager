@@ -59,7 +59,7 @@ namespace Client
             stdStart.Begin();//启动动画
 
             login.Visibility = Visibility.Visible;
-            login.ShowLogin();
+
             selectPlugins.Visibility = Visibility.Collapsed;
 
             #region 事件监听
@@ -70,10 +70,9 @@ namespace Client
             selectPlugins.OnBackLoginClick += SelectPlugins2Login;
             selectPlugins.OnGoMainWindowClick += OnGoMainWindowClick;
 
-            #endregion 
+            #endregion
 
-            CheckNullData();
-
+            InitLoginData();//所有数据库操作在此操作后执行
         }
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
@@ -100,7 +99,7 @@ namespace Client
 
         private void OnGoMainWindowClick()
         {
-            if (MainWindowGlobal.MainWindow == null) 
+            if (MainWindowGlobal.MainWindow == null)
             {
                 MainWindowGlobal.MainWindow = new MainWindow();
             }
@@ -127,7 +126,7 @@ namespace Client
             //GlobalEvent.StartTimer(5);
         }
 
-        private async void CheckNullData()
+        private async void InitLoginData()
         {
             IsEnabled = false;
             var handler = PendingBox.Show("连接数据库...", "请等待", false, Application.Current.MainWindow, new PendingBoxConfigurations()
@@ -154,6 +153,7 @@ namespace Client
             {
                 MessageBoxX.Show("数据库连接失败", "连接错误");
             }
+            login.ShowLogin();
         }
 
 

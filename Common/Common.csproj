@@ -130,8 +130,8 @@
     <Compile Include="Base\BaseUIModel.cs" />
     <Compile Include="CoreDBContext.cs" />
     <Compile Include="Data\Local\LocalReadEmail.cs" />
-    <Compile Include="Dialogs\DeleteVRemarkDialog.xaml.cs">
-      <DependentUpon>DeleteVRemarkDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\RemarkDialog.xaml.cs">
+      <DependentUpon>RemarkDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Events\Codes.cs" />
     <Compile Include="Extensions\DbContextExtensions.cs" />
@@ -234,7 +234,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Dialogs\DeleteVRemarkDialog.xaml">
+    <Page Include="Dialogs\RemarkDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
