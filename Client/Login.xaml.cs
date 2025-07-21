@@ -1,4 +1,4 @@
-﻿using Client.CurrGlobal;
+using Client.CurrGlobal;
 using Client.Pages;
 using Client.Windows;
 using Common;
